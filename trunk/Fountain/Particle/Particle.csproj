@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{68F40942-0B87-4A8A-874C-76D90B68877A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TouhouSpring.Particle</RootNamespace>
+    <AssemblyName>Fountain.Particle</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alignment.cs" />
+    <Compile Include="BlendMode.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="CustomTypeConverters.cs" />
+    <Compile Include="Effect.cs" />
+    <Compile Include="EffectList.cs" />
+    <Compile Include="IResourceLoader.cs" />
+    <Compile Include="Modifier.cs" />
+    <Compile Include="ModifierList.cs" />
+    <Compile Include="Modifiers\Accelerate.cs" />
+    <Compile Include="Modifiers\AnimationType.cs" />
+    <Compile Include="Modifiers\BaseAnimationModifier.cs" />
+    <Compile Include="Modifiers\ColorAnimation.cs" />
+    <Compile Include="Modifiers\Emit.cs" />
+    <Compile Include="Modifiers\EmitWhen.cs" />
+    <Compile Include="Modifiers\Explosion.cs" />
+    <Compile Include="Modifiers\Fan.cs" />
+    <Compile Include="Modifiers\RandomPositionInCube.cs" />
+    <Compile Include="Modifiers\RandomPositionInSphere.cs" />
+    <Compile Include="Modifiers\RandomVelocityInSphere.cs" />
+    <Compile Include="Modifiers\RotationAnimation.cs" />
+    <Compile Include="Modifiers\ScalingAnimation.cs" />
+    <Compile Include="Modifiers\Switch.cs" />
+    <Compile Include="Particle.cs" />
+    <Compile Include="ParticleSorter.cs" />
+    <Compile Include="ParticleSystem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomNumber.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

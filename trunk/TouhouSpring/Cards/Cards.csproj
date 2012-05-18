@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TouhouSpring</RootNamespace>
+    <AssemblyName>TouhouSpring.Cards</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviors\AliceDollSummon.cs" />
+    <Compile Include="Behaviors\AttackModifier.cs" />
+    <Compile Include="Behaviors\Baga.cs" />
+    <Compile Include="Behaviors\Boost.cs" />
+    <Compile Include="Behaviors\CardTransfer.cs" />
+    <Compile Include="Behaviors\CautionaryBorder.cs" />
+    <Compile Include="Behaviors\DefenseModifier.cs" />
+    <Compile Include="Behaviors\Environment.cs" />
+    <Compile Include="Behaviors\Freeze.cs" />
+    <Compile Include="Behaviors\IceWall.cs" />
+    <Compile Include="Behaviors\Immobilize.cs" />
+    <Compile Include="Behaviors\Instant.cs" />
+    <Compile Include="Behaviors\JackTheRipper.cs" />
+    <Compile Include="Behaviors\LastingEffect.cs" />
+    <Compile Include="Behaviors\LowWit.cs" />
+    <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
+    <Compile Include="Behaviors\MarisaSummon.cs" />
+    <Compile Include="Behaviors\MasterSpark.cs" />
+    <Compile Include="Behaviors\Penetrate.cs" />
+    <Compile Include="Behaviors\PenetrateEquip.cs" />
+    <Compile Include="Behaviors\PhaseSpecific.cs" />
+    <Compile Include="Behaviors\RedFog.cs" />
+    <Compile Include="Behaviors\Ripples.cs" />
+    <Compile Include="Behaviors\Sacrifice.cs" />
+    <Compile Include="Behaviors\Scapegoat.cs" />
+    <Compile Include="Behaviors\Silence.cs" />
+    <Compile Include="Behaviors\Steal.cs" />
+    <Compile Include="Behaviors\SummonWeakness.cs" />
+    <Compile Include="Behaviors\Summon_PostPlay.cs" />
+    <Compile Include="Behaviors\Weakness.cs" />
+    <Compile Include="Behaviors\TheWorld.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fountain\Common\Common.csproj">
+      <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Game\Game.csproj">
+      <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
+      <Name>Game</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Particle="TouhouSpring.Particle" xmlns:Modifiers="TouhouSpring.Particle.Modifiers">
+  <Asset Type="Particle:ParticleSystem">
+    <TextureName>atlas:Textures/Particles/Particles</TextureName>
+    <BlendMode>Additive</BlendMode>
+    <Effects>
+      <Effect>
+        <Name>Main</Name>
+        <DefaultParticleLifetime>2</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 0</DefaultParticleVelocity>
+        <DefaultParticleSize>5 5</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>80FFFFFF</DefaultParticleColor>
+        <Capacity>1000</Capacity>
+        <IsEmitting>false</IsEmitting>
+        <EmissionRate>50</EmissionRate>
+        <Alignment>WorldXY</Alignment>
+        <UVBoundsName>Knife</UVBoundsName>
+        <ModifiersOnEmit>
+          <Modifier Type="Modifiers:Fan">
+            <Center>0 0 0</Center>
+            <XAxis>5 0 0</XAxis>
+            <YAxis>0 5 0</YAxis>
+            <AngularOffset>90</AngularOffset>
+            <AngularInterval>12</AngularInterval>
+          </Modifier>
+        </ModifiersOnEmit>
+        <ModifiersOnUpdate>
+          <Modifier Type="Modifiers:ColorAnimation">
+            <AnimationType>Curve</AnimationType>
+            <CurveName>Curve2</CurveName>
+            <NormalizeCurveTime>false</NormalizeCurveTime>
+            <CurveScale>1</CurveScale>
+            <CurveBias>0</CurveBias>
+            <StartValue>0</StartValue>
+            <FinishValue>0</FinishValue>
+            <AffectRed>false</AffectRed>
+            <AffectGreen>false</AffectGreen>
+            <AffectBlue>false</AffectBlue>
+            <AffectAlpha>true</AffectAlpha>
+          </Modifier>
+          <Modifier Type="Modifiers:Explosion">
+            <Center>0 0 0</Center>
+            <Strength>2</Strength>
+            <Accelerate>true</Accelerate>
+          </Modifier>
+        </ModifiersOnUpdate>
+      </Effect>
+      <Effect>
+        <Name>Pulse</Name>
+        <DefaultParticleLifetime>5</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 0</DefaultParticleVelocity>
+        <DefaultParticleSize>0 0</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>FF000000</DefaultParticleColor>
+        <Capacity>1000</Capacity>
+        <IsEmitting>true</IsEmitting>
+        <EmissionRate>0.2</EmissionRate>
+        <Alignment>Screen</Alignment>
+        <UVBoundsName>{Whole}</UVBoundsName>
+        <ModifiersOnEmit />
+        <ModifiersOnUpdate>
+          <Modifier Type="Modifiers:Switch">
+            <EffectName>Main</EffectName>
+            <Duration>1</Duration>
+          </Modifier>
+        </ModifiersOnUpdate>
+      </Effect>
+    </Effects>
+  </Asset>
+</XnaContent>

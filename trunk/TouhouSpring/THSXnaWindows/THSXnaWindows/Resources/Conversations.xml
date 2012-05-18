@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<conversations>
+  <scene name="init">
+    <say character="aside ">
+      <sentence>夜空中，一道流星划过天际。黑夜中的雾之湖附近闪过一缕微光，幻想乡再次陷入沉寂。</sentence>
+      <sentence>随后，漫天迷雾偷偷地，一点一点地渗入幻想乡的每一个角落，趁着万物沉睡之时。月亮不见踪影。原本也就是新月，早在几小时前就早早沉入西山下。惨淡的星光更是无力突破这浓厚的大雾。</sentence>
+      <sentence>天地仿佛重归混沌。夜雀也不发一声，是因为察觉了什么异常么？</sentence>
+      <sentence>天边渐渐泛起了鱼肚白。但即使是初升的太阳依然无法撼动这貌似坚不可摧的雾的屏障。</sentence>
+    </say>
+  </scene>
+</conversations>

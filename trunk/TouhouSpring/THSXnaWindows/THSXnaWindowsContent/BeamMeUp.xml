@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Particle="TouhouSpring.Particle" xmlns:Modifiers="TouhouSpring.Particle.Modifiers">
+  <Asset Type="Particle:ParticleSystem">
+    <TextureName>atlas:Textures/Particles/Particles</TextureName>
+    <BlendMode>Additive</BlendMode>
+    <Effects>
+      <Effect>
+        <Name>Particles</Name>
+        <DefaultParticleLifetime>1</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 0</DefaultParticleVelocity>
+        <DefaultParticleSize>0 0</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>FF00C0C0</DefaultParticleColor>
+        <Capacity>100</Capacity>
+        <IsEmitting>false</IsEmitting>
+        <EmissionRate>30</EmissionRate>
+        <Alignment>Screen</Alignment>
+        <UVBoundsName>LensFlare</UVBoundsName>
+        <ModifiersOnEmit>
+          <Modifier Type="Modifiers:RandomPositionInBox">
+            <Center>0 0 0</Center>
+            <Dimensions>10 10 25</Dimensions>
+          </Modifier>
+          <Modifier Type="Modifiers:RandomVelocityInSphere">
+            <Radius>2.5</Radius>
+          </Modifier>
+        </ModifiersOnEmit>
+        <ModifiersOnUpdate>
+          <Modifier Type="Modifiers:ScalingAnimation">
+            <AnimationType>Curve</AnimationType>
+            <CurveName>Curve1</CurveName>
+            <NormalizeCurveTime>true</NormalizeCurveTime>
+            <CurveScale>2</CurveScale>
+            <CurveBias>2</CurveBias>
+            <StartValue>0</StartValue>
+            <FinishValue>0</FinishValue>
+            <AffectWidth>true</AffectWidth>
+            <AffectHeight>true</AffectHeight>
+          </Modifier>
+          <Modifier Type="Modifiers:Accelerate">
+            <Acceleration>0 0 10</Acceleration>
+          </Modifier>
+          <Modifier Type="Modifiers:ColorAnimation">
+            <AnimationType>Curve</AnimationType>
+            <CurveName>Curve1</CurveName>
+            <NormalizeCurveTime>true</NormalizeCurveTime>
+            <CurveScale>1</CurveScale>
+            <CurveBias>0</CurveBias>
+            <StartValue>0</StartValue>
+            <FinishValue>0</FinishValue>
+            <AffectRed>false</AffectRed>
+            <AffectGreen>false</AffectGreen>
+            <AffectBlue>false</AffectBlue>
+            <AffectAlpha>true</AffectAlpha>
+          </Modifier>
+        </ModifiersOnUpdate>
+      </Effect>
+      <Effect>
+        <Name>Fast Beams</Name>
+        <DefaultParticleLifetime>0.5</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 0</DefaultParticleVelocity>
+        <DefaultParticleSize>16 24</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>FF00FFFF</DefaultParticleColor>
+        <Capacity>200</Capacity>
+        <IsEmitting>true</IsEmitting>
+        <EmissionRate>60</EmissionRate>
+        <Alignment>Screen</Alignment>
+        <UVBoundsName>Beam</UVBoundsName>
+        <ModifiersOnEmit>
+          <Modifier Type="Modifiers:RandomPositionInBox">
+            <Center>0 0 0</Center>
+            <Dimensions>10 10 0</Dimensions>
+          </Modifier>
+        </ModifiersOnEmit>
+        <ModifiersOnUpdate>
+          <Modifier Type="Modifiers:ColorAnimation">
+            <AnimationType>Curve</AnimationType>
+            <CurveName>Curve1</CurveName>
+            <NormalizeCurveTime>true</NormalizeCurveTime>
+            <CurveScale>0.1</CurveScale>
+            <CurveBias>0</CurveBias>
+            <StartValue>0</StartValue>
+            <FinishValue>0</FinishValue>
+            <AffectRed>false</AffectRed>
+            <AffectGreen>false</AffectGreen>
+            <AffectBlue>false</AffectBlue>
+            <AffectAlpha>true</AffectAlpha>
+          </Modifier>
+        </ModifiersOnUpdate>
+      </Effect>
+      <Effect>
+        <Name>Slow Beams</Name>
+        <DefaultParticleLifetime>1.5</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 0</DefaultParticleVelocity>
+        <DefaultParticleSize>32 48</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>FF008080</DefaultParticleColor>
+        <Capacity>150</Capacity>
+        <IsEmitting>true</IsEmitting>
+        <EmissionRate>40</EmissionRate>
+        <Alignment>Screen</Alignment>
+        <UVBoundsName>BeamBlurred</UVBoundsName>
+        <ModifiersOnEmit>
+          <Modifier Type="Modifiers:RandomPositionInBox">
+            <Center>0 0 0</Center>
+            <Dimensions>12 10 0</Dimensions>
+          </Modifier>
+        </ModifiersOnEmit>
+        <ModifiersOnUpdate>
+          <Modifier Type="Modifiers:ColorAnimation">
+            <AnimationType>Curve</AnimationType>
+            <CurveName>Curve1</CurveName>
+            <NormalizeCurveTime>true</NormalizeCurveTime>
+            <CurveScale>0.15</CurveScale>
+            <CurveBias>0</CurveBias>
+            <StartValue>0</StartValue>
+            <FinishValue>0</FinishValue>
+            <AffectRed>false</AffectRed>
+            <AffectGreen>false</AffectGreen>
+            <AffectBlue>false</AffectBlue>
+            <AffectAlpha>true</AffectAlpha>
+          </Modifier>
+        </ModifiersOnUpdate>
+      </Effect>
+      <Effect>
+        <Name>Pulse</Name>
+        <DefaultParticleLifetime>0</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 0</DefaultParticleVelocity>
+        <DefaultParticleSize>0 0</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>FF000000</DefaultParticleColor>
+        <Capacity>10</Capacity>
+        <IsEmitting>true</IsEmitting>
+        <EmissionRate>0.8</EmissionRate>
+        <Alignment>Screen</Alignment>
+        <UVBoundsName>{Whole}</UVBoundsName>
+        <ModifiersOnEmit>
+          <Modifier Type="Modifiers:Emit">
+            <EffectName>Particles</EffectName>
+            <Amount>20</Amount>
+          </Modifier>
+        </ModifiersOnEmit>
+        <ModifiersOnUpdate />
+      </Effect>
+    </Effects>
+  </Asset>
+</XnaContent>

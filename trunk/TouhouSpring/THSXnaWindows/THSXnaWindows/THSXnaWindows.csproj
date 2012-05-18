@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{2AF3E959-DE0F-4A3F-B0CA-370665C726A8}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TouhouSpring</RootNamespace>
+    <AssemblyName>TouhouSpring.XnaWindows</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows</XnaPlatform>
+    <XnaProfile>Reach</XnaProfile>
+    <XnaCrossPlatformGroupID>c8cdba81-b0ee-4332-8b66-638a3735d00a</XnaCrossPlatformGroupID>
+    <XnaOutputType>Game</XnaOutputType>
+    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animation\CurveTrack.cs" />
+    <Compile Include="Animation\LinearTrack.cs" />
+    <Compile Include="Animation\Track.cs" />
+    <Compile Include="Animation\TrackUpdater.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="ConversationManager.cs" />
+    <Compile Include="Graphics\ParticleRenderer.cs" />
+    <Compile Include="Graphics\ParticleRenderer.ResourceLoader.cs" />
+    <Compile Include="Graphics\RenderManager.cs" />
+    <Compile Include="Graphics\RenderManager.QuadRenderer.cs" />
+    <Compile Include="Graphics\RenderManager.TextRenderer.cs" />
+    <Compile Include="Graphics\TextureAtlasManager.cs" />
+    <Compile Include="Graphics\VirtualTexture.cs" />
+    <Compile Include="Ray.cs" />
+    <Compile Include="Services\CardDatabase.cs" />
+    <Compile Include="Services\ConversationUI.cs" />
+    <Compile Include="Services\GameManager.cs" />
+    <Compile Include="Services\GameService.cs" />
+    <Compile Include="Services\GameUI.BlockPhase.cs" />
+    <Compile Include="Services\GameUI.CardControls.cs" />
+    <Compile Include="Services\GameUI.cs" />
+    <Compile Include="Services\GameUI.NextButton.cs" />
+    <Compile Include="Services\GameUI.SelectCards.cs" />
+    <Compile Include="Services\GameUI.TacticalPhase.cs" />
+    <Compile Include="Services\GameUI.ZoomInCard.cs" />
+    <Compile Include="Services\MenuUI.cs" />
+    <Compile Include="Services\MenuUI.Page.cs" />
+    <Compile Include="Services\ModalDialog.cs" />
+    <Compile Include="Services\ResourceManager.cs" />
+    <Compile Include="Services\ResourceManager.IDisposableManager.cs" />
+    <Compile Include="Graphics\Scene.cs" />
+    <Compile Include="Services\Styler.cs" />
+    <Compile Include="GameApp.cs" />
+    <Compile Include="Graphics\TextBuffer.cs" />
+    <Compile Include="Graphics\TexturedQuad.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ResourceContainer.cs" />
+    <Compile Include="Services\UIManager.cs" />
+    <Compile Include="Style\BaseStyleContainer.cs" />
+    <Compile Include="Style\CardControlStyle.cs" />
+    <Compile Include="Style\Exceptions.cs" />
+    <Compile Include="Style\IBindingProvider.cs" />
+    <Compile Include="Style\ImageStyle.cs" />
+    <Compile Include="IResourceContainer.cs" />
+    <Compile Include="Style\IStyleContainer.cs" />
+    <Compile Include="Style\IStyleElement.cs" />
+    <Compile Include="Style\LabelStyle.cs" />
+    <Compile Include="Style\LayoutGizmo.cs" />
+    <Compile Include="Style\MenuStyle.cs" />
+    <Compile Include="Style\PageStyle.cs" />
+    <Compile Include="Style\PanelStyle.cs" />
+    <Compile Include="Style\Properties\BaseProperty.cs" />
+    <Compile Include="Style\Properties\BoundsProperty.cs" />
+    <Compile Include="Style\Properties\ContentProperty.cs" />
+    <Compile Include="Style\Properties\ImageProperty.cs" />
+    <Compile Include="Style\Properties\TextProperty.cs" />
+    <Compile Include="Style\Properties\TransformProperty.cs" />
+    <Compile Include="Style\Values\Blend.cs" />
+    <Compile Include="Style\Values\Color.cs" />
+    <Compile Include="Style\Values\Font.cs" />
+    <Compile Include="Style\Values\HorizontalAlignment.cs" />
+    <Compile Include="Style\Values\Length.cs" />
+    <Compile Include="Style\Values\Stretch.cs" />
+    <Compile Include="Style\Values\VerticalAlignment.cs" />
+    <Compile Include="MatrixHelper.cs" />
+    <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\CardControl.Addin.cs" />
+    <Compile Include="UI\CardControl.Binding.cs" />
+    <Compile Include="UI\CardControl.cs" />
+    <Compile Include="UI\CardControl.Render.cs" />
+    <Compile Include="UI\CardControlAddins\Flip.cs" />
+    <Compile Include="UI\CardControlAddins\Glow.cs" />
+    <Compile Include="UI\CardControlAddins\Highlight.cs" />
+    <Compile Include="UI\CardControlAddins\LocationAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\RotationAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\ToneAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\SpellButtons.cs" />
+    <Compile Include="UI\ComposedImage.cs" />
+    <Compile Include="UI\Label.cs" />
+    <Compile Include="UI\MenuItem.cs" />
+    <Compile Include="UI\ModalDialog.cs" />
+    <Compile Include="UI\MouseEventArgs.cs" />
+    <Compile Include="UI\MouseEventRelay.cs" />
+    <Compile Include="UI\MouseState.cs" />
+    <Compile Include="UI\MouseTracked.cs" />
+    <Compile Include="UI\MouseTrackedControl.cs" />
+    <Compile Include="UI\Page.cs" />
+    <Compile Include="UI\Panel.cs" />
+    <Compile Include="UI\Renderable.cs" />
+    <Compile Include="UI\RenderEventArgs.cs" />
+    <Compile Include="UI\TransformNode.cs" />
+    <Compile Include="XnaUIController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Game.ico" />
+    <Content Include="GameThumbnail.png">
+      <XnaPlatformSpecific>true</XnaPlatformSpecific>
+    </Content>
+    <EmbeddedResource Include="Resources\Conversations.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\UIStyles.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Fountain\Common\Common.csproj">
+      <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Fountain\Particle\Particle.csproj">
+      <Project>{68F40942-0B87-4A8A-874C-76D90B68877A}</Project>
+      <Name>Particle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Fountain\TextureAtlas\TextureAtlas.csproj">
+      <Project>{C7BA8901-BC39-4DC8-8BC3-B9EBF4D72EC7}</Project>
+      <Name>TextureAtlas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cards\Cards.csproj">
+      <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
+      <Name>Cards</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Game\Game.csproj">
+      <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
+      <Name>Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THSXnaWindowsContent\THSXnaWindowsContent.contentproj">
+      <Name>THSXnaWindowsContent %28Content%29</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{5B18FDA6-99E3-45AB-9FF3-95A619159990}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Xna.Framework.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft XNA Framework Redistributable 4.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!--
+      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+    -->
+</Project>

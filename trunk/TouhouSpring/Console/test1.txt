@@ -1,0 +1,25 @@
+﻿deck.new deck1
+deck.add alice
+deck.add alice
+deck.add alice
+deck.add cirno
+deck.add cirno
+deck.add cirno
+deck.add cirno
+deck.add cirno
+deck.add sakuya
+deck.add sakuya
+deck.add sakuya
+deck.add gungnir
+deck.add gungnir
+deck.add kusanagi
+deck.add kusanagi
+deck.add redfog
+deck.add redfog
+deck.add ripples
+deck.add ripples
+deck.add cautionaryborder
+deck.add cautionaryborder
+game.addplayer 高坂桐乃 deck1 marisa
+game.addplayer 五更琉璃 deck1 marisa
+game.begin
