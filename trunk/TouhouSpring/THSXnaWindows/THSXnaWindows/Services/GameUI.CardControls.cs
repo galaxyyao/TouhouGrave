@@ -202,7 +202,7 @@ namespace TouhouSpring.Services
             var io = InteractionObject;
             if (io is Interactions.TacticalPhase)
             {
-                TacticalPhaes_OnCardClicked(control, io as Interactions.TacticalPhase);
+                TacticalPhase_OnCardClicked(control, io as Interactions.TacticalPhase);
             }
             else if (io is Interactions.SelectCards)
             {

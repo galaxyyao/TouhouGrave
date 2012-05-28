@@ -18,7 +18,7 @@ namespace TouhouSpring
 			// TODO: Non-trivial determination of the acting player for the first turn
 			m_actingPlayer = 0;
 
-			m_players.ForEach(player => 5.Repeat(i => DrawCard(player)));
+			m_players.ForEach(player => 3.Repeat(i => DrawCard(player)));
 		}
 	}
 }

@@ -22,6 +22,11 @@ namespace TouhouSpring
             get; set;
         }
 
+        public string Level
+        {
+            get; set;
+        }
+
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
         public string Description
         {

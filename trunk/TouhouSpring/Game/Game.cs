@@ -64,6 +64,10 @@ namespace TouhouSpring
 				m_controllers[i].Game = this;
 				m_controllers[i].Player = m_players[i];
 			}
+            for (int i = 1; i < numPlayers; ++i)
+            {
+                m_players[i].Mana += 1;
+            }
 
 			InitializeLetterBoxes();
 			StartGameFlowThread();

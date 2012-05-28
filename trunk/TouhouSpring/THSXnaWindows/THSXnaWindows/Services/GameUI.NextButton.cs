@@ -69,11 +69,12 @@ namespace TouhouSpring.Services
 			}
 		}
 
-		private void DestroyNextButton()
+		private void DestroyButton()
 		{
 			m_nextButtonSkip.Dispose();
 			m_nextButtonDone.Dispose();
 			m_nextButtonNext.Dispose();
+            m_drawCardButtonText.Dispose();
 			GameApp.Service<ResourceManager>().Release(m_buttonFace);
 		}
 

@@ -106,8 +106,8 @@ namespace TouhouSpring
 			Hero = heroBhv;
 
 			Health = heroBhv.Model.Health;
-			Mana = 0;
-			ManaDelta = 1;
+			Mana = 2;
+			ManaDelta = 2;
 		}
 	}
 }

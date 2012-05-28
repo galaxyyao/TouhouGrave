@@ -53,6 +53,7 @@ namespace TouhouSpring
                 {
                     Id = ecm.Id,
                     Name = ecm.Name,
+                    Level = ecm.Level,
                     Description = ecm.Description,
                     ArtworkUri = ecm.ArtworkUri,
                     Behaviors = ecm.Behaviors

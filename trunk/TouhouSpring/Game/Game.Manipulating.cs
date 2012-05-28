@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Interactions;
 
 namespace TouhouSpring
 {
@@ -76,6 +77,7 @@ namespace TouhouSpring
 			int newMana = player.Mana + delta;
 			if (newMana < 0)
 			{
+                new Interactions.MessageBox(PlayerController, "Not Enough Mana", MessageBox.Button.OK).Run();
 				return false;
 			}
 			player.Mana = Math.Min(newMana, player.Hero.Model.Mana);

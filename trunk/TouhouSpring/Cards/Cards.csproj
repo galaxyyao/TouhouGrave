@@ -54,6 +54,7 @@
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\JackTheRipper.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />
+    <Compile Include="Behaviors\LeaderSummon.cs" />
     <Compile Include="Behaviors\LowWit.cs" />
     <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
     <Compile Include="Behaviors\MarisaSummon.cs" />

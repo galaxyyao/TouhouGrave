@@ -29,7 +29,7 @@ namespace TouhouSpring.Services
         public void BlockPhase_Enter(Interactions.BlockPhase io)
         {
             m_declaredBlockers = new UI.CardControl[io.DeclaredAttackers.Count][];
-            io.DeclaredAttackers.Count.Repeat(i => m_declaredBlockers[i] = new UI.CardControl[2]);
+            io.DeclaredAttackers.Count.Repeat(i => m_declaredBlockers[i] = new UI.CardControl[1]);
 
             SetNextButton(NextButton.Skip);
         }

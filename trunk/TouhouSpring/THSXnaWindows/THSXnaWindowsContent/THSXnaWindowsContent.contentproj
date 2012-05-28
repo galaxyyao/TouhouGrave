@@ -315,6 +315,7 @@
       <Name>TouhouSpring</Name>
       <Importer>XmlImporter</Importer>
       <Processor>CardModelProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

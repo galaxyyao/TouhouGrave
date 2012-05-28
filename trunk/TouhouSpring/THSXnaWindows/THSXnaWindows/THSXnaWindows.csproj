@@ -94,6 +94,7 @@
     <Compile Include="Services\GameUI.BlockPhase.cs" />
     <Compile Include="Services\GameUI.CardControls.cs" />
     <Compile Include="Services\GameUI.cs" />
+    <Compile Include="Services\GameUI.DrawCardButton.cs" />
     <Compile Include="Services\GameUI.NextButton.cs" />
     <Compile Include="Services\GameUI.SelectCards.cs" />
     <Compile Include="Services\GameUI.TacticalPhase.cs" />

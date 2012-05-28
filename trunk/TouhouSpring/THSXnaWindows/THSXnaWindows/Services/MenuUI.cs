@@ -90,16 +90,6 @@ namespace TouhouSpring.Services
                     deck.Add(cardDb.GetModel("sakuya"));
                     deck.Add(cardDb.GetModel("sakuya"));
                     deck.Add(cardDb.GetModel("sakuya"));
-                    deck.Add(cardDb.GetModel("gungnir"));
-                    deck.Add(cardDb.GetModel("gungnir"));
-                    deck.Add(cardDb.GetModel("kusanagi"));
-                    deck.Add(cardDb.GetModel("kusanagi"));
-                    deck.Add(cardDb.GetModel("redfog"));
-                    deck.Add(cardDb.GetModel("redfog"));
-                    deck.Add(cardDb.GetModel("ripples"));
-                    deck.Add(cardDb.GetModel("ripples"));
-                    deck.Add(cardDb.GetModel("cautionaryborder"));
-                    deck.Add(cardDb.GetModel("cautionaryborder"));
 
 					param[0] = new GameStartupParameters()
 					{
