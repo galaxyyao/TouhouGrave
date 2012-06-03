@@ -83,9 +83,13 @@ namespace TouhouSpring.UI.CardControlAddins
                 var transform = TransformNode.GetTransformBetween(Control, world2D);
 
                 var pt1 = transform.TransformCoord(new Vector3(0, 0, 0));
-                var pt2 = transform.TransformCoord(new Vector3(Control.Region.Width, 0, 0));
-                var pt3 = transform.TransformCoord(new Vector3(0, Control.Region.Height, 0));
-                var pt4 = transform.TransformCoord(new Vector3(Control.Region.Width, Control.Region.Height, 0));
+                //var pt2 = transform.TransformCoord(new Vector3(Control.Region.Width, 0, 0));
+                //var pt3 = transform.TransformCoord(new Vector3(0, Control.Region.Height, 0));
+                //var pt4 = transform.TransformCoord(new Vector3(Control.Region.Width, Control.Region.Height, 0));
+                var pt2 = transform.TransformCoord(new Vector3(1f, 0, 0));
+                var pt3 = transform.TransformCoord(new Vector3(0, -1.44f, 0));
+                var pt4 = transform.TransformCoord(new Vector3(1f, -1.44f, 0));
+
 
                 var minY = Math.Min(Math.Min(pt1.Y, pt2.Y), Math.Min(pt3.Y, pt4.Y));
                 var minX = Math.Min(Math.Min(pt1.X, pt2.X), Math.Min(pt3.X, pt4.X));
