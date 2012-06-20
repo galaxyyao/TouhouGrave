@@ -44,8 +44,8 @@ namespace TouhouSpring.Services
                 NormalFace = new Graphics.TexturedQuad(m_buttonFace)
             };
             m_drawCardButton.Transform = MatrixHelper.Translate(
-                (device.Viewport.Width - m_drawCardButton.Region.Width) / 2,
-                (device.Viewport.Height - m_drawCardButton.Region.Height) / 2 + m_drawCardButton.Region.Height * 3 / 2);
+                (device.Viewport.Width - m_nextButton.Region.Width) * (float)0.97,
+                (device.Viewport.Height - m_nextButton.Region.Height) * (float)0.65 + m_nextButton.Region.Height * 3 / 2);
             m_drawCardButton.MouseButton1Up += (sender, e) =>
             {
                 DrawCardButtonClicked();

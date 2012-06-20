@@ -9,7 +9,6 @@ namespace TouhouSpring
     {
         string Id { get; }
         string Name { get; }
-        string Level { get; }
         string Description { get; }
         string ArtworkUri { get; }
         List<Behaviors.BehaviorModel> Behaviors { get; }
@@ -25,11 +24,6 @@ namespace TouhouSpring
         }
 
         public string Name
-        {
-            get; set;
-        }
-
-        public string Level
         {
             get; set;
         }

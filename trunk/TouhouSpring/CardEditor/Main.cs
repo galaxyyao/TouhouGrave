@@ -96,7 +96,6 @@ namespace TouhouSpring
                     Id = dlg.CardId,
                     Name = dlg.CardId,
                     Description = "",
-                    Level = "",
                     ArtworkUri = ""
                 };
                 m_document.Cards.Add(model);

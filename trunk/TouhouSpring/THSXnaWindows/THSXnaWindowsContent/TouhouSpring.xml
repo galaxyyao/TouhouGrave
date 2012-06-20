@@ -6,20 +6,27 @@
     <Item>#Resource3</Item>
     <Item>#Resource4</Item>
     <Item>#Resource5</Item>
+    <Item>#Resource6</Item>
+    <Item>#Resource7</Item>
+    <Item>#Resource8</Item>
+    <Item>#Resource9</Item>
+    <Item>#Resource10</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
       <Id>alice</Id>
       <Name>爱丽丝·玛格特罗依德</Name>
-      <Level>2</Level>
-      <Description>发动消耗  1 灵力
-攻击  3
-防御  3
+      <Description>
+        【支援】
+        召唤消耗  1 灵力
 
-人偶召唤 【消耗 1● 灵力】
-横置爱丽丝，召唤一个攻防为2/2的人偶。
-可以以1灵力额外再召唤一个。
-</Description>
+        召唤家佣人偶 【消耗 1 灵力】
+        横置爱丽丝，召唤一个攻防为2/2的人偶。
+        可以以1灵力额外再召唤一个。
+
+        人偶替身 【消耗 1 灵力】
+        受到攻击时，由人偶代替爱丽丝受到伤害。
+      </Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -27,13 +34,15 @@
           <Defense>1</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Cost>4</Cost>
+          <Cost>1</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.LeaderSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.AliceDollSummon+ModelType">
           <SummonType>#Resource2</SummonType>
           <ManaCost>1</ManaCost>
           <Amount>1</Amount>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Scapegoat+ModelType">
+          <ManaCost>1</ManaCost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
@@ -50,7 +59,6 @@
     <Resource ID="#Resource2" Type="TouhouSpring.EditorCardModel">
       <Id>alicedoll</Id>
       <Name>爱丽丝·玛格特罗依德的人偶</Name>
-      <Level>0</Level>
       <Description></Description>
       <ArtworkUri></ArtworkUri>
       <Behaviors>
@@ -65,20 +73,21 @@
     <Resource ID="#Resource3" Type="TouhouSpring.EditorCardModel">
       <Id>cirno</Id>
       <Name>琪露诺</Name>
-      <Level>1</Level>
-      <Description>攻击  2
-防御  2
+      <Description>
+        攻击  2
+        防御  2
 
-冰冻 【消耗 1 灵力】
-横置琪露诺，使对方一张角色卡不能行
-动，持续到己方战斗回合结束。
+        冰冻 【消耗 1 灵力】
+        横置琪露诺，使对方一张角色卡不能行
+        动，持续到己方战斗回合结束。
 
-笨蛋 【消耗 1 灵力】
-琪露诺和对方一张角色卡攻击力同时降低1，
-直到琪露诺被送往冥界。
+        笨蛋 【消耗 1 灵力】
+        琪露诺和对方一张角色卡攻击力同时降低1，
+        直到琪露诺被送往冥界。
 
-冰墙 【消耗 1 灵力】
-受到攻击时，抵消2伤害。</Description>
+        冰墙 【消耗 1 灵力】
+        受到攻击时，抵消2伤害。
+      </Description>
       <ArtworkUri>Textures/Characters/cirno_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -87,9 +96,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Freeze+ModelType">
           <ManaCost>1</ManaCost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Baga+ModelType">
           <ManaCost>1</ManaCost>
@@ -108,16 +114,17 @@
     <Resource ID="#Resource4" Type="TouhouSpring.EditorCardModel">
       <Id>sakuya</Id>
       <Name>十六夜咲夜</Name>
-      <Level>1</Level>
-      <Description>发动消耗  1 灵力
-攻击  2
-防御  4
+      <Description>
+        发动消耗  1 灵力
+        攻击  2
+        防御  4
 
-The World 【消耗 1 灵力】
-双方两回合内无法施放魔法卡。
+        The World 【消耗 1 灵力】
+        双方两回合内无法施放魔法卡。
 
-开膛手杰克
-对对方玩家造成伤害后攻击永久增加1。</Description>
+        开膛手杰克
+        对对方玩家造成伤害后攻击永久增加1。
+      </Description>
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -125,7 +132,7 @@ The World 【消耗 1 灵力】
           <Defense>4</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Cost>2</Cost>
+          <Cost>1</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.JackTheRipper+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.TheWorld+ModelType">
@@ -143,31 +150,19 @@ The World 【消耗 1 灵力】
     <Resource ID="#Resource5" Type="TouhouSpring.EditorCardModel">
       <Id>marisa</Id>
       <Name>雾雨魔理沙</Name>
-      <Level>3</Level>
-      <Description>发动消耗  1 灵力
-攻击  4
-防御  4
+      <Description>
+        攻击  4
+        血量  20
+        
+        Master Spark
+        对对手场上所有角色造成2点伤害。
 
-召唤
-当己方累计有三张角色卡进入冥界时
-可激活魔理沙，将其发动入场。
-最多持续三回合。
-
-主角灵气
-每回合灵力回复增加1。
-己方场上角色攻击力增加1。
-
-Master Spark 【消耗 3 灵力】
-对对方场上所有角色造成3点伤害。
-
-偷窃 【消耗 2 灵力】
-将对方的任意角色临时转变阵营为己方，
-直到己方回合结束。</Description>
+      </Description>
       <ArtworkUri>Textures/Characters/marisa_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
           <Health>20</Health>
-          <Mana>5</Mana>
+          <Mana>3</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Attack>4</Attack>
@@ -178,15 +173,128 @@ Master Spark 【消耗 3 灵力】
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Steal+ModelType">
-          <ManaCost>0</ManaCost>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.MasterSpark+ModelType">
           <ManaCost>2</ManaCost>
           <Damage>3</Damage>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
+    </Resource>
+    <Resource ID="#Resource6" Type="TouhouSpring.EditorCardModel">
+      <Id>gungnir</Id>
+      <Name>神枪</Name>
+      <Description>
+        发动消耗  1 灵力
+
+        装备
+        装备了神枪的角色在造成伤害时溢出的
+        伤害将直接作用于对方玩家。
+      </Description>
+      <ArtworkUri>atlas:Textures/Artworks/Artworks#gungnir</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Equipment+ModelType">
+          <ManaCost>1</ManaCost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.PenetrateEquip+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <TacticalPhase>true</TacticalPhase>
+          <BlockPhase>false</BlockPhase>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource7" Type="TouhouSpring.EditorCardModel">
+      <Id>kusanagi</Id>
+      <Name>香霖堂的草薙剑</Name>
+      <Description>
+        发动消耗  1 灵力
+
+        法术 【阻挡阶段施放】
+        临时增加攻防2/2，直至本回合结束。
+      </Description>
+      <ArtworkUri>atlas:Textures/Artworks/Artworks#kusanagi</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Boost+ModelType">
+          <AttackBoost>2</AttackBoost>
+          <DefenseBoost>2</DefenseBoost>
+          <Duration>1</Duration>
+          <ManaCost>1</ManaCost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <TacticalPhase>false</TacticalPhase>
+          <BlockPhase>true</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource8" Type="TouhouSpring.EditorCardModel">
+      <Id>redfog</Id>
+      <Name>红雾</Name>
+      <Description>
+        场景 【双方】
+        如果本回合没有角色发动攻击，在回合
+        结束时玩家受到1点伤害。
+      </Description>
+      <ArtworkUri>atlas:Textures/Artworks/Artworks#redfog</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Environment+ModelType">
+          <VisualId>Textures/Scene3</VisualId>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <TacticalPhase>true</TacticalPhase>
+          <BlockPhase>false</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.RedFog+ModelType">
+          <SelfDamage>1</SelfDamage>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource9" Type="TouhouSpring.EditorCardModel">
+      <Id>ripples</Id>
+      <Name>495年的波纹</Name>
+      <Description>
+        发动消耗  1 灵力
+
+        法术
+        以一张手牌的代价立即破坏对方场上一张
+        任意卡。
+      </Description>
+      <ArtworkUri>atlas:Textures/Artworks/Artworks#ripples</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <TacticalPhase>true</TacticalPhase>
+          <BlockPhase>false</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Ripples+ModelType">
+          <ManaCost>1</ManaCost>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource10" Type="TouhouSpring.EditorCardModel">
+      <Id>cautionaryborder</Id>
+      <Name>警醒阵</Name>
+      <Description>
+        发动消耗  1 灵力
+
+        法术 【触发】
+        当玩家受到战斗伤害时，将造成伤害的对方
+        角色破坏。
+      </Description>
+      <ArtworkUri>atlas:Textures/Artworks/Artworks#cautionaryborder</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <TacticalPhase>false</TacticalPhase>
+          <BlockPhase>false</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.CautionaryBorder+ModelType">
+          <ManaCost>1</ManaCost>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
   </Resources>
 </XnaContent>

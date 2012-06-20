@@ -54,10 +54,10 @@
 				<Transform Scaling="84,-84" />
 			</Layout>
 			<Layout Id="PlayerHero" Left="20" Top="250">
-				<Transform Scaling="105,-105" />
+				<Transform Scaling="125,-125" />
 			</Layout>
 			<Layout Id="OpponentHero" Left="860" Top="250">
-				<Transform Scaling="105,-105" />
+				<Transform Scaling="125,-125" />
 			</Layout>
 		</Layout>
 		<Layout Id="UI">
@@ -65,13 +65,13 @@
 			<Transform Matrix="#Game.UICamera.Transform#" />
 			<Label Font="Segoe UI, 24" Text="#Game.Phase#" Color="White" HorizontalAlignment="Center" />
 			<!-- 1P -->
-			<Layout Left="20" Top="20" Width="135" Height="135">
+			<Layout Left="20" Top="610" Width="135" Height="135">
 				<Transform Scaling="0.5,0.5" />
 				<Image Uri="#Game.Player0.Avatar#" Left="20" Top="19" />
 				<Image Uri="#Game.Player0.AvatarBorder#" />
 			</Layout>
-			<Label Font="Segoe UI, 16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="160" />
-			<Label Font="Segoe UI, 16" Text="HP: #Game.Player0.Health#&#10;MP:#Game.Player0.Mana#" Color="White" Left="95" Top="160" />
+			<Label Font="Segoe UI, 16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="550" />
+			<Label Font="Segoe UI, 16" Text="HP: #Game.Player0.Health#&#10;MP:#Game.Player0.Mana#" Color="White" Left="95" Top="550" />
 			<!-- 2P -->
 			<Layout Right="20" Top="20" Width="135" Height="135">
 				<Transform Scaling="0.5,0.5" />

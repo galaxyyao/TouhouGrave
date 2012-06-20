@@ -91,6 +91,7 @@
     <Compile Include="Services\ConversationUI.cs" />
     <Compile Include="Services\GameManager.cs" />
     <Compile Include="Services\GameService.cs" />
+    <Compile Include="Services\GameUI.AssaultPhase.cs" />
     <Compile Include="Services\GameUI.BlockPhase.cs" />
     <Compile Include="Services\GameUI.CardControls.cs" />
     <Compile Include="Services\GameUI.cs" />

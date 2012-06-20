@@ -23,6 +23,14 @@ namespace TouhouSpring
 
             InPlayerPhases = true;
 
+            //Instantiate HeroCard
+            var hero = new BaseCard(PlayerPlayer.Hero.Host.Model, PlayerPlayer);
+            PlayCard(hero);
+            m_actingPlayer = ++m_actingPlayer % m_players.Length;
+            hero = new BaseCard(PlayerPlayer.Hero.Host.Model, PlayerPlayer);
+            PlayCard(hero);
+            m_actingPlayer = ++m_actingPlayer % m_players.Length;
+
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 IsWarriorPlayedThisTurn = false;
@@ -64,8 +72,6 @@ namespace TouhouSpring
                     ResolveBattlefieldCards();
                 }
 
-                UpdateMana(PlayerPlayer, PlayerPlayer.ManaDelta);
-
                 CurrentPhase = "Combat/Attack";
                 var declaredAttackers = new Interactions.SelectCards(
                     PlayerController,
@@ -99,6 +105,9 @@ namespace TouhouSpring
                 ResetAccumulatedDamage();
 
                 TriggerGlobal(new Triggers.PlayerTurnEndedContext(this));
+
+                UpdateMana(PlayerPlayer, PlayerPlayer.ManaDelta);
+                PlayerPlayer.ResetManaDelta();
             };
 
             //InPlayerPhases = false;

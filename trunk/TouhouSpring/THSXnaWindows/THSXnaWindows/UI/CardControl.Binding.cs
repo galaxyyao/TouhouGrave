@@ -26,9 +26,6 @@ namespace TouhouSpring.UI
 				case "Card.Name":
 					replacement = Card.Model.Name;
 					break;
-                case "Card.Level":
-                    replacement = Card.Model.Level;
-                    break;
 				default:
 					replacement = null;
 					return false;

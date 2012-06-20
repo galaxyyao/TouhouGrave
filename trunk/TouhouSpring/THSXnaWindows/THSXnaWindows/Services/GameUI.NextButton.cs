@@ -54,8 +54,8 @@ namespace TouhouSpring.Services
 				NormalFace = new Graphics.TexturedQuad(m_buttonFace)
 			};
 			m_nextButton.Transform = MatrixHelper.Translate(
-				(device.Viewport.Width - m_nextButton.Region.Width) / 2,
-				(device.Viewport.Height - m_nextButton.Region.Height) / 2);
+                (device.Viewport.Width - m_nextButton.Region.Width) * (float)0.97,
+                (device.Viewport.Height - m_nextButton.Region.Height) * (float)0.65);
 			m_nextButton.MouseButton1Up += (sender, e) =>
 			{
 				NextButtonClicked();
