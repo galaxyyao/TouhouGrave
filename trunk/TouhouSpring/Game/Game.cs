@@ -66,7 +66,7 @@ namespace TouhouSpring
 			}
             for (int i = 1; i < numPlayers; ++i)
             {
-                m_players[i].Mana += 1;
+                m_players[i].Health += 3;
             }
 
 			InitializeLetterBoxes();

@@ -58,6 +58,12 @@ namespace TouhouSpring
             set;
         }
 
+        public bool IsSkillCharged
+        {
+            get;
+            set;
+        }
+
         public Behaviors.Hero Hero
         {
             get;
@@ -112,6 +118,7 @@ namespace TouhouSpring
 
             Health = heroBhv.Model.Health;
             Mana = 2;
+            IsSkillCharged = false;
             ResetManaDelta();
         }
 

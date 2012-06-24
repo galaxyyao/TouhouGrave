@@ -9,11 +9,9 @@ namespace TouhouSpring.Behaviors
     {
         public bool Cast(Game game, out string reason)
         {
-            // TODO: support game among more than 2 players
-            //Player opponentPlayer = game.Players[Host.Owner == game.Players[0] ? 1 : 0];
-            if (game.PlayerPlayer.Mana < Model.ManaCost)
+            if (!game.PlayerPlayer.IsSkillCharged)
             {
-                reason = "Insufficient mana";
+                reason = "Master Spark has not been charged!";
                 return false;
             }
 
@@ -36,7 +34,6 @@ namespace TouhouSpring.Behaviors
         [BehaviorModel("Master Spark", typeof(MasterSpark))]
         public class ModelType : BehaviorModel
         {
-            public int ManaCost { get; set; }
             public int Damage { get; set; }
         }
     }

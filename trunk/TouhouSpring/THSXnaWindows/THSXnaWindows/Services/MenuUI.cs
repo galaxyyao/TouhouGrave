@@ -78,44 +78,65 @@ namespace TouhouSpring.Services
 					GameStartupParameters[] param = new GameStartupParameters[2];
                     var cardDb = GameApp.Service<CardDatabase>();
 
-                    Deck deck = new Deck("MikoUnion");
-                    deck.Add(cardDb.GetModel("alice"));
-                    deck.Add(cardDb.GetModel("alice"));
-                    deck.Add(cardDb.GetModel("alice"));
-                    deck.Add(cardDb.GetModel("cirno"));
-                    deck.Add(cardDb.GetModel("cirno"));
-                    deck.Add(cardDb.GetModel("cirno"));
-                    deck.Add(cardDb.GetModel("cirno"));
-                    deck.Add(cardDb.GetModel("cirno"));
-                    deck.Add(cardDb.GetModel("sakuya"));
-                    deck.Add(cardDb.GetModel("sakuya"));
-                    deck.Add(cardDb.GetModel("sakuya"));
-                    deck.Add(cardDb.GetModel("gungnir"));
-                    deck.Add(cardDb.GetModel("gungnir"));
-                    deck.Add(cardDb.GetModel("kusanagi"));
-                    deck.Add(cardDb.GetModel("kusanagi"));
-                    deck.Add(cardDb.GetModel("ripples"));
-                    deck.Add(cardDb.GetModel("ripples"));
-                    deck.Add(cardDb.GetModel("cautionaryborder"));
-                    deck.Add(cardDb.GetModel("cautionaryborder"));
+                    Deck deck1 = new Deck("MikoUnion");
+                    deck1.Add(cardDb.GetModel("alice"));
+                    deck1.Add(cardDb.GetModel("alice"));
+                    deck1.Add(cardDb.GetModel("alice"));
+                    deck1.Add(cardDb.GetModel("youmu"));
+                    deck1.Add(cardDb.GetModel("youmu"));
+                    deck1.Add(cardDb.GetModel("youmu"));
+                    deck1.Add(cardDb.GetModel("chen"));
+                    deck1.Add(cardDb.GetModel("chen"));
+                    deck1.Add(cardDb.GetModel("chen"));
+                    deck1.Add(cardDb.GetModel("suika"));
+                    deck1.Add(cardDb.GetModel("suika"));
+                    deck1.Add(cardDb.GetModel("suika"));
+                    deck1.Add(cardDb.GetModel("mokou"));
+                    deck1.Add(cardDb.GetModel("mokou"));
+                    deck1.Add(cardDb.GetModel("mokou"));
+                    deck1.Add(cardDb.GetModel("sunny"));
+                    deck1.Add(cardDb.GetModel("sunny"));
+                    deck1.Add(cardDb.GetModel("sunny"));
+
+
+
+                    Deck deck2 = new Deck("MikoUnion");
+                    deck2.Add(cardDb.GetModel("sakuya"));
+                    deck2.Add(cardDb.GetModel("sakuya"));
+                    deck2.Add(cardDb.GetModel("sakuya"));
+                    deck2.Add(cardDb.GetModel("eirin"));
+                    deck2.Add(cardDb.GetModel("eirin"));
+                    deck2.Add(cardDb.GetModel("eirin"));
+                    deck2.Add(cardDb.GetModel("aya"));
+                    deck2.Add(cardDb.GetModel("aya"));
+                    deck2.Add(cardDb.GetModel("aya"));
+                    deck2.Add(cardDb.GetModel("suika"));
+                    deck2.Add(cardDb.GetModel("suika"));
+                    deck2.Add(cardDb.GetModel("suika"));
+                    deck2.Add(cardDb.GetModel("komachi"));
+                    deck2.Add(cardDb.GetModel("komachi"));
+                    deck2.Add(cardDb.GetModel("komachi"));
+                    deck2.Add(cardDb.GetModel("lunar"));
+                    deck2.Add(cardDb.GetModel("lunar"));
+                    deck2.Add(cardDb.GetModel("lunar"));
 
 					param[0] = new GameStartupParameters()
 					{
 						m_profile = new Profile() { Name = "夜空" },
-						m_deck = deck,
+						m_deck = deck1,
                         m_hero = cardDb.GetModel("marisa"),
 						m_controller = new XnaUIController()
 					};
-					param[0].m_profile.Decks.Add(deck);
+					param[0].m_profile.Decks.Add(deck1);
 
 					param[1] = new GameStartupParameters()
 					{
 						m_profile = new Profile() { Name = "星奈" },
-						m_deck = deck,
-                        m_hero = cardDb.GetModel("marisa"),
+						m_deck = deck2,
+                        m_hero = cardDb.GetModel("reimu"),
 						m_controller = new XnaUIController()
 					};
-					param[1].m_profile.Decks.Add(deck);
+					param[1].m_profile.Decks.Add(deck2);
 
 					GameApp.Service<GameManager>().StartGame(param);
 				}

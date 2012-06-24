@@ -80,6 +80,7 @@ namespace TouhouSpring
                     "Select warriors in battlefield to make them attackers.").Run().Clone();
 
                 CurrentPhase = "Combat/Block";
+                TriggerGlobal(new Triggers.BlockPhaseStartedContext(this));
                 IIndexable<IIndexable<BaseCard>> declaredBlockers;
                 while (true)
                 {
@@ -98,6 +99,7 @@ namespace TouhouSpring
                     }
                     ResolveBattlefieldCards();
                 }
+                TriggerGlobal(new Triggers.BlockPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Resolve";
                 ResolveCombat(declaredAttackers, declaredBlockers);

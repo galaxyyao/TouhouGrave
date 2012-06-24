@@ -25,8 +25,6 @@ namespace TouhouSpring.Behaviors
 		public class ModelType : BehaviorModel
 		{
             public CardModelReference SummonType { get; set; }
-            public int ManaCost { get; set; }
-            public int Amount { get; set; }
 		}
 	}
 }

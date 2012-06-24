@@ -56,7 +56,6 @@
     <Compile Include="Behaviors\LastingEffect.cs" />
     <Compile Include="Behaviors\LowWit.cs" />
     <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
-    <Compile Include="Behaviors\MarisaSummon.cs" />
     <Compile Include="Behaviors\MasterSpark.cs" />
     <Compile Include="Behaviors\Penetrate.cs" />
     <Compile Include="Behaviors\PenetrateEquip.cs" />
@@ -66,9 +65,12 @@
     <Compile Include="Behaviors\Sacrifice.cs" />
     <Compile Include="Behaviors\Scapegoat.cs" />
     <Compile Include="Behaviors\Silence.cs" />
+    <Compile Include="Behaviors\SkillCharge.cs" />
     <Compile Include="Behaviors\Steal.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
     <Compile Include="Behaviors\Summon_PostPlay.cs" />
+    <Compile Include="Behaviors\SupportSummon.cs" />
+    <Compile Include="Behaviors\UnBlockable.cs" />
     <Compile Include="Behaviors\Weakness.cs" />
     <Compile Include="Behaviors\TheWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

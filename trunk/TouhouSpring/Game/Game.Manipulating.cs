@@ -45,8 +45,7 @@ namespace TouhouSpring
 
 			if (delta > 0)
 			{
-				// TODO: heal a player
-				throw new NotSupportedException();
+                player.Health += delta;
 			}
 			else if (delta < 0)
 			{
