@@ -12,6 +12,12 @@ namespace TouhouSpring.Triggers
             get; private set;
         }
 
+        public int DamageToDeal
+        {
+            get;
+            set;
+        }
+
         public Behaviors.IBehavior Cause
         {
             get; private set;
@@ -30,6 +36,7 @@ namespace TouhouSpring.Triggers
             }
 
             PlayerToDamage = playerToDamage;
+            DamageToDeal = (delta < 0) ? -delta : 0;
             Cause = cause;
         }
     }

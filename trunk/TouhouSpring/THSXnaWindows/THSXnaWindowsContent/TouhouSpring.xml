@@ -253,6 +253,7 @@
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Spell_PreventAllDamageInOneRound+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
@@ -270,7 +271,7 @@
         体力  30
 
         Master Spark
-        对对手场上所有角色造成2点伤害
+        对对手场上所有战斗卡造成2点伤害
 
       </Description>
       <ArtworkUri>Textures/Characters/marisa_stand</ArtworkUri>
@@ -288,7 +289,7 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.MasterSpark+ModelType">
+        <Behavior Type="TouhouSpring.Behaviors.Spell_MassDamageToWarriorOnEnemyBattlefield+ModelType">
           <Damage>2</Damage>
         </Behavior>
       </Behaviors>
