@@ -31,8 +31,11 @@ namespace TouhouSpring
             PlayCard(hero);
             m_actingPlayer = ++m_actingPlayer % m_players.Length;
 
+            Round = 0;
+
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
+                Round++;
                 IsWarriorPlayedThisTurn = false;
 
                 CurrentPhase = "PhaseA";
@@ -73,11 +76,14 @@ namespace TouhouSpring
                 }
 
                 CurrentPhase = "Combat/Attack";
+                TriggerGlobal(new Triggers.AttackPhaseStartedContext(this));
+                PlayerPlayer.Hero.Host.State = CardState.CoolingDown;
                 var declaredAttackers = new Interactions.SelectCards(
                     PlayerController,
                     PlayerPlayer.CardsOnBattlefield.Where(card => card.Behaviors.Has<Behaviors.Warrior>() && card.State == CardState.StandingBy).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Multiple,
                     "Select warriors in battlefield to make them attackers.").Run().Clone();
+                TriggerGlobal(new Triggers.AttackPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Block";
                 TriggerGlobal(new Triggers.BlockPhaseStartedContext(this));

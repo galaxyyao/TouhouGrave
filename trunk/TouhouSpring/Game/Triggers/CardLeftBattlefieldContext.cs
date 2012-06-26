@@ -7,7 +7,7 @@ namespace TouhouSpring.Triggers
 {
     public class CardLeftBattlefieldContext : TriggerContext
     {
-        public BaseCard Card
+        public BaseCard CardToLeft
         {
             get; private set;
         }
@@ -20,7 +20,7 @@ namespace TouhouSpring.Triggers
                 throw new ArgumentNullException("card");
             }
 
-            Card = card;
+            CardToLeft = card;
         }
     }
 }

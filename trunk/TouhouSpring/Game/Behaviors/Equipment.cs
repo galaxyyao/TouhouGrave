@@ -62,11 +62,11 @@ namespace TouhouSpring.Behaviors
 
         public void Trigger(Triggers.CardLeftBattlefieldContext context)
         {
-            if (context.Card == Host)
+            if (context.CardToLeft == Host)
             {
                 Holder = null;
             }
-            else if (context.Card == Holder)
+            else if (context.CardToLeft == Holder)
             {
                 Holder.Behaviors.Get<Warrior>().Equipments.Remove(Host);
                 context.Game.DestroyCard(Host);

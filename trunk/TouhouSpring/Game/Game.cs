@@ -26,6 +26,12 @@ namespace TouhouSpring
 			get; private set;
 		}
 
+        public int Round
+        {
+            get;
+            private set;
+        }
+
 		public Game(IIndexable<GameStartupParameters> startUpParams)
 		{
 			if (startUpParams == null)

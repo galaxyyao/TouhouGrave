@@ -152,6 +152,7 @@ namespace TouhouSpring
 			Debug.Assert(card != null && card.Owner == player);
 			player.m_handSet.Add(card);
 			m_controllers.ForEach(c => c.InternalOnCardDrawn(card));
+            TriggerGlobal(new Triggers.PostCardDrawnContext(this, card));
 		}
 
 		/// <summary>

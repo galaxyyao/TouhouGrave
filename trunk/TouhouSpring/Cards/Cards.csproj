@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\AliceDollSummon.cs" />
+    <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
+    <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
     <Compile Include="Behaviors\AttackModifier.cs" />
     <Compile Include="Behaviors\Baga.cs" />
     <Compile Include="Behaviors\Boost.cs" />
@@ -56,6 +57,21 @@
     <Compile Include="Behaviors\LastingEffect.cs" />
     <Compile Include="Behaviors\LowWit.cs" />
     <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
+    <Compile Include="Behaviors\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
+    <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
+    <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
+    <Compile Include="Behaviors\Passive_HealedWhenWarriorAttacks.cs" />
+    <Compile Include="Behaviors\Passive_HeroAttackUpWithCardNumber.cs" />
+    <Compile Include="Behaviors\Passive_ManaGainUpWhenAttackedByWarrior.cs" />
+    <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpAndDefenseUp.cs" />
+    <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
+    <Compile Include="Behaviors\Passive_WarriorAlwaysStandBy.cs" />
+    <Compile Include="Behaviors\Passive_WarriorAttackAndDefenseUpWhenAttackedHero.cs" />
+    <Compile Include="Behaviors\Passive_WarriorAttackFirst.cs" />
+    <Compile Include="Behaviors\Passive_WarriorDefenseDownWhenAttacked.cs" />
+    <Compile Include="Behaviors\Passive_HeroPenetrate.cs" />
+    <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
+    <Compile Include="Behaviors\Passive_WarriorUnblockedable.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Behaviors\MasterSpark.cs" />
     <Compile Include="Behaviors\Penetrate.cs" />

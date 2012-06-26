@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
 
         public void Trigger(Triggers.CardLeftBattlefieldContext context)
         {
-            if (context.Card == Host)
+            if (context.CardToLeft == Host)
             {
                 m_penetrateEffect.Host.Behaviors.Remove(m_penetrateEffect);
             }

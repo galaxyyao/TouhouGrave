@@ -89,6 +89,8 @@
     <Compile Include="Player.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Triggers\AttackPhaseEndedContext.cs" />
+    <Compile Include="Triggers\AttackPhaseStartedContext.cs" />
     <Compile Include="Triggers\BlockPhaseEndedContext.cs" />
     <Compile Include="Triggers\BlockPhaseStartedContext.cs" />
     <Compile Include="Triggers\CardEnteredGraveyardContext.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Triggers\PlayerTurnStartedContext.cs" />
     <Compile Include="Triggers\PostCardDestroyedContext.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />
+    <Compile Include="Triggers\PostCardDrawnContext.cs" />
     <Compile Include="Triggers\PostCardPlayedContext.cs" />
     <Compile Include="Triggers\PostPlayerDamagedContext.cs" />
     <Compile Include="Triggers\PreCardDamageContext.cs" />
