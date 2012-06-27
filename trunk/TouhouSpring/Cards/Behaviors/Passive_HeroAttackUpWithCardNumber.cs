@@ -10,6 +10,8 @@ namespace TouhouSpring.Behaviors
         ITrigger<Triggers.CardLeftBattlefieldContext>,
         ITrigger<Triggers.PostCardPlayedContext>
     {
+        private List<AttackModifier> attackMods = new List<AttackModifier>();
+
         public void Trigger(Triggers.PostCardPlayedContext context)
         {
             if (context.CardPlayed == Host)
@@ -24,6 +26,7 @@ namespace TouhouSpring.Behaviors
                 for (int i = 0; i < warriorNumber; i++)
                 {
                     var attackMod = new AttackModifier(x => x + 1);
+                    attackMods.Add(attackMod);
                     Host.Owner.Hero.Host.Behaviors.Add(attackMod);
                 }
                 return;
@@ -31,6 +34,7 @@ namespace TouhouSpring.Behaviors
             if (IsOnBattlefield && context.CardPlayed.Owner == Host.Owner)
             {
                 var attackMod = new AttackModifier(x => x + 1);
+                attackMods.Add(attackMod);
                 Host.Owner.Hero.Host.Behaviors.Add(attackMod);
             }
         }
@@ -39,25 +43,15 @@ namespace TouhouSpring.Behaviors
         {
             if (context.CardToLeft != Host && IsOnBattlefield)
             {
-                var attackMod = new AttackModifier(x => x - 1);
-                Host.Owner.Hero.Host.Behaviors.Add(attackMod);
+                Host.Owner.Hero.Host.Behaviors.Remove(attackMods.LastOrDefault());
                 return;
             }
             if (context.CardToLeft == Host)
             {
-                int warriorNumber = 0;
-                foreach (var card in context.Game.PlayerPlayer.CardsOnBattlefield)
+                foreach (var attackMod in attackMods)
                 {
-                    if (card.Behaviors.Get<Warrior>() != null)
-                        warriorNumber++;
+                    Host.Owner.Hero.Host.Behaviors.Remove(attackMod);
                 }
-                warriorNumber -= 1; //exclude Hero Card
-                for (int i = 0; i < warriorNumber; i++)
-                {
-                    var attackMod = new AttackModifier(x => x - 1);
-                    Host.Owner.Hero.Host.Behaviors.Add(attackMod);
-                }
-
                 return;
             }
         }

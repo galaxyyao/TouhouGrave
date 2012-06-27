@@ -10,8 +10,16 @@ namespace TouhouSpring.Triggers
     /// </summary>
     public class BlockPhaseStartedContext : TriggerContext
     {
-        internal BlockPhaseStartedContext(Game game)
+        public IIndexable<BaseCard> DeclaredAttackers
+        {
+            get;
+            set;
+        }
+
+        internal BlockPhaseStartedContext(Game game, IIndexable<BaseCard> declaredAttackers)
             : base(game)
-        { }
+        {
+            DeclaredAttackers = declaredAttackers;
+        }
     }
 }

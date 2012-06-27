@@ -86,7 +86,7 @@ namespace TouhouSpring
                 TriggerGlobal(new Triggers.AttackPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Block";
-                TriggerGlobal(new Triggers.BlockPhaseStartedContext(this));
+                TriggerGlobal(new Triggers.BlockPhaseStartedContext(this, declaredAttackers));
                 IIndexable<IIndexable<BaseCard>> declaredBlockers;
                 while (true)
                 {

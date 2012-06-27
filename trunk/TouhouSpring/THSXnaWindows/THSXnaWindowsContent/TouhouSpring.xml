@@ -729,6 +729,9 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
@@ -749,6 +752,9 @@
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
       </Behaviors>
@@ -774,6 +780,9 @@
           <DefenseBoost>2</DefenseBoost>
           <Duration>1</Duration>
           <ManaCost>2</ManaCost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
@@ -802,6 +811,9 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
@@ -823,6 +835,9 @@
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
       </Behaviors>
@@ -868,6 +883,9 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
@@ -889,6 +907,9 @@
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
       </Behaviors>
