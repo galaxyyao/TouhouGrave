@@ -7,6 +7,20 @@ namespace TouhouSpring.Interactions
 {
     public class TacticalPhase : SelectCards
     {
+        public enum Action
+        {
+            DrawCard,
+            PlayCard,
+            CastSpell,
+            Skip
+        }
+
+        public struct Result
+        {
+            public Action ActionType;
+            public object Data;
+        }
+
         public TacticalPhase(BaseController controller)
             : base(controller, ComputeFromSet(controller).ToArray().ToIndexable(), SelectMode.Single,
                    "Select a card from hand to play onto the battlefield or cast a spell from a card on battlefield.")
@@ -21,34 +35,53 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        public new object Run()
+        public new Result Run()
         {
-            var result = NotifyAndWait<object>(Controller);
+            var result = NotifyAndWait<Result>(Controller);
             Validate(result);
             return result;
         }
 
         public override void Respond(IIndexable<BaseCard> selectedCards)
         {
-            Validate(selectedCards);
-            RespondBack(Controller, selectedCards == null || selectedCards.Count == 0 ? null : selectedCards[0]);
+            bool doSkip = selectedCards == null || selectedCards.Count == 0;
+            var result = new Result
+            {
+                ActionType = doSkip ? Action.Skip : Action.PlayCard,
+                Data = doSkip ? null : selectedCards[0]
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
         }
 
         public void Respond(BaseCard selectedCard)
         {
-            Validate(selectedCard);
-            RespondBack(Controller, selectedCard);
+            var result = new Result
+            {
+                ActionType = selectedCard == null ? Action.Skip : Action.PlayCard,
+                Data = selectedCard
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
         }
 
         public void Respond(Behaviors.ICastableSpell selectedSpell)
         {
-            Validate(selectedSpell);
-            RespondBack(Controller, selectedSpell);
+            var result = new Result
+            {
+                ActionType = selectedSpell == null ? Action.Skip : Action.CastSpell,
+                Data = selectedSpell
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
         }
 
-        public void Respond(Player player)
+        public void RespondDraw()
         {
-            RespondBack(Controller, player);
+            RespondBack(Controller, new Result { ActionType = Action.DrawCard });
         }
 
         public IIndexable<BaseCard> ComputeCastFromSet()
@@ -56,35 +89,45 @@ namespace TouhouSpring.Interactions
             return Controller.Player.CardsOnBattlefield.Where(card => card.State == CardState.StandingBy).ToArray().ToIndexable();
         }
 
-        protected void Validate(object selected)
+        protected void Validate(Result result)
         {
-            if (selected == null)
+            switch (result.ActionType)
             {
-                return;
-            }
+                case Action.Skip:
+                    if (result.Data != null)
+                    {
+                        throw new InvalidDataException("Action Skip shall have null data.");
+                    }
+                    break;
 
-            if (selected is IIndexable<BaseCard>)
-            {
-                base.Validate((IIndexable<BaseCard>)selected);
-            }
-            else if (selected is BaseCard)
-            {
-                base.Validate(new BaseCard[] { (BaseCard)selected }.ToIndexable());
-            }
-            else if (selected is Behaviors.ICastableSpell)
-            {
-                if (!ComputeCastFromSet().Contains(((Behaviors.ICastableSpell)selected).Host))
-                {
-                    throw new InvalidDataException("Selected spell doesn't come from a card from player's battlefield.");
-                }
-            }
-            else if (selected is Player)
-            {
-                ;
-            }
-            else
-            {
-                throw new InvalidDataException("Selected object is neither a card nor a spell.");
+                case Action.DrawCard:
+                    if (result.Data != null)
+                    {
+                        throw new InvalidDataException("Action DrawCard shall have null data.");
+                    }
+                    break;
+
+                case Action.PlayCard:
+                    if (!(result.Data is BaseCard))
+                    {
+                        throw new InvalidDataException("Action PlayCard shall have an object of BaseCard as its data.");
+                    }
+                    base.Validate(new BaseCard[] { (BaseCard)result.Data }.ToIndexable());
+                    break;
+
+                case Action.CastSpell:
+                    if (!(result.Data is Behaviors.ICastableSpell))
+                    {
+                        throw new InvalidDataException("Action PlayCard shall have an object of ICastableSpell as its data.");
+                    }
+                    if (!ComputeCastFromSet().Contains(((Behaviors.ICastableSpell)result.Data).Host))
+                    {
+                        throw new InvalidDataException("Selected spell doesn't come from a card from player's battlefield.");
+                    }
+                    break;
+
+                default:
+                    throw new InvalidDataException("Invalid action performed.");
             }
         }
 

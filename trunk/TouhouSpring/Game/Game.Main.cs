@@ -46,31 +46,33 @@ namespace TouhouSpring
 
                 while (true)
                 {
-                    object selected = new Interactions.TacticalPhase(PlayerController).Run();
-
-                    if (selected is BaseCard)
+                    var result = new Interactions.TacticalPhase(PlayerController).Run();
+                    if (result.ActionType == TacticalPhase.Action.PlayCard)
                     {
-                        var cardToPlay = (BaseCard)selected;
+                        var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == PlayerPlayer);
                         PlayCard(cardToPlay);
                     }
-                    else if (selected is Behaviors.ICastableSpell)
+                    else if (result.ActionType == TacticalPhase.Action.CastSpell)
                     {
-                        var spellToCast = (Behaviors.ICastableSpell)selected;
+                        var spellToCast = (Behaviors.ICastableSpell)result.Data;
                         Debug.Assert(spellToCast.Host.Owner == PlayerPlayer);
                         CastSpell(spellToCast);
                     }
-                    else if (selected is Player)
+                    else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
                         if (UpdateMana(PlayerPlayer, -1))
                         {
                             DrawCard(PlayerPlayer);
                         }
                     }
+                    else if (result.ActionType == TacticalPhase.Action.Skip)
+                    {
+                        break;
+                    }
                     else
                     {
-                        Debug.Assert(selected == null);
-                        break;
+                        throw new InvalidDataException();
                     }
                     ResolveBattlefieldCards();
                 }

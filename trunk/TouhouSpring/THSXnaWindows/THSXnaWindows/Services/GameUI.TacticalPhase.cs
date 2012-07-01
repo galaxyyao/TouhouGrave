@@ -65,7 +65,7 @@ namespace TouhouSpring.Services
 
         private void TacticalPhase_OnDrawCardButton(Interactions.TacticalPhase io)
         {
-            io.Respond(Game.PlayerPlayer);
+            io.RespondDraw();
         }
     }
 }
