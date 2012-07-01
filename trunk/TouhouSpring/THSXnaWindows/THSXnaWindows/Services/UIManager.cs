@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TouhouSpring.Services
 {
+    [RenderDependency(typeof(Graphics.Scene))]
 	class UIManager : GameService
 	{
 		private UI.MouseState m_lastMouseState = new UI.MouseState(0, 0, false, false);
