@@ -115,6 +115,7 @@ namespace TouhouSpring
             }
 
             Hero = heroBhv;
+            m_battlefieldCards.Add(hero);
 
             Health = heroBhv.Model.Health;
             Mana = 2;

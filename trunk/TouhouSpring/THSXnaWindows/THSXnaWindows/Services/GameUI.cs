@@ -112,7 +112,7 @@ namespace TouhouSpring.Services
 
             foreach (var player in Game.Players)
             {
-                RegisterCard(player.Hero.Host);
+                player.CardsOnBattlefield.ForEach(card => RegisterCard(card));
             }
 		}
 	}

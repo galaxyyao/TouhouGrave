@@ -302,56 +302,6 @@ namespace TouhouSpring.Services
 
                     cc.EnableDepth = true;
                 }
-                else if (Game.Players[0].CardsOnBattlefield.Contains(card))
-                {
-                    if (card.Behaviors.Get<Behaviors.Hero>() != null)  //to Hero card, remains in its original Field, even is played
-                    {
-                        locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                        {
-                            m_zone = m_playerHeroZoneInfo,
-                            m_numCards = 1,
-                            m_thisIndex = -1,
-                            m_focusIndex = -1
-                        };
-                    }
-                    else
-                    {
-                        locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                        {
-                            m_zone = m_playerBattlefieldZoneInfo,
-                            m_numCards = Game.Players[0].CardsOnBattlefield.Count,
-                            m_thisIndex = Game.Players[0].CardsOnBattlefield.IndexOf(card),
-                            m_focusIndex = -1
-                        };
-                        cc.EnableDepth = true;
-                    }
-                }
-                else if (Game.Players[1].CardsOnBattlefield.Contains(card))
-                {
-                    if (card.Behaviors.Get<Behaviors.Hero>() != null)  //to Hero card, remains in its original Field, even is played
-                    {
-                        locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                        {
-                            m_zone = m_opponentHeroZoneInfo,
-                            m_numCards = 1,
-                            m_thisIndex = -1,
-                            m_focusIndex = -1
-                        };
-                    }
-                    else
-                    {
-                        locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                        {
-                            m_zone = m_opponentBattlefieldZoneInfo,
-                            m_numCards = Game.Players[1].CardsOnBattlefield.Count,
-                            m_thisIndex = Game.Players[1].CardsOnBattlefield.IndexOf(card),
-                            m_focusIndex = -1
-                        };
-
-                        cc.EnableDepth = true;
-                    }
-                }
-                // TODO: graveyard
                 else if (Game.Players[0].Hero.Host == card)
                 {
                     locationAnimation.NextLocation = new LocationAnimation.LocationParameter
@@ -372,6 +322,33 @@ namespace TouhouSpring.Services
                         m_focusIndex = -1
                     };
                 }
+                else if (Game.Players[0].CardsOnBattlefield.Contains(card))
+                {
+                    Debug.Assert(Game.Players[0].CardsOnBattlefield.Count > 0);
+                    Debug.Assert(Game.Players[0].CardsOnBattlefield[0].Behaviors.Has<Behaviors.Hero>());
+                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
+                    {
+                        m_zone = m_playerBattlefieldZoneInfo,
+                        m_numCards = Game.Players[0].CardsOnBattlefield.Count - 1,
+                        m_thisIndex = Game.Players[0].CardsOnBattlefield.IndexOf(card) - 1,
+                        m_focusIndex = -1
+                    };
+                    cc.EnableDepth = true;
+                }
+                else if (Game.Players[1].CardsOnBattlefield.Contains(card))
+                {
+                    Debug.Assert(Game.Players[1].CardsOnBattlefield.Count > 0);
+                    Debug.Assert(Game.Players[1].CardsOnBattlefield[0].Behaviors.Has<Behaviors.Hero>());
+                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
+                    {
+                        m_zone = m_opponentBattlefieldZoneInfo,
+                        m_numCards = Game.Players[1].CardsOnBattlefield.Count - 1,
+                        m_thisIndex = Game.Players[1].CardsOnBattlefield.IndexOf(card) - 1,
+                        m_focusIndex = -1
+                    };
+                    cc.EnableDepth = true;
+                }
+                // TODO: graveyard
                 else
                 {
                     locationAnimation.NextLocation = new LocationAnimation.LocationParameter

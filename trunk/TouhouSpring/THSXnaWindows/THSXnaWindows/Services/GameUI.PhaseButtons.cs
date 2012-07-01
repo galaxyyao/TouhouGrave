@@ -31,7 +31,7 @@ namespace TouhouSpring.Services
         {
             var newButton = CreatePhaseButton();
             newButton.ButtonText = m_buttonTexts[(int)buttonText];
-            var leftTop = new Point(0, m_phaseButtons.Count > 0 ? m_phaseButtons[m_phaseButtons.Count - 1].Region.Bottom + 10 : 0);
+            var leftTop = new Point(0, m_phaseButtons.Count > 0 ? m_phaseButtons.Last().Region.Bottom + 10 : 0);
             newButton.Region = new Rectangle(leftTop, newButton.Region.Size);
             m_phaseButtons.Add(newButton);
         }

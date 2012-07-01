@@ -34,6 +34,11 @@ namespace TouhouSpring
 			return dst.ToIndexable();
 		}
 
+        public static T First<T>(this IList<T> list)
+        {
+            return list[0];
+        }
+
 		/// <summary>
 		/// Perform a specified action on every element of an collection.
 		/// <param name="source">An IEnumerable&lt;T&gt; collection in which the iteration is performed.</param>
@@ -73,6 +78,11 @@ namespace TouhouSpring
 			}
 			return -1;
 		}
+
+        public static T Last<T>(this IList<T> list)
+        {
+            return list[list.Count - 1];
+        }
 
 		public static void Repeat(this int times, Action<int> func)
 		{

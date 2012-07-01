@@ -22,15 +22,6 @@ namespace TouhouSpring
             //WaitForMessage("Start");
 
             InPlayerPhases = true;
-
-            //Instantiate HeroCard
-            var hero = new BaseCard(PlayerPlayer.Hero.Host.Model, PlayerPlayer);
-            PlayCard(hero);
-            m_actingPlayer = ++m_actingPlayer % m_players.Length;
-            hero = new BaseCard(PlayerPlayer.Hero.Host.Model, PlayerPlayer);
-            PlayCard(hero);
-            m_actingPlayer = ++m_actingPlayer % m_players.Length;
-
             Round = 0;
 
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
@@ -77,7 +68,6 @@ namespace TouhouSpring
 
                 CurrentPhase = "Combat/Attack";
                 TriggerGlobal(new Triggers.AttackPhaseStartedContext(this));
-                PlayerPlayer.Hero.Host.State = CardState.CoolingDown;
                 var declaredAttackers = new Interactions.SelectCards(
                     PlayerController,
                     PlayerPlayer.CardsOnBattlefield.Where(card => card.Behaviors.Has<Behaviors.Warrior>() && card.State == CardState.StandingBy).ToArray().ToIndexable(),

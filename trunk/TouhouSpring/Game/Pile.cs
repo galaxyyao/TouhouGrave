@@ -41,7 +41,7 @@ namespace TouhouSpring
 					throw new InvalidOperationException("The pile is empty.");
 				}
 
-				return m_orderedCards[m_orderedCards.Count - 1];
+				return m_orderedCards.Last();
 			}
 		}
 

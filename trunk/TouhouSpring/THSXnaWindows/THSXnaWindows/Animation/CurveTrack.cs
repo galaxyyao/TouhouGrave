@@ -15,7 +15,7 @@ namespace TouhouSpring.Animation
 
 		public override float Duration
 		{
-			get { return Curve.Keys.Count == 0 ? 0.0f : Curve.Keys[Curve.Keys.Count - 1].Position; }
+			get { return Curve.Keys.Count == 0 ? 0.0f : Curve.Keys.Last().Position; }
 		}
 
 		public CurveTrack(XnaCurve curve)
