@@ -9,27 +9,24 @@ namespace TouhouSpring.Services
     {
         public void TacticalPhase_Enter(Interactions.TacticalPhase io)
         {
-            SetNextButton(NextButton.Skip);
-            SetDrawCardButton(DrawCardButton.ShowButton);
+            SetSinglePhaseButton(PhaseButtonText.Skip);
+            AddPhaseButton(PhaseButtonText.Draw);
         }
 
         public void TacticalPhase_Leave()
         {
-            SetDrawCardButton(DrawCardButton.HideButton);
             TacticalPhase_CardToPlay = null;
             TacticalPhase_CardToCastSpell = null;
         }
 
         public BaseCard TacticalPhase_CardToPlay
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public BaseCard TacticalPhase_CardToCastSpell
         {
-            get;
-            private set;
+            get; private set;
         }
 
         private void TacticalPhase_OnCardClicked(UI.CardControl control, Interactions.TacticalPhase io)
@@ -40,7 +37,9 @@ namespace TouhouSpring.Services
             {
                 TacticalPhase_CardToPlay = (card != TacticalPhase_CardToPlay) ? card : null;
                 TacticalPhase_CardToCastSpell = null;
-                SetNextButton(TacticalPhase_CardToPlay != null ? NextButton.Done : NextButton.Skip);
+
+                SetSinglePhaseButton(TacticalPhase_CardToPlay != null ? PhaseButtonText.Done : PhaseButtonText.Skip);
+                AddPhaseButton(PhaseButtonText.Draw);
             }
             else if (io.ComputeCastFromSet().Contains(card))
             {
@@ -49,23 +48,35 @@ namespace TouhouSpring.Services
             }
         }
 
-        private void TacticalPhase_OnNextButton(Interactions.TacticalPhase io)
+        private bool TacticalPhase_OnPhaseButton(Interactions.TacticalPhase io, PhaseButtonText buttonText)
         {
-            io.Respond(TacticalPhase_CardToPlay);
-            if (TacticalPhase_CardToPlay == null)
+            if (buttonText == PhaseButtonText.Done)
             {
+                io.Respond(TacticalPhase_CardToPlay);
+            }
+            else if (buttonText == PhaseButtonText.Skip)
+            {
+                io.Respond((BaseCard)null);
                 TacticalPhase_Leave();
             }
+            else if (buttonText == PhaseButtonText.Draw)
+            {
+                if (Game.PlayerPlayer.Mana < 1)
+                {
+                    GameApp.Service<ModalDialog>().Show("Not sufficient mana.", ModalDialog.Button.OK, btn => { });
+                    return false;
+                }
+                else
+                {
+                    io.RespondDraw();
+                }
+            }
+            return true;
         }
 
         private bool TacticalPhase_ShouldBeHighlighted(BaseCard card)
         {
             return card == TacticalPhase_CardToPlay;
-        }
-
-        private void TacticalPhase_OnDrawCardButton(Interactions.TacticalPhase io)
-        {
-            io.RespondDraw();
         }
     }
 }

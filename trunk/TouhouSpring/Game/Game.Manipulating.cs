@@ -66,7 +66,7 @@ namespace TouhouSpring
 		/// <param name="player">The player whose mana to be updated</param>
 		/// <param name="delta">Amount of mana delta</param>
 		/// <returns></returns>
-		public bool UpdateMana(Player player, int delta)
+		public void UpdateMana(Player player, int delta)
 		{
 			if (player == null)
 			{
@@ -76,11 +76,10 @@ namespace TouhouSpring
 			int newMana = player.Mana + delta;
 			if (newMana < 0)
 			{
-                new Interactions.MessageBox(PlayerController, "Not Enough Mana", MessageBox.Button.OK).Run();
-				return false;
+                throw new ArgumentOutOfRangeException("Not sufficient mana.");
 			}
-			player.Mana = Math.Min(newMana, player.Hero.Model.Mana);
-			return true;
+
+            player.Mana = Math.Min(newMana, player.Hero.Model.Mana);
 		}
 
 		/// <summary>

@@ -31,7 +31,7 @@ namespace TouhouSpring.Services
             m_declaredBlockers = new UI.CardControl[io.DeclaredAttackers.Count][];
             io.DeclaredAttackers.Count.Repeat(i => m_declaredBlockers[i] = new UI.CardControl[1]);
 
-            SetNextButton(NextButton.Skip);
+            SetSinglePhaseButton(PhaseButtonText.Skip);
         }
 
         public void BlockerPhase_ClearSelected()
@@ -123,11 +123,11 @@ namespace TouhouSpring.Services
                         = m_markColors[attackerIndex];
                 }
 
-                SetNextButton(m_declaredBlockers.Any(ba => ba.Any(b => b != null)) ? NextButton.Done : NextButton.Skip);
+                SetSinglePhaseButton(m_declaredBlockers.Any(ba => ba.Any(b => b != null)) ? PhaseButtonText.Done : PhaseButtonText.Skip);
             }
         }
 
-        private void BlockPhase_OnNextButton(Interactions.BlockPhase io)
+        private bool BlockPhase_OnPhaseButton(Interactions.BlockPhase io, PhaseButtonText buttonText)
         {
             if (m_selectedCardToPlay != null)
             {
@@ -140,6 +140,7 @@ namespace TouhouSpring.Services
                 io.Respond(arr.ToIndexable());
             }
             BlockPhase_Leave();
+            return true;
         }
 
         private bool BlockPhase_ShouldBeHighlighted(BaseCard card)

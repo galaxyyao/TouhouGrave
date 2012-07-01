@@ -61,10 +61,8 @@ namespace TouhouSpring
                     }
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
-                        if (UpdateMana(PlayerPlayer, -1))
-                        {
-                            DrawCard(PlayerPlayer);
-                        }
+                        UpdateMana(PlayerPlayer, -1);
+                        DrawCard(PlayerPlayer);
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
                     {

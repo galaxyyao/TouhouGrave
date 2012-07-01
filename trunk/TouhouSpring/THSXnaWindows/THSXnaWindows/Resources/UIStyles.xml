@@ -80,8 +80,7 @@
 			</Layout>
 			<Label Font="Segoe UI, 16" Text="#Game.Player1.Name#" Color="White" Left="860" Top="160" />
 			<Label Font="Segoe UI, 16" Text="HP: #Game.Player1.Health#&#10;MP:#Game.Player1.Mana#" Color="White" Left="940" Top="160" />
-			<Layout Id="NextButton" />
-      <Layout Id="DrawCardButton" />
+      <Layout Id="PhaseButton" Left="860" Top="450" />
 			<Layout Id="ZoomedIn">
 				<Transform Scaling="420,-420" />
 				<Bounds Width="420" Height="600" Left="550" VerticalAlignment="Center"/>

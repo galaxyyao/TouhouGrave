@@ -42,8 +42,7 @@ namespace TouhouSpring.Services
 			{
 				if (m_interactionObject != null && value != null)
 				{
-                    //TODO: Fix the concurrent interaction object problem.
-					//throw new InvalidOperationException("Can't overwrite interaction object.");
+					throw new InvalidOperationException("Can't overwrite interaction object.");
 				}
 				m_interactionObject = value;
 			}
@@ -79,8 +78,7 @@ namespace TouhouSpring.Services
 			};
 			UICamera.Dirty();
 
-			InitializeNextButton();
-            InitializeDrawCardButton();
+			InitializePhaseButtons();
 
 			var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle("InGame"));
 			pageStyle.Initialize();
@@ -93,7 +91,7 @@ namespace TouhouSpring.Services
 		{
 			UnregisterAllCards();
 			InGameUIPage.DisposeResources();
-			DestroyButton();
+			DestroyPhaseButtons();
 		}
 
 		public override void Update(float deltaTime)

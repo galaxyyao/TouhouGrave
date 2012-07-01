@@ -13,14 +13,15 @@ namespace TouhouSpring.Services
         {
             GameApp.Service<ModalDialog>().Show(io.Message, () =>
             {
-                SetNextButton(NextButton.Skip);
+                SetSinglePhaseButton(PhaseButtonText.Skip);
             });
         }
 
-        private void SelectCards_OnNextButton(Interactions.SelectCards io)
+        private bool SelectCards_OnPhaseButton(Interactions.SelectCards io, PhaseButtonText buttonText)
         {
             io.Respond(m_selectedCards.ToIndexable().Clone());
             m_selectedCards.Clear();
+            return true;
         }
 
         private void SelectCards_OnCardClicked(UI.CardControl control, Interactions.SelectCards io)
@@ -42,7 +43,7 @@ namespace TouhouSpring.Services
                     m_selectedCards.Add(card);
                 }
 
-                SetNextButton(m_selectedCards.Count != 0 ? NextButton.Done : NextButton.Skip);
+                SetSinglePhaseButton(m_selectedCards.Count != 0 ? PhaseButtonText.Done : PhaseButtonText.Skip);
             }
         }
 
