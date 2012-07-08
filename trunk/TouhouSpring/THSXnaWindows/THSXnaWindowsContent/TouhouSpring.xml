@@ -11,6 +11,7 @@
     <Item>#Resource8</Item>
     <Item>#Resource9</Item>
     <Item>#Resource10</Item>
+    <Item>#Resource11</Item>
     <Item>#Resource12</Item>
     <Item>#Resource13</Item>
     <Item>#Resource14</Item>
@@ -30,7 +31,6 @@
     <Item>#Resource28</Item>
     <Item>#Resource29</Item>
     <Item>#Resource30</Item>
-    <Item>#Resource31</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
@@ -47,7 +47,6 @@
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -60,7 +59,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource2" Type="TouhouSpring.EditorCardModel">
       <Id>alicedoll</Id>
@@ -91,7 +90,6 @@
       <ArtworkUri>Textures/Characters/remilia_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -102,7 +100,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource4" Type="TouhouSpring.EditorCardModel">
       <Id>youmu</Id>
@@ -118,7 +116,6 @@
       <ArtworkUri>Textures/Characters/youmu_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -129,7 +126,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource5" Type="TouhouSpring.EditorCardModel">
       <Id>kanako</Id>
@@ -145,7 +142,6 @@
       <ArtworkUri>Textures/Characters/kanako_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -156,7 +152,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource6" Type="TouhouSpring.EditorCardModel">
       <Id>sakuya</Id>
@@ -171,7 +167,6 @@
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -182,7 +177,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource7" Type="TouhouSpring.EditorCardModel">
       <Id>eirin</Id>
@@ -197,7 +192,6 @@
       <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -208,7 +202,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource8" Type="TouhouSpring.EditorCardModel">
       <Id>tenshi</Id>
@@ -224,7 +218,6 @@
       <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SupportSummon+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Cost>3</Cost>
         </Behavior>
@@ -235,7 +228,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Supports</Category>
     </Resource>
     <Resource ID="#Resource9" Type="TouhouSpring.EditorCardModel">
       <Id>reimu</Id>
@@ -302,37 +295,6 @@
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
     <Resource ID="#Resource11" Type="TouhouSpring.EditorCardModel">
-      <Id>yuyuko</Id>
-      <Name>西行寺幽幽子</Name>
-      <Description>
-        【主角】
-        攻击力  3
-        体力  30
-
-        反魂蝶
-        将己方最近1张进入
-        冥界的战斗卡放回场上
-
-      </Description>
-      <ArtworkUri>Textures/Characters/yuyuko_stand</ArtworkUri>
-      <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
-          <Health>30</Health>
-          <Mana>5</Mana>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Attack>3</Attack>
-          <Defense>30</Defense>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-      </Behaviors>
-      <Category>TouhouSpring/Miko/Heroes</Category>
-    </Resource>
-    <Resource ID="#Resource12" Type="TouhouSpring.EditorCardModel">
       <Id>kaguya</Id>
       <Name>蓬莱山辉夜</Name>
       <Description>
@@ -362,7 +324,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
-    <Resource ID="#Resource13" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource12" Type="TouhouSpring.EditorCardModel">
       <Id>sanae</Id>
       <Name>东风谷早苗</Name>
       <Description>
@@ -392,7 +354,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
-    <Resource ID="#Resource14" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource13" Type="TouhouSpring.EditorCardModel">
       <Id>sunny</Id>
       <Name>桑尼</Name>
       <Description>
@@ -424,7 +386,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource15" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource14" Type="TouhouSpring.EditorCardModel">
       <Id>lunar</Id>
       <Name>露娜</Name>
       <Description>
@@ -455,7 +417,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource16" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource15" Type="TouhouSpring.EditorCardModel">
       <Id>star</Id>
       <Name>斯塔</Name>
       <Description>
@@ -487,7 +449,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource17" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource16" Type="TouhouSpring.EditorCardModel">
       <Id>flandre</Id>
       <Name>芙兰朵露·斯卡雷特</Name>
       <Description>
@@ -519,7 +481,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource17" Type="TouhouSpring.EditorCardModel">
       <Id>meirin</Id>
       <Name>红美铃</Name>
       <Description>
@@ -550,7 +512,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource19" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
       <Id>mokou</Id>
       <Name>藤原妹红</Name>
       <Description>
@@ -584,7 +546,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource20" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource19" Type="TouhouSpring.EditorCardModel">
       <Id>chen</Id>
       <Name>八云橙</Name>
       <Description>
@@ -616,7 +578,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource20" Type="TouhouSpring.EditorCardModel">
       <Id>nightbug</Id>
       <Name>莉格露·奈特巴格</Name>
       <Description>
@@ -648,7 +610,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource22" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
       <Id>aya</Id>
       <Name>射命丸文</Name>
       <Description>
@@ -680,7 +642,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource23" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource22" Type="TouhouSpring.EditorCardModel">
       <Id>komachi</Id>
       <Name>小野冢小町</Name>
       <Description>
@@ -711,7 +673,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
-    <Resource ID="#Resource24" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource23" Type="TouhouSpring.EditorCardModel">
       <Id>cirno</Id>
       <Name>琪露诺</Name>
       <Description>
@@ -736,7 +698,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource25" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource24" Type="TouhouSpring.EditorCardModel">
       <Id>patchouli</Id>
       <Name>帕秋莉·诺蕾姬</Name>
       <Description>
@@ -760,7 +722,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource26" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource25" Type="TouhouSpring.EditorCardModel">
       <Id>suika</Id>
       <Name>伊吹萃香</Name>
       <Description>
@@ -792,7 +754,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource27" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource26" Type="TouhouSpring.EditorCardModel">
       <Id>ran</Id>
       <Name>八云蓝</Name>
       <Description>
@@ -818,7 +780,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource28" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource27" Type="TouhouSpring.EditorCardModel">
       <Id>keine</Id>
       <Name>上白泽慧音</Name>
       <Description>
@@ -843,7 +805,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource29" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource28" Type="TouhouSpring.EditorCardModel">
       <Id>koakuma</Id>
       <Name>小恶魔</Name>
       <Description>
@@ -864,7 +826,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource30" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource29" Type="TouhouSpring.EditorCardModel">
       <Id>hatate</Id>
       <Name>姬海棠极</Name>
       <Description>
@@ -890,7 +852,7 @@
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
-    <Resource ID="#Resource31" Type="TouhouSpring.EditorCardModel">
+    <Resource ID="#Resource30" Type="TouhouSpring.EditorCardModel">
       <Id>yakumo</Id>
       <Name>八云紫</Name>
       <Description>

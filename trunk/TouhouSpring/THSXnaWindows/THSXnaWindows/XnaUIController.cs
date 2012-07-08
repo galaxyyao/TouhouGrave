@@ -27,8 +27,8 @@ namespace TouhouSpring
 					GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
 					break;
 				case "OnCardPlayCanceled":
-					GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () =>
-					{
+                    Action action = () =>
+                    {
                         if (GameApp.Service<GameManager>().Game.CurrentPhase == "Tactical")
                         {
                             GameApp.Service<GameUI>().TacticalPhase_Leave();
@@ -37,10 +37,19 @@ namespace TouhouSpring
                         {
                             GameApp.Service<GameUI>().BlockerPhase_ClearSelected();
                         }
-						GameApp.Service<GameUI>().InteractionObject = null;
-						interactionObj.Respond();
-					});
-					GameApp.Service<GameUI>().InteractionObject = interactionObj;
+                        GameApp.Service<GameUI>().InteractionObject = null;
+                        interactionObj.Respond();
+                    };
+
+                    GameApp.Service<GameUI>().InteractionObject = interactionObj;
+                    if (interactionObj.Message != string.Empty)
+                    {
+                        GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, action);
+                    }
+                    else
+                    {
+                        action();
+                    }
 					return true;
 				case "OnCardPlayed":
 					GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);

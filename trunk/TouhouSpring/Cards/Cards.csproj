@@ -52,7 +52,6 @@
     <Compile Include="Behaviors\Freeze.cs" />
     <Compile Include="Behaviors\IceWall.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
-    <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\JackTheRipper.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />
     <Compile Include="Behaviors\LowWit.cs" />
