@@ -37,7 +37,7 @@ namespace TouhouSpring.Style.Values
 				throw new ArgumentNullException("str");
 			}
 
-			if (str.StartsWith("#"))
+			if (str.StartsWith("!"))
 			{
 				var hexStr = str.Substring(1);
 				int hexNum;

@@ -86,7 +86,6 @@
     <Compile Include="Behaviors\Steal.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
     <Compile Include="Behaviors\Summon_PostPlay.cs" />
-    <Compile Include="Behaviors\SupportSummon.cs" />
     <Compile Include="Behaviors\UnBlockable.cs" />
     <Compile Include="Behaviors\Weakness.cs" />
     <Compile Include="Behaviors\TheWorld.cs" />
