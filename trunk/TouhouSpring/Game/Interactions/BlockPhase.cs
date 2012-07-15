@@ -7,6 +7,18 @@ namespace TouhouSpring.Interactions
 {
     public class BlockPhase : BaseInteraction
     {
+        public enum Action
+        {
+            ConfirmBlock,
+            PlayCard
+        }
+
+        public struct Result
+        {
+            public Action ActionType;
+            public object Data;
+        }
+
         public BaseController Controller
         {
             get; private set;
@@ -44,30 +56,35 @@ namespace TouhouSpring.Interactions
             PlayableCandidates = GetPlayableCandidates().ToArray().ToIndexable();
         }
 
-        public object Run()
+        public Result Run()
         {
-            var result = NotifyAndWait<object>(Controller);
-            if (result is BaseCard)
-            {
-                Validate((BaseCard)result);
-            }
-            else if (result is IIndexable<IIndexable<BaseCard>>)
-            {
-                Validate((IIndexable<IIndexable<BaseCard>>)result);
-            }
+            var result = NotifyAndWait<Result>(Controller);
+            Validate(result);
             return result;
-        }
-
-        public void Respond(BaseCard cardToPlay)
-        {
-            Validate(cardToPlay);
-            RespondBack(Controller, cardToPlay);
         }
 
         public void Respond(IIndexable<IIndexable<BaseCard>> blockers)
         {
-            Validate(blockers);
-            RespondBack(Controller, blockers);
+            var result = new Result
+            {
+                ActionType = Action.ConfirmBlock,
+                Data = blockers
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
+        }
+
+        public void Respond(BaseCard cardToPlay)
+        {
+            var result = new Result
+            {
+                ActionType = Action.PlayCard,
+                Data = cardToPlay
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
         }
 
         private IEnumerable<BaseCard> GetBlockerCandidates()
@@ -78,6 +95,31 @@ namespace TouhouSpring.Interactions
         private IEnumerable<BaseCard> GetPlayableCandidates()
         {
             return Controller.Player.CardsOnHand.Where(card => !card.Behaviors.OfType<Behaviors.IPlayable>().Any(p => !p.IsPlayable(Controller.Game)));
+        }
+
+        private void Validate(Result result)
+        {
+            switch (result.ActionType)
+            {
+                case Action.ConfirmBlock:
+                    if (!(result.Data is IIndexable<IIndexable<BaseCard>>))
+                    {
+                        throw new InvalidDataException("Action ConfirmBlock shall have an array of arrays of BaseCard as its data.");
+                    }
+                    Validate(result.Data as IIndexable<IIndexable<BaseCard>>);
+                    break;
+
+                case Action.PlayCard:
+                    if (!(result.Data is BaseCard))
+                    {
+                        throw new InvalidDataException("Action PlayCard shall have an object of BaseCard as its data.");
+                    }
+                    Validate(result.Data as BaseCard);
+                    break;
+
+                default:
+                    throw new InvalidDataException("Invalid action performed.");
+            }
         }
 
         private void Validate(IIndexable<IIndexable<BaseCard>> blockers)

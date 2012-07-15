@@ -80,18 +80,21 @@ namespace TouhouSpring
                 IIndexable<IIndexable<BaseCard>> declaredBlockers;
                 while (true)
                 {
-                    object selected = new Interactions.BlockPhase(OpponentController, declaredAttackers).Run();
-
-                    if (selected is BaseCard)
+                    var result = new Interactions.BlockPhase(OpponentController, declaredAttackers).Run();
+                    if (result.ActionType == BlockPhase.Action.ConfirmBlock)
                     {
-                        var cardToPlay = (BaseCard)selected;
+                        declaredBlockers = (result.Data as IIndexable<IIndexable<BaseCard>>).Clone(e => e.Clone());
+                        break;
+                    }
+                    else if (result.ActionType == BlockPhase.Action.PlayCard)
+                    {
+                        var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == OpponentPlayer);
                         PlayCard(cardToPlay);
                     }
-                    else if (selected is IIndexable<IIndexable<BaseCard>>)
+                    else
                     {
-                        declaredBlockers = ((IIndexable<IIndexable<BaseCard>>)selected).Clone(e => e.Clone());
-                        break;
+                        throw new InvalidDataException();
                     }
                     ResolveBattlefieldCards();
                 }
