@@ -29,6 +29,11 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
+        public IEnumerable<BaseCard> BlockableAttackers
+        {
+            get; private set;
+        }
+
         public IIndexable<BaseCard> BlockerCandidates
         {
             get; private set;
@@ -52,6 +57,7 @@ namespace TouhouSpring.Interactions
 
             Controller = controller;
             DeclaredAttackers = declaredAttackers;
+            BlockableAttackers = declaredAttackers.Where(card => !card.Behaviors.Has<Behaviors.Unblockable>());
             BlockerCandidates = GetBlockerCandidates().ToArray().ToIndexable();
             PlayableCandidates = GetPlayableCandidates().ToArray().ToIndexable();
         }
@@ -89,7 +95,10 @@ namespace TouhouSpring.Interactions
 
         private IEnumerable<BaseCard> GetBlockerCandidates()
         {
-            return Controller.Player.CardsOnBattlefield.Where(card => card.Behaviors.Has<Behaviors.Warrior>() && card.State == CardState.StandingBy);
+            return Controller.Player.CardsOnBattlefield.Where(card =>
+                card.Behaviors.Has<Behaviors.Warrior>()
+                && card.State == CardState.StandingBy
+                && !card.Behaviors.Has<Behaviors.NonBlocker>());
         }
 
         private IEnumerable<BaseCard> GetPlayableCandidates()
@@ -144,16 +153,27 @@ namespace TouhouSpring.Interactions
             {
                 throw new InvalidDataException("Blockers must be warriors.");
             }
+            else if (blockers.Any(b => b.Any(bb => bb.Behaviors.Has<Behaviors.NonBlocker>())))
+            {
+                throw new InvalidDataException("NonBlocker can't block other card.");
+            }
             else
             {
-                // check uniqueness of blockers
                 for (int i = 0; i < blockers.Count; ++i)
                 {
+                    // check uniqueness of blockers
                     var b = blockers[i];
                     if (!b.Unique()
                         || blockers.AnyFrom(i + 1, bb => b.Count > 0 && bb.Contains(b[0]) || b.Count > 1 && bb.Contains(b[1])))
                     {
                         throw new InvalidDataException("One blocker can only be declared to block one attacker.");
+                    }
+
+                    // check unblockable
+                    if (DeclaredAttackers[i].Behaviors.Has<Behaviors.Unblockable>()
+                        && b.Count > 0)
+                    {
+                        throw new InvalidDataException("Unblockable attacker can't be blocked.");
                     }
                 }
             }

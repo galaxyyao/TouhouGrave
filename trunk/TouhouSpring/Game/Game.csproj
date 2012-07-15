@@ -55,8 +55,10 @@
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\IPlayable.cs" />
     <Compile Include="Behaviors\ITrigger.cs" />
+    <Compile Include="Behaviors\NonBlocker.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Support.cs" />
+    <Compile Include="Behaviors\Unblockable.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />

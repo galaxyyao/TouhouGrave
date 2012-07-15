@@ -78,7 +78,7 @@ namespace TouhouSpring.Services
                 m_selectedCardToPlay = null;
                 m_selectedBlocker = m_selectedBlocker == control ? null : control;
             }
-            else if (io.DeclaredAttackers.Contains(card) && m_selectedBlocker != null)
+            else if (io.BlockableAttackers.Contains(card) && m_selectedBlocker != null)
             {
                 var attackerIndex = io.DeclaredAttackers.IndexOf(control.Card);
                 var nullIndex = Array.IndexOf(m_declaredBlockers[attackerIndex], null);

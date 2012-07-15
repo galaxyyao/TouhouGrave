@@ -104,7 +104,7 @@ namespace TouhouSpring.Services
                 var io = (Interactions.BlockPhase)InteractionObject;
                 return io.BlockerCandidates.Contains(card)
                        || io.PlayableCandidates.Contains(card)
-                       || io.DeclaredAttackers.Contains(card);
+                       || io.BlockableAttackers.Contains(card);
             }
             else if (InteractionObject is Interactions.SelectCards)
             {

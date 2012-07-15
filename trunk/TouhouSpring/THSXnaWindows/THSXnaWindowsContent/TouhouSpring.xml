@@ -72,7 +72,7 @@
           <Attack>1</Attack>
           <Defense>1</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
@@ -253,11 +253,11 @@
           <Defense>30</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Spell_PreventAllDamageInOneRound+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -283,7 +283,6 @@
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
@@ -291,6 +290,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Spell_MassDamageToWarriorOnEnemyBattlefield+ModelType">
           <Damage>2</Damage>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -316,11 +316,11 @@
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -346,11 +346,11 @@
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UnBlockable+ModelType" />
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -413,7 +413,7 @@
           <BlockPhase>false</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorUnblockedable+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Unblockable+ModelType" />
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
