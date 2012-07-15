@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Master Spark", typeof(MasterSpark))]
+        [BehaviorModel(typeof(MasterSpark), Category = "Deprecated", DefaultName = "Master Spark")]
         public class ModelType : BehaviorModel
         {
             public int Damage { get; set; }

@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
 			}
 		}
 
-        [BehaviorModel("开膛手杰克", typeof(JackTheRipper))]
+        [BehaviorModel(typeof(JackTheRipper), DefaultName = "开膛手杰克")]
         public class ModelType : BehaviorModel
         { }
 	}

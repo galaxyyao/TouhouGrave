@@ -58,7 +58,7 @@ namespace TouhouSpring.Behaviors
 			}
 		}
 
-        [BehaviorModel("Baga", typeof(Baga))]
+        [BehaviorModel(typeof(Baga))]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

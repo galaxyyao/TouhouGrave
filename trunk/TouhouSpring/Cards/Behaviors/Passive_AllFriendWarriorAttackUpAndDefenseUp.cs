@@ -60,7 +60,7 @@ namespace TouhouSpring.Behaviors
         }
 
 
-        [BehaviorModel("秘药", typeof(Passive_AllFriendWarriorAttackUpAndDefenseUp))]
+        [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpAndDefenseUp), DefaultName = "秘药")]
         public class ModelType : BehaviorModel
         { }
     }

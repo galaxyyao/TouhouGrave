@@ -222,7 +222,7 @@ namespace TouhouSpring.Services
             var io = InteractionObject;
             if (io is Interactions.TacticalPhase && Game.PlayerPlayer.CardsOnBattlefield.Contains(card))
             {
-                GameApp.Service<ModalDialog>().Show(String.Format("Cast {0}?", spell.Model.GetName()), ModalDialog.Button.Yes | ModalDialog.Button.Cancel, btn =>
+                GameApp.Service<ModalDialog>().Show(String.Format("Cast {0}?", spell.Model.Name), ModalDialog.Button.Yes | ModalDialog.Button.Cancel, btn =>
                 {
                     if (btn == ModalDialog.Button.Yes)
                     {

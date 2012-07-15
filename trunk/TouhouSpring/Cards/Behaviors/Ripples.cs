@@ -66,7 +66,7 @@ namespace TouhouSpring.Behaviors
             return Host.Owner.Mana >= Model.ManaCost && Host.Owner.CardsOnHand.Count >= 2 && game.OpponentPlayer.CardsOnBattlefield.Count > 0;
         }
 
-        [BehaviorModel("Ripples", typeof(Ripples))]
+        [BehaviorModel(typeof(Ripples))]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

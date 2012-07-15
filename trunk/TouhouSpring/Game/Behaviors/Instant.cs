@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Instant", typeof(Instant))]
+        [BehaviorModel(typeof(Instant), Category = "Core")]
         public class ModelType : BehaviorModel
         { }
     }

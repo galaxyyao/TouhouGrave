@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
             return true;
         }
 
-        [BehaviorModel("补魔", typeof(SkillCharge))]
+        [BehaviorModel(typeof(SkillCharge), DefaultName = "补魔")]
         public class ModelType : BehaviorModel
         { }
     }

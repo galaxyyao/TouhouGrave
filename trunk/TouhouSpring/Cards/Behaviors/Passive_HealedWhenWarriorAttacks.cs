@@ -20,7 +20,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("吸血鬼", typeof(Passive_HealedWhenWarriorAttacks))]
+        [BehaviorModel(typeof(Passive_HealedWhenWarriorAttacks), DefaultName = "吸血鬼")]
         public class ModelType : BehaviorModel
         { }
     }

@@ -20,7 +20,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("式神化猫", typeof(Passive_HeroPenetrate))]
+        [BehaviorModel(typeof(Passive_HeroPenetrate), DefaultName = "式神化猫")]
         public class ModelType : BehaviorModel
         { }
     }

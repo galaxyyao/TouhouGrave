@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Cautionary Border", typeof(CautionaryBorder))]
+        [BehaviorModel(typeof(CautionaryBorder), DefaultName = "Cautionary Border")]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

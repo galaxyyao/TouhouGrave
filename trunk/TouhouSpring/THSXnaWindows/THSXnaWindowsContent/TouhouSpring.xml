@@ -46,15 +46,22 @@
       </Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummon+ModelType">
+          <Name>人偶召唤</Name>
           <SummonType>#Resource2</SummonType>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -67,12 +74,17 @@
       <Description></Description>
       <ArtworkUri>Textures/Characters/alicedoll_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>1</Attack>
           <Defense>1</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
+          <Name>NonBlocker</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
@@ -89,13 +101,21 @@
       </Description>
       <ArtworkUri>Textures/Characters/remilia_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_HealedWhenWarriorAttacks+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_HealedWhenWarriorAttacks+ModelType">
+          <Name>吸血鬼</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -115,13 +135,21 @@
       </Description>
       <ArtworkUri>Textures/Characters/youmu_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_HeroAttackUpWithCardNumber+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_HeroAttackUpWithCardNumber+ModelType">
+          <Name>未来永劫斩</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -141,13 +169,21 @@
       </Description>
       <ArtworkUri>Textures/Characters/kanako_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpWhileDefenseDown+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpWhileDefenseDown+ModelType">
+          <Name>御柱特攻</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -166,13 +202,21 @@
       </Description>
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_EnemySummonCostUp+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Passive_EnemySummonCostUp+ModelType">
+          <Name>The World</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -191,13 +235,21 @@
       </Description>
       <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpAndDefenseUp+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpAndDefenseUp+ModelType">
+          <Name>秘药</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -217,13 +269,21 @@
       </Description>
       <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
+          <Name>Support</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_ManaGainUpWhenAttackedByWarrior+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Passive_ManaGainUpWhenAttackedByWarrior+ModelType">
+          <Name>M子</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
+          <Name>补魔</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
@@ -245,19 +305,26 @@
       <ArtworkUri>Textures/Characters/reimu_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
+          <Name>Hero</Name>
           <Health>30</Health>
           <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_PreventAllDamageInOneRound+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Spell_PreventAllDamageInOneRound+ModelType">
+          <Name>梦想封印</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
+          <Name>NonBlocker</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -276,21 +343,27 @@
       <ArtworkUri>Textures/Characters/marisa_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
+          <Name>Hero</Name>
           <Health>30</Health>
           <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Spell_MassDamageToWarriorOnEnemyBattlefield+ModelType">
+          <Name>Master Spark</Name>
           <Damage>2</Damage>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
+          <Name>NonBlocker</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -309,18 +382,23 @@
       <ArtworkUri>Textures/Characters/kaguya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
+          <Name>Hero</Name>
           <Health>30</Health>
           <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
+          <Name>NonBlocker</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -339,18 +417,23 @@
       <ArtworkUri>Textures/Characters/sanae_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
+          <Name>Hero</Name>
           <Health>30</Health>
           <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>3</Attack>
           <Defense>30</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
+          <Name>NonBlocker</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -371,18 +454,25 @@
       <ArtworkUri>Textures/Characters/sunny_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>0</Attack>
           <Defense>4</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorDefenseDownWhenAttacked+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorDefenseDownWhenAttacked+ModelType">
+          <Name>日光折射</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -402,18 +492,25 @@
       <ArtworkUri>Textures/Characters/lunar_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>1</Attack>
           <Defense>2</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Unblockable+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Unblockable+ModelType">
+          <Name>Unblockable</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -434,18 +531,25 @@
       <ArtworkUri>Textures/Characters/star_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>1</Attack>
           <Defense>2</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType">
+          <Name>星光</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -466,18 +570,25 @@
       <ArtworkUri>Textures/Characters/flandre_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAttackAndDefenseUpWhenAttackedHero+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAttackAndDefenseUpWhenAttackedHero+ModelType">
+          <Name>午后红茶</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -497,18 +608,25 @@
       <ArtworkUri>Textures/Characters/meirin_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAlwaysStandBy+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAlwaysStandBy+ModelType">
+          <Name>Passive_WarriorAlwaysStandBy</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -529,18 +647,24 @@
       <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>2</Attack>
           <Defense>1</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_AllFieldDealDamageWhenWarriorDestroyed+ModelType">
+          <Name>凤凰</Name>
           <Damage>1</Damage>
         </Behavior>
       </Behaviors>
@@ -564,17 +688,22 @@
       <ArtworkUri>Textures/Characters/chen_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -596,17 +725,22 @@
       <ArtworkUri>Textures/Characters/nightbug_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -627,18 +761,25 @@
       <ArtworkUri>Textures/Characters/aya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>2</Attack>
           <Defense>1</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAttackFirst+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAttackFirst+ModelType">
+          <Name>风神</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -658,18 +799,25 @@
       <ArtworkUri>Textures/Characters/komachi_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
           <Attack>1</Attack>
           <Defense>1</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType" />
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorDestroyAfterAttack+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorDestroyAfterAttack+ModelType">
+          <Name>死神</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -688,13 +836,17 @@
       <ArtworkUri>Textures/Characters/cirno_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -712,13 +864,17 @@
       <ArtworkUri>Textures/Characters/patchouli_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -738,19 +894,24 @@
       <ArtworkUri>Textures/Characters/suika_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Assault_SingleWarriorBoostForXRounds+ModelType">
+          <Name>鬼神</Name>
           <AttackBoost>2</AttackBoost>
           <DefenseBoost>2</DefenseBoost>
           <Duration>1</Duration>
           <ManaCost>2</ManaCost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -770,13 +931,17 @@
       <ArtworkUri>Textures/Characters/ran_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -795,13 +960,17 @@
       <ArtworkUri>Textures/Characters/keine_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -819,10 +988,13 @@
       <ArtworkUri>Textures/Characters/koakuma_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -842,13 +1014,17 @@
       <ArtworkUri>Textures/Characters/hatate_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
@@ -867,13 +1043,17 @@
       <ArtworkUri>Textures/Characters/yakumo_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
+          <Name>ManaCost_PrePlay</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType" />
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>

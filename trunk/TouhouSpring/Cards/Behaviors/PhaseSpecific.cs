@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
                    || Model.BlockPhase && game.CurrentPhase == "Combat/Block" && game.OpponentPlayer == Host.Owner;
         }
 
-        [BehaviorModel("Phase Specific", typeof(PhaseSpecific))]
+        [BehaviorModel(typeof(PhaseSpecific))]
         public class ModelType : BehaviorModel
         {
             public bool TacticalPhase { get; set; }

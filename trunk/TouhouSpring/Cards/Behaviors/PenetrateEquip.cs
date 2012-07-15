@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("穿刺 (装备)", typeof(PenetrateEquip))]
+        [BehaviorModel(typeof(PenetrateEquip), Category = "Deprecated", DefaultName = "穿刺 (装备)")]
         public class ModelType : BehaviorModel
         { }
     }

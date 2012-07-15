@@ -59,7 +59,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("御柱特攻", typeof(Passive_AllFriendWarriorAttackUpWhileDefenseDown))]
+        [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpWhileDefenseDown), DefaultName = "御柱特攻")]
         public class ModelType : BehaviorModel
         { }
     }

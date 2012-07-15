@@ -56,7 +56,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("未来永劫斩", typeof(Passive_HeroAttackUpWithCardNumber))]
+        [BehaviorModel(typeof(Passive_HeroAttackUpWithCardNumber), DefaultName = "未来永劫斩")]
         public class ModelType : BehaviorModel
         { }
     }

@@ -7,7 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public class Hero : BaseBehavior<Hero.ModelType>
     {
-        [BehaviorModel("Hero", typeof(Hero), Description = "The card is served as the main character.")]
+        [BehaviorModel(typeof(Hero), Category = "Core", Description = "The card is served as the main character.")]
         public class ModelType : BehaviorModel
         {
             public int Health { get; set; }

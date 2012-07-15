@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Support", typeof(Support), Description = "The card is served as the support character.")]
+        [BehaviorModel(typeof(Support), Category = "Core", Description = "The card is served as the support character.")]
         public class ModelType : BehaviorModel
         { }
     }

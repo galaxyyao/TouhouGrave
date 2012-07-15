@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             m_isMoreCardDrawn = false;
         }
 
-        [BehaviorModel("星光", typeof(Passive_CardDrawnNumberUp))]
+        [BehaviorModel(typeof(Passive_CardDrawnNumberUp), DefaultName = "星光")]
         public class ModelType : BehaviorModel
         { }
     }

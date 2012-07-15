@@ -30,7 +30,7 @@ namespace TouhouSpring
                 var card = cards[i];
                 foreach (var spell in card.GetSpells())
                 {
-                    Console.WriteLine("> [{0}] {1} on {2} ({3})", ++counter, spell.Model.GetName(), card.Model.Name, GetLocation(card));
+                    Console.WriteLine("> [{0}] {1} on {2} ({3})", ++counter, spell.Model.Name, card.Model.Name, GetLocation(card));
                 }
             }
         }

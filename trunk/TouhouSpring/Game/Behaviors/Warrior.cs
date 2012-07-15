@@ -56,7 +56,7 @@ namespace TouhouSpring.Behaviors
             Equipments = new List<BaseCard>();
         }
 
-        [BehaviorModel("Warrior", typeof(Warrior), Description = "The card is capable of being engaged into combats.")]
+        [BehaviorModel(typeof(Warrior), Category = "Core", Description = "The card is capable of being engaged into combats.")]
         public class ModelType : BehaviorModel
         {
             public int Attack { get; set; }

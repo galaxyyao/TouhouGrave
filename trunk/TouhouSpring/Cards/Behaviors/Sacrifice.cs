@@ -48,7 +48,7 @@ namespace TouhouSpring.Behaviors
                 && card.Behaviors.Get<Warrior>().State != WarriorState.CoolingDown);
         }
 
-		[BehaviorModel("Sacrifice", typeof(Sacrifice))]
+		[BehaviorModel(typeof(Sacrifice))]
 		public class ModelType : BehaviorModel
 		{ }
 	}

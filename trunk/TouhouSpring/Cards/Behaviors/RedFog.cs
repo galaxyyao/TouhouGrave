@@ -49,7 +49,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Red Fog", typeof(RedFog))]
+        [BehaviorModel(typeof(RedFog), DefaultName = "Red Fog")]
         public class ModelType : BehaviorModel
         {
             public int SelfDamage { get; set; }

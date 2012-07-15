@@ -54,7 +54,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("梦想封印", typeof(Spell_PreventAllDamageInOneRound))]
+        [BehaviorModel(typeof(Spell_PreventAllDamageInOneRound), DefaultName = "梦想封印")]
         public class ModelType : BehaviorModel
         { }
     }

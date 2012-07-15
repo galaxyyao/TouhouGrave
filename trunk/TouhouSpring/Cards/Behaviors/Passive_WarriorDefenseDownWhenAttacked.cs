@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("日光折射", typeof(Passive_WarriorDefenseDownWhenAttacked))]
+        [BehaviorModel(typeof(Passive_WarriorDefenseDownWhenAttacked), DefaultName = "日光折射")]
         public class ModelType : BehaviorModel
         { }
     }

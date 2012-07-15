@@ -67,7 +67,7 @@ namespace TouhouSpring.Behaviors
             return Host.Owner.Mana >= Model.ManaCost && Host.Owner.CardsOnBattlefield.Any(c => c.Behaviors.Has<Warrior>());
         }
 
-        [BehaviorModel("鬼神", typeof(Assault_SingleWarriorBoostForXRounds))]
+        [BehaviorModel(typeof(Assault_SingleWarriorBoostForXRounds), DefaultName = "鬼神")]
         public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }

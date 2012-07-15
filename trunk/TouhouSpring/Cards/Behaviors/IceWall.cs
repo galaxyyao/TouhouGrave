@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
 			}
 		}
 
-        [BehaviorModel("冰墙", typeof(IceWall))]
+        [BehaviorModel(typeof(IceWall), DefaultName = "冰墙")]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

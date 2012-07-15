@@ -20,7 +20,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("午后红茶", typeof(Passive_WarriorAttackAndDefenseUpWhenAttackedHero))]
+        [BehaviorModel(typeof(Passive_WarriorAttackAndDefenseUpWhenAttackedHero), DefaultName = "午后红茶")]
         public class ModelType : BehaviorModel
         { }
     }

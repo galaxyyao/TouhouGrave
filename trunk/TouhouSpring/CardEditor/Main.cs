@@ -37,14 +37,31 @@ namespace TouhouSpring
                     continue;
                 }
 
-                var item = new ToolStripMenuItem(bhvAttr.Name);
+                var category = bhvAttr.Category.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+                var rootMenu = toolStripDropDownButtonNewBehavior.DropDownItems;
+                for (int i = 0; i < category.Length; ++i)
+                {
+                    var subMenu = rootMenu.Find(category[i], false);
+                    if (subMenu.Length == 0)
+                    {
+                        var newSubMenu = new ToolStripMenuItem(category[i]);
+                        newSubMenu.Name = category[i];
+                        rootMenu.Add(newSubMenu);
+                        rootMenu = newSubMenu.DropDownItems;
+                    }
+                    else
+                    {
+                        rootMenu = (subMenu[0] as ToolStripMenuItem).DropDownItems;
+                    }
+                }
+
+                var item = new ToolStripMenuItem(bhvAttr.DefaultName);
                 item.Tag = t;
                 item.Click += new EventHandler(NewBehavior_Click);
-                itemList.Add(item);
+                rootMenu.Add(item);
             }
 
-            itemList.Sort((i1, i2) => String.Compare(i1.Text, i2.Text));
-            toolStripDropDownButtonNewBehavior.DropDownItems.AddRange(itemList.ToArray());
+            SortMenu(toolStripDropDownButtonNewBehavior.DropDownItems);
 
             openFileDialog.InitialDirectory = Program.PathUtils.ContentRootDirectory;
             saveFileDialog.InitialDirectory = Program.PathUtils.ContentRootDirectory;
@@ -156,6 +173,26 @@ namespace TouhouSpring
 
         #endregion
 
+        private void SortMenu(ToolStripItemCollection menuItems)
+        {
+            var arr = menuItems.Cast<ToolStripMenuItem>().ToArray();
+            Array.Sort(arr, (i1, i2) =>
+                i1.HasDropDownItems != i2.HasDropDownItems
+                ? i1.HasDropDownItems ? -1 : 1
+                : String.Compare(i1.Text, i2.Text));
+            menuItems.Clear();
+            menuItems.AddRange(arr);
+
+            foreach (var subMenu in arr)
+            {
+                if (subMenu is ToolStripMenuItem
+                    && subMenu.HasDropDownItems)
+                {
+                    SortMenu(subMenu.DropDownItems);
+                }
+            }
+        }
+
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (m_isModified)
@@ -195,6 +232,12 @@ namespace TouhouSpring
                 {
                     MoveNode(cardNode);
                 }
+            }
+            else if (e.ChangedItem.PropertyDescriptor.Name == "Name"
+                     && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(Behaviors.BehaviorModel))
+            {
+                var bhvNode = treeViewCards.SelectedNode;
+                bhvNode.Text = (string)e.ChangedItem.Value;
             }
 
             m_isModified = true;

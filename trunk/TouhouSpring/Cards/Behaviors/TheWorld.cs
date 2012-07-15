@@ -25,7 +25,7 @@ namespace TouhouSpring.Behaviors
 			return true;
 		}
 
-        [BehaviorModel("The World", typeof(TheWorld))]
+        [BehaviorModel(typeof(TheWorld), Category = "Deprecated", DefaultName = "The World")]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("穿刺", typeof(Penetrate))]
+        [BehaviorModel(typeof(Penetrate), Category = "Deprecated", DefaultName = "穿刺")]
         public class ModelType : BehaviorModel
         { }
     }

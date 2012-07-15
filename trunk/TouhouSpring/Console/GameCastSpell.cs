@@ -60,7 +60,7 @@ namespace TouhouSpring
 
             while (true)
             {
-                Console.Write("?? Cast {0} (Y/N) ? ", spellToCast.Model.GetName());
+                Console.Write("?? Cast {0} (Y/N) ? ", spellToCast.Model.Name);
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "y" || choice == "yes")
                 {

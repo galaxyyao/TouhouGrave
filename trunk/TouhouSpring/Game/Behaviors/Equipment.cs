@@ -73,7 +73,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Equipment", typeof(Equipment), Description = "The card must be equipped on another warrior.")]
+        [BehaviorModel(typeof(Equipment), Category = "Core", Description = "The card must be equipped on another warrior.")]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

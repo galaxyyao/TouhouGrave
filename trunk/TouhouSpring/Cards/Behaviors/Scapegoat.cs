@@ -40,7 +40,7 @@ namespace TouhouSpring.Behaviors
 			}
         }
 
-        [BehaviorModel("人偶替身", typeof(Scapegoat))]
+        [BehaviorModel(typeof(Scapegoat), DefaultName = "人偶替身")]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Environment", typeof(Environment))]
+        [BehaviorModel(typeof(Environment))]
         public class ModelType : BehaviorModel
         {
             // TODO: (BHV) Select VisualID from textures

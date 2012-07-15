@@ -32,7 +32,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("凤凰", typeof(Passive_AllFieldDealDamageWhenWarriorDestroyed))]
+        [BehaviorModel(typeof(Passive_AllFieldDealDamageWhenWarriorDestroyed), DefaultName = "凤凰")]
         public class ModelType : BehaviorModel
         {
             public int Damage { get; set; }

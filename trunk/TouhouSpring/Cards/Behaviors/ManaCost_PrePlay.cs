@@ -30,7 +30,7 @@ namespace TouhouSpring.Behaviors
 			return Host.Owner.Mana >= Model.Cost;
 		}
 
-		[BehaviorModel("ManaCost (PrePlay)", typeof(ManaCost_PrePlay))]
+		[BehaviorModel(typeof(ManaCost_PrePlay))]
 		public class ModelType : BehaviorModel
 		{
             public int Cost { get; set; }

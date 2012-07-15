@@ -58,7 +58,7 @@ namespace TouhouSpring.Behaviors
 			}
 		}
 
-        [BehaviorModel("偷心", typeof(Steal))]
+        [BehaviorModel(typeof(Steal), DefaultName = "偷心")]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }

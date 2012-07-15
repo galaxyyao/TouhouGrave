@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("死神", typeof(Passive_WarriorDestroyAfterAttack))]
+        [BehaviorModel(typeof(Passive_WarriorDestroyAfterAttack), DefaultName = "死神")]
         public class ModelType : BehaviorModel
         { }
     }

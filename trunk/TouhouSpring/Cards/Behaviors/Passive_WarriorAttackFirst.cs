@@ -35,7 +35,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("风神", typeof(Passive_WarriorAttackFirst))]
+        [BehaviorModel(typeof(Passive_WarriorAttackFirst), DefaultName = "风神")]
         public class ModelType : BehaviorModel
         { }
     }

@@ -7,7 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public class Unblockable : BaseBehavior<Unblockable.ModelType>
     {
-        [BehaviorModel("Unblockable", typeof(Unblockable), Description = "The card can't be blocked in combats.")]
+        [BehaviorModel(typeof(Unblockable), Category = "Core", Description = "The card can't be blocked in combats.")]
         public class ModelType : BehaviorModel
         { }
     }

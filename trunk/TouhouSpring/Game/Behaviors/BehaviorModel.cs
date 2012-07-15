@@ -8,15 +8,25 @@ namespace TouhouSpring.Behaviors
     public class BehaviorModel
     {
         private BehaviorModelAttribute m_bhvModelAttr;
+        private string m_name;
+
+        [System.ComponentModel.Category("Basic")]
+        public string Name
+        {
+            get { return m_name ?? m_bhvModelAttr.DefaultName; }
+            set { m_name = value != String.Empty ? value : null; }
+        }
+
+        [System.ComponentModel.Category("Basic")]
+        public string ModelTypeName
+        {
+            get { return GetBehaviorType().FullName; }
+        }
 
         public BehaviorModel()
         {
             m_bhvModelAttr = GetType().GetAttribute<BehaviorModelAttribute>();
-        }
-
-        public string GetName()
-        {
-            return m_bhvModelAttr.Name;
+            m_name = null;
         }
 
         public Type GetBehaviorType()
@@ -49,11 +59,14 @@ namespace TouhouSpring.Behaviors
 
     public class BehaviorModelAttribute : Attribute
     {
+        private string m_defaultName;
         private string m_description;
+        private string m_category;
 
-        public string Name
+        public string DefaultName
         {
-            get; private set;
+            get { return m_defaultName ?? BehaviorType.Name; }
+            set { m_defaultName = value; }
         }
 
         public string Description
@@ -62,22 +75,20 @@ namespace TouhouSpring.Behaviors
             set { m_description = value; }
         }
 
+        public string Category
+        {
+            get { return m_category ?? String.Empty; }
+            set { m_category = value; }
+        }
+
         public Type BehaviorType
         {
             get; private set;
         }
 
-        public BehaviorModelAttribute(string name, Type behaviorType)
+        public BehaviorModelAttribute(Type behaviorType)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            else if (name == String.Empty)
-            {
-                throw new ArgumentException("Name must not be empty.");
-            }
-            else if (behaviorType == null)
+            if (behaviorType == null)
             {
                 throw new ArgumentNullException("behaviorType");
             }
@@ -86,7 +97,6 @@ namespace TouhouSpring.Behaviors
                 throw new IncompleteTypeDefinitionException(typeof(IBehavior));
             }
 
-            Name = name;
             BehaviorType = behaviorType;
         }
     }

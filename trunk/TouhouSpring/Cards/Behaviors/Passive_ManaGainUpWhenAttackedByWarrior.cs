@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("M子", typeof(Passive_ManaGainUpWhenAttackedByWarrior))]
+        [BehaviorModel(typeof(Passive_ManaGainUpWhenAttackedByWarrior), DefaultName = "M子")]
         public class ModelType : BehaviorModel
         { }
     }

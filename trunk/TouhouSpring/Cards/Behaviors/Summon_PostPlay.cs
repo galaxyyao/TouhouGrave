@@ -20,7 +20,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel("Summon (PostPlay)", typeof(Summon_PostPlay))]
+        [BehaviorModel(typeof(Summon_PostPlay), Category = "Deprecated")]
         public class ModelType : BehaviorModel
         {
             public CardModelReference SummonType { get; set; }

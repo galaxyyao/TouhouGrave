@@ -65,7 +65,7 @@ namespace TouhouSpring.Behaviors
 			return true;
 		}
 
-        [BehaviorModel("Freeze", typeof(Freeze))]
+        [BehaviorModel(typeof(Freeze))]
         public class ModelType : BehaviorModel
         {
             public int ManaCost { get; set; }
