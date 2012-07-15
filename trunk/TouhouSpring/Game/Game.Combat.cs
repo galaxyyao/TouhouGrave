@@ -19,7 +19,7 @@ namespace TouhouSpring
                 if (blockers.Count == 0)
                 {
                     UpdateHealth(OpponentPlayer, -attackerWarriorBhv.Attack, attackerWarriorBhv);
-                    attacker.State = CardState.CoolingDown;
+                    attackerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
                 }
                 else if (blockers.Count == 1)
                 {
@@ -38,8 +38,8 @@ namespace TouhouSpring
                     TriggerGlobal(new Triggers.PostCardDamagedContext(this, attacker, preDamageOnAttacker.DamageToDeal, blockerWarriorBhv));
                     TriggerGlobal(new Triggers.PostCardDamagedContext(this, blocker, preDamageOnBlocker.DamageToDeal, attackerWarriorBhv));
 
-                    attacker.State = CardState.CoolingDown;
-                    blocker.State = CardState.CoolingDown;
+                    attackerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
+                    blockerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
                 }
                 //else if (blockers.Count == 2)
                 //{

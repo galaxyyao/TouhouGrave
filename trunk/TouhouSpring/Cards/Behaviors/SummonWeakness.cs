@@ -10,25 +10,26 @@ namespace TouhouSpring.Behaviors
         , ITrigger<PostCardPlayedContext>
         , ITrigger<PlayerTurnEndedContext>
     {
+        class Effect : SimpleBehavior<Effect>
+        { }
+
         public void Trigger(PostCardPlayedContext context)
         {
-            if(!IsOnBattlefield)
-                return;
-            if (context.CardPlayed.Behaviors.Get<Warrior>() != null
-                && context.CardPlayed.Owner == Host.Owner)
+            if (context.CardPlayed == Host)
             {
-                context.CardPlayed.Behaviors.Add(new Weakness(context.CardPlayed));
+                Host.Behaviors.Add(new Effect());
+                context.Game.SetWarriorState(Host, WarriorState.CoolingDown);
             }
         }
 
         public void Trigger(PlayerTurnEndedContext context)
         {
-            if (!IsOnBattlefield)
-                return;
-            if (context.Game.PlayerPlayer == Host.Owner && Host.Behaviors.Get<Weakness>()!=null)
+            if (IsOnBattlefield
+                && context.Game.PlayerPlayer == Host.Owner
+                && Host.Behaviors.Has<Effect>())
             {
-                var weakness = Host.Behaviors.Get<Weakness>();
-                Host.Behaviors.Remove(weakness);
+                Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
+                context.Game.SetWarriorState(Host, WarriorState.StandingBy);
             }
         }
 

@@ -6,12 +6,6 @@ using System.Text;
 
 namespace TouhouSpring
 {
-	public enum CardState
-	{
-		StandingBy,
-		CoolingDown
-	}
-
 	/// <summary>
 	/// Base class for all cards with basic properties like name and type.
 	/// </summary>
@@ -27,11 +21,6 @@ namespace TouhouSpring
 			get; internal set;
 		}
 
-		public CardState State
-		{
-			get; set;
-		}
-
 		public BaseCard(ICardModel model, Player owner)
 		{
             if (model == null)
@@ -45,7 +34,6 @@ namespace TouhouSpring
 
             Model = model;
             Owner = owner;
-            State = CardState.StandingBy;
             Behaviors = new Behaviors.BehaviorList(this);
             Model.Behaviors.ForEach(bhv => Behaviors.Add(bhv.InstantiatePersistent()));
 		}

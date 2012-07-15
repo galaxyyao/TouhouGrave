@@ -43,7 +43,9 @@ namespace TouhouSpring.Behaviors
 
         private IEnumerable<BaseCard> GetTargetSet()
         {
-            return Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>() && card.State != CardState.CoolingDown);
+            return Host.Owner.CardsOnBattlefield.Where(card =>
+                card.Behaviors.Has<Warrior>()
+                && card.Behaviors.Get<Warrior>().State != WarriorState.CoolingDown);
         }
 
 		[BehaviorModel("Sacrifice", typeof(Sacrifice))]

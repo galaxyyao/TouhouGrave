@@ -117,7 +117,6 @@ namespace TouhouSpring
 			}
 
 			// reset card states
-			card.State = CardState.StandingBy;
 			for (int i = 0; i < card.Behaviors.Count; ++i)
 			{
 				if (!card.Behaviors[i].Persistent)
@@ -203,24 +202,32 @@ namespace TouhouSpring
 		/// Reset the cards' states in the specified player's battlefield.
 		/// </summary>
 		/// <param name="player">The player whose cards are going to be reset</param>
-		public void ResetCardsStateInBattlefield(Player player)
+		public void ResetWarriorState(Player player)
 		{
 			if (player == null)
 			{
 				throw new ArgumentNullException("player");
 			}
 
-			player.m_battlefieldCards.ForEach(card => card.State = CardState.StandingBy);
+			player.m_battlefieldCards
+                .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
+                .ForEach(card => card.Behaviors.Get<Behaviors.Warrior>().State = Behaviors.WarriorState.StandingBy);
 		}
 
-		public void SetCardState(BaseCard card, CardState state)
+		public void SetWarriorState(BaseCard card, Behaviors.WarriorState state)
 		{
 			if (card == null)
 			{
 				throw new ArgumentNullException("card");
 			}
 
-			card.State = state;
+            var warriorBhv = card.Behaviors.Get<Behaviors.Warrior>();
+            if (warriorBhv == null)
+            {
+                throw new ArgumentException(String.Format("Card {0} is not a warrior.", card.Model.Name));
+            }
+
+			warriorBhv.State = state;
 		}
 
 		/// <summary>

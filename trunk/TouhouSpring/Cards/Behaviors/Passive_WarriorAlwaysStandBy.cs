@@ -12,7 +12,9 @@ namespace TouhouSpring.Behaviors
         public void Trigger(Triggers.PlayerTurnEndedContext context)
         {
             if (IsOnBattlefield)
-                Host.State = CardState.StandingBy;
+            {
+                context.Game.SetWarriorState(Host, WarriorState.StandingBy);
+            }
         }
 
         [BehaviorModel("门卫", typeof(Passive_WarriorAlwaysStandBy))]

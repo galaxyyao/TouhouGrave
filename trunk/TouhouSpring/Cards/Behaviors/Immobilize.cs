@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
 		{
 			if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
 			{
-				context.Game.SetCardState(Host, CardState.CoolingDown);
+				context.Game.SetWarriorState(Host, WarriorState.CoolingDown);
 			}
 		}
 	}

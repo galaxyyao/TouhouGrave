@@ -26,7 +26,7 @@ namespace TouhouSpring.Behaviors
 				reason = "Insufficient mana";
 				return false;
 			}
-			if (Host.State == CardState.CoolingDown)
+			else if (Host.Behaviors.Get<Warrior>().State == WarriorState.CoolingDown)
 			{
 				reason = "Cannot cast under Cooling Down state";
 				return false;
@@ -53,13 +53,13 @@ namespace TouhouSpring.Behaviors
 
 			var target = selectCards[0];
 
-			game.SetCardState(target, CardState.CoolingDown);
+			game.SetWarriorState(target, WarriorState.CoolingDown);
 			target.Behaviors.Add(immoblize);
 			//target.Behaviors.Add(defenseModifier);
 			target.Behaviors.Add(effect);
 			target.Behaviors.Add(lasting);
 			game.UpdateMana(Host.Owner, -Model.ManaCost);
-			Host.State = CardState.CoolingDown;
+            game.SetWarriorState(Host, WarriorState.CoolingDown);
 
 			reason = String.Empty;
 			return true;

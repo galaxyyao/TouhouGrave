@@ -97,7 +97,7 @@ namespace TouhouSpring.Interactions
         {
             return Controller.Player.CardsOnBattlefield.Where(card =>
                 card.Behaviors.Has<Behaviors.Warrior>()
-                && card.State == CardState.StandingBy
+                && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy
                 && !card.Behaviors.Has<Behaviors.NonBlocker>());
         }
 

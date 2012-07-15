@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    class Unblockable : BaseBehavior<Unblockable.ModelType>
+    public class Unblockable : BaseBehavior<Unblockable.ModelType>
     {
         [BehaviorModel("Unblockable", typeof(Unblockable), Description = "The card can't be blocked in combats.")]
         public class ModelType : BehaviorModel

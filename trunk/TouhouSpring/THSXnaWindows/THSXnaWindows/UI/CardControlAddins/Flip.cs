@@ -30,7 +30,8 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var needFlip = GameApp.Service<Services.GameUI>().ZoomedInCard != Control
-                           && Card.State == CardState.CoolingDown;
+                           && Card.Behaviors.Has<Behaviors.Warrior>()
+                           && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown;
 
             if (needFlip != m_lastFlipped)
             {

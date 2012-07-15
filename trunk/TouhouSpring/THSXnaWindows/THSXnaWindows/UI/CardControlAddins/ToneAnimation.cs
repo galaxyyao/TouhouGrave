@@ -29,7 +29,9 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var gameUI = GameApp.Service<Services.GameUI>();
-            bool grayscale = gameUI.ZoomedInCard != Control && Card.State == CardState.CoolingDown;
+            bool grayscale = gameUI.ZoomedInCard != Control
+                             && Card.Behaviors.Has<Behaviors.Warrior>()
+                             && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown;
 
             if (grayscale != m_lastGrayscale)
             {

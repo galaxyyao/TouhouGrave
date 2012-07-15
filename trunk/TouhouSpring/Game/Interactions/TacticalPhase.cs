@@ -86,7 +86,9 @@ namespace TouhouSpring.Interactions
 
         public IIndexable<BaseCard> ComputeCastFromSet()
         {
-            return Controller.Player.CardsOnBattlefield.Where(card => card.State == CardState.StandingBy).ToArray().ToIndexable();
+            return Controller.Player.CardsOnBattlefield.Where(card =>
+                card.Behaviors.Has<Behaviors.Warrior>()
+                && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy).ToArray().ToIndexable();
         }
 
         protected void Validate(Result result)

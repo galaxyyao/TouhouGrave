@@ -30,7 +30,7 @@ namespace TouhouSpring
                 IsWarriorPlayedThisTurn = false;
 
                 CurrentPhase = "PhaseA";
-                ResetCardsStateInBattlefield(PlayerPlayer);
+                ResetWarriorState(PlayerPlayer);
                 TriggerGlobal(new Triggers.PlayerTurnStartedContext(this));
 
                 CurrentPhase = "Tactical";
@@ -70,7 +70,9 @@ namespace TouhouSpring
                 TriggerGlobal(new Triggers.AttackPhaseStartedContext(this));
                 var declaredAttackers = new Interactions.SelectCards(
                     PlayerController,
-                    PlayerPlayer.CardsOnBattlefield.Where(card => card.Behaviors.Has<Behaviors.Warrior>() && card.State == CardState.StandingBy).ToArray().ToIndexable(),
+                    PlayerPlayer.CardsOnBattlefield.Where(card =>
+                        card.Behaviors.Has<Behaviors.Warrior>()
+                        && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Multiple,
                     "Select warriors in battlefield to make them attackers.").Run().Clone();
                 TriggerGlobal(new Triggers.AttackPhaseEndedContext(this));
