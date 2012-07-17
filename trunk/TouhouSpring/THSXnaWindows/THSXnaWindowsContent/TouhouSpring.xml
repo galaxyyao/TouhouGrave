@@ -576,8 +576,8 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
-          <Attack>2</Attack>
-          <Defense>2</Defense>
+          <Attack>1</Attack>
+          <Defense>1</Defense>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Name>ManaCost_PrePlay</Name>
