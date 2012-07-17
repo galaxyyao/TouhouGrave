@@ -31,6 +31,7 @@
     <Item>#Resource28</Item>
     <Item>#Resource29</Item>
     <Item>#Resource30</Item>
+    <Item>#Resource31</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
@@ -398,6 +399,10 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Spell_DamageDirectToPlayer+ModelType">
+          <Name>五道难题</Name>
+          <Damage>5</Damage>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
@@ -1056,6 +1061,42 @@
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource31" Type="TouhouSpring.EditorCardModel">
+      <Id>yuyuko</Id>
+      <Name>幽幽子</Name>
+      <Description>
+        【主角】
+        攻击力  3
+        体力  30
+
+        反魂蝶
+        将己方最近1张进入
+        冥界的战斗卡放回场上
+      
+      </Description>
+      <ArtworkUri>Textures/Characters/yuyuko_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
+          <Name>Hero</Name>
+          <Health>30</Health>
+          <Mana>5</Mana>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>3</Attack>
+          <Defense>30</Defense>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
+          <Name>NonBlocker</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
+          <Name>PhaseSpecific</Name>
+          <TacticalPhase>true</TacticalPhase>
+          <BlockPhase>false</BlockPhase>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
   </Resources>
 </XnaContent>

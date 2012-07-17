@@ -70,6 +70,7 @@
     <Compile Include="Behaviors\Passive_WarriorDefenseDownWhenAttacked.cs" />
     <Compile Include="Behaviors\Passive_HeroPenetrate.cs" />
     <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
+    <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Behaviors\MasterSpark.cs" />
     <Compile Include="Behaviors\Penetrate.cs" />
