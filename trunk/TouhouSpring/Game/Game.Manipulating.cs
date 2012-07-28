@@ -136,24 +136,6 @@ namespace TouhouSpring
 		}
 
 		/// <summary>
-		/// Draw a card for the specified player.
-		/// </summary>
-		/// <param name="player">The player to draw a card</param>
-		public void DrawCard(Player player)
-		{
-			if (player == null)
-			{
-				throw new ArgumentNullException("player");
-			}
-
-			BaseCard card = player.m_library.RemoveCardFromTop();
-			Debug.Assert(card != null && card.Owner == player);
-			player.m_handSet.Add(card);
-			m_controllers.ForEach(c => c.InternalOnCardDrawn(card));
-            TriggerGlobal(new Triggers.PostCardDrawnContext(this, card));
-		}
-
-		/// <summary>
 		/// Play a card.
 		/// </summary>
 		/// <param name="card">The card to be played</param>
@@ -228,20 +210,6 @@ namespace TouhouSpring
             }
 
 			warriorBhv.State = state;
-		}
-
-		/// <summary>
-		/// Shuffle a player's library
-		/// </summary>
-		/// <param name="player">The player whose library is going to be shuffled</param>
-		public void ShuffleLibrary(Player player)
-		{
-			if (player == null)
-			{
-				throw new ArgumentNullException("player");
-			}
-
-			player.m_library.Shuffle(m_randomGenerator);
 		}
 	}
 }

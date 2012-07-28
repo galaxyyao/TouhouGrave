@@ -24,6 +24,8 @@ namespace TouhouSpring
             InPlayerPhases = true;
             Round = 0;
 
+            RunCommand(new Commands.DrawCard { PlayerDrawing = m_players[0] });
+
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 Round++;
@@ -53,7 +55,7 @@ namespace TouhouSpring
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
                         UpdateMana(PlayerPlayer, -1);
-                        DrawCard(PlayerPlayer);
+                        RunCommand(new Commands.DrawCard { PlayerDrawing = PlayerPlayer });
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
                     {

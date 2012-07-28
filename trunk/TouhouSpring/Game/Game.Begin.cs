@@ -5,20 +5,24 @@ using System.Text;
 
 namespace TouhouSpring
 {
-	public partial class Game
-	{
-		/// <summary>
-		/// Call to actually begin a game.
-		/// </summary>
-		private void Begin()
-		{
-			// shuffle player's library
-			m_players.ForEach(p => ShuffleLibrary(p));
+    public partial class Game
+    {
+        /// <summary>
+        /// Call to actually begin a game.
+        /// </summary>
+        private void Begin()
+        {
+            foreach (var player in Players)
+            {
+                // shuffle player's library
+                RunCommand(new Commands.ShuffleLibrary { PlayerShuffling = player });
 
-			// TODO: Non-trivial determination of the acting player for the first turn
-			m_actingPlayer = 0;
+                // draw initial hands
+                5.Repeat(i => RunCommand(new Commands.DrawCard { PlayerDrawing = player }));
+            }
 
-			m_players.ForEach(player => 5.Repeat(i => DrawCard(player)));
-		}
-	}
+            // TODO: Non-trivial determination of the acting player for the first turn
+            m_actingPlayer = 0;
+        }
+    }
 }

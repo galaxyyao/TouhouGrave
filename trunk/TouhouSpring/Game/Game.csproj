@@ -43,6 +43,7 @@
     <Compile Include="BaseCard.Behaviors.cs" />
     <Compile Include="BaseCard.cs" />
     <Compile Include="BaseController.Callbacks.cs" />
+    <Compile Include="BaseController.CommandTriggers.cs" />
     <Compile Include="BaseController.cs" />
     <Compile Include="BaseController.Messaging.cs" />
     <Compile Include="Behaviors\BaseBehavior.cs" />
@@ -62,6 +63,16 @@
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
+    <Compile Include="Commands\CommandContext.cs" />
+    <Compile Include="Commands\DrawCard.cs" />
+    <Compile Include="Commands\IPrologTrigger.cs" />
+    <Compile Include="Commands\ExecutionPhase.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\IPrerequisiteTrigger.cs" />
+    <Compile Include="Commands\IEpilogTrigger.cs" />
+    <Compile Include="Commands\ISetupTrigger.cs" />
+    <Compile Include="Commands\ShuffleLibrary.cs" />
+    <Compile Include="Game.CommandStack.cs" />
     <Compile Include="Game.Trigger.cs" />
     <Compile Include="IntegerEx.cs" />
     <Compile Include="Deck.cs" />

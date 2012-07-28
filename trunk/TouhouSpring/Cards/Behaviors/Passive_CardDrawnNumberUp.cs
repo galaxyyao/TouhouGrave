@@ -7,12 +7,12 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_CardDrawnNumberUp :
         BaseBehavior<Passive_CardDrawnNumberUp.ModelType>,
-        ITrigger<Triggers.PostCardDrawnContext>,
-        ITrigger<Triggers.PlayerTurnStartedContext>
+        ITrigger<Triggers.PlayerTurnStartedContext>,
+        Commands.IEpilogTrigger<Commands.DrawCard>
     {
         private bool m_isMoreCardDrawn = false;
 
-        public void Trigger(Triggers.PostCardDrawnContext context)
+        void Commands.IEpilogTrigger<Commands.DrawCard>.Run(Commands.CommandContext context)
         {
             if (IsOnBattlefield && !m_isMoreCardDrawn)
             {
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
                         hostCardNumber++;
                 }
                 for (int i = 0; i < hostCardNumber; i++)
-                    context.Game.DrawCard(Host.Owner);
+                    context.Game.RunCommand(new Commands.DrawCard { PlayerDrawing = Host.Owner });
             }
         }
 
