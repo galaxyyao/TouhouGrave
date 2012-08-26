@@ -11,6 +11,7 @@ namespace TouhouSpring.Services
 	[LifetimeDependency(typeof(Styler))]
 	[LifetimeDependency(typeof(UIManager))]
 	[UpdateDependency(typeof(UIManager))]
+    [RenderDependency(typeof(UIManager))]
 	partial class MenuUI : GameService
 	{
 		private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
@@ -53,6 +54,7 @@ namespace TouhouSpring.Services
 				if (id == "freemode")
 				{
 					CurrentPage = m_pages["FreeMode"];
+                    GameApp.Service<Graphics.TextRenderer>().Dump();
 				}
                 //else if (id == "storymode")
                 //{
@@ -69,7 +71,7 @@ namespace TouhouSpring.Services
 
 			m_pages["FreeMode"].MenuClicked += (id, item) =>
 			{
-				if (id == "vsai")
+                if (id == "vsai")
 				{
 					CurrentPage = null;
 					// detach menu ui
@@ -168,6 +170,8 @@ namespace TouhouSpring.Services
 			m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
 		}
 
+        private System.Drawing.Font m_font = new System.Drawing.Font("Microsoft YaHei", 32);
+
 		public override void Update(float deltaTime)
 		{
 			foreach (var page in m_pages.Values)
@@ -178,6 +182,18 @@ namespace TouhouSpring.Services
 					page.Update(deltaTime);
 				}
 			}
+
+            
+
+            //GameApp.Service<Graphics.TextRenderer>().DrawText("AaBb", System.Drawing.SystemFonts.DefaultFont);
+            //GameApp.Service<Graphics.TextRenderer>().DrawText("博丽灵梦", m_font);
 		}
+
+        public override void Render()
+        {
+            //var mtx = Matrix.CreateScale(0.5f);
+            var mtx = Matrix.Identity;
+            GameApp.Service<Graphics.TextRenderer>().DrawText("博丽灵梦", m_font, Color.Black, mtx);
+        }
 	}
 }
