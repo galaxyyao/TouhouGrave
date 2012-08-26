@@ -45,19 +45,25 @@ void BlitPS(
 void DrawVS(
 	in float2 iCorner	: POSITION0,
 	in float2 iPos		: TEXCOORD0,
-	in float2 iUV		: TEXCOORD1,
-	in float4 iColor	: COLOR0,
-	in float4 iChannel	: COLOR1,
+	in float4 iUV_Mask	: COLOR0,
+	in float4 iColor	: COLOR1,
 	out float4 oPos		: POSITION0,
 	out float2 oUV		: TEXCOORD0,
 	out float4 oColor	: COLOR0,
 	out float4 oChannel	: COLOR1)
 {
+	const float4 masks[] = {
+		{ 0, 0, 0, 1 },
+		{ 1, 0, 0, 0 },
+		{ 0, 1, 0, 0 },
+		{ 0, 0, 1, 0 },
+	};
+
 	oPos = float4(iPos + iCorner * Draw_VPPageSize, 0, 1);
 	oPos = mul(oPos, Draw_WorldViewProj);
-	oUV = iUV + iCorner * Draw_SrcPageSize;
+	oUV = (iUV_Mask.xy + iCorner) * Draw_SrcPageSize;
 	oColor = iColor;
-	oChannel = iChannel;
+	oChannel = masks[(int)iUV_Mask.z];
 }
 
 void DrawPS(

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Byte4 = Microsoft.Xna.Framework.Graphics.PackedVector.Byte4;
 using SystemFont = System.Drawing.Font;
 
 namespace TouhouSpring.Graphics
 {
     partial class TextRenderer
     {
-        private const int InstanceBufferGranularity = 32;
+        private const int VertexBufferGranularity = 32;
 
         private struct PositionedGlyphData
         {
@@ -26,10 +27,9 @@ namespace TouhouSpring.Graphics
 
         private struct PageInstance
         {
-            public Vector2 m_posLeftTop;
-            public Vector2 m_uvLeftTop;
+            public Vector2 m_leftTopPos;
+            public Byte4 m_localPageXY_mask;
             public Color m_color;
-            public Color m_channelMask;
         };
 
         private VertexDeclaration m_instanceVertDecl;
@@ -91,35 +91,15 @@ namespace TouhouSpring.Graphics
 
                 foreach (var glyphPage in batch)
                 {
-                    int channel = glyphPage.m_pageIndex / PagesInOneCacheTexture % 4;
-                    switch (channel)
-                    {
-                        case 0:
-                            pageInstances[counter].m_channelMask = new Color(0, 0, 0, 255);
-                            break;
-                        case 1:
-                            pageInstances[counter].m_channelMask = new Color(255, 0, 0, 0);
-                            break;
-                        case 2:
-                            pageInstances[counter].m_channelMask = new Color(0, 255, 0, 0);
-                            break;
-                        case 3:
-                            pageInstances[counter].m_channelMask = new Color(0, 0, 255, 0);
-                            break;
-                        default:
-                            break;
-                    }
-                    pageInstances[counter].m_color = color;
-
-                    pageInstances[counter].m_posLeftTop.X = (glyphPage.m_leftTop.X /*- 0.5f*/) / vpWidth * 2 - 1;
-                    pageInstances[counter].m_posLeftTop.Y = 1 - (glyphPage.m_leftTop.Y /*- 0.5f*/) / vpHeight * 2;
-
                     var localPageIndex = glyphPage.m_pageIndex % PagesInOneCacheTexture;
-                    var pageLeft = localPageIndex % PagesInOneRow * PageSize;
-                    var pageTop = localPageIndex / PagesInOneRow * PageSize;
+                    var pageX = localPageIndex % PagesInOneRow;
+                    var pageY = localPageIndex / PagesInOneRow;
+                    int channel = glyphPage.m_pageIndex / PagesInOneCacheTexture % 4;
 
-                    pageInstances[counter].m_uvLeftTop.X = pageLeft / (float)CacheTextureSize;
-                    pageInstances[counter].m_uvLeftTop.Y = pageTop / (float)CacheTextureSize;
+                    pageInstances[counter].m_leftTopPos.X = (glyphPage.m_leftTop.X - 0.5f) / vpWidth * 2 - 1;
+                    pageInstances[counter].m_leftTopPos.Y = 1 - (glyphPage.m_leftTop.Y - 0.5f) / vpHeight * 2;
+                    pageInstances[counter].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
+                    pageInstances[counter].m_color = color;
 
                     ++counter;
                 }
@@ -157,7 +137,7 @@ namespace TouhouSpring.Graphics
 
         private int CopyInstanceVertices(PageInstance[] instances, int startIndex, int numElements)
         {
-            int roundedLength = ((numElements - 1) / InstanceBufferGranularity + 1) * InstanceBufferGranularity;
+            int roundedLength = ((numElements - 1) / VertexBufferGranularity + 1) * VertexBufferGranularity;
             if (m_instanceVertices != null && m_instanceVertices.VertexCount < roundedLength)
             {
                 m_instanceVertices.Dispose();
@@ -201,9 +181,8 @@ namespace TouhouSpring.Graphics
 
             m_instanceVertDecl = new VertexDeclaration(
                 new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
-                new VertexElement(8, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 1),
-                new VertexElement(16, VertexElementFormat.Color, VertexElementUsage.Color, 0),
-                new VertexElement(20, VertexElementFormat.Color, VertexElementUsage.Color, 1)
+                new VertexElement(8, VertexElementFormat.Byte4, VertexElementUsage.Color, 0),
+                new VertexElement(12, VertexElementFormat.Color, VertexElementUsage.Color, 1)
             );
 
             m_techDraw = m_effect.Techniques["DrawText"];
