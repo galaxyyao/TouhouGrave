@@ -25,30 +25,27 @@ namespace TouhouSpring.Graphics
             public int m_pageIndex;
         }
 
-        private struct PageInstance
+        private struct VertexDataDraw
         {
+            public Byte4 m_corner;
             public Vector2 m_leftTopPos;
             public Byte4 m_localPageXY_mask;
             public Color m_color;
         };
 
-        private VertexDeclaration m_instanceVertDecl;
-        private DynamicVertexBuffer m_instanceVertices;
-        private VertexBuffer m_quadVertices;
-        private IndexBuffer m_quadIndices;
+        private VertexDeclaration m_vertDeclDraw;
+        private DynamicVertexBuffer m_verticesDraw;
+        private int m_verticesDrawWriteCursor = 0;
         private EffectTechnique m_techDraw;
         private EffectParameter m_paramPageSizeInViewport;
         private EffectParameter m_paramPageSizeInSrc;
         private EffectParameter m_paramWorldViewProj;
-
-        private int m_instanceBufferWriteCursor = 0;
 
         public void DrawText(string text, SystemFont font, Color color, Matrix transform)
         {
             var glyphs = LayoutText(text, font);
             int totalPages = glyphs.Sum(glyph => glyph.m_glyphData.m_pageIndices.Length);
             var glyphPages = new PositionedGlyphPage[totalPages];
-            var pageInstances = new PageInstance[totalPages];
 
             int counter = 0;
             foreach (var glyph in glyphs)
@@ -72,7 +69,7 @@ namespace TouhouSpring.Graphics
             counter = 0;
 
             var device = GameApp.Instance.GraphicsDevice;
-            device.Indices = m_quadIndices;
+            device.Indices = null;
             device.BlendState = BlendState.NonPremultiplied;
             device.DepthStencilState = DepthStencilState.None;
             device.RasterizerState = RasterizerState.CullCounterClockwise;
@@ -81,6 +78,8 @@ namespace TouhouSpring.Graphics
             var vpWidth = (float)device.Viewport.Width;
             var vpHeight = (float)device.Viewport.Height;
             m_paramPageSizeInViewport.SetValue(new Vector2(PageSize / vpWidth * 2, -PageSize / vpHeight * 2));
+
+            var vertices = new VertexDataDraw[totalPages * 6];
 
             foreach (var batch in glyphPages.GroupBy(batchCriteria))
             {
@@ -96,22 +95,29 @@ namespace TouhouSpring.Graphics
                     var pageY = localPageIndex / PagesInOneRow;
                     int channel = glyphPage.m_pageIndex / PagesInOneCacheTexture % 4;
 
-                    pageInstances[counter].m_leftTopPos.X = (glyphPage.m_leftTop.X - 0.5f) / vpWidth * 2 - 1;
-                    pageInstances[counter].m_leftTopPos.Y = 1 - (glyphPage.m_leftTop.Y - 0.5f) / vpHeight * 2;
-                    pageInstances[counter].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
-                    pageInstances[counter].m_color = color;
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        vertices[counter + i].m_leftTopPos.X = (glyphPage.m_leftTop.X - 0.5f) / vpWidth * 2 - 1;
+                        vertices[counter + i].m_leftTopPos.Y = 1 - (glyphPage.m_leftTop.Y - 0.5f) / vpHeight * 2;
+                        vertices[counter + i].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
+                        vertices[counter + i].m_color = color;
+                    }
+                    vertices[counter + 0].m_corner = new Byte4(0, 0, 0, 0);
+                    vertices[counter + 1].m_corner = vertices[counter + 4].m_corner = new Byte4(1, 0, 0, 0);
+                    vertices[counter + 2].m_corner = vertices[counter + 3].m_corner = new Byte4(0, 1, 0, 0);
+                    vertices[counter + 5].m_corner = new Byte4(1, 1, 0, 0);
 
-                    ++counter;
+                    counter += 6;
                 }
 
                 var batchSize = counter - arrayStart;
-                var instanceBufferOffset = CopyInstanceVertices(pageInstances, arrayStart, batchSize);
-                device.SetVertexBuffers(m_quadVertices, new VertexBufferBinding(m_instanceVertices, instanceBufferOffset, 1));
+                var bufferOffset = CopyInstanceVertices(vertices, arrayStart, batchSize);
+                device.SetVertexBuffer(m_verticesDraw, bufferOffset);
 
                 foreach (var pass in m_techDraw.Passes)
                 {
                     pass.Apply();
-                    device.DrawInstancedPrimitives(PrimitiveType.TriangleStrip, 0, 0, 4, 0, 2, batchSize);
+                    device.DrawPrimitives(PrimitiveType.TriangleList, 0, counter / 3);
                 }
             }
         }
@@ -135,54 +141,41 @@ namespace TouhouSpring.Graphics
             return glyphs;
         }
 
-        private int CopyInstanceVertices(PageInstance[] instances, int startIndex, int numElements)
+        private int CopyInstanceVertices(VertexDataDraw[] vertices, int startIndex, int numElements)
         {
             int roundedLength = ((numElements - 1) / VertexBufferGranularity + 1) * VertexBufferGranularity;
-            if (m_instanceVertices != null && m_instanceVertices.VertexCount < roundedLength)
+            if (m_verticesDraw != null && m_verticesDraw.VertexCount < roundedLength)
             {
-                m_instanceVertices.Dispose();
-                m_instanceVertices = null;
+                m_verticesDraw.Dispose();
+                m_verticesDraw = null;
             }
-            if (m_instanceVertices == null)
+            if (m_verticesDraw == null)
             {
-                m_instanceVertices = new DynamicVertexBuffer(GameApp.Instance.GraphicsDevice, m_instanceVertDecl, roundedLength, BufferUsage.WriteOnly);
-                m_instanceBufferWriteCursor = 0;
+                m_verticesDraw = new DynamicVertexBuffer(GameApp.Instance.GraphicsDevice, m_vertDeclDraw, roundedLength, BufferUsage.WriteOnly);
+                m_verticesDrawWriteCursor = 0;
             }
 
             SetDataOptions hint = SetDataOptions.NoOverwrite;
-            if (m_instanceBufferWriteCursor + numElements > m_instanceVertices.VertexCount)
+            if (m_verticesDrawWriteCursor + numElements > m_verticesDraw.VertexCount)
             {
                 hint = SetDataOptions.Discard;
-                m_instanceBufferWriteCursor = 0;
+                m_verticesDrawWriteCursor = 0;
             }
 
-            var vertSize = m_instanceVertDecl.VertexStride;
-            var offsetInVertices = m_instanceBufferWriteCursor;
-            m_instanceVertices.SetData(offsetInVertices * vertSize, instances, startIndex, numElements, vertSize, hint);
-            m_instanceBufferWriteCursor += numElements;
+            var vertSize = m_vertDeclDraw.VertexStride;
+            var offsetInVertices = m_verticesDrawWriteCursor;
+            m_verticesDraw.SetData(offsetInVertices * vertSize, vertices, startIndex, numElements, vertSize, hint);
+            m_verticesDrawWriteCursor += numElements;
             return offsetInVertices;
         }
 
         private void Initialize_DrawText()
         {
-            var quadVertDecl = new VertexDeclaration(
-                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0)
-            );
-            m_quadVertices = new VertexBuffer(GameApp.Instance.GraphicsDevice, quadVertDecl, 4, BufferUsage.None);
-            m_quadVertices.SetData(new Vector2[] {
-                new Vector2(0, 0),
-                new Vector2(1, 0),
-                new Vector2(0, 1),
-                new Vector2(1, 1),
-            });
-
-            m_quadIndices = new IndexBuffer(GameApp.Instance.GraphicsDevice, IndexElementSize.SixteenBits, 4, BufferUsage.None);
-            m_quadIndices.SetData(new UInt16[] { 0, 1, 2, 3 });
-
-            m_instanceVertDecl = new VertexDeclaration(
-                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
-                new VertexElement(8, VertexElementFormat.Byte4, VertexElementUsage.Color, 0),
-                new VertexElement(12, VertexElementFormat.Color, VertexElementUsage.Color, 1)
+            m_vertDeclDraw = new VertexDeclaration(
+                new VertexElement(0, VertexElementFormat.Byte4, VertexElementUsage.Position, 0),
+                new VertexElement(4, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
+                new VertexElement(12, VertexElementFormat.Byte4, VertexElementUsage.Color, 0),
+                new VertexElement(16, VertexElementFormat.Color, VertexElementUsage.Color, 1)
             );
 
             m_techDraw = m_effect.Techniques["DrawText"];
@@ -193,13 +186,11 @@ namespace TouhouSpring.Graphics
 
         private void Destroy_DrawText()
         {
-            if (m_instanceVertices != null)
+            if (m_verticesDraw != null)
             {
-                m_instanceVertices.Dispose();
+                m_verticesDraw.Dispose();
             }
-            m_instanceVertDecl.Dispose();
-            m_quadIndices.Dispose();
-            m_quadVertices.Dispose();
+            m_vertDeclDraw.Dispose();
         }
     }
 }
