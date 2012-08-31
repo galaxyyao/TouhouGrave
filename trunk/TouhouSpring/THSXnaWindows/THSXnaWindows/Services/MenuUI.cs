@@ -191,8 +191,10 @@ namespace TouhouSpring.Services
 
         public override void Render()
         {
-            //var mtx = Matrix.CreateScale(0.5f);
-            var mtx = Matrix.Identity;
+            var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            var mtx = Matrix.CreateTranslation((mouseState.X - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Width * 2,
+                - (mouseState.Y - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Height * 2, 0);
+            mtx *= Matrix.CreateScale(1.2f, 1.2f, 1.0f);
             GameApp.Service<Graphics.TextRenderer>().DrawText("博丽灵梦", m_font, Color.Black, mtx);
         }
 	}

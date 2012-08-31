@@ -84,6 +84,7 @@
     <Compile Include="Graphics\RenderManager.cs" />
     <Compile Include="Graphics\RenderManager.QuadRenderer.cs" />
     <Compile Include="Graphics\RenderManager.TextRenderer.cs" />
+    <Compile Include="Graphics\TextRenderer.Atlas.cs" />
     <Compile Include="Graphics\TextRenderer.cs" />
     <Compile Include="Graphics\TextRenderer.DrawText.cs" />
     <Compile Include="Graphics\TextRenderer.Fonts.cs" />

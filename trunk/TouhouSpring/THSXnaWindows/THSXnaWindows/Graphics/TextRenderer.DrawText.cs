@@ -5,7 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Byte4 = Microsoft.Xna.Framework.Graphics.PackedVector.Byte4;
+using SystemColor = System.Drawing.Color;
 using SystemFont = System.Drawing.Font;
+using SystemSolidBrush = System.Drawing.SolidBrush;
 
 namespace TouhouSpring.Graphics
 {
@@ -33,6 +35,7 @@ namespace TouhouSpring.Graphics
             public Color m_color;
         };
 
+        private SystemSolidBrush m_whiteBrush;
         private VertexDeclaration m_vertDeclDraw;
         private DynamicVertexBuffer m_verticesDraw;
         private int m_verticesDrawWriteCursor = 0;
@@ -171,6 +174,8 @@ namespace TouhouSpring.Graphics
 
         private void Initialize_DrawText()
         {
+            m_whiteBrush = new SystemSolidBrush(SystemColor.White);
+
             m_vertDeclDraw = new VertexDeclaration(
                 new VertexElement(0, VertexElementFormat.Byte4, VertexElementUsage.Position, 0),
                 new VertexElement(4, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
@@ -191,6 +196,8 @@ namespace TouhouSpring.Graphics
                 m_verticesDraw.Dispose();
             }
             m_vertDeclDraw.Dispose();
+
+            m_whiteBrush.Dispose();
         }
     }
 }
