@@ -2,6 +2,10 @@
 float2 Draw_VPPageSize;		// page size in render target space
 float2 Draw_SrcPageSize;	// page size in source texture space
 float4x4 Draw_WorldViewProj;
+float2 Draw_TextureSize;
+float2 Draw_InvTextureSize;
+float2 Draw_NumPages;
+float2 Draw_InvNumPages;
 
 texture TheTexture;
 
@@ -66,13 +70,36 @@ void DrawVS(
 	oChannel = masks[(int)iUV_Mask.z];
 }
 
+float ComputeMipmapLevel(float2 dx, float2 dy, float2 textureSize)
+{
+	dx *= textureSize;
+	dy *= textureSize;
+	float d = max(dot(dx, dx), dot(dy, dy));
+	return 0.5f * log2(d);
+}
+
+float4 GetPageUV(float2 uv)
+{
+	float2 pageXY = uv * Draw_NumPages;
+	float2 rangeLo = floor(pageXY) * Draw_InvNumPages;
+	float2 rangeHi = ceil(pageXY) * Draw_InvNumPages;
+	return float4(rangeLo, rangeHi);
+}
+
 void DrawPS(
 	in float2 iUV		: TEXCOORD0,
 	in float4 iColor	: COLOR0,
 	in float4 iChannel	: COLOR1,
 	out float4 oColor	: COLOR0)
 {
-	oColor = dot(tex2D(LinearSampler, iUV), iChannel).xxxx * iColor;
+	float2 dx = ddx(iUV);
+	float2 dy = ddy(iUV);
+	float lod = ComputeMipmapLevel(dx, dy, Draw_TextureSize);
+	float2 halfBorderSizeLod = exp2(lod).xx * Draw_InvTextureSize * 0.5f;
+	float4 pageUVRange = GetPageUV(iUV);
+	iUV = max(iUV, pageUVRange.xy + halfBorderSizeLod);
+	iUV = min(iUV, pageUVRange.zw - halfBorderSizeLod);
+	oColor = dot(tex2D(LinearSampler, iUV, dx, dy), iChannel).xxxx * iColor;
 }
 
 technique BlitToRT
@@ -83,6 +110,6 @@ technique BlitToRT
 
 technique DrawText
 { pass {
-	VertexShader = compile vs_2_0 DrawVS();
-	PixelShader = compile ps_2_0 DrawPS();
+	VertexShader = compile vs_3_0 DrawVS();
+	PixelShader = compile ps_3_0 DrawPS();
 } }

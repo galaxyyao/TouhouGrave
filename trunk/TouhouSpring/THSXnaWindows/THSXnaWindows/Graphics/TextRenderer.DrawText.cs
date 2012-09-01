@@ -43,6 +43,10 @@ namespace TouhouSpring.Graphics
         private EffectParameter m_paramPageSizeInViewport;
         private EffectParameter m_paramPageSizeInSrc;
         private EffectParameter m_paramWorldViewProj;
+        private EffectParameter m_paramTextureSize;
+        private EffectParameter m_paramInvTextureSize;
+        private EffectParameter m_paramNumPages;
+        private EffectParameter m_paramInvNumPages;
 
         public void DrawText(string text, SystemFont font, Color color, Matrix transform)
         {
@@ -81,6 +85,11 @@ namespace TouhouSpring.Graphics
             var vpWidth = (float)device.Viewport.Width;
             var vpHeight = (float)device.Viewport.Height;
             m_paramPageSizeInViewport.SetValue(new Vector2(PageSize / vpWidth * 2, -PageSize / vpHeight * 2));
+            m_paramPageSizeInSrc.SetValue(new Vector2((float)PageSize / CacheTextureSize, (float)PageSize / CacheTextureSize));
+            m_paramTextureSize.SetValue(new Vector2(CacheTextureSize, CacheTextureSize));
+            m_paramInvTextureSize.SetValue(new Vector2(1.0f / CacheTextureSize, 1.0f / CacheTextureSize));
+            m_paramNumPages.SetValue(new Vector2(PagesInOneRow, RowsInOneCacheTexture));
+            m_paramInvNumPages.SetValue(new Vector2(1.0f / PagesInOneRow, 1.0f / RowsInOneCacheTexture));
 
             var vertices = new VertexDataDraw[totalPages * 6];
 
@@ -88,7 +97,7 @@ namespace TouhouSpring.Graphics
             {
                 Texture2D texture = m_cacheTextures[batch.Key * 4].m_physicalRTTexture;
                 m_paramTexture.SetValue(texture);
-                m_paramPageSizeInSrc.SetValue(new Vector2((float)PageSize / texture.Width, (float)PageSize / texture.Height));
+
                 var arrayStart = counter;
 
                 foreach (var glyphPage in batch)
@@ -187,6 +196,10 @@ namespace TouhouSpring.Graphics
             m_paramPageSizeInViewport = m_effect.Parameters["Draw_VPPageSize"];
             m_paramPageSizeInSrc = m_effect.Parameters["Draw_SrcPageSize"];
             m_paramWorldViewProj = m_effect.Parameters["Draw_WorldViewProj"];
+            m_paramTextureSize = m_effect.Parameters["Draw_TextureSize"];
+            m_paramInvTextureSize = m_effect.Parameters["Draw_InvTextureSize"];
+            m_paramNumPages = m_effect.Parameters["Draw_NumPages"];
+            m_paramInvNumPages = m_effect.Parameters["Draw_InvNumPages"];
         }
 
         private void Destroy_DrawText()

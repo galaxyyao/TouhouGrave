@@ -170,7 +170,7 @@ namespace TouhouSpring.Services
 			m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
 		}
 
-        private System.Drawing.Font m_font = new System.Drawing.Font("Microsoft YaHei", 32);
+        private System.Drawing.Font m_font = new System.Drawing.Font("Microsoft YaHei", 18);
 
 		public override void Update(float deltaTime)
 		{
@@ -194,7 +194,7 @@ namespace TouhouSpring.Services
             var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
             var mtx = Matrix.CreateTranslation((mouseState.X - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Width * 2,
                 - (mouseState.Y - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Height * 2, 0);
-            mtx *= Matrix.CreateScale(1.2f, 1.2f, 1.0f);
+            mtx *= Matrix.CreateScale(1.5f, 1.5f, 1.0f);
             GameApp.Service<Graphics.TextRenderer>().DrawText("博丽灵梦", m_font, Color.Black, mtx);
         }
 	}
