@@ -19,6 +19,7 @@ namespace TouhouSpring.Graphics
         {
             public SystemDrawing.SizeF m_glyphSize;
             public int[,] m_pageIndices; // a glyph could occupy multiple pages
+            public int m_timeStamp;
         }
 
         private struct GlyphPage
@@ -28,16 +29,10 @@ namespace TouhouSpring.Graphics
             public int m_pageIndex;
         }
 
-        private struct PageData
-        {
-            public Rectangle m_effectiveRegion;
-            public int m_timeStamp;
-        }
-
         private class CacheTexture
         {
             public RenderTarget2D m_physicalRTTexture;
-            public PageData[] m_pages = new PageData[PagesInOneCacheTexture];
+            public bool[] m_pageOccupied = new bool[PagesInOneCacheTexture];
         }
 
         private struct VertexDataBlit
@@ -63,10 +58,7 @@ namespace TouhouSpring.Graphics
             GlyphData glyphData;
             if (m_loadedGlyphs.TryGetValue(glyphId, out glyphData))
             {
-                foreach (var page in glyphData.m_pageIndices)
-                {
-                    TouchPage(page);
-                }
+                glyphData.m_timeStamp = m_timeStamp;
                 return glyphData;
             }
 
@@ -159,52 +151,61 @@ namespace TouhouSpring.Graphics
             glyphData.m_pageIndices = new int[pagesInX, pagesInY];
             pages.ForEach(page => glyphData.m_pageIndices[page.m_x, page.m_y] = page.m_pageIndex);
             glyphData.m_glyphSize = chRect.Size;
+            glyphData.m_timeStamp = m_timeStamp;
             m_loadedGlyphs.Add(glyphId, glyphData);
             return glyphData;
         }
 
         private int RequestPage()
         {
-            int oldestPageTime = m_timeStamp + 1;
-            int oldestPageIndex = 0;
-
             for (int i = 0; i < m_cacheTextures.Count; ++i)
             {
-                var cacheTexture = m_cacheTextures[i];
-                for (int j = 0; j < cacheTexture.m_pages.Length; ++j)
+                var ct = m_cacheTextures[i];
+                for (int j = 0; j < ct.m_pageOccupied.Length; ++j)
                 {
-                    var page = cacheTexture.m_pages[j];
-                    if (page.m_timeStamp < oldestPageTime)
+                    if (!ct.m_pageOccupied[j])
                     {
-                        oldestPageTime = page.m_timeStamp;
-                        oldestPageIndex = i * PagesInOneCacheTexture + j;
+                        ct.m_pageOccupied[j] = true;
+                        return i * PagesInOneCacheTexture + j;
                     }
                 }
             }
 
-            if (oldestPageTime >= m_timeStamp - MinimalPageLife)
+            // find the least used glyph
+            KeyValuePair<uint, GlyphData> leastUsedGlyph = new KeyValuePair<uint,GlyphData>(0, null);
+            foreach (var kvp in m_loadedGlyphs)
             {
-                // all pages shall be alive : insufficient cache
+                if (leastUsedGlyph.Value == null
+                    || kvp.Value.m_timeStamp < leastUsedGlyph.Value.m_timeStamp)
+                {
+                    leastUsedGlyph = kvp;
+                }
+            }
+
+            if (leastUsedGlyph.Value == null || leastUsedGlyph.Value.m_timeStamp >= m_timeStamp - MinimalPageLife)
+            {
                 var cacheTexture = new CacheTexture();
                 cacheTexture.m_physicalRTTexture = m_cacheTextures.Count % 4 == 0
                                                    ? new RenderTarget2D(GameApp.Instance.GraphicsDevice, CacheTextureSize, CacheTextureSize, true, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents)
                                                    : m_cacheTextures.Last().m_physicalRTTexture;
-                cacheTexture.m_pages[0].m_timeStamp = m_timeStamp;
+                cacheTexture.m_pageOccupied[0] = true;
                 m_cacheTextures.Add(cacheTexture);
                 return (m_cacheTextures.Count - 1) * PagesInOneCacheTexture;
             }
             else
             {
-                TouchPage(oldestPageIndex);
-                return oldestPageIndex;
+                // release the glyph
+                foreach (var pageIndex in leastUsedGlyph.Value.m_pageIndices)
+                {
+                    var textureIndex = pageIndex / PagesInOneCacheTexture;
+                    var localIndex = pageIndex % PagesInOneCacheTexture;
+                    m_cacheTextures[textureIndex].m_pageOccupied[localIndex] = false;
+                }
+                var retIndex = leastUsedGlyph.Value.m_pageIndices[0, 0];
+                m_cacheTextures[retIndex / PagesInOneCacheTexture].m_pageOccupied[retIndex % PagesInOneCacheTexture] = true;
+                m_loadedGlyphs.Remove(leastUsedGlyph.Key);
+                return retIndex;
             }
-        }
-
-        private void TouchPage(int page)
-        {
-            var textureId = page / PagesInOneCacheTexture;
-            var index = page % PagesInOneCacheTexture;
-            m_cacheTextures[textureId].m_pages[index].m_timeStamp = m_timeStamp;
         }
 
         private SystemDrawing.RectangleF MeasureCharacter(char character, SystemDrawing.Font font)
