@@ -11,7 +11,6 @@ namespace TouhouSpring.Services
 	[LifetimeDependency(typeof(Styler))]
 	[LifetimeDependency(typeof(UIManager))]
 	[UpdateDependency(typeof(UIManager))]
-    [RenderDependency(typeof(UIManager))]
 	partial class MenuUI : GameService
 	{
 		private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
@@ -54,7 +53,6 @@ namespace TouhouSpring.Services
 				if (id == "freemode")
 				{
 					CurrentPage = m_pages["FreeMode"];
-                    GameApp.Service<Graphics.TextRenderer>().Dump();
 				}
                 //else if (id == "storymode")
                 //{
@@ -161,12 +159,6 @@ namespace TouhouSpring.Services
 			};
 
 			CurrentPage = m_pages["MainMenu"];
-
-            var formatOptions = new Graphics.TextRenderer.FormatOptions(new System.Drawing.Font("Segoe UI", 24))
-            {
-                Alignment = Graphics.TextRenderer.Alignment.CenterMiddle
-            };
-            m_testStr = GameApp.Service<Graphics.TextRenderer>().FormatText("博丽灵梦\nHello Worldgj", formatOptions);
         }
 
 		private void LoadPage(string id)
@@ -175,8 +167,6 @@ namespace TouhouSpring.Services
 			pageStyle.Initialize();
 			m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
 		}
-
-        private Graphics.TextRenderer.IFormatedText m_testStr;
 
 		public override void Update(float deltaTime)
 		{
@@ -189,14 +179,5 @@ namespace TouhouSpring.Services
 				}
 			}
 		}
-
-        public override void Render()
-        {
-            var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
-            var mtx = Matrix.CreateTranslation((mouseState.X - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Width * 2,
-                - (mouseState.Y - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Height * 2, 0);
-            mtx *= Matrix.CreateScale(1.0f, 1.0f, 1.0f);
-            GameApp.Service<Graphics.TextRenderer>().DrawText(m_testStr, mtx);
-        }
 	}
 }

@@ -43,12 +43,19 @@ namespace TouhouSpring.Graphics
                 LineSpacing = font.Height;
                 TabSpaces = 4;
             }
+
+            public string FontName
+            {
+                get { return Font.OriginalFontName ?? Font.Name; }
+            }
         }
 
         public interface IFormatedText
         {
+            string Text { get; }
             FormatOptions FormatOptions { get; }
-            Vector2 Offset { get; set; }
+            Point Offset { get; set; }
+            Size Size { get; }
         }
 
         private class FormatedGlyph
@@ -66,8 +73,10 @@ namespace TouhouSpring.Graphics
                 public FormatedGlyph[] m_glyphs;
             }
 
+            public string Text { get; set; }
             public FormatOptions FormatOptions { get; set; }
-            public Vector2 Offset { get; set; }
+            public Point Offset { get; set; }
+            public Size Size { get; set; }
             public FormatedLine[] m_lines;
 
             public IEnumerable<FormatedGlyph> Glyphs()
@@ -90,7 +99,7 @@ namespace TouhouSpring.Graphics
             }
 
             var m_colorStack = new Stack<Color>();
-            m_colorStack.Push(Color.Black);
+            m_colorStack.Push(Color.White);
             var fontMetrics = m_registeredFonts[GetFontId(formatOptions.Font)];
 
             float currentX = 0;
@@ -105,6 +114,7 @@ namespace TouhouSpring.Graphics
             var charArray = text.ToArray();
             var glyphs = new List<FormatedGlyph>();
             var lines = new List<FormatedText.FormatedLine>();
+            var maxLineWidth = 0.0f;
 
             for (int i = 0; i < charArray.Length; ++i)
             {
@@ -124,6 +134,7 @@ namespace TouhouSpring.Graphics
                     line.m_offset = new Vector2(0, currentY);
 
                     var lineWidth = Math.Max(currentX - formatOptions.CharSpacing, 0);
+                    maxLineWidth = Math.Max(maxLineWidth, lineWidth);
 
                     if (formatOptions.Alignment == Alignment.CenterTop
                         || formatOptions.Alignment == Alignment.CenterMiddle
@@ -179,8 +190,10 @@ namespace TouhouSpring.Graphics
 
             return new FormatedText
             {
+                Text = text,
                 FormatOptions = formatOptions,
-                Offset = new Vector2(0, offsetY),
+                Offset = new Point(0, offsetY),
+                Size = new Size(maxLineWidth, textHeight),
                 m_lines = lines.ToArray()
             };
         }

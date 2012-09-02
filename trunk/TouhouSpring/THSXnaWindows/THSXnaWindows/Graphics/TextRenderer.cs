@@ -40,13 +40,5 @@ namespace TouhouSpring.Graphics
         {
             ++m_timeStamp;
         }
-
-        public void Dump()
-        {
-            //using (var stream = new System.IO.FileStream("fontatlas.png", System.IO.FileMode.Create))
-            //{
-            //    m_cacheTextures[0].m_physicalRTTexture.SaveAsPng(stream, m_cacheTextures[0].m_physicalRTTexture.Width, m_cacheTextures[0].m_physicalRTTexture.Height);
-            //}
-        }
     }
 }

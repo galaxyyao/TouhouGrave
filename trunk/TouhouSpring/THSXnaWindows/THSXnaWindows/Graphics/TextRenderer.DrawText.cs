@@ -35,20 +35,47 @@ namespace TouhouSpring.Graphics
         private DynamicVertexBuffer m_verticesDraw;
         private int m_verticesDrawWriteCursor = 0;
         private EffectTechnique m_techDraw;
-        private EffectParameter m_paramPageSizeInViewport;
-        private EffectParameter m_paramPageSizeInSrc;
+        private EffectParameter m_paramPageSize;
+        private EffectParameter m_paramPageUVSize;
         private EffectParameter m_paramWorldViewProj;
         private EffectParameter m_paramTextureSize;
         private EffectParameter m_paramInvTextureSize;
         private EffectParameter m_paramNumPages;
         private EffectParameter m_paramInvNumPages;
+        private EffectParameter m_paramColorScaling;
+
+        public struct DrawOptions
+        {
+            public Color ForcedColor;
+            public Vector4 ColorScaling;
+            public Point Offset;
+            public bool TransformToClipSpace;
+
+            public static readonly DrawOptions Default = new DrawOptions
+            {
+                ForcedColor = Color.Transparent,
+                ColorScaling = Vector4.UnitW,
+                Offset = new Point(0, 0),
+                TransformToClipSpace = false
+            };
+        }
 
         public void DrawText(string text, FormatOptions formatOptions, Matrix transform)
         {
-            DrawText(FormatText(text, formatOptions), transform);
+            DrawText(FormatText(text, formatOptions), transform, DrawOptions.Default);
+        }
+
+        public void DrawText(string text, FormatOptions formatOptions, Matrix transform, DrawOptions drawOptions)
+        {
+            DrawText(FormatText(text, formatOptions), transform, drawOptions);
         }
 
         public void DrawText(IFormatedText formatedText, Matrix transform)
+        {
+            DrawText(formatedText, transform, DrawOptions.Default);
+        }
+
+        public void DrawText(IFormatedText formatedText, Matrix transform, DrawOptions drawOptions)
         {
             if (!(formatedText is FormatedText))
             {
@@ -72,10 +99,12 @@ namespace TouhouSpring.Graphics
                     {
                         for (int j = 0; j <= pagesInY; ++j)
                         {
-                            var glyphPos = glyph.m_pos + line.m_offset + typedFormatedText.Offset;
+                            var glyphPos = glyph.m_pos + line.m_offset;
+                            glyphPos.X += typedFormatedText.Offset.X + drawOptions.Offset.X;
+                            glyphPos.Y += typedFormatedText.Offset.Y + drawOptions.Offset.Y;
                             glyphPages[pageCounter].m_pos.X = glyphPos.X + i * PageSize;
                             glyphPages[pageCounter].m_pos.Y = glyphPos.Y + j * PageSize;
-                            glyphPages[pageCounter].m_color = glyph.m_color;
+                            glyphPages[pageCounter].m_color = drawOptions.ForcedColor == Color.Transparent ? glyph.m_color : drawOptions.ForcedColor;
                             glyphPages[pageCounter].m_pageIndex = glyphDatas[glyphCounter].m_pageIndices[i, j];
                             ++pageCounter;
                         }
@@ -89,19 +118,31 @@ namespace TouhouSpring.Graphics
 
             var device = GameApp.Instance.GraphicsDevice;
             device.Indices = null;
-            device.BlendState = BlendState.NonPremultiplied;
+            device.BlendState = BlendState.AlphaBlend;
             device.DepthStencilState = DepthStencilState.None;
             device.RasterizerState = RasterizerState.CullCounterClockwise;
             m_effect.CurrentTechnique = m_techDraw;
+            if (drawOptions.TransformToClipSpace)
+            {
+                var mtx = Matrix.Identity;
+                mtx.M11 = 2.0f / device.Viewport.Width;
+                mtx.M22 = -2.0f / device.Viewport.Height;
+                mtx.M41 = -1.0f;
+                mtx.M42 = 1.0f;
+                transform = mtx * transform;
+            }
             m_paramWorldViewProj.SetValue(transform);
-            var vpWidth = (float)device.Viewport.Width;
-            var vpHeight = (float)device.Viewport.Height;
-            m_paramPageSizeInViewport.SetValue(new Vector2(PageSize / vpWidth * 2, -PageSize / vpHeight * 2));
-            m_paramPageSizeInSrc.SetValue(new Vector2((float)PageSize / CacheTextureSize, (float)PageSize / CacheTextureSize));
+            m_paramPageSize.SetValue(new Vector2(PageSize, PageSize));
+            m_paramPageUVSize.SetValue(new Vector2((float)PageSize / CacheTextureSize, (float)PageSize / CacheTextureSize));
             m_paramTextureSize.SetValue(new Vector2(CacheTextureSize, CacheTextureSize));
             m_paramInvTextureSize.SetValue(new Vector2(1.0f / CacheTextureSize, 1.0f / CacheTextureSize));
             m_paramNumPages.SetValue(new Vector2(PagesInOneRow, RowsInOneCacheTexture));
             m_paramInvNumPages.SetValue(new Vector2(1.0f / PagesInOneRow, 1.0f / RowsInOneCacheTexture));
+            var premultipliedColorScaling = drawOptions.ColorScaling;
+            premultipliedColorScaling.X *= premultipliedColorScaling.W;
+            premultipliedColorScaling.Y *= premultipliedColorScaling.W;
+            premultipliedColorScaling.Z *= premultipliedColorScaling.W;
+            m_paramColorScaling.SetValue(premultipliedColorScaling);
 
             var vertices = new VertexDataDraw[totalPages * 6];
 
@@ -121,8 +162,8 @@ namespace TouhouSpring.Graphics
 
                     for (int i = 0; i < 6; ++i)
                     {
-                        vertices[counter + i].m_leftTopPos.X = glyphPage.m_pos.X / vpWidth * 2 - 1;
-                        vertices[counter + i].m_leftTopPos.Y = 1 - glyphPage.m_pos.Y / vpHeight * 2;
+                        vertices[counter + i].m_leftTopPos.X = glyphPage.m_pos.X;
+                        vertices[counter + i].m_leftTopPos.Y = glyphPage.m_pos.Y;
                         vertices[counter + i].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
                         vertices[counter + i].m_color = glyphPage.m_color;
                     }
@@ -145,8 +186,6 @@ namespace TouhouSpring.Graphics
                 }
             }
         }
-
-        
 
         private int CopyInstanceVertices(VertexDataDraw[] vertices, int startIndex, int numElements)
         {
@@ -188,13 +227,14 @@ namespace TouhouSpring.Graphics
             );
 
             m_techDraw = m_effect.Techniques["DrawText"];
-            m_paramPageSizeInViewport = m_effect.Parameters["Draw_VPPageSize"];
-            m_paramPageSizeInSrc = m_effect.Parameters["Draw_SrcPageSize"];
+            m_paramPageSize = m_effect.Parameters["Draw_PageSize"];
+            m_paramPageUVSize = m_effect.Parameters["Draw_PageUVSize"];
             m_paramWorldViewProj = m_effect.Parameters["Draw_WorldViewProj"];
             m_paramTextureSize = m_effect.Parameters["Draw_TextureSize"];
             m_paramInvTextureSize = m_effect.Parameters["Draw_InvTextureSize"];
             m_paramNumPages = m_effect.Parameters["Draw_NumPages"];
             m_paramInvNumPages = m_effect.Parameters["Draw_InvNumPages"];
+            m_paramColorScaling = m_effect.Parameters["Draw_ColorScaling"];
         }
 
         private void Destroy_DrawText()

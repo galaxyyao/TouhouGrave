@@ -1,11 +1,12 @@
 
-float2 Draw_VPPageSize;		// page size in render target space
-float2 Draw_SrcPageSize;	// page size in source texture space
+float2 Draw_PageSize;
+float2 Draw_PageUVSize;
 float4x4 Draw_WorldViewProj;
 float2 Draw_TextureSize;
 float2 Draw_InvTextureSize;
 float2 Draw_NumPages;
 float2 Draw_InvNumPages;
+float4 Draw_ColorScaling;
 
 texture TheTexture;
 
@@ -63,10 +64,10 @@ void DrawVS(
 		{ 0, 0, 1, 0 },
 	};
 
-	oPos = float4(iPos + iCorner * Draw_VPPageSize, 0, 1);
+	oPos = float4(iPos + iCorner * Draw_PageSize, 0, 1);
 	oPos = mul(oPos, Draw_WorldViewProj);
-	oUV = (iUV_Mask.xy + iCorner) * Draw_SrcPageSize;
-	oColor = iColor;
+	oUV = (iUV_Mask.xy + iCorner) * Draw_PageUVSize;
+	oColor = iColor * Draw_ColorScaling;
 	oChannel = masks[(int)iUV_Mask.z];
 }
 
