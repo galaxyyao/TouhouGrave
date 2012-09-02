@@ -5,10 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MemoryStream = System.IO.MemoryStream;
-using SystemBitmap = System.Drawing.Bitmap;
-using SystemFont = System.Drawing.Font;
-using SystemGraphics = System.Drawing.Graphics;
-using SystemPointF = System.Drawing.PointF;
+using SystemDrawing = System.Drawing;
 
 namespace TouhouSpring.Graphics
 {
@@ -20,6 +17,7 @@ namespace TouhouSpring.Graphics
 
         private class GlyphData
         {
+            public SystemDrawing.SizeF m_glyphSize;
             public int[,] m_pageIndices; // a glyph could occupy multiple pages
         }
 
@@ -51,15 +49,16 @@ namespace TouhouSpring.Graphics
         private Dictionary<uint, GlyphData> m_loadedGlyphs = new Dictionary<uint, GlyphData>();
         private List<CacheTexture> m_cacheTextures = new List<CacheTexture>();
 
-        private SystemGraphics m_measureContext;
+        private SystemDrawing.Graphics m_measureContext;
+        private SystemDrawing.StringFormat m_measureFormat;
         private VertexDeclaration m_vertDeclBlit;
         private EffectTechnique m_techBlit;
         private BlendState[] m_channelMasks;
 
         // load one single glyph into the cache
-        private GlyphData Load(char glyph, SystemFont font)
+        private GlyphData Load(char glyph, SystemDrawing.Font font)
         {
-            uint glyphId = GetGlyphId(glyph, font);
+            uint glyphId = ((uint)GetFontId(font) << 16) + glyph;
 
             GlyphData glyphData;
             if (m_loadedGlyphs.TryGetValue(glyphId, out glyphData))
@@ -72,9 +71,10 @@ namespace TouhouSpring.Graphics
             }
 
             var str = glyph.ToString();
-            var size = m_measureContext.MeasureString(str, font);
-            int width = Math.Max((int)Math.Ceiling(size.Width), 1);
-            int height = Math.Max((int)Math.Ceiling(size.Height), 1);
+            var chRect = MeasureCharacter(glyph, font);
+
+            int width = Math.Max((int)Math.Ceiling(chRect.Width), 1);
+            int height = Math.Max((int)Math.Ceiling(chRect.Height), 1);
             int pagesInX = (width - 1) / PageSize + 1;
             int pagesInY = (height - 1) / PageSize + 1;
 
@@ -86,12 +86,12 @@ namespace TouhouSpring.Graphics
                 pages[i].m_pageIndex = RequestPage();
             }
 
-            using (var bmp = new SystemBitmap(pagesInX * PageSize, pagesInY * PageSize))
-            using (var g = SystemGraphics.FromImage(bmp))
+            using (var bmp = new SystemDrawing.Bitmap(pagesInX * PageSize, pagesInY * PageSize))
+            using (var g = SystemDrawing.Graphics.FromImage(bmp))
             using (var memStream = new MemoryStream())
             {
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                g.DrawString(str, font, m_whiteBrush, new SystemPointF(0, 0));
+                g.DrawString(str, font, m_whiteBrush, new SystemDrawing.PointF(-chRect.Left, -chRect.Top));
                 bmp.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);
                 using (var tmpTexture = Texture2D.FromStream(GameApp.Instance.GraphicsDevice, memStream))
                 {
@@ -158,6 +158,7 @@ namespace TouhouSpring.Graphics
             glyphData = new GlyphData();
             glyphData.m_pageIndices = new int[pagesInX, pagesInY];
             pages.ForEach(page => glyphData.m_pageIndices[page.m_x, page.m_y] = page.m_pageIndex);
+            glyphData.m_glyphSize = chRect.Size;
             m_loadedGlyphs.Add(glyphId, glyphData);
             return glyphData;
         }
@@ -206,13 +207,22 @@ namespace TouhouSpring.Graphics
             m_cacheTextures[textureId].m_pages[index].m_timeStamp = m_timeStamp;
         }
 
+        private SystemDrawing.RectangleF MeasureCharacter(char character, SystemDrawing.Font font)
+        {
+            var chRegion = m_measureContext.MeasureCharacterRanges(character.ToString(), font, new SystemDrawing.RectangleF(0, 0, 0, 0), m_measureFormat);
+            return chRegion[0].GetBounds(m_measureContext);
+        }
+
         private void Initialize_Atlas()
         {
-            using (var empty = new SystemBitmap(1, 1))
+            using (var empty = new SystemDrawing.Bitmap(1, 1))
             {
-                m_measureContext = SystemGraphics.FromImage(empty);
+                m_measureContext = SystemDrawing.Graphics.FromImage(empty);
                 m_measureContext.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             }
+
+            m_measureFormat = new SystemDrawing.StringFormat(SystemDrawing.StringFormatFlags.NoClip | SystemDrawing.StringFormatFlags.NoWrap);
+            m_measureFormat.SetMeasurableCharacterRanges(new SystemDrawing.CharacterRange[] { new SystemDrawing.CharacterRange(0, 1) });
 
             m_techBlit = m_effect.Techniques["BlitToRT"];
             m_vertDeclBlit = new VertexDeclaration(

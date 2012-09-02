@@ -161,7 +161,13 @@ namespace TouhouSpring.Services
 			};
 
 			CurrentPage = m_pages["MainMenu"];
-		}
+
+            var formatOptions = new Graphics.TextRenderer.FormatOptions(new System.Drawing.Font("Segoe UI", 24))
+            {
+                Alignment = Graphics.TextRenderer.Alignment.CenterMiddle
+            };
+            m_testStr = GameApp.Service<Graphics.TextRenderer>().FormatText("博丽灵梦\nHello Worldgj", formatOptions);
+        }
 
 		private void LoadPage(string id)
 		{
@@ -170,7 +176,7 @@ namespace TouhouSpring.Services
 			m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
 		}
 
-        private System.Drawing.Font m_font = new System.Drawing.Font("Microsoft YaHei", 18);
+        private Graphics.TextRenderer.IFormatedText m_testStr;
 
 		public override void Update(float deltaTime)
 		{
@@ -182,11 +188,6 @@ namespace TouhouSpring.Services
 					page.Update(deltaTime);
 				}
 			}
-
-            
-
-            //GameApp.Service<Graphics.TextRenderer>().DrawText("AaBb", System.Drawing.SystemFonts.DefaultFont);
-            //GameApp.Service<Graphics.TextRenderer>().DrawText("博丽灵梦", m_font);
 		}
 
         public override void Render()
@@ -194,8 +195,8 @@ namespace TouhouSpring.Services
             var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
             var mtx = Matrix.CreateTranslation((mouseState.X - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Width * 2,
                 - (mouseState.Y - 0.5f) / (float)GameApp.Instance.GraphicsDevice.Viewport.Height * 2, 0);
-            mtx *= Matrix.CreateScale(1.5f, 1.5f, 1.0f);
-            GameApp.Service<Graphics.TextRenderer>().DrawText("博丽灵梦", m_font, Color.Black, mtx);
+            mtx *= Matrix.CreateScale(1.0f, 1.0f, 1.0f);
+            GameApp.Service<Graphics.TextRenderer>().DrawText(m_testStr, mtx);
         }
 	}
 }

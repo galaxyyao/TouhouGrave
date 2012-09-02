@@ -2,34 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GdiFont = System.Drawing.Font;
+using SystemFont = System.Drawing.Font;
 
 namespace TouhouSpring.Graphics
 {
     partial class TextRenderer
     {
-        private List<string> m_registeredFonts = new List<string>();
+        private struct FontMetrics
+        {
+            public string m_id;
+            public float m_spaceWidth;
+        }
 
-        private uint GetGlyphId(char glyph, GdiFont font)
+        private List<FontMetrics> m_registeredFonts = new List<FontMetrics>();
+
+        private int GetFontId(SystemFont font)
         {
             var fontName = font.OriginalFontName ?? font.Name;
             var fontSize = font.Size;
             var fontStyle = font.Style;
-            var fontStr = String.Intern(fontName + fontSize.ToString() + fontStyle.ToString());
+            var fontId = String.Intern(fontName + fontSize.ToString() + fontStyle.ToString());
 
-            var fontId = m_registeredFonts.FindIndex(rf => Object.ReferenceEquals(rf, fontStr));
-            if (fontId == -1)
+            var index = m_registeredFonts.FindIndex(fm => Object.ReferenceEquals(fm.m_id, fontId));
+            if (index == -1)
             {
-                m_registeredFonts.Add(fontStr);
-                fontId = m_registeredFonts.Count - 1;
+                m_registeredFonts.Add(new FontMetrics
+                {
+                    m_id = fontId,
+                    m_spaceWidth = MeasureCharacter(' ', font).Width
+                });
+                index = m_registeredFonts.Count - 1;
             }
 
-            if (fontId > 0xffff)
+            if (index > 0xffff)
             {
                 throw new OverflowException("Number of registered font has grown ridiculously too large.");
             }
 
-            return ((uint)fontId << 16) + glyph;
+            return index;
         }
     }
 }

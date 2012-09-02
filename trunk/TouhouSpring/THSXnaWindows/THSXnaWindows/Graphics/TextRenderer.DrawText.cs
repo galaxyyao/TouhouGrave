@@ -15,15 +15,10 @@ namespace TouhouSpring.Graphics
     {
         private const int VertexBufferGranularity = 32;
 
-        private struct PositionedGlyphData
-        {
-            public Vector2 m_leftTop;
-            public GlyphData m_glyphData;
-        }
-
         private struct PositionedGlyphPage
         {
-            public Vector2 m_leftTop;
+            public Vector2 m_pos;
+            public Color m_color;
             public int m_pageIndex;
         }
 
@@ -48,32 +43,49 @@ namespace TouhouSpring.Graphics
         private EffectParameter m_paramNumPages;
         private EffectParameter m_paramInvNumPages;
 
-        public void DrawText(string text, SystemFont font, Color color, Matrix transform)
+        public void DrawText(string text, FormatOptions formatOptions, Matrix transform)
         {
-            var glyphs = LayoutText(text, font);
-            int totalPages = glyphs.Sum(glyph => glyph.m_glyphData.m_pageIndices.Length);
+            DrawText(FormatText(text, formatOptions), transform);
+        }
+
+        public void DrawText(IFormatedText formatedText, Matrix transform)
+        {
+            if (!(formatedText is FormatedText))
+            {
+                throw new ArgumentException("Argument formatedText is not an object returned by FormatText() method.");
+            }
+
+            var typedFormatedText = (FormatedText)formatedText;
+            var glyphDatas = typedFormatedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormatedText.FormatOptions.Font)).ToArray();
+            int totalPages = glyphDatas.Sum(glyph => glyph.m_pageIndices.Length);
             var glyphPages = new PositionedGlyphPage[totalPages];
 
-            int counter = 0;
-            foreach (var glyph in glyphs)
+            int pageCounter = 0, glyphCounter = 0;
+            foreach (var line in typedFormatedText.m_lines)
             {
-                var pagesInX = glyph.m_glyphData.m_pageIndices.GetUpperBound(0);
-                var pagesInY = glyph.m_glyphData.m_pageIndices.GetUpperBound(1);
-
-                for (int i = 0; i <= pagesInX; ++i)
+                foreach (var glyph in line.m_glyphs)
                 {
-                    for (int j = 0; j <= pagesInY; ++j)
+                    var pagesInX = glyphDatas[glyphCounter].m_pageIndices.GetUpperBound(0);
+                    var pagesInY = glyphDatas[glyphCounter].m_pageIndices.GetUpperBound(1);
+
+                    for (int i = 0; i <= pagesInX; ++i)
                     {
-                        glyphPages[counter].m_leftTop.X = glyph.m_leftTop.X + i * PageSize;
-                        glyphPages[counter].m_leftTop.Y = glyph.m_leftTop.Y + j * PageSize;
-                        glyphPages[counter].m_pageIndex = glyph.m_glyphData.m_pageIndices[i, j];
-                        ++counter;
+                        for (int j = 0; j <= pagesInY; ++j)
+                        {
+                            var glyphPos = glyph.m_pos + line.m_offset + typedFormatedText.Offset;
+                            glyphPages[pageCounter].m_pos.X = glyphPos.X + i * PageSize;
+                            glyphPages[pageCounter].m_pos.Y = glyphPos.Y + j * PageSize;
+                            glyphPages[pageCounter].m_color = glyph.m_color;
+                            glyphPages[pageCounter].m_pageIndex = glyphDatas[glyphCounter].m_pageIndices[i, j];
+                            ++pageCounter;
+                        }
                     }
+                    ++glyphCounter;
                 }
             }
 
             Func<PositionedGlyphPage, int> batchCriteria = page => page.m_pageIndex / PagesInOneCacheTexture / 4;
-            counter = 0;
+            int counter = 0;
 
             var device = GameApp.Instance.GraphicsDevice;
             device.Indices = null;
@@ -109,10 +121,10 @@ namespace TouhouSpring.Graphics
 
                     for (int i = 0; i < 6; ++i)
                     {
-                        vertices[counter + i].m_leftTopPos.X = (glyphPage.m_leftTop.X - 0.5f) / vpWidth * 2 - 1;
-                        vertices[counter + i].m_leftTopPos.Y = 1 - (glyphPage.m_leftTop.Y - 0.5f) / vpHeight * 2;
+                        vertices[counter + i].m_leftTopPos.X = glyphPage.m_pos.X / vpWidth * 2 - 1;
+                        vertices[counter + i].m_leftTopPos.Y = 1 - glyphPage.m_pos.Y / vpHeight * 2;
                         vertices[counter + i].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
-                        vertices[counter + i].m_color = color;
+                        vertices[counter + i].m_color = glyphPage.m_color;
                     }
                     vertices[counter + 0].m_corner = new Byte4(0, 0, 0, 0);
                     vertices[counter + 1].m_corner = vertices[counter + 4].m_corner = new Byte4(1, 0, 0, 0);
@@ -134,24 +146,7 @@ namespace TouhouSpring.Graphics
             }
         }
 
-        private List<PositionedGlyphData> LayoutText(string text, SystemFont font)
-        {
-            var glyphs = new List<PositionedGlyphData>();
-
-            // load each glyph
-            int index = 0;
-            foreach (var character in text)
-            {
-                glyphs.Add(new PositionedGlyphData
-                {
-                    m_leftTop = new Vector2(index * 50, 0),
-                    m_glyphData = Load(character, font)
-                });
-                ++index;
-            }
-
-            return glyphs;
-        }
+        
 
         private int CopyInstanceVertices(VertexDataDraw[] vertices, int startIndex, int numElements)
         {
