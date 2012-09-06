@@ -10,7 +10,7 @@ namespace TouhouSpring.Graphics
     [Services.LifetimeDependency(typeof(Services.ResourceManager))]
     partial class TextRenderer : Services.GameService
     {
-        private const int PageSize = 16;
+        private const int PageSize = 32;
         private const int CacheTextureSize = 1024;
         private const int MinimalPageLife = 5;
 

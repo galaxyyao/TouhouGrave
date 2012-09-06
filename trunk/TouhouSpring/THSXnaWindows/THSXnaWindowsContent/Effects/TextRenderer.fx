@@ -48,14 +48,14 @@ void BlitPS(
 }
 
 void DrawVS(
-	in float2 iCorner	: POSITION0,
-	in float2 iPos		: TEXCOORD0,
-	in float4 iUV_Mask	: COLOR0,
-	in float4 iColor	: COLOR1,
-	out float4 oPos		: POSITION0,
-	out float2 oUV		: TEXCOORD0,
-	out float4 oColor	: COLOR0,
-	out float4 oChannel	: COLOR1)
+	in float2 iCorner		: POSITION0,
+	in float2 iPos			: TEXCOORD0,
+	in float4 iUV_Mask		: COLOR0,
+	in float4 iColor		: COLOR1,
+	out float4 oPos			: POSITION0,
+	out float4 oUV_PageXY	: TEXCOORD0,
+	out float4 oColor		: COLOR0,
+	out float4 oChannel		: COLOR1)
 {
 	const float4 masks[] = {
 		{ 0, 0, 0, 1 },
@@ -66,7 +66,8 @@ void DrawVS(
 
 	oPos = float4(iPos + iCorner * Draw_PageSize, 0, 1);
 	oPos = mul(oPos, Draw_WorldViewProj);
-	oUV = (iUV_Mask.xy + iCorner) * Draw_PageUVSize;
+	oUV_PageXY.xy = (iUV_Mask.xy + iCorner) * Draw_PageUVSize;
+	oUV_PageXY.zw = iUV_Mask.xy;
 	oColor = iColor * Draw_ColorScaling;
 	oChannel = masks[(int)iUV_Mask.z];
 }
@@ -79,25 +80,23 @@ float ComputeMipmapLevel(float2 dx, float2 dy, float2 textureSize)
 	return 0.5f * log2(d);
 }
 
-float4 GetPageUV(float2 uv)
+float4 GetPageUV(float2 pageXY)
 {
-	float2 pageXY = uv * Draw_NumPages;
-	float2 rangeLo = floor(pageXY) * Draw_InvNumPages;
-	float2 rangeHi = ceil(pageXY) * Draw_InvNumPages;
-	return float4(rangeLo, rangeHi);
+	return float4(pageXY, pageXY + 1) * Draw_InvNumPages.xyxy;
 }
 
 void DrawPS(
-	in float2 iUV		: TEXCOORD0,
-	in float4 iColor	: COLOR0,
-	in float4 iChannel	: COLOR1,
-	out float4 oColor	: COLOR0)
+	in float4 iUV_PageXY	: TEXCOORD0,
+	in float4 iColor		: COLOR0,
+	in float4 iChannel		: COLOR1,
+	out float4 oColor		: COLOR0)
 {
+	float2 iUV = iUV_PageXY.xy;
 	float2 dx = ddx(iUV);
 	float2 dy = ddy(iUV);
 	float lod = ComputeMipmapLevel(dx, dy, Draw_TextureSize);
 	float2 halfBorderSizeLod = exp2(lod).xx * Draw_InvTextureSize * 0.5f;
-	float4 pageUVRange = GetPageUV(iUV);
+	float4 pageUVRange = GetPageUV(iUV_PageXY.zw);
 	iUV = max(iUV, pageUVRange.xy + halfBorderSizeLod);
 	iUV = min(iUV, pageUVRange.zw - halfBorderSizeLod);
 	oColor = dot(tex2D(LinearSampler, iUV, dx, dy), iChannel).xxxx * iColor;
