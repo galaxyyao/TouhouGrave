@@ -59,7 +59,7 @@ namespace TouhouSpring.UI
 			}
 		}
 
-		public Graphics.TextBuffer ButtonText
+		public Graphics.TextRenderer.IFormatedText ButtonText
 		{
 			get; set;
 		}
@@ -99,8 +99,11 @@ namespace TouhouSpring.UI
 
 			if (ButtonText != null)
 			{
-				Point position = Region.LeftTop + (Region.Size - ButtonText.TextSize) / 2.0f;
-				e.RenderManager.Draw(ButtonText, TextColor, position, transform);
+				Point position = Region.LeftTop + (Region.Size - ButtonText.Size) / 2.0f;
+                var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
+                drawOptions.ColorScaling = TextColor.ToVector4();
+                drawOptions.Offset = position;
+                e.TextRenderer.DrawText(ButtonText, transform, drawOptions);
 			}
 		}
 

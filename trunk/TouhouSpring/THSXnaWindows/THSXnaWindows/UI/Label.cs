@@ -53,11 +53,11 @@ namespace TouhouSpring.UI
                     drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                     drawOptions.ForcedColor = ShadowTextColor;
                     drawOptions.Offset = ShadowOffset;
-                    GameApp.Service<Graphics.TextRenderer>().DrawText(FormatedText, transform, drawOptions);
+                    e.TextRenderer.DrawText(FormatedText, transform, drawOptions);
                 }
                 drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = TextColor.ToVector4();
-                GameApp.Service<Graphics.TextRenderer>().DrawText(FormatedText, transform, drawOptions);
+                e.TextRenderer.DrawText(FormatedText, transform, drawOptions);
             }
         }
     }

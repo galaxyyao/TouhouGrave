@@ -83,7 +83,6 @@
     <Compile Include="Graphics\ParticleRenderer.ResourceLoader.cs" />
     <Compile Include="Graphics\RenderManager.cs" />
     <Compile Include="Graphics\RenderManager.QuadRenderer.cs" />
-    <Compile Include="Graphics\RenderManager.TextRenderer.cs" />
     <Compile Include="Graphics\TextRenderer.Atlas.cs" />
     <Compile Include="Graphics\TextRenderer.cs" />
     <Compile Include="Graphics\TextRenderer.DrawText.cs" />
@@ -111,7 +110,6 @@
     <Compile Include="Graphics\Scene.cs" />
     <Compile Include="Services\Styler.cs" />
     <Compile Include="GameApp.cs" />
-    <Compile Include="Graphics\TextBuffer.cs" />
     <Compile Include="Graphics\TexturedQuad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

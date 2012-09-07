@@ -38,7 +38,7 @@ namespace TouhouSpring.UI.CardControlAddins
                     var btn = new Button
                     {
                         NormalFace = buttonFace,
-                        ButtonText = new Graphics.TextBuffer(spell.Model.Name, font, GameApp.Instance.GraphicsDevice)
+                        ButtonText = GameApp.Service<Graphics.TextRenderer>().FormatText(spell.Model.Name, new Graphics.TextRenderer.FormatOptions(font))
                     };
                     btn.Transform = MatrixHelper.Translate(-m_buttonFaceTexture.Width / 2, y);
                     btn.MouseButton1Up += new EventHandler<MouseEventArgs>(SpellButton_MouseButton1Up);
@@ -65,10 +65,6 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Dispose()
         {
             m_spellButtonContainer.Dispatcher = null;
-            foreach (var btn in m_spellButtons)
-            {
-                btn.ButtonText.Dispose();
-            }
             GameApp.Service<Services.ResourceManager>().Release(m_buttonFaceTexture);
         }
 

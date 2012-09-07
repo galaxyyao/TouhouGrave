@@ -5,6 +5,8 @@ using System.Text;
 
 namespace TouhouSpring.Services
 {
+    [LifetimeDependency(typeof(ResourceManager))]
+    [LifetimeDependency(typeof(Graphics.TextRenderer))]
 	class ModalDialog : GameService
 	{
 		[Flags]
@@ -22,7 +24,7 @@ namespace TouhouSpring.Services
 		private const int No = 3;
 
 		private Graphics.TexturedQuad m_buttonFace;
-		private Graphics.TextBuffer[] m_buttonTexts = new Graphics.TextBuffer[4];
+        private Graphics.TextRenderer.IFormatedText[] m_buttonTexts = new Graphics.TextRenderer.IFormatedText[4];
 		private System.Drawing.Font m_msgFont;
 
 		public void Show(string message)
@@ -42,8 +44,7 @@ namespace TouhouSpring.Services
 				throw new ArgumentNullException("message");
 			}
 
-			Graphics.TextBuffer messageText = new Graphics.TextBuffer(message, m_msgFont, GameApp.Instance.GraphicsDevice);
-			UI.ModalDialog dialog = new UI.ModalDialog(messageText);
+			var dialog = new UI.ModalDialog(GameApp.Service<Graphics.TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont)));
 
 			if ((button & Button.OK) != 0)
 			{
@@ -110,10 +111,10 @@ namespace TouhouSpring.Services
 
 			using (var font = new System.Drawing.Font("Segoe UI", 16))
 			{
-				m_buttonTexts[OK] = new Graphics.TextBuffer("OK", font, device);
-				m_buttonTexts[Cancel] = new Graphics.TextBuffer("Cancel", font, device);
-				m_buttonTexts[Yes] = new Graphics.TextBuffer("Yes", font, device);
-				m_buttonTexts[No] = new Graphics.TextBuffer("No", font, device);
+                m_buttonTexts[OK] = GameApp.Service<Graphics.TextRenderer>().FormatText("OK", new Graphics.TextRenderer.FormatOptions(font));
+                m_buttonTexts[Cancel] = GameApp.Service<Graphics.TextRenderer>().FormatText("Cancel", new Graphics.TextRenderer.FormatOptions(font));
+                m_buttonTexts[Yes] = GameApp.Service<Graphics.TextRenderer>().FormatText("Yes", new Graphics.TextRenderer.FormatOptions(font));
+                m_buttonTexts[No] = GameApp.Service<Graphics.TextRenderer>().FormatText("No", new Graphics.TextRenderer.FormatOptions(font));
 			}
 
 			m_msgFont = new System.Drawing.Font("Segoe UI Light", 32);
@@ -122,10 +123,6 @@ namespace TouhouSpring.Services
 		public override void Shutdown()
 		{
 			m_msgFont.Dispose();
-			m_buttonTexts[No].Dispose();
-			m_buttonTexts[Yes].Dispose();
-			m_buttonTexts[Cancel].Dispose();
-			m_buttonTexts[OK].Dispose();
 			GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
 		}
 	}
