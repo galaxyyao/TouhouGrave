@@ -24,7 +24,7 @@ namespace TouhouSpring.Services
 		private const int No = 3;
 
 		private Graphics.TexturedQuad m_buttonFace;
-        private Graphics.TextRenderer.IFormatedText[] m_buttonTexts = new Graphics.TextRenderer.IFormatedText[4];
+        private Graphics.TextRenderer.IFormattedText[] m_buttonTexts = new Graphics.TextRenderer.IFormattedText[4];
 		private Graphics.TextRenderer.FontDescriptor m_msgFont;
 
 		public void Show(string message)

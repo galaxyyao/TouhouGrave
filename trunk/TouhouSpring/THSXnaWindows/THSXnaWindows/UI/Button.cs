@@ -59,7 +59,7 @@ namespace TouhouSpring.UI
 			}
 		}
 
-		public Graphics.TextRenderer.IFormatedText ButtonText
+		public Graphics.TextRenderer.IFormattedText ButtonText
 		{
 			get; set;
 		}

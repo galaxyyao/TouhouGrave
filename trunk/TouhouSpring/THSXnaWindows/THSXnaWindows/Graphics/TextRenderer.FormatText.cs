@@ -40,7 +40,7 @@ namespace TouhouSpring.Graphics
             }
         }
 
-        public interface IFormatedText
+        public interface IFormattedText
         {
             string Text { get; }
             FormatOptions FormatOptions { get; }
@@ -48,28 +48,28 @@ namespace TouhouSpring.Graphics
             Size Size { get; }
         }
 
-        private class FormatedGlyph
+        private class FormattedGlyph
         {
             public Vector2 m_pos;
             public Color m_color;
             public char m_glyph;
         }
 
-        private class FormatedText : IFormatedText
+        private class FormattedText : IFormattedText
         {
-            public class FormatedLine
+            public class FormattedLine
             {
                 public Vector2 m_offset;
-                public FormatedGlyph[] m_glyphs;
+                public FormattedGlyph[] m_glyphs;
             }
 
             public string Text { get; set; }
             public FormatOptions FormatOptions { get; set; }
             public Point Offset { get; set; }
             public Size Size { get; set; }
-            public FormatedLine[] m_lines;
+            public FormattedLine[] m_lines;
 
-            public IEnumerable<FormatedGlyph> Glyphs()
+            public IEnumerable<FormattedGlyph> Glyphs()
             {
                 foreach (var line in m_lines)
                 {
@@ -81,7 +81,7 @@ namespace TouhouSpring.Graphics
             }
         }
 
-        public IFormatedText FormatText(string text, FormatOptions formatOptions)
+        public IFormattedText FormatText(string text, FormatOptions formatOptions)
         {
             var colorStack = new Stack<Color>();
             colorStack.Push(Color.White);
@@ -97,8 +97,8 @@ namespace TouhouSpring.Graphics
             }
 
             var charArray = text.ToArray();
-            var glyphs = new List<FormatedGlyph>();
-            var lines = new List<FormatedText.FormatedLine>();
+            var glyphs = new List<FormattedGlyph>();
+            var lines = new List<FormattedText.FormattedLine>();
             var maxLineWidth = 0.0f;
             var lineSpacing = formatOptions.LineSpacing + fontMetrics.m_fontObject.Height;
 
@@ -115,7 +115,7 @@ namespace TouhouSpring.Graphics
                 }
                 else if (ch == '\n')
                 {
-                    var line = new FormatedText.FormatedLine();
+                    var line = new FormattedText.FormattedLine();
                     line.m_glyphs = glyphs.ToArray();
                     line.m_offset = new Vector2(0, currentY);
 
@@ -177,7 +177,7 @@ namespace TouhouSpring.Graphics
                     }
 
                     var glyphData = Load(ch, formatOptions.Font);
-                    var fg = new FormatedGlyph
+                    var fg = new FormattedGlyph
                     {
                         m_pos = new Vector2(currentX, 0),
                         m_color = colorStack.Peek(),
@@ -205,7 +205,7 @@ namespace TouhouSpring.Graphics
                 offsetY = -textHeight;
             }
 
-            return new FormatedText
+            return new FormattedText
             {
                 Text = text,
                 FormatOptions = formatOptions,

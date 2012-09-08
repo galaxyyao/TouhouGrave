@@ -39,8 +39,8 @@ namespace TouhouSpring.Style
 
         #region BoundsProperty.IHost implementation
 
-        string BoundsProperty.IHost.DefaultWidth { get { return TypedTarget.FormatedText.Size.Width.ToString(); } }
-        string BoundsProperty.IHost.DefaultHeight { get { return TypedTarget.FormatedText.Size.Height.ToString(); } }
+        string BoundsProperty.IHost.DefaultWidth { get { return TypedTarget.FormattedText.Size.Width.ToString(); } }
+        string BoundsProperty.IHost.DefaultHeight { get { return TypedTarget.FormattedText.Size.Height.ToString(); } }
         string BoundsProperty.IHost.DefaultHorizontalAlignment { get { return null; } }
         string BoundsProperty.IHost.DefaultVerticalAlignment { get { return null; } }
         void BoundsProperty.IHost.SetBounds(Rectangle value)
@@ -75,14 +75,14 @@ namespace TouhouSpring.Style
                     break;
             }
 
-            if (TypedTarget.FormatedText == null
-                || TypedTarget.FormatedText.Text != text
-                || TypedTarget.FormatedText.FormatOptions.Font.FamilyName != font.Family
-                || TypedTarget.FormatedText.FormatOptions.Font.Size != font.Size
-                || TypedTarget.FormatedText.FormatOptions.Font.Style != fontStyle)
+            if (TypedTarget.FormattedText == null
+                || TypedTarget.FormattedText.Text != text
+                || TypedTarget.FormattedText.FormatOptions.Font.FamilyName != font.Family
+                || TypedTarget.FormattedText.FormatOptions.Font.Size != font.Size
+                || TypedTarget.FormattedText.FormatOptions.Font.Style != fontStyle)
             {
                 var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
-                TypedTarget.FormatedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
+                TypedTarget.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
             }
             TypedTarget.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
         }

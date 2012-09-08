@@ -10,7 +10,7 @@ namespace TouhouSpring.UI
     {
         private Renderable m_renderable;
 
-        public Graphics.TextRenderer.IFormatedText FormatedText
+        public Graphics.TextRenderer.IFormattedText FormattedText
         {
             get; set;
         }
@@ -44,7 +44,7 @@ namespace TouhouSpring.UI
 
         public void OnRender(RenderEventArgs e)
         {
-            if (FormatedText != null)
+            if (FormattedText != null)
             {
                 var transform = TransformToGlobal;
                 Graphics.TextRenderer.DrawOptions drawOptions;
@@ -53,11 +53,11 @@ namespace TouhouSpring.UI
                     drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                     drawOptions.ForcedColor = ShadowTextColor;
                     drawOptions.Offset = ShadowOffset;
-                    e.TextRenderer.DrawText(FormatedText, transform, drawOptions);
+                    e.TextRenderer.DrawText(FormattedText, transform, drawOptions);
                 }
                 drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = TextColor.ToVector4();
-                e.TextRenderer.DrawText(FormatedText, transform, drawOptions);
+                e.TextRenderer.DrawText(FormattedText, transform, drawOptions);
             }
         }
     }

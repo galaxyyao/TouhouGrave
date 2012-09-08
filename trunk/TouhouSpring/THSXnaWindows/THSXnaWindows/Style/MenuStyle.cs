@@ -45,8 +45,8 @@ namespace TouhouSpring.Style
 
         #region BoundsProperty.IHost implementation
 
-        string BoundsProperty.IHost.DefaultWidth { get { return TypedTarget.Label.FormatedText.Size.Width.ToString(); } }
-        string BoundsProperty.IHost.DefaultHeight { get { return TypedTarget.Label.FormatedText.Size.Height.ToString(); } }
+        string BoundsProperty.IHost.DefaultWidth { get { return TypedTarget.Label.FormattedText.Size.Width.ToString(); } }
+        string BoundsProperty.IHost.DefaultHeight { get { return TypedTarget.Label.FormattedText.Size.Height.ToString(); } }
         string BoundsProperty.IHost.DefaultHorizontalAlignment { get { return null; } }
         string BoundsProperty.IHost.DefaultVerticalAlignment { get { return null; } }
         void BoundsProperty.IHost.SetBounds(Rectangle value)
@@ -81,14 +81,14 @@ namespace TouhouSpring.Style
                     break;
             }
 
-            if (TypedTarget.Label.FormatedText == null
-                || TypedTarget.Label.FormatedText.Text != text
-                || TypedTarget.Label.FormatedText.FormatOptions.Font.FamilyName != font.Family
-                || TypedTarget.Label.FormatedText.FormatOptions.Font.Size != font.Size
-                || TypedTarget.Label.FormatedText.FormatOptions.Font.Style != fontStyle)
+            if (TypedTarget.Label.FormattedText == null
+                || TypedTarget.Label.FormattedText.Text != text
+                || TypedTarget.Label.FormattedText.FormatOptions.Font.FamilyName != font.Family
+                || TypedTarget.Label.FormattedText.FormatOptions.Font.Size != font.Size
+                || TypedTarget.Label.FormattedText.FormatOptions.Font.Style != fontStyle)
             {
                 var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
-                TypedTarget.Label.FormatedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
+                TypedTarget.Label.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
             }
             TypedTarget.Label.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
         }

@@ -28,12 +28,12 @@ namespace TouhouSpring.UI
 			get { return base.Region; }
 		}
 
-		public Graphics.TextRenderer.IFormatedText Text
+		public Graphics.TextRenderer.IFormattedText Text
 		{
 			get; private set;
 		}
 
-        public ModalDialog(Graphics.TextRenderer.IFormatedText text)
+        public ModalDialog(Graphics.TextRenderer.IFormattedText text)
 		{
 			if (text == null)
 			{

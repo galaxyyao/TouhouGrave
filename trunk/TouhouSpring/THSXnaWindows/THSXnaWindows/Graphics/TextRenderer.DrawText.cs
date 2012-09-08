@@ -72,33 +72,33 @@ namespace TouhouSpring.Graphics
             DrawText(FormatText(text, formatOptions), transform, drawOptions);
         }
 
-        public void DrawText(IFormatedText formatedText, Matrix transform)
+        public void DrawText(IFormattedText formattedText, Matrix transform)
         {
-            DrawText(formatedText, transform, DrawOptions.Default);
+            DrawText(formattedText, transform, DrawOptions.Default);
         }
 
-        public void DrawText(IFormatedText formatedText, Matrix transform, DrawOptions drawOptions)
+        public void DrawText(IFormattedText formattedText, Matrix transform, DrawOptions drawOptions)
         {
-            if (!(formatedText is FormatedText))
+            if (!(formattedText is FormattedText))
             {
-                throw new ArgumentException("Argument formatedText is not an object returned by FormatText() method.");
+                throw new ArgumentException("Argument formattedText is not an object returned by FormatText() method.");
             }
 
-            var typedFormatedText = (FormatedText)formatedText;
-            var glyphDatas = typedFormatedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormatedText.FormatOptions.Font)).ToArray();
+            var typedFormattedText = (FormattedText)formattedText;
+            var glyphDatas = typedFormattedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormattedText.FormatOptions.Font)).ToArray();
             int totalPages = glyphDatas.Sum(glyph => glyph.m_pageIndices.Length);
             var glyphPages = new PositionedGlyphPage[totalPages];
 
             var globalOffset = Vector2.Zero;
-            globalOffset.X = typedFormatedText.Offset.X + drawOptions.Offset.X;
-            globalOffset.Y = typedFormatedText.Offset.Y + drawOptions.Offset.Y;
+            globalOffset.X = typedFormattedText.Offset.X + drawOptions.Offset.X;
+            globalOffset.Y = typedFormattedText.Offset.Y + drawOptions.Offset.Y;
             if (drawOptions.OffsetByHalfPixel)
             {
                 globalOffset += new Vector2(-0.5f, -0.5f);
             }
 
             int pageCounter = 0, glyphCounter = 0;
-            foreach (var line in typedFormatedText.m_lines)
+            foreach (var line in typedFormattedText.m_lines)
             {
                 foreach (var glyph in line.m_glyphs)
                 {
