@@ -98,8 +98,8 @@ namespace TouhouSpring.Graphics
                 throw new ArgumentNullException("formatOptions.Font");
             }
 
-            var m_colorStack = new Stack<Color>();
-            m_colorStack.Push(Color.White);
+            var colorStack = new Stack<Color>();
+            colorStack.Push(Color.White);
             var fontMetrics = m_registeredFonts[GetFontId(formatOptions.Font)];
 
             float currentX = 0;
@@ -154,16 +154,47 @@ namespace TouhouSpring.Graphics
                     glyphs.Clear();
                     lines.Add(line);
                 }
-                //else if (ch == '\\')
-                //{
-                //}
                 else
                 {
+                    if (ch == '[' && i + 1 < charArray.Length)
+                    {
+                        if (charArray[i + 1] != '[')
+                        {
+                            int j = i + 1;
+                            for (; j < charArray.Length; ++j)
+                            {
+                                if (charArray[j] == ']')
+                                {
+                                    break;
+                                }
+                            }
+                            string token = new string(charArray, i + 1, j - i - 1);
+                            if (token.StartsWith("color:", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                string colorCode = token.Substring(6);
+                                // use Style library color syntax
+                                var color = Style.Values.Color.Parse(colorCode);
+                                colorStack.Push(new Color(color.Red, color.Green, color.Blue, color.Alpha));
+                            }
+                            else if (token == "/color" && colorStack.Count > 1)
+                            {
+                                colorStack.Pop();
+                            }
+
+                            i = j;
+                            continue;
+                        }
+                        else
+                        {
+                            ++i;
+                        }
+                    }
+
                     var glyphData = Load(ch, formatOptions.Font);
                     var fg = new FormatedGlyph
                     {
                         m_pos = new Vector2(currentX, 0),
-                        m_color = m_colorStack.Peek(),
+                        m_color = colorStack.Peek(),
                         m_glyph = ch,
                     };
                     glyphs.Add(fg);
