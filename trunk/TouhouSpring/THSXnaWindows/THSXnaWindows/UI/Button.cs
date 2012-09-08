@@ -102,7 +102,7 @@ namespace TouhouSpring.UI
 				Point position = Region.LeftTop + (Region.Size - ButtonText.Size) / 2.0f;
                 var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = TextColor.ToVector4();
-                drawOptions.Offset = position;
+                drawOptions.Offset = new Point((int)position.X, (int)position.Y);
                 e.TextRenderer.DrawText(ButtonText, transform, drawOptions);
 			}
 		}

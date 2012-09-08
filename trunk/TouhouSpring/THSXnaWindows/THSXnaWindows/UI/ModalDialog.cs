@@ -114,8 +114,8 @@ namespace TouhouSpring.UI
 			quadOverlay.ColorScale = new Vector4(0, 0, 0, 0.75f);
 			e.RenderManager.Draw(quadOverlay, new Point(-0.5f, -0.5f), transform);
 
-			float textLeft = (screenWidth - Text.Size.Width) / 2;
-            float textTop = (screenHeight - Text.Size.Height) / 2;
+            var textLeft = (int)(screenWidth - Text.Size.Width) / 2;
+            var textTop = (int)(screenHeight - Text.Size.Height) / 2;
 
             var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
             drawOptions.ColorScaling = Color.Black.ToVector4();

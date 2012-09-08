@@ -50,13 +50,15 @@ namespace TouhouSpring.Graphics
             public Vector4 ColorScaling;
             public Point Offset;
             public bool TransformToClipSpace;
+            public bool OffsetByHalfPixel;
 
             public static readonly DrawOptions Default = new DrawOptions
             {
                 ForcedColor = Color.Transparent,
                 ColorScaling = Vector4.UnitW,
                 Offset = new Point(0, 0),
-                TransformToClipSpace = false
+                TransformToClipSpace = false,
+                OffsetByHalfPixel = true
             };
         }
 
@@ -87,6 +89,14 @@ namespace TouhouSpring.Graphics
             int totalPages = glyphDatas.Sum(glyph => glyph.m_pageIndices.Length);
             var glyphPages = new PositionedGlyphPage[totalPages];
 
+            var globalOffset = Vector2.Zero;
+            globalOffset.X = typedFormatedText.Offset.X + drawOptions.Offset.X;
+            globalOffset.Y = typedFormatedText.Offset.Y + drawOptions.Offset.Y;
+            if (drawOptions.OffsetByHalfPixel)
+            {
+                globalOffset += new Vector2(-0.5f, -0.5f);
+            }
+
             int pageCounter = 0, glyphCounter = 0;
             foreach (var line in typedFormatedText.m_lines)
             {
@@ -99,9 +109,7 @@ namespace TouhouSpring.Graphics
                     {
                         for (int j = 0; j <= pagesInY; ++j)
                         {
-                            var glyphPos = glyph.m_pos + line.m_offset;
-                            glyphPos.X += typedFormatedText.Offset.X + drawOptions.Offset.X;
-                            glyphPos.Y += typedFormatedText.Offset.Y + drawOptions.Offset.Y;
+                            var glyphPos = glyph.m_pos + line.m_offset + globalOffset;
                             glyphPages[pageCounter].m_pos.X = glyphPos.X + i * PageSize;
                             glyphPages[pageCounter].m_pos.Y = glyphPos.Y + j * PageSize;
                             glyphPages[pageCounter].m_color = drawOptions.ForcedColor == Color.Transparent ? glyph.m_color : drawOptions.ForcedColor;
