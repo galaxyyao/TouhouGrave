@@ -29,7 +29,7 @@ namespace TouhouSpring.Graphics
                 m_registeredFonts.Add(new FontMetrics
                 {
                     m_id = fontId,
-                    m_spaceWidth = MeasureCharacter(' ', font).Width
+                    m_spaceWidth = MeasureSpace(font).Width
                 });
                 index = m_registeredFonts.Count - 1;
             }

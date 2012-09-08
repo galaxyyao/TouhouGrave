@@ -214,6 +214,14 @@ namespace TouhouSpring.Graphics
             return chRegion[0].GetBounds(m_measureContext);
         }
 
+        private SystemDrawing.RectangleF MeasureSpace(SystemDrawing.Font font)
+        {
+            m_measureFormat.FormatFlags |= SystemDrawing.StringFormatFlags.MeasureTrailingSpaces;
+            var ret = MeasureCharacter(' ', font);
+            m_measureFormat.FormatFlags &= ~SystemDrawing.StringFormatFlags.MeasureTrailingSpaces;
+            return ret;
+        }
+
         private void Initialize_Atlas()
         {
             using (var empty = new SystemDrawing.Bitmap(1, 1))
