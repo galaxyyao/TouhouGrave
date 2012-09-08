@@ -94,7 +94,7 @@ void DrawPS(
 	float2 iUV = iUV_PageXY.xy;
 	float2 dx = ddx(iUV);
 	float2 dy = ddy(iUV);
-	float lod = ComputeMipmapLevel(dx, dy, Draw_TextureSize);
+	float lod = ceil(max(ComputeMipmapLevel(dx, dy, Draw_TextureSize), 0));
 	float2 halfBorderSizeLod = exp2(lod).xx * Draw_InvTextureSize * 0.5f;
 	float4 pageUVRange = GetPageUV(iUV_PageXY.zw);
 	iUV = max(iUV, pageUVRange.xy + halfBorderSizeLod);
