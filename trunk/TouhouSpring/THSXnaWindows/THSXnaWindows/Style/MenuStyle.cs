@@ -83,14 +83,12 @@ namespace TouhouSpring.Style
 
             if (TypedTarget.Label.FormatedText == null
                 || TypedTarget.Label.FormatedText.Text != text
-                || TypedTarget.Label.FormatedText.FormatOptions.FontName != font.Family
+                || TypedTarget.Label.FormatedText.FormatOptions.Font.FamilyName != font.Family
                 || TypedTarget.Label.FormatedText.FormatOptions.Font.Size != font.Size
                 || TypedTarget.Label.FormatedText.FormatOptions.Font.Style != fontStyle)
             {
-                using (var sysFont = new SystemFont(font.Family, font.Size.Value, fontStyle))
-                {
-                    TypedTarget.Label.FormatedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(sysFont));
-                }
+                var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
+                TypedTarget.Label.FormatedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
             }
             TypedTarget.Label.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
         }

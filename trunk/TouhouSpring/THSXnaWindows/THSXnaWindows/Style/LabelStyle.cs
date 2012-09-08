@@ -77,14 +77,12 @@ namespace TouhouSpring.Style
 
             if (TypedTarget.FormatedText == null
                 || TypedTarget.FormatedText.Text != text
-                || TypedTarget.FormatedText.FormatOptions.FontName != font.Family
+                || TypedTarget.FormatedText.FormatOptions.Font.FamilyName != font.Family
                 || TypedTarget.FormatedText.FormatOptions.Font.Size != font.Size
                 || TypedTarget.FormatedText.FormatOptions.Font.Style != fontStyle)
             {
-                using (var sysFont = new SystemFont(font.Family, font.Size.Value, fontStyle))
-                {
-                    TypedTarget.FormatedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(sysFont));
-                }
+                var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
+                TypedTarget.FormatedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
             }
             TypedTarget.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
         }

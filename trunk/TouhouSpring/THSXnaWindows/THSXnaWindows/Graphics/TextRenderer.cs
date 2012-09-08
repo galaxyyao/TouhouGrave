@@ -40,5 +40,10 @@ namespace TouhouSpring.Graphics
         {
             ++m_timeStamp;
         }
+
+        public override void PreDeviceReset()
+        {
+            PreDeviceReset_Atlas();
+        }
     }
 }

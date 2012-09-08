@@ -51,9 +51,10 @@ namespace TouhouSpring.Graphics
         private BlendState[] m_channelMasks;
 
         // load one single glyph into the cache
-        private GlyphData Load(char glyph, SystemDrawing.Font font)
+        private GlyphData Load(char glyph, FontDescriptor fontDescriptor)
         {
-            uint glyphId = ((uint)GetFontId(font) << 16) + glyph;
+            int fontId = GetFontId(fontDescriptor);
+            uint glyphId = ((uint)fontId << 16) + glyph;
 
             GlyphData glyphData;
             if (m_loadedGlyphs.TryGetValue(glyphId, out glyphData))
@@ -63,7 +64,7 @@ namespace TouhouSpring.Graphics
             }
 
             var str = glyph.ToString();
-            var chRect = MeasureCharacter(glyph, font);
+            var chRect = MeasureCharacter(glyph, m_registeredFonts[fontId].m_fontObject);
 
             int width = Math.Max((int)Math.Ceiling(chRect.Width), 1);
             int height = Math.Max((int)Math.Ceiling(chRect.Height), 1);
@@ -83,7 +84,7 @@ namespace TouhouSpring.Graphics
             using (var memStream = new MemoryStream())
             {
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                g.DrawString(str, font, m_whiteBrush, new SystemDrawing.PointF(-chRect.Left, -chRect.Top));
+                g.DrawString(str, m_registeredFonts[fontId].m_fontObject, m_whiteBrush, new SystemDrawing.PointF(-chRect.Left, -chRect.Top));
                 bmp.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);
                 using (var tmpTexture = Texture2D.FromStream(GameApp.Instance.GraphicsDevice, memStream))
                 {
@@ -253,6 +254,19 @@ namespace TouhouSpring.Graphics
             m_channelMasks.ForEach(channel => channel.Dispose());
             m_vertDeclBlit.Dispose();
             m_measureContext.Dispose();
+        }
+
+        private void PreDeviceReset_Atlas()
+        {
+            // when device is going to be reset, all render targets will lose their content;
+            // so unload all glyphs here; they'll be reloaded if they are drawn again
+            m_loadedGlyphs.Clear();
+            for (int i = 0; i < m_cacheTextures.Count; ++i)
+            {
+                var tex = new CacheTexture();
+                tex.m_physicalRTTexture = m_cacheTextures[i].m_physicalRTTexture;
+                m_cacheTextures[i] = tex;
+            }
         }
     }
 }

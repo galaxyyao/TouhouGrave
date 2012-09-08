@@ -24,29 +24,19 @@ namespace TouhouSpring.Graphics
 
         public struct FormatOptions
         {
-            public SystemFont Font;
+            public FontDescriptor Font;
             public Alignment Alignment;
             public float CharSpacing;
             public float LineSpacing;
             public int TabSpaces;
 
-            public FormatOptions(SystemFont font)
+            public FormatOptions(FontDescriptor font)
             {
-                if (font == null)
-                {
-                    throw new ArgumentNullException("font");
-                }
-
                 Font = font;
                 Alignment = TextRenderer.Alignment.LeftTop;
                 CharSpacing = 0;
-                LineSpacing = font.Height;
+                LineSpacing = 0;
                 TabSpaces = 4;
-            }
-
-            public string FontName
-            {
-                get { return Font.OriginalFontName ?? Font.Name; }
             }
         }
 
@@ -93,11 +83,6 @@ namespace TouhouSpring.Graphics
 
         public IFormatedText FormatText(string text, FormatOptions formatOptions)
         {
-            if (formatOptions.Font == null)
-            {
-                throw new ArgumentNullException("formatOptions.Font");
-            }
-
             var colorStack = new Stack<Color>();
             colorStack.Push(Color.White);
             var fontMetrics = m_registeredFonts[GetFontId(formatOptions.Font)];
@@ -115,6 +100,7 @@ namespace TouhouSpring.Graphics
             var glyphs = new List<FormatedGlyph>();
             var lines = new List<FormatedText.FormatedLine>();
             var maxLineWidth = 0.0f;
+            var lineSpacing = formatOptions.LineSpacing + fontMetrics.m_fontObject.Height;
 
             for (int i = 0; i < charArray.Length; ++i)
             {
@@ -149,7 +135,7 @@ namespace TouhouSpring.Graphics
                         line.m_offset.X = -lineWidth;
                     }
 
-                    currentY += formatOptions.LineSpacing;
+                    currentY += lineSpacing;
                     currentX = 0;
                     glyphs.Clear();
                     lines.Add(line);
@@ -204,7 +190,7 @@ namespace TouhouSpring.Graphics
 
             var offsetY = 0.0f;
             var textHeight = lines.Count > 0
-                             ? formatOptions.LineSpacing * (lines.Count - 1) + formatOptions.Font.Height
+                             ? lineSpacing * (lines.Count - 1) + fontMetrics.m_fontObject.Height
                              : 0;
             if (formatOptions.Alignment == Alignment.LeftMiddle
                 || formatOptions.Alignment == Alignment.CenterMiddle

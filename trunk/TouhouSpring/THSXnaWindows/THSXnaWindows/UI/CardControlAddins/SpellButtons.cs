@@ -28,25 +28,24 @@ namespace TouhouSpring.UI.CardControlAddins
 
             m_buttonFaceTexture = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/Button");
             var buttonFace = new Graphics.TexturedQuad(m_buttonFaceTexture);
-            using (var font = new System.Drawing.Font("Segoe UI", 16))
+            var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI", 16);
+
+            int y = 0;
+            foreach (var spell in Card.GetSpells())
             {
-                int y = 0;
-                foreach (var spell in Card.GetSpells())
+                y -= m_buttonFaceTexture.Height + IntervalV;
+
+                var btn = new Button
                 {
-                    y -= m_buttonFaceTexture.Height + IntervalV;
-
-                    var btn = new Button
-                    {
-                        NormalFace = buttonFace,
-                        ButtonText = GameApp.Service<Graphics.TextRenderer>().FormatText(spell.Model.Name, new Graphics.TextRenderer.FormatOptions(font))
-                    };
-                    btn.Transform = MatrixHelper.Translate(-m_buttonFaceTexture.Width / 2, y);
-                    btn.MouseButton1Up += new EventHandler<MouseEventArgs>(SpellButton_MouseButton1Up);
-                    btn.Dispatcher = m_spellButtonContainer;
-                    m_spellButtons.Add(btn);
-                }
+                    NormalFace = buttonFace,
+                    ButtonText = GameApp.Service<Graphics.TextRenderer>().FormatText(spell.Model.Name, new Graphics.TextRenderer.FormatOptions(font))
+                };
+                btn.Transform = MatrixHelper.Translate(-m_buttonFaceTexture.Width / 2, y);
+                btn.MouseButton1Up += new EventHandler<MouseEventArgs>(SpellButton_MouseButton1Up);
+                btn.Dispatcher = m_spellButtonContainer;
+                m_spellButtons.Add(btn);
             }
-
+ 
             m_fadeInOutTrack.Elapsed += w =>
             {
                 foreach (var button in Buttons)

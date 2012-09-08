@@ -53,13 +53,11 @@ namespace TouhouSpring.Services
             m_buttonFace = new Graphics.TexturedQuad(buttonTexture);
 
             m_buttonTexts = new Graphics.TextRenderer.IFormatedText[4];
-			using (var font = new System.Drawing.Font("Segoe UI Light", 16))
-			{
-                m_buttonTexts[(int)PhaseButtonText.Next] = GameApp.Service<Graphics.TextRenderer>().FormatText("Next", new Graphics.TextRenderer.FormatOptions(font));
-                m_buttonTexts[(int)PhaseButtonText.Done] = GameApp.Service<Graphics.TextRenderer>().FormatText("Done", new Graphics.TextRenderer.FormatOptions(font));
-                m_buttonTexts[(int)PhaseButtonText.Skip] = GameApp.Service<Graphics.TextRenderer>().FormatText("Skip", new Graphics.TextRenderer.FormatOptions(font));
-                m_buttonTexts[(int)PhaseButtonText.Draw] = GameApp.Service<Graphics.TextRenderer>().FormatText("Draw", new Graphics.TextRenderer.FormatOptions(font));
-			}
+            var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI Light", 16);
+            m_buttonTexts[(int)PhaseButtonText.Next] = GameApp.Service<Graphics.TextRenderer>().FormatText("Next", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[(int)PhaseButtonText.Done] = GameApp.Service<Graphics.TextRenderer>().FormatText("Done", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[(int)PhaseButtonText.Skip] = GameApp.Service<Graphics.TextRenderer>().FormatText("Skip", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[(int)PhaseButtonText.Draw] = GameApp.Service<Graphics.TextRenderer>().FormatText("Draw", new Graphics.TextRenderer.FormatOptions(font));
 		}
 
 		private void DestroyPhaseButtons()

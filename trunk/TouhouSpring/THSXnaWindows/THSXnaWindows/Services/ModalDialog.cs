@@ -25,7 +25,7 @@ namespace TouhouSpring.Services
 
 		private Graphics.TexturedQuad m_buttonFace;
         private Graphics.TextRenderer.IFormatedText[] m_buttonTexts = new Graphics.TextRenderer.IFormatedText[4];
-		private System.Drawing.Font m_msgFont;
+		private Graphics.TextRenderer.FontDescriptor m_msgFont;
 
 		public void Show(string message)
 		{
@@ -109,20 +109,17 @@ namespace TouhouSpring.Services
 
 			m_buttonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("Textures/Button"));
 
-			using (var font = new System.Drawing.Font("Segoe UI", 16))
-			{
-                m_buttonTexts[OK] = GameApp.Service<Graphics.TextRenderer>().FormatText("OK", new Graphics.TextRenderer.FormatOptions(font));
-                m_buttonTexts[Cancel] = GameApp.Service<Graphics.TextRenderer>().FormatText("Cancel", new Graphics.TextRenderer.FormatOptions(font));
-                m_buttonTexts[Yes] = GameApp.Service<Graphics.TextRenderer>().FormatText("Yes", new Graphics.TextRenderer.FormatOptions(font));
-                m_buttonTexts[No] = GameApp.Service<Graphics.TextRenderer>().FormatText("No", new Graphics.TextRenderer.FormatOptions(font));
-			}
+            var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI", 16);
+            m_buttonTexts[OK] = GameApp.Service<Graphics.TextRenderer>().FormatText("OK", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[Cancel] = GameApp.Service<Graphics.TextRenderer>().FormatText("Cancel", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[Yes] = GameApp.Service<Graphics.TextRenderer>().FormatText("Yes", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[No] = GameApp.Service<Graphics.TextRenderer>().FormatText("No", new Graphics.TextRenderer.FormatOptions(font));
 
-			m_msgFont = new System.Drawing.Font("Segoe UI Light", 32);
+			m_msgFont = new Graphics.TextRenderer.FontDescriptor("Segoe UI Light", 32);
 		}
 
 		public override void Shutdown()
 		{
-			m_msgFont.Dispose();
 			GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
 		}
 	}
