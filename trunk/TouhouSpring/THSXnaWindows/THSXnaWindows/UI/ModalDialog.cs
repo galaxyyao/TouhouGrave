@@ -28,12 +28,12 @@ namespace TouhouSpring.UI
 			get { return base.Region; }
 		}
 
-		public Graphics.TextBuffer Text
+		public Graphics.TextRenderer.IFormattedText Text
 		{
 			get; private set;
 		}
 
-		public ModalDialog(Graphics.TextBuffer text)
+        public ModalDialog(Graphics.TextRenderer.IFormattedText text)
 		{
 			if (text == null)
 			{
@@ -93,7 +93,7 @@ namespace TouhouSpring.UI
 			const float intervalV = 20;
 			float allButtonsWidth = m_buttons.Sum(btn => btn.Size.Width) + (m_buttons.Count - 1) * intervalH;
 			float x = (screenWidth - allButtonsWidth) / 2;
-			float y = (screenHeight + Text.TextSize.Height) / 2 + intervalV;
+			float y = (screenHeight + Text.Size.Height) / 2 + intervalV;
 			foreach (var btn in m_buttons)
 			{
 				btn.Transform = MatrixHelper.Translate(x, y);
@@ -114,11 +114,16 @@ namespace TouhouSpring.UI
 			quadOverlay.ColorScale = new Vector4(0, 0, 0, 0.75f);
 			e.RenderManager.Draw(quadOverlay, new Point(-0.5f, -0.5f), transform);
 
-			float textLeft = (screenWidth - Text.TextSize.Width) / 2;
-			float textTop = (screenHeight - Text.TextSize.Height) / 2;
+            var textLeft = (int)(screenWidth - Text.Size.Width) / 2;
+            var textTop = (int)(screenHeight - Text.Size.Height) / 2;
 
-			e.RenderManager.Draw(Text, Color.Black, new Point(textLeft + 2, textTop + 3), transform);
-			e.RenderManager.Draw(Text, Color.White, new Point(textLeft, textTop), transform);
+            var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
+            drawOptions.ColorScaling = Color.Black.ToVector4();
+            drawOptions.Offset = new Point(textLeft + 2, textTop + 3);
+            e.TextRenderer.DrawText(Text, transform, drawOptions);
+            drawOptions.ColorScaling = Color.White.ToVector4();
+            drawOptions.Offset = new Point(textLeft, textTop);
+            e.TextRenderer.DrawText(Text, transform, drawOptions);
 		}
 
 		private void OnButtonClicked(object sender, MouseEventArgs e)

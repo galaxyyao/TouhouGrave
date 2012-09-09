@@ -5,37 +5,65 @@ using System.Text;
 
 namespace TouhouSpring.Services
 {
-	public class GameService : IService
-	{
-		public virtual void Startup() { }
-		public virtual void Shutdown() { }
-		public virtual void Update(float deltaTime) { }
-		public virtual void Render() { }
-	}
+    public class GameService : IService
+    {
+        public virtual void Startup() { }
+        public virtual void Shutdown() { }
+        public virtual void Update(float deltaTime) { }
+        public virtual void Render() { }
+        public virtual void PreDeviceReset() { }
+        public virtual void PostDeviceReset() { }
+    }
 
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class UpdateDependencyAttribute : DependencyAttribute
-	{
-		public static new string Category
-		{
-			get { return "Update"; }
-		}
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class UpdateDependencyAttribute : DependencyAttribute
+    {
+        public static new string Category
+        {
+            get { return "Update"; }
+        }
 
-		public UpdateDependencyAttribute(Type type)
-			: base(Category, type)
-		{ }
-	}
+        public UpdateDependencyAttribute(Type type)
+            : base(Category, type)
+        { }
+    }
 
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class RenderDependencyAttribute : DependencyAttribute
-	{
-		public static new string Category
-		{
-			get { return "Render"; }
-		}
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class RenderDependencyAttribute : DependencyAttribute
+    {
+        public static new string Category
+        {
+            get { return "Render"; }
+        }
 
-		public RenderDependencyAttribute(Type type)
-			: base(Category, type)
-		{ }
-	}
+        public RenderDependencyAttribute(Type type)
+            : base(Category, type)
+        { }
+    }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class PreDeviceResetDependencyAttribute : DependencyAttribute
+    {
+        public static new string Category
+        {
+            get { return "PreDeviceReset"; }
+        }
+
+        public PreDeviceResetDependencyAttribute(Type type)
+            : base(Category, type)
+        { }
+    }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class PostDeviceResetDependencyAttribute : DependencyAttribute
+    {
+        public static new string Category
+        {
+            get { return "PostDeviceReset"; }
+        }
+
+        public PostDeviceResetDependencyAttribute(Type type)
+            : base(Category, type)
+        { }
+    }
 }

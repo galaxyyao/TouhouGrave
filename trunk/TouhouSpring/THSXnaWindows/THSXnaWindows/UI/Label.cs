@@ -6,53 +6,59 @@ using XnaColor = Microsoft.Xna.Framework.Color;
 
 namespace TouhouSpring.UI
 {
-	class Label : TransformNode, IRenderable
-	{
-		private Renderable m_renderable;
+    class Label : TransformNode, IRenderable
+    {
+        private Renderable m_renderable;
 
-		public Graphics.TextBuffer TextBuffer
-		{
-			get; set;
-		}
+        public Graphics.TextRenderer.IFormattedText FormattedText
+        {
+            get; set;
+        }
 
-		public bool Shadowed
-		{
-			get; set;
-		}
+        public bool Shadowed
+        {
+            get; set;
+        }
 
-		public XnaColor TextColor
-		{
-			get; set;
-		}
+        public XnaColor TextColor
+        {
+            get; set;
+        }
 
-		public XnaColor ShadowTextColor
-		{
-			get; set;
-		}
+        public XnaColor ShadowTextColor
+        {
+            get; set;
+        }
 
-		public Point ShadowOffset
-		{
-			get; set;
-		}
+        public Point ShadowOffset
+        {
+            get; set;
+        }
 
-		public Label()
-		{
-			m_renderable = new Renderable(this);
+        public Label()
+        {
+            m_renderable = new Renderable(this);
 
-			TextColor = XnaColor.Black;
-		}
+            TextColor = XnaColor.Black;
+        }
 
-		public void OnRender(RenderEventArgs e)
-		{
-			if (TextBuffer != null)
-			{
-				var transform = TransformToGlobal;
-				if (Shadowed)
-				{
-					e.RenderManager.Draw(TextBuffer, ShadowTextColor, ShadowOffset, transform);
-				}
-				e.RenderManager.Draw(TextBuffer, TextColor, new Point(0, 0), transform);
-			}
-		}
-	}
+        public void OnRender(RenderEventArgs e)
+        {
+            if (FormattedText != null)
+            {
+                var transform = TransformToGlobal;
+                Graphics.TextRenderer.DrawOptions drawOptions;
+                if (Shadowed)
+                {
+                    drawOptions = Graphics.TextRenderer.DrawOptions.Default;
+                    drawOptions.ForcedColor = ShadowTextColor;
+                    drawOptions.Offset = ShadowOffset;
+                    e.TextRenderer.DrawText(FormattedText, transform, drawOptions);
+                }
+                drawOptions = Graphics.TextRenderer.DrawOptions.Default;
+                drawOptions.ColorScaling = TextColor.ToVector4();
+                e.TextRenderer.DrawText(FormattedText, transform, drawOptions);
+            }
+        }
+    }
 }

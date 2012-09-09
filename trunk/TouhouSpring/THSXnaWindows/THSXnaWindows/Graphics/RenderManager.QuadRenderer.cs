@@ -72,6 +72,7 @@ namespace TouhouSpring.Graphics
 			Device.Indices = null;
 			Device.BlendState = quad.BlendState;
 			Device.DepthStencilState = OverridingDepthStencilState ?? m_depthSettings[(quad.ZTest ? 2 : 0) | (quad.ZWrite ? 1 : 0)];
+			Device.RasterizerState = RasterizerState.CullCounterClockwise;
 
 			if (m_effect.CurrentTechnique != m_techStack.Peek())
 			{

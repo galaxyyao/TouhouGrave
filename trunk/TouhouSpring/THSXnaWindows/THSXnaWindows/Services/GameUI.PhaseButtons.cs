@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouSpring.Services
 {
+    [LifetimeDependency(typeof(Graphics.TextRenderer))]
 	partial class GameUI
 	{
 		public enum PhaseButtonText
@@ -19,7 +20,7 @@ namespace TouhouSpring.Services
         private List<UI.Button> m_phaseButtons = new List<UI.Button>();
 
         private Graphics.TexturedQuad m_buttonFace;
-        private Graphics.TextBuffer[] m_buttonTexts;
+        private Graphics.TextRenderer.IFormattedText[] m_buttonTexts;
 
         public void SetSinglePhaseButton(PhaseButtonText buttonText)
         {
@@ -51,19 +52,16 @@ namespace TouhouSpring.Services
 			var buttonTexture = resourceMgr.Acquire<Graphics.VirtualTexture>("Textures/Button");
             m_buttonFace = new Graphics.TexturedQuad(buttonTexture);
 
-            m_buttonTexts = new Graphics.TextBuffer[4];
-			using (var font = new System.Drawing.Font("Segoe UI Light", 16))
-			{
-                m_buttonTexts[(int)PhaseButtonText.Next] = new Graphics.TextBuffer("Next", font, device);
-                m_buttonTexts[(int)PhaseButtonText.Done] = new Graphics.TextBuffer("Done", font, device);
-                m_buttonTexts[(int)PhaseButtonText.Skip] = new Graphics.TextBuffer("Skip", font, device);
-                m_buttonTexts[(int)PhaseButtonText.Draw] = new Graphics.TextBuffer("Draw", font, device);
-			}
+            m_buttonTexts = new Graphics.TextRenderer.IFormattedText[4];
+            var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI Light", 16);
+            m_buttonTexts[(int)PhaseButtonText.Next] = GameApp.Service<Graphics.TextRenderer>().FormatText("Next", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[(int)PhaseButtonText.Done] = GameApp.Service<Graphics.TextRenderer>().FormatText("Done", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[(int)PhaseButtonText.Skip] = GameApp.Service<Graphics.TextRenderer>().FormatText("Skip", new Graphics.TextRenderer.FormatOptions(font));
+            m_buttonTexts[(int)PhaseButtonText.Draw] = GameApp.Service<Graphics.TextRenderer>().FormatText("Draw", new Graphics.TextRenderer.FormatOptions(font));
 		}
 
 		private void DestroyPhaseButtons()
 		{
-            m_buttonTexts.ForEach(i => i.Dispose());
 			GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
 		}
 

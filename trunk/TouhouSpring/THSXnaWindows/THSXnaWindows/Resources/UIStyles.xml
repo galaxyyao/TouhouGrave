@@ -1,156 +1,157 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Style>
-	<Page Id="MainMenu">
-		<Menu Id="storymode" Font="Segoe UI, 24" Text="Story Mode" Left="600" Top="250" Color="Gray" />
-		<Menu Id="freemode" Font="Segoe UI, 24" Text="Free Mode" Left="600" Top="300" />
-		<Menu Id="extras" Font="Segoe UI, 24" Text="Extras" Left="600" Top="350" Color="Gray" />
-		<Menu Id="options" Font="Segoe UI, 24" Text="Options" Left="600" Top="400" Color="Gray" />
-		<Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="450" />
-		<!--<Image Uri="atlas:TitleMenuItems/FreeMode_Normal" />
+  <Page Id="MainMenu">
+    <Menu Id="storymode" Font="Segoe UI, 24" Text="Story Mode" Left="600" Top="250" Color="Gray" />
+    <Menu Id="freemode" Font="Segoe UI, 24" Text="Free Mode" Left="600" Top="300" />
+    <Menu Id="extras" Font="Segoe UI, 24" Text="Extras" Left="600" Top="350" Color="Gray" />
+    <Menu Id="options" Font="Segoe UI, 24" Text="Options" Left="600" Top="400" Color="Gray" />
+    <Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="450" />
+    <!--<Image Uri="atlas:TitleMenuItems/FreeMode_Normal" />
 		<Image Uri="atlas:TitleMenuItems/FreeMode_Highlight" Left="200" />-->
-	</Page>
-	<Page Id="FreeMode">
-		<Menu Id="vsai" Font="Segoe UI, 24" Text="VS AI" Left="600" Top="250" />
-		<Menu Id="vsnetwork" Font="Segoe UI, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
-		<Menu Id="replay" Font="Segoe UI, 24" Text="Replay" Left="600" Top="350" Color="Gray" />
-		<Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="450" />
-	</Page>
-	<Page Id="Quit">
-		<Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="300" />
-		<Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="350" />
-	</Page>
-	<Page Id="InGame">
-		<Layout Id="Background2D">
-			<!--This layer is for drawing the 2D elements at background(bottom)-->
-			<Transform Matrix="#Game.UICamera.Transform#" />
-		</Layout>
-		<Layout Id="Background3D">
-			<!--This layer is for drawing the 3D elements at background (e.g. skybox)-->
-			<Transform Matrix="#Game.WorldCamera.Transform#" />
-		</Layout>
-		<Layout Id="World3D">
-			<!--This layer is for drawing the 3D elements of the game scene(e.g. board)-->
-			<Transform Matrix="#Game.WorldCamera.Transform#" />
-			<Layout Id="OpponentHand" Left="-1" Top="1">
-				<Transform Scaling="0.2,0.2,0.2" />
-			</Layout>
-			<Layout Id="OpponentBattlefield" Left="-1" Top="0.65">
-				<Transform Scaling="0.2,0.2,0.2" />
-			</Layout>
-			<Layout Id="OpponentFormation" Left="-1" Top="0.3">
-				<Transform Scaling="0.2,0.2,0.2" />
-			</Layout>
-			<Layout Id="PlayerFormation" Left="-1" Top="-0.1">
-				<Transform Scaling="0.2,0.2,0.2" />
-			</Layout>
-			<Layout Id="PlayerBattlefield" Left="-1" Top="-0.45">
-				<Transform Scaling="0.2,0.2,0.2" />
-			</Layout>
-		</Layout>
-		<Layout Id="World2D">
-			<!--This layer is for drawing the 2D elements of the game (e.g. spell buttons)-->
-			<Transform Matrix="#Game.UICamera.Transform#" />
-			<Layout Id="PlayerHand" Left="180" Top="630">
-				<Transform Scaling="84,-84" />
-			</Layout>
-			<Layout Id="PlayerHero" Left="20" Top="250">
-				<Transform Scaling="125,-125" />
-			</Layout>
-			<Layout Id="OpponentHero" Left="860" Top="250">
-				<Transform Scaling="125,-125" />
-			</Layout>
-		</Layout>
-		<Layout Id="UI">
-			<!--This layer is for drawing the in-game UI (e.g. avatars, next button)-->
-			<Transform Matrix="#Game.UICamera.Transform#" />
-			<Label Font="Segoe UI, 24" Text="#Game.Phase#" Color="White" HorizontalAlignment="Center" />
-			<!-- 1P -->
-			<Layout Left="20" Top="610" Width="135" Height="135">
-				<Transform Scaling="0.5,0.5" />
-				<Image Uri="#Game.Player0.Avatar#" Left="20" Top="19" />
-				<Image Uri="#Game.Player0.AvatarBorder#" />
-			</Layout>
-			<Label Font="Segoe UI, 16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="550" />
-			<Label Font="Segoe UI, 16" Text="HP: #Game.Player0.Health#&#10;MP:#Game.Player0.Mana#" Color="White" Left="95" Top="550" />
-			<!-- 2P -->
-			<Layout Right="20" Top="20" Width="135" Height="135">
-				<Transform Scaling="0.5,0.5" />
-				<Image Uri="#Game.Player1.Avatar#" Left="20" Top="19" />
-				<Image Uri="#Game.Player1.AvatarBorder#" />
-			</Layout>
-			<Label Font="Segoe UI, 16" Text="#Game.Player1.Name#" Color="White" Left="860" Top="160" />
-			<Label Font="Segoe UI, 16" Text="HP: #Game.Player1.Health#&#10;MP:#Game.Player1.Mana#" Color="White" Left="940" Top="160" />
+  </Page>
+  <Page Id="FreeMode">
+    <Menu Id="vsai" Font="Segoe UI, 24" Text="VS AI" Left="600" Top="250" />
+    <Menu Id="vsnetwork" Font="Segoe UI, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
+    <Menu Id="replay" Font="Segoe UI, 24" Text="Replay" Left="600" Top="350" Color="Gray" />
+    <Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="450" />
+  </Page>
+  <Page Id="Quit">
+    <Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="300" />
+    <Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="350" />
+  </Page>
+  <Page Id="InGame">
+    <Layout Id="Background2D">
+      <!--This layer is for drawing the 2D elements at background(bottom)-->
+      <Transform Matrix="#Game.UICamera.Transform#" />
+    </Layout>
+    <Layout Id="Background3D">
+      <!--This layer is for drawing the 3D elements at background (e.g. skybox)-->
+      <Transform Matrix="#Game.WorldCamera.Transform#" />
+    </Layout>
+    <Layout Id="World3D">
+      <!--This layer is for drawing the 3D elements of the game scene(e.g. board)-->
+      <Transform Matrix="#Game.WorldCamera.Transform#" />
+      <Layout Id="OpponentHand" Left="-1" Top="1">
+        <Transform Scaling="0.2,0.2,0.2" />
+      </Layout>
+      <Layout Id="OpponentBattlefield" Left="-1" Top="0.65">
+        <Transform Scaling="0.2,0.2,0.2" />
+      </Layout>
+      <Layout Id="OpponentFormation" Left="-1" Top="0.3">
+        <Transform Scaling="0.2,0.2,0.2" />
+      </Layout>
+      <Layout Id="PlayerFormation" Left="-1" Top="-0.1">
+        <Transform Scaling="0.2,0.2,0.2" />
+      </Layout>
+      <Layout Id="PlayerBattlefield" Left="-1" Top="-0.45">
+        <Transform Scaling="0.2,0.2,0.2" />
+      </Layout>
+    </Layout>
+    <Layout Id="World2D">
+      <!--This layer is for drawing the 2D elements of the game (e.g. spell buttons)-->
+      <Transform Matrix="#Game.UICamera.Transform#" />
+      <Layout Id="PlayerHand" Left="180" Top="630">
+        <Transform Scaling="84,-84" />
+      </Layout>
+      <Layout Id="PlayerHero" Left="20" Top="250">
+        <Transform Scaling="125,-125" />
+      </Layout>
+      <Layout Id="OpponentHero" Left="860" Top="250">
+        <Transform Scaling="125,-125" />
+      </Layout>
+    </Layout>
+    <Layout Id="UI">
+      <!--This layer is for drawing the in-game UI (e.g. avatars, next button)-->
+      <Transform Matrix="#Game.UICamera.Transform#" />
+      <Label Font="Segoe UI, 24" Text="#Game.Phase#" Color="White" HorizontalAlignment="Center" />
+      <!-- 1P -->
+      <Layout Left="20" Top="610" Width="135" Height="135">
+        <Transform Scaling="0.5,0.5" />
+        <Image Uri="#Game.Player0.Avatar#" Left="20" Top="19" />
+        <Image Uri="#Game.Player0.AvatarBorder#" />
+      </Layout>
+      <Label Font="Segoe UI, 16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="550" />
+      <Label Font="Segoe UI, 16" Text="HP: #Game.Player0.Health#&#10;MP:#Game.Player0.Mana#" Color="White" Left="95" Top="550" />
+      <!-- 2P -->
+      <Layout Right="20" Top="20" Width="135" Height="135">
+        <Transform Scaling="0.5,0.5" />
+        <Image Uri="#Game.Player1.Avatar#" Left="20" Top="19" />
+        <Image Uri="#Game.Player1.AvatarBorder#" />
+      </Layout>
+      <Label Font="Segoe UI, 16" Text="#Game.Player1.Name#" Color="White" Left="860" Top="160" />
+      <Label Font="Segoe UI, 16" Text="HP: #Game.Player1.Health#&#10;MP:#Game.Player1.Mana#" Color="White" Left="940" Top="160" />
       <Layout Id="PhaseButton" Left="860" Top="450" />
-			<Layout Id="ZoomedIn">
-				<Transform Scaling="420,-420" />
-				<Bounds Width="420" Height="600" Left="550" VerticalAlignment="Center"/>
-			</Layout>
+      <Layout Id="ZoomedIn">
+        <Transform Scaling="420,-420" />
+        <Bounds Width="420" Height="600" Left="550" VerticalAlignment="Center"/>
+      </Layout>
       <Label Font="Microsoft YaHei, 24, Bold" Text="#Game.DetailText1#" Color="White" Left="30" Top="50" />
       <Label Font="Microsoft YaHei, 18" Text="#Game.DetailText2#" Color="White" Left="60" Top="100" />
-			<Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Top" HorizontalAlignment="Left" />
-			<Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Top" HorizontalAlignment="Right" />
-			<Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
-			<Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
-		</Layout>
-	</Page>
+      <Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Top" HorizontalAlignment="Left" />
+      <Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Top" HorizontalAlignment="Right" />
+      <Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+      <Label Font="Segoe UI, 12" Text="CONFIDENTIAL" Color="Red" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+    </Layout>
+  </Page>
   <Page Id="Conversation">
     <Panel Id="ConversationPanel" Left="0" Top="540" Width="1024" Height="270"></Panel>
     <Label Font="Segoe UI, 16" Text="#Conversation.CurrentText#" Color="Black" Left="20" Top="570" />
   </Page>
-	<Card Id="Large" Width="210" Height="300">
-		<Transform Matrix="#CardAnimator.LocationTransform#" />
-		<Layout Id="Main">
-			<Transform Matrix="#CardAnimator.SelectedTransform#" />
-			<Transform Scaling="0.0048,-0.0048" />
-			<!--<Transform Matrix="#CardAnimator.Flip#" />-->
-			<Layout Id="Body">
-				<!-- card's artwork -->
-				<Layout Width="192" HorizontalAlignment="Center">
-					<Image Uri="#Card.ImageUri#" Blend="Opaque">
-						<Content Stretch="UniformToFill" VerticalAlignment="Top" />
-						<Bounds Top="28" Width="100%" Height="142" />
-					</Image>
-				</Layout>
-				<!-- frame -->
-				<Image Uri="Textures/CardFrame" />
-				<Image Uri="Textures/CardBack">
-					<Transform Translation="-105" />
-					<Transform Scaling="-1,1" />
-					<Transform Translation="105" />
-				</Image>
-				<!-- name -->
-				<Label Font="Segoe UI, 11" Text="#Card.Name#" Color="Black">
-					<Bounds Left="10" Top="8" />
-				</Label>
-				<Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
-					<Bounds Top="240" HorizontalAlignment="Center" />
-				</Label>
-				<Label Font="Segoe UI, 28, bold" Text="#Card.SummonCost#" Color="Black" Right="0" Top="0" />
-			</Layout>
-		</Layout>
-	</Card>
-	<Card Id="Hero" Width="343" Height="479">
-		<Transform Matrix="#CardAnimator.LocationTransform#" />
-		<Layout Id="Main">
-			<Layout Id="SpellButtons" />
-			<Layout Id="Body">
-				<!-- card's artwork -->
-				<Layout Width="288" HorizontalAlignment="Center">
-					<Image Uri="#Card.ImageUri#" Blend="Opaque">
-						<Content Stretch="UniformToFill" VerticalAlignment="Top" />
-						<Bounds Top="55" Width="100%" Height="212" />
-					</Image>
-				</Layout>
-				<!-- frame -->
-				<Image Uri="Textures/HeroCardFrame" />
-				<!-- name -->
-				<Label Font="Segoe UI, 16" Text="#Card.Name#" Color="Black">
-					<Bounds Top="20" HorizontalAlignment="Center" />
-				</Label>
-				<Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
-					<Bounds Top="350" HorizontalAlignment="Center" />
-				</Label>
-			</Layout>
-		</Layout>
-	</Card>
+  <Card Id="Large" Width="210" Height="300">
+    <Transform Matrix="#CardAnimator.LocationTransform#" />
+    <Layout Id="Main">
+      <Transform Matrix="#CardAnimator.SelectedTransform#" />
+      <Transform Scaling="0.0048,-0.0048" />
+      <!--<Transform Matrix="#CardAnimator.Flip#" />-->
+      <Layout Id="Body">
+        <!-- card's artwork -->
+        <Layout Width="192" HorizontalAlignment="Center">
+          <Image Uri="#Card.ImageUri#" Blend="Opaque">
+            <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+            <Bounds Top="28" Width="100%" Height="142" />
+          </Image>
+        </Layout>
+        <!-- frame -->
+        <Image Uri="Textures/CardFrame" />
+        <Image Uri="Textures/CardBack">
+          <Transform Translation="-105" />
+          <Transform Scaling="-1,1" />
+          <Transform Translation="105" />
+        </Image>
+        <!-- name -->
+        <Label Font="Microsoft YaHei, 16" Text="#Card.Name#" Color="Black">
+          <Bounds Left="12" Top="7" />
+          <Transform Scaling="0.75,0.75" />
+        </Label>
+        <Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
+          <Bounds Top="240" HorizontalAlignment="Center" />
+        </Label>
+        <Label Font="Segoe UI, 28, bold" Text="#Card.SummonCost#" Color="Black" Right="0" Top="0" />
+      </Layout>
+    </Layout>
+  </Card>
+  <Card Id="Hero" Width="343" Height="479">
+    <Transform Matrix="#CardAnimator.LocationTransform#" />
+    <Layout Id="Main">
+      <Layout Id="SpellButtons" />
+      <Layout Id="Body">
+        <!-- card's artwork -->
+        <Layout Width="288" HorizontalAlignment="Center">
+          <Image Uri="#Card.ImageUri#" Blend="Opaque">
+            <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+            <Bounds Top="55" Width="100%" Height="212" />
+          </Image>
+        </Layout>
+        <!-- frame -->
+        <Image Uri="Textures/HeroCardFrame" />
+        <!-- name -->
+        <Label Font="Segoe UI, 16" Text="#Card.Name#" Color="Black">
+          <Bounds Top="20" HorizontalAlignment="Center" />
+        </Label>
+        <Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
+          <Bounds Top="350" HorizontalAlignment="Center" />
+        </Label>
+      </Layout>
+    </Layout>
+  </Card>
 </Style>

@@ -69,7 +69,7 @@ namespace TouhouSpring.Services
 
 			m_pages["FreeMode"].MenuClicked += (id, item) =>
 			{
-				if (id == "vsai")
+                if (id == "vsai")
 				{
 					CurrentPage = null;
 					// detach menu ui
@@ -88,12 +88,12 @@ namespace TouhouSpring.Services
                     deck1.Add(cardDb.GetModel("chen"));
                     deck1.Add(cardDb.GetModel("chen"));
                     deck1.Add(cardDb.GetModel("chen"));
-                    deck1.Add(cardDb.GetModel("suika"));
-                    deck1.Add(cardDb.GetModel("suika"));
-                    deck1.Add(cardDb.GetModel("suika"));
-                    deck1.Add(cardDb.GetModel("mokou"));
-                    deck1.Add(cardDb.GetModel("mokou"));
-                    deck1.Add(cardDb.GetModel("mokou"));
+                    deck1.Add(cardDb.GetModel("komachi"));
+                    deck1.Add(cardDb.GetModel("komachi"));
+                    deck1.Add(cardDb.GetModel("komachi"));
+                    deck1.Add(cardDb.GetModel("meirin"));
+                    deck1.Add(cardDb.GetModel("meirin"));
+                    deck1.Add(cardDb.GetModel("meirin"));
                     deck1.Add(cardDb.GetModel("sunny"));
                     deck1.Add(cardDb.GetModel("sunny"));
                     deck1.Add(cardDb.GetModel("sunny"));
@@ -110,12 +110,12 @@ namespace TouhouSpring.Services
                     deck2.Add(cardDb.GetModel("aya"));
                     deck2.Add(cardDb.GetModel("aya"));
                     deck2.Add(cardDb.GetModel("aya"));
-                    deck2.Add(cardDb.GetModel("suika"));
-                    deck2.Add(cardDb.GetModel("suika"));
-                    deck2.Add(cardDb.GetModel("suika"));
-                    deck2.Add(cardDb.GetModel("komachi"));
-                    deck2.Add(cardDb.GetModel("komachi"));
-                    deck2.Add(cardDb.GetModel("komachi"));
+                    deck2.Add(cardDb.GetModel("mokou"));
+                    deck2.Add(cardDb.GetModel("mokou"));
+                    deck2.Add(cardDb.GetModel("mokou"));
+                    deck2.Add(cardDb.GetModel("flandre"));
+                    deck2.Add(cardDb.GetModel("flandre"));
+                    deck2.Add(cardDb.GetModel("flandre"));
                     deck2.Add(cardDb.GetModel("lunar"));
                     deck2.Add(cardDb.GetModel("lunar"));
                     deck2.Add(cardDb.GetModel("lunar"));
@@ -133,7 +133,7 @@ namespace TouhouSpring.Services
 					{
 						m_profile = new Profile() { Name = "星奈" },
 						m_deck = deck2,
-                        m_hero = cardDb.GetModel("reimu"),
+                        m_hero = cardDb.GetModel("kaguya"),
 						m_controller = new XnaUIController()
 					};
 					param[1].m_profile.Decks.Add(deck2);
@@ -159,7 +159,7 @@ namespace TouhouSpring.Services
 			};
 
 			CurrentPage = m_pages["MainMenu"];
-		}
+        }
 
 		private void LoadPage(string id)
 		{

@@ -12,15 +12,15 @@ namespace TouhouSpring.UI
 			get; private set;
 		}
 
-		public RenderEventArgs(Graphics.RenderManager renderMgr)
-			: base(EventDispatchOrder.FromHead)
-		{
-			if (renderMgr == null)
-			{
-				throw new ArgumentNullException("renderMgr");
-			}
+        public Graphics.TextRenderer TextRenderer
+        {
+            get; private set;
+        }
 
-			RenderManager = renderMgr;
+		public RenderEventArgs() : base(EventDispatchOrder.FromHead)
+		{
+            RenderManager = GameApp.Service<Graphics.RenderManager>();
+            TextRenderer = GameApp.Service<Graphics.TextRenderer>();
 		}
 	}
 }

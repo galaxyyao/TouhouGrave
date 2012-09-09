@@ -66,7 +66,7 @@ namespace TouhouSpring.Services
 
 		public override void Render()
 		{
-			Root.RaiseEvent(new UI.RenderEventArgs(GameApp.Service<Graphics.RenderManager>()));
+			Root.RaiseEvent(new UI.RenderEventArgs());
 		}
 	}
 }

@@ -27,6 +27,9 @@ namespace TouhouSpring
 			m_graphics.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
 			m_graphics.PreferMultiSampling = true;
 
+            m_graphics.DeviceResetting += new EventHandler<EventArgs>(DeviceResetting);
+            m_graphics.DeviceReset += new EventHandler<EventArgs>(DeviceReset);
+
 			Content.RootDirectory = "Content";
 			Window.Title = "TouhouSpring";
 			IsMouseVisible = true;
@@ -105,6 +108,16 @@ namespace TouhouSpring
 
 			base.Draw(gameTime);
 		}
+
+        private void DeviceResetting(object sender, EventArgs e)
+        {
+            GameApp.ServiceContainer.Traverse(TouhouSpring.Services.PreDeviceResetDependencyAttribute.Category, false, srv => srv.PreDeviceReset());
+        }
+
+        private void DeviceReset(object sender, EventArgs e)
+        {
+            GameApp.ServiceContainer.Traverse(TouhouSpring.Services.PostDeviceResetDependencyAttribute.Category, false, srv => srv.PostDeviceReset());
+        }
 
 		// statics
 		public static XnaGame Instance
