@@ -72,7 +72,7 @@
     <Compile Include="Commands\IEpilogTrigger.cs" />
     <Compile Include="Commands\ISetupTrigger.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
-    <Compile Include="Game.CommandStack.cs" />
+    <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Game.Trigger.cs" />
     <Compile Include="IntegerEx.cs" />
     <Compile Include="Deck.cs" />

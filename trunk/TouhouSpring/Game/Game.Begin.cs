@@ -15,11 +15,13 @@ namespace TouhouSpring
             foreach (var player in Players)
             {
                 // shuffle player's library
-                RunCommand(new Commands.ShuffleLibrary { PlayerShuffling = player });
+                IssueCommand(new Commands.ShuffleLibrary { PlayerShuffling = player });
 
                 // draw initial hands
-                5.Repeat(i => RunCommand(new Commands.DrawCard { PlayerDrawing = player }));
+                5.Repeat(i => IssueCommand(new Commands.DrawCard { PlayerDrawing = player }));
             }
+
+            FlushCommandQueue();
 
             // TODO: Non-trivial determination of the acting player for the first turn
             m_actingPlayer = 0;

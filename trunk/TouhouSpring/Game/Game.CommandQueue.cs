@@ -8,13 +8,14 @@ namespace TouhouSpring
 {
     public partial class Game
     {
+        private Queue<Commands.CommandContext> m_pendingCommands = new Queue<Commands.CommandContext>();
+
         public Commands.CommandContext RunningCommand
         {
             get; private set;
         }
 
-        public void RunCommand<TCommand>(TCommand command)
-            where TCommand : Commands.ICommand
+        public void IssueCommand(Commands.ICommand command)
         {
             if (command == null)
             {
@@ -26,7 +27,7 @@ namespace TouhouSpring
             // check whether a new command can be issued at this timing
             if (RunningCommand != null)
             {
-                Debug.Assert(RunningCommand.Phase != Commands.ExecutionPhase.Inactive);
+                Debug.Assert(RunningCommand.Phase != Commands.ExecutionPhase.Pending);
 
                 if (RunningCommand.Phase == Commands.ExecutionPhase.Prerequisite
                     || RunningCommand.Phase == Commands.ExecutionPhase.Setup)
@@ -35,14 +36,26 @@ namespace TouhouSpring
                 }
             }
 
-            // create a new context and chain with the previous one through Parent member
-            RunningCommand = new Commands.CommandContext(this, command, RunningCommand);
+            // enqueue a new context and chain with the previous one
+            m_pendingCommands.Enqueue(new Commands.CommandContext(this, command, RunningCommand));
+        }
 
-            // start running
-            RunningCommand.Run<TCommand>();
+        internal void IssueCommandAndFlush(Commands.ICommand command)
+        {
+            IssueCommand(command);
+            FlushCommandQueue();
+        }
 
-            // restore the stack
-            RunningCommand = RunningCommand.Parent;
+        internal void FlushCommandQueue()
+        {
+            Debug.Assert(RunningCommand == null);
+
+            while (m_pendingCommands.Count != 0)
+            {
+                RunningCommand = m_pendingCommands.Dequeue();
+                RunningCommand.Run();
+                RunningCommand = null;
+            }
         }
 
         public void Resolve()

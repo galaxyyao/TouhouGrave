@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace TouhouSpring.Commands
@@ -19,7 +20,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public CommandContext Parent
+        public CommandContext Previous
         {
             get; private set;
         }
@@ -31,15 +32,22 @@ namespace TouhouSpring.Commands
 
         private List<BaseCard> m_associates = new List<BaseCard>();
 
-        internal CommandContext(Game game, ICommand command, CommandContext parent)
+        internal CommandContext(Game game, ICommand command, CommandContext previous)
         {
             Command = command;
-            Phase = ExecutionPhase.Inactive;
-            Parent = parent;
+            Phase = ExecutionPhase.Pending;
+            Previous = previous;
             Game = game;
         }
 
-        internal void Run<TCommand>() where TCommand : Commands.ICommand
+        internal void Run()
+        {
+            var commandType = Command.GetType();
+            var method = typeof(CommandContext).GetMethod("RunTyped", BindingFlags.Instance | BindingFlags.NonPublic);
+            method.MakeGenericMethod(commandType).Invoke(this, null);
+        }
+
+        private void RunTyped<TCommand>() where TCommand : Commands.ICommand
         {
             Debug.Assert(typeof(TCommand) == Command.GetType());
 

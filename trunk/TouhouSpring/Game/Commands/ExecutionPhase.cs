@@ -7,7 +7,7 @@ namespace TouhouSpring.Commands
 {
     public enum ExecutionPhase
     {
-        Inactive,
+        Pending,
         Prerequisite,
         Setup,
         Prolog,

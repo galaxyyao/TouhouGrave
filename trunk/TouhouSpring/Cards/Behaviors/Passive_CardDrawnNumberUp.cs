@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
                         hostCardNumber++;
                 }
                 for (int i = 0; i < hostCardNumber; i++)
-                    context.Game.RunCommand(new Commands.DrawCard { PlayerDrawing = Host.Owner });
+                    context.Game.IssueCommand(new Commands.DrawCard { PlayerDrawing = Host.Owner });
             }
         }
 
