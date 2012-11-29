@@ -54,7 +54,7 @@ namespace TouhouSpring
                     }
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
-                        UpdateMana(PlayerPlayer, -1);
+                        IssueCommand(new Commands.UpdateMana { Player = PlayerPlayer, Amount = -1, PreReserved = false });
                         IssueCommandAndFlush(new Commands.DrawCard { PlayerDrawing = PlayerPlayer });
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
@@ -109,10 +109,8 @@ namespace TouhouSpring
                 ResolveBattlefieldCards();
                 ResetAccumulatedDamage();
 
-                TriggerGlobal(new Triggers.PlayerTurnEndedContext(this));
-
-                UpdateMana(PlayerPlayer, PlayerPlayer.ManaDelta);
-                PlayerPlayer.ResetManaDelta();
+                IssueCommand(new Commands.UpdateMana { Player = PlayerPlayer, Amount = PlayerPlayer.ManaDelta, PreReserved = false });
+                IssueCommandAndFlush(new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;

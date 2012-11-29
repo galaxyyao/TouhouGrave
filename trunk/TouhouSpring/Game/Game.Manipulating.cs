@@ -61,28 +61,6 @@ namespace TouhouSpring
 		}
 
 		/// <summary>
-		/// Deal mana update to a player.
-		/// </summary>
-		/// <param name="player">The player whose mana to be updated</param>
-		/// <param name="delta">Amount of mana delta</param>
-		/// <returns></returns>
-		public void UpdateMana(Player player, int delta)
-		{
-			if (player == null)
-			{
-				throw new ArgumentNullException("player");
-			}
-
-			int newMana = player.Mana + delta;
-			if (newMana < 0)
-			{
-                throw new ArgumentOutOfRangeException("Not sufficient mana.");
-			}
-
-            player.Mana = Math.Min(newMana, player.Hero.Model.Mana);
-		}
-
-		/// <summary>
 		/// Destroy a card.
 		/// </summary>
 		/// <param name="card">The card to be destroyed</param>

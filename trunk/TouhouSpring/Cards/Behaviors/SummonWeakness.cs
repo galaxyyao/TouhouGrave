@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
 {
     public class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
         , ITrigger<PostCardPlayedContext>
-        , ITrigger<PlayerTurnEndedContext>
+        , Commands.IEpilogTrigger<Commands.EndTurn>
     {
         class Effect : SimpleBehavior<Effect>
         { }
@@ -22,14 +22,16 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void Trigger(PlayerTurnEndedContext context)
+        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
         {
             if (IsOnBattlefield
                 && context.Game.PlayerPlayer == Host.Owner
                 && Host.Behaviors.Has<Effect>())
             {
-                Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
-                context.Game.SetWarriorState(Host, WarriorState.StandingBy);
+                throw new NotImplementedException();
+                // TODO: issue commands for the following:
+                //Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
+                //context.Game.SetWarriorState(Host, WarriorState.StandingBy);
             }
         }
 

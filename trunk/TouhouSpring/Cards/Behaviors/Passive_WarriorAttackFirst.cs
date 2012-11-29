@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public class Passive_WarriorAttackFirst :
         BaseBehavior<Passive_WarriorAttackFirst.ModelType>,
         ITrigger<Triggers.PostCardDamagedContext>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        Commands.IEpilogTrigger<Commands.EndTurn>
     {
         private Func<int, int> attackFirstCompensation = null;
 
@@ -26,12 +26,14 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
         {
             if (attackFirstCompensation != null)
             {
-                Host.Behaviors.Get<Warrior>().Defense.RemoveModifier(attackFirstCompensation);
-                attackFirstCompensation = null;
+                throw new NotImplementedException();
+                // TODO: issue commands for the following:
+                //Host.Behaviors.Get<Warrior>().Defense.RemoveModifier(attackFirstCompensation);
+                //attackFirstCompensation = null;
             }
         }
 

@@ -7,13 +7,15 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAlwaysStandBy:
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        Commands.IEpilogTrigger<Commands.EndTurn>
     {
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
         {
             if (IsOnBattlefield)
             {
-                context.Game.SetWarriorState(Host, WarriorState.StandingBy);
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //context.Game.SetWarriorState(Host, WarriorState.StandingBy);
             }
         }
 

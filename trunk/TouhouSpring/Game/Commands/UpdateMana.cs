@@ -60,7 +60,7 @@ namespace TouhouSpring.Commands
 
         public void RunMain(Game game)
         {
-            Player.Mana += Amount;
+            Player.Mana = Math.Min(Player.Mana + Amount, Player.Hero.Model.Mana);
             if (PreReserved)
             {
                 Player.ReservedMana += Amount;

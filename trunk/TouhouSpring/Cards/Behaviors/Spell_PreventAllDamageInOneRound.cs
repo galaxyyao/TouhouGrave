@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         ICastableSpell,
         ITrigger<Triggers.PrePlayerDamageContext>,
         ITrigger<Triggers.PreCardDamageContext>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        Commands.IEpilogTrigger<Commands.EndTurn>
     {
         private bool m_isProtected = false;
         private Player m_currentPlayer;
@@ -44,13 +44,15 @@ namespace TouhouSpring.Behaviors
                 context.DamageToDeal = 0;
         }
 
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
         {
             if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {
-                m_currentPlayer = null;
-                m_isProtected = false;
-                m_spellCaster = null;
+                throw new NotImplementedException();
+                // TODO: issue commands for the following:
+                //m_currentPlayer = null;
+                //m_isProtected = false;
+                //m_spellCaster = null;
             }
         }
 

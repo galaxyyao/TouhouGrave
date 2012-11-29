@@ -70,8 +70,10 @@
     <Compile Include="Commands\IPrerequisiteTrigger.cs" />
     <Compile Include="Commands\IEpilogTrigger.cs" />
     <Compile Include="Commands\ISetupTrigger.cs" />
+    <Compile Include="Commands\EndTurn.cs" />
     <Compile Include="Commands\PlayCard.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
+    <Compile Include="Commands\Summon.cs" />
     <Compile Include="Commands\UpdateMana.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Game.Resource.cs" />
@@ -111,7 +113,6 @@
     <Compile Include="Triggers\BlockPhaseStartedContext.cs" />
     <Compile Include="Triggers\CardEnteredGraveyardContext.cs" />
     <Compile Include="Triggers\CardLeftBattlefieldContext.cs" />
-    <Compile Include="Triggers\PlayerTurnEndedContext.cs" />
     <Compile Include="Triggers\PlayerTurnStartedContext.cs" />
     <Compile Include="Triggers\PostCardDestroyedContext.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />

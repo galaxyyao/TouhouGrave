@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public class Passive_WarriorDefenseDownWhenAttacked
         : BaseBehavior<Passive_WarriorDefenseDownWhenAttacked.ModelType>,
         ITrigger<Triggers.PostCardDamagedContext>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        Commands.IEpilogTrigger<Commands.EndTurn>
     {
         private bool isBlockedLastRound = false;
 
@@ -19,13 +19,15 @@ namespace TouhouSpring.Behaviors
                 isBlockedLastRound = true;
         }
 
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
         {
             if (context.Game.PlayerPlayer != Host.Owner && isBlockedLastRound)
             {
-                isBlockedLastRound = false;
-                Func<int, int> defenseMod = y => y - 1;
-                Host.Behaviors.Get<Warrior>().Defense.AddModifierToTail(defenseMod);
+                throw new NotImplementedException();
+                // TODO: issue commands for the following:
+                //isBlockedLastRound = false;
+                //Func<int, int> defenseMod = y => y - 1;
+                //Host.Behaviors.Get<Warrior>().Defense.AddModifierToTail(defenseMod);
             }
         }
 
