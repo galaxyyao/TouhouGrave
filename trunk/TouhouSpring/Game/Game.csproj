@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseCard.Behaviors.cs" />
     <Compile Include="BaseCard.cs" />
     <Compile Include="BaseController.Callbacks.cs" />
@@ -48,7 +49,6 @@
     <Compile Include="BaseController.Messaging.cs" />
     <Compile Include="Behaviors\BaseBehavior.cs" />
     <Compile Include="Behaviors\BehaviorList.cs" />
-    <Compile Include="Behaviors\Equipment.cs" />
     <Compile Include="Behaviors\Hero.cs" />
     <Compile Include="Behaviors\IBehavior.cs" />
     <Compile Include="Behaviors\BehaviorModel.cs" />
