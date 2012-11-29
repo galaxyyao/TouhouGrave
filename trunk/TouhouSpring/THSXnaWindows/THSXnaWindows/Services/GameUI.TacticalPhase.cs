@@ -63,7 +63,7 @@ namespace TouhouSpring.Services
             {
                 if (Game.PlayerPlayer.Mana < 1)
                 {
-                    GameApp.Service<ModalDialog>().Show("Not sufficient mana.", ModalDialog.Button.OK, btn => { });
+                    GameApp.Service<ModalDialog>().Show("Insufficient mana.", ModalDialog.Button.OK, btn => { });
                     return false;
                 }
                 else

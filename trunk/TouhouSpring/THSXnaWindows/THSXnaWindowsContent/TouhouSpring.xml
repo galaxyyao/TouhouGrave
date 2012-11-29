@@ -903,7 +903,6 @@
           <AttackBoost>2</AttackBoost>
           <DefenseBoost>2</DefenseBoost>
           <Duration>1</Duration>
-          <ManaCost>2</ManaCost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
           <Name>ManaCost_PrePlay</Name>

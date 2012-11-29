@@ -135,44 +135,6 @@ namespace TouhouSpring
 			m_controllers.ForEach(c => c.InternalOnCardDestroyed(card));
 		}
 
-		/// <summary>
-		/// Play a card.
-		/// </summary>
-		/// <param name="card">The card to be played</param>
-		public void PlayCard(BaseCard card)
-		{
-			if (card == null)
-			{
-				throw new ArgumentNullException("card");
-			}
-
-			bool fromHand = card.Owner.m_handSet.Contains(card);
-
-			////Temporarily no limitation on the number of warriors played in one turn.
-			//if (fromHand && card.Behaviors.Has<Behaviors.Warrior>() && IsWarriorPlayedThisTurn)
-			//{
-			//    m_controllers.ForEach(c => c.InternalOnCardPlayCanceled(card, "Warrior has been played in this turn."));
-			//    return;
-			//}
-
-			var prePlayCtx = new Triggers.PreCardPlayContext(this, card);
-			if (TriggerGlobal(prePlayCtx, ctx => ctx.Cancel))
-			{
-				card.Owner.m_battlefieldCards.Add(card);
-				if (fromHand)
-				{
-					card.Owner.m_handSet.Remove(card);
-					IsWarriorPlayedThisTurn = IsWarriorPlayedThisTurn || card.Behaviors.Has<Behaviors.Warrior>();
-				}
-				m_controllers.ForEach(c => c.InternalOnCardPlayed(card));
-                TriggerGlobal(new Triggers.PostCardPlayedContext(this, card));
-			}
-			else
-			{
-				m_controllers.ForEach(c => c.InternalOnCardPlayCanceled(card, prePlayCtx.Reason));
-			}
-		}
-
 		public void TransferCard(BaseCard card, Player fromPlayer, Player toPlayer)
 		{
 			fromPlayer.m_battlefieldCards.Remove(card);

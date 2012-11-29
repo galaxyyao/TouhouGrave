@@ -6,15 +6,17 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class PhaseSpecific : BaseBehavior<PhaseSpecific.ModelType>,
-        ITrigger<Triggers.PreCardPlayContext>, IPlayable
+        Commands.IPrerequisiteTrigger<Commands.PlayCard>, IPlayable
     {
-        public void Trigger(Triggers.PreCardPlayContext context)
+        Commands.Result Commands.IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
         {
-            if (context.CardToPlay == Host && !IsPlayable(context.Game))
+            var command = context.Command as Commands.PlayCard;
+            if (command.CardToPlay == Host && !IsPlayable(context.Game))
             {
-                context.Cancel = true;
-                context.Reason = String.Format("{0} can't be played in {1} phase.", Host.Model.Name, context.Game.CurrentPhase);
+                return Commands.Result.Cancel(String.Format("{0} can't be played in {1} phase.", Host.Model.Name, context.Game.CurrentPhase));
             }
+
+            return Commands.Result.Pass;
         }
 
         public bool IsPlayable(Game game)

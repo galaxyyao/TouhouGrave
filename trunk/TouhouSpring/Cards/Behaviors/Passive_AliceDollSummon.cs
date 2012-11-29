@@ -16,7 +16,9 @@ namespace TouhouSpring.Behaviors
                 1.Repeat(i =>
                 {
                     var card = new BaseCard(Model.SummonType.Target, Host.Owner);
-                    context.Game.PlayCard(card);
+                    throw new NotImplementedException();
+                    // TODO: issue command for directly placing a token onto the battlefield
+                    //context.Game.PlayCard(card);
                 });
             }
         }

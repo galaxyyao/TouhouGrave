@@ -66,13 +66,15 @@
     <Compile Include="Commands\CommandContext.cs" />
     <Compile Include="Commands\DrawCard.cs" />
     <Compile Include="Commands\IPrologTrigger.cs" />
-    <Compile Include="Commands\ExecutionPhase.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IPrerequisiteTrigger.cs" />
     <Compile Include="Commands\IEpilogTrigger.cs" />
     <Compile Include="Commands\ISetupTrigger.cs" />
+    <Compile Include="Commands\PlayCard.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
+    <Compile Include="Commands\UpdateMana.cs" />
     <Compile Include="Game.CommandQueue.cs" />
+    <Compile Include="Game.Resource.cs" />
     <Compile Include="Game.Trigger.cs" />
     <Compile Include="IntegerEx.cs" />
     <Compile Include="Deck.cs" />
@@ -118,7 +120,6 @@
     <Compile Include="Triggers\PostPlayerDamagedContext.cs" />
     <Compile Include="Triggers\PreCardDamageContext.cs" />
     <Compile Include="Triggers\PreCardDestroyContext.cs" />
-    <Compile Include="Triggers\PreCardPlayContext.cs" />
     <Compile Include="Triggers\PrePlayerDamageContext.cs" />
     <Compile Include="Triggers\TriggerContext.cs" />
     <Compile Include="TypeIDAttribute.cs" />

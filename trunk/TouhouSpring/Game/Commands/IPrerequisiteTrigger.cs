@@ -7,6 +7,6 @@ namespace TouhouSpring.Commands
 {
     public interface IPrerequisiteTrigger<TCommand> where TCommand : ICommand
     {
-        bool Run(CommandContext context);
+        Result Run(CommandContext context);
     }
 }

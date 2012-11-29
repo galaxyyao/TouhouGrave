@@ -44,7 +44,7 @@ namespace TouhouSpring
                     {
                         var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == PlayerPlayer);
-                        PlayCard(cardToPlay);
+                        IssueCommandAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
                     }
                     else if (result.ActionType == TacticalPhase.Action.CastSpell)
                     {
@@ -94,7 +94,7 @@ namespace TouhouSpring
                     {
                         var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == OpponentPlayer);
-                        PlayCard(cardToPlay);
+                        IssueCommandAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
                     }
                     else
                     {

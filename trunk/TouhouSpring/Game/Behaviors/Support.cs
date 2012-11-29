@@ -6,11 +6,15 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class Support : BaseBehavior<Support.ModelType>,
-        ITrigger<Triggers.PreCardPlayContext>
+        Commands.ISetupTrigger<Commands.PlayCard>,
+        Commands.IPrologTrigger<Commands.PlayCard>
     {
-        public void Trigger(Triggers.PreCardPlayContext context)
+        private bool m_chargeSkill = false;
+
+        Commands.Result Commands.ISetupTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
         {
-            if (context.CardToPlay == Host)
+            var command = context.Command as Commands.PlayCard;
+            if (command.CardToPlay == Host)
             {
                 //TODO: add logic (what kind of logic?)
                 var cardsOnBattlefield = context.Game.PlayerPlayer.CardsOnBattlefield;
@@ -22,14 +26,27 @@ namespace TouhouSpring.Behaviors
                         , Interactions.MessageBox.Button.Yes | Interactions.MessageBox.Button.No).Run();
                     if (result == Interactions.MessageBox.Button.Yes)
                     {
-                        context.Game.PlayerPlayer.IsSkillCharged = true;
-                        context.CardToPlay.Behaviors.Add(new Instant());
+                        m_chargeSkill = true;
                     }
                     else
                     {
-                        context.Cancel = true;
+                        return Commands.Result.Cancel();
                     }
                 }
+            }
+
+            return Commands.Result.Pass;
+        }
+
+        void Commands.IPrologTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        {
+            var command = context.Command as Commands.PlayCard;
+            if (command.CardToPlay == Host && m_chargeSkill)
+            {
+                throw new NotImplementedException();
+                // TODO: issue commands for doing the following:
+                //context.Game.PlayerPlayer.IsSkillCharged = true;
+                //context.CardToPlay.Behaviors.Add(new Instant());
             }
         }
 

@@ -7,11 +7,36 @@ using TouhouSpring.Commands;
 namespace TouhouSpring
 {
     public partial class BaseController
-        : IEpilogTrigger<DrawCard>
     {
-        void IEpilogTrigger<DrawCard>.Run(CommandContext context)
+        public void OnCommandBegin(CommandContext context)
         {
-            new Interactions.NotifyCardEvent(this, "OnCardDrawn", (context.Command as DrawCard).CardDrawn).Run();
+        }
+
+        public void OnCommandEnd(CommandContext context)
+        {
+            if (context.Command is Commands.DrawCard && !context.Result.Canceled)
+            {
+                var card = (context.Command as DrawCard).CardDrawn;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent(this, "OnCardDrawn", card).Run();
+                }
+            }
+            else if (context.Command is Commands.PlayCard)
+            {
+                var card = (context.Command as PlayCard).CardToPlay;
+                if (card.Owner == Player)
+                {
+                    if (!context.Result.Canceled)
+                    {
+                        new Interactions.NotifyCardEvent(this, "OnCardPlayed", card).Run();
+                    }
+                    else
+                    {
+                        new Interactions.NotifyCardEvent((this), "OnCardPlayCanceled", card, context.Result.Reason).Run();
+                    }
+                }
+            }
         }
     }
 }

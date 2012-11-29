@@ -7,7 +7,29 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    // TODO: (command) Add associates
+    public enum ExecutionPhase
+    {
+        Pending,
+        Prerequisite,
+        Setup,
+        Prolog,
+        Main,
+        Epilog
+    }
+
+    public struct Result
+    {
+        public bool Canceled;
+        public string Reason;
+
+        public readonly static Result Pass = new Result { Canceled = false, Reason = null };
+        
+        public static Result Cancel(string reason = null)
+        {
+            return new Result { Canceled = true, Reason = reason };
+        }
+    }
+
     public class CommandContext
     {
         public ICommand Command
@@ -26,6 +48,11 @@ namespace TouhouSpring.Commands
         }
 
         public Game Game
+        {
+            get; private set;
+        }
+
+        public Result Result
         {
             get; private set;
         }
@@ -58,8 +85,10 @@ namespace TouhouSpring.Commands
                                        card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
                                        ).ToList())
             {
-                if (!trigger.Run(this))
+                Result = trigger.Run(this);
+                if (Result.Canceled)
                 {
+                    Game.Controllers.ForEach(ctrl => ctrl.OnCommandEnd(this));
                     return;
                 }
             }
@@ -71,8 +100,10 @@ namespace TouhouSpring.Commands
                                        card.Behaviors.OfType<ISetupTrigger<TCommand>>()
                                        ).ToList())
             {
-                if (!trigger.Run(this))
+                Result = trigger.Run(this);
+                if (Result.Canceled)
                 {
+                    Game.Controllers.ForEach(ctrl => ctrl.OnCommandEnd(this));
                     return;
                 }
             }
@@ -80,7 +111,7 @@ namespace TouhouSpring.Commands
             ////////////////////////////////////////////
 
             Phase = ExecutionPhase.Prolog;
-            Game.Controllers.OfType<IPrologTrigger<TCommand>>().ForEach(trigger => trigger.Run(this));
+            Game.Controllers.ForEach(ctrl => ctrl.OnCommandBegin(this));
             EnumerateCards().SelectMany(card =>
                                        card.Behaviors.OfType<IPrologTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.Run(this));
@@ -95,15 +126,19 @@ namespace TouhouSpring.Commands
             ////////////////////////////////////////////
 
             Phase = ExecutionPhase.Epilog;
-            Game.Controllers.OfType<IEpilogTrigger<TCommand>>().ForEach(trigger => trigger.Run(this));
             EnumerateCards().SelectMany(card =>
                                        card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.Run(this));
+            Game.Controllers.ForEach(ctrl => ctrl.OnCommandEnd(this));
             Game.Resolve();
         }
 
         private IEnumerable<BaseCard> EnumerateCards()
         {
+            if (Command is PlayCard)
+            {
+                yield return (Command as PlayCard).CardToPlay;
+            }
             foreach (var player in Game.Players)
             {
                 foreach (var card in player.CardsOnBattlefield)
