@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace TouhouSpring
@@ -62,7 +63,8 @@ namespace TouhouSpring
 
             // enqueue a new context and chain with the previous one
             var cmdCtxType = typeof(Commands.CommandContext<>).MakeGenericType(command.GetType());
-            var cmdCtx = Activator.CreateInstance(cmdCtxType, this, command, RunningCommand);
+            var cmdCtxCtor = cmdCtxType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance)[0];
+            var cmdCtx = cmdCtxCtor.Invoke(new object[] { this, command, RunningCommand });
             m_pendingCommands.Enqueue(cmdCtx as Commands.IRunnableCommandContext);
         }
 
