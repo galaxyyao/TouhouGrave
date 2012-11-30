@@ -13,9 +13,14 @@ namespace TouhouSpring.Behaviors
         {
             if (IsOnBattlefield)
             {
-                throw new NotImplementedException();
-                // TODO: issue command for the following:
-                //context.Game.SetWarriorState(Host, WarriorState.StandingBy);
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoStandingBy"
+                    });
+                }
             }
         }
 

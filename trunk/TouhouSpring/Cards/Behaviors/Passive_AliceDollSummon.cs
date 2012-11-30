@@ -15,10 +15,11 @@ namespace TouhouSpring.Behaviors
             {
                 1.Repeat(i =>
                 {
-                    var card = new BaseCard(Model.SummonType.Target, Host.Owner);
-                    throw new NotImplementedException();
-                    // TODO: issue command for directly placing a token onto the battlefield
-                    //context.Game.PlayCard(card);
+                    context.Game.IssueCommands(new Commands.Summon
+                    {
+                        Model = Model.SummonType.Target,
+                        Owner = Host.Owner
+                    });
                 });
             }
         }

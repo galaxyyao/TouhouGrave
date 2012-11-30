@@ -11,7 +11,14 @@ namespace TouhouSpring.Behaviors
 		{
 			if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
 			{
-				context.Game.SetWarriorState(Host, WarriorState.CoolingDown);
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoCoolingDown"
+                    });
+                }
 			}
 		}
 	}

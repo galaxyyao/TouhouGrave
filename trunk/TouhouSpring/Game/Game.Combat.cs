@@ -19,7 +19,11 @@ namespace TouhouSpring
                 if (blockers.Count == 0)
                 {
                     UpdateHealth(OpponentPlayer, -attackerWarriorBhv.Attack, attackerWarriorBhv);
-                    attackerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
+                    IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = attackerWarriorBhv,
+                        Message = "GoCoolingDown"
+                    });
                 }
                 else if (blockers.Count == 1)
                 {
@@ -38,8 +42,17 @@ namespace TouhouSpring
                     TriggerGlobal(new Triggers.PostCardDamagedContext(this, attacker, preDamageOnAttacker.DamageToDeal, blockerWarriorBhv));
                     TriggerGlobal(new Triggers.PostCardDamagedContext(this, blocker, preDamageOnBlocker.DamageToDeal, attackerWarriorBhv));
 
-                    attackerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
-                    blockerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
+                    IssueCommands(
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = attackerWarriorBhv,
+                            Message = "GoCoolingDown"
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = blockerWarriorBhv,
+                            Message = "GoCoolingDown"
+                        });
                 }
                 //else if (blockers.Count == 2)
                 //{
@@ -91,6 +104,8 @@ namespace TouhouSpring
                     throw new NotSupportedException("Currently only two blockers can be declared on one single attacker.");
                 }
             }
+
+            FlushCommandQueue();
         }
 
         private void ResolveBattlefieldCards()

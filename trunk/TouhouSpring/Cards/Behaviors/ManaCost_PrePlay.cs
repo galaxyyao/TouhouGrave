@@ -32,7 +32,12 @@ namespace TouhouSpring.Behaviors
             var command = context.Command as Commands.PlayCard;
             if (command.CardToPlay == Host)
             {
-                context.Game.IssueCommand(new Commands.UpdateMana { Player = Host.Owner, Amount = -Model.Cost, PreReserved = true });
+                context.Game.IssueCommands(new Commands.UpdateMana
+                {
+                    Player = Host.Owner,
+                    Amount = -Model.Cost,
+                    PreReserved = true
+                });
             }
         }
 

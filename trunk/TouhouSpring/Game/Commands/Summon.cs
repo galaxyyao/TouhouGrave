@@ -15,11 +15,13 @@ namespace TouhouSpring.Commands
             get { return "Summon"; }
         }
 
-        public CardModel Model
+        // TODO: change to serializable behavior ID
+        public ICardModel Model
         {
             get; set;
         }
 
+        // TODO: change to serializable behavior ID
         public Player Owner
         {
             get; set;

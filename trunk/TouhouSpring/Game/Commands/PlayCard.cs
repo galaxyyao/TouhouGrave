@@ -19,6 +19,7 @@ namespace TouhouSpring.Commands
         /// <summary>
         /// The card to be played
         /// </summary>
+        // TODO: change to serializable behavior ID
         public BaseCard CardToPlay
         {
             get; set;

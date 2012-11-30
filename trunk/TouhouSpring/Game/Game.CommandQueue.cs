@@ -15,7 +15,30 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public void IssueCommand(Commands.ICommand command)
+        public void IssueCommands(params Commands.ICommand[] commands)
+        {
+            commands.ForEach(cmd => IssueCommand(cmd));
+        }
+
+        internal void IssueCommandsAndFlush(params Commands.ICommand[] commands)
+        {
+            IssueCommands(commands);
+            FlushCommandQueue();
+        }
+
+        internal void FlushCommandQueue()
+        {
+            Debug.Assert(RunningCommand == null);
+
+            while (m_pendingCommands.Count != 0)
+            {
+                RunningCommand = m_pendingCommands.Dequeue();
+                RunningCommand.Run();
+                RunningCommand = null;
+            }
+        }
+
+        private void IssueCommand(Commands.ICommand command)
         {
             if (command == null)
             {
@@ -38,24 +61,6 @@ namespace TouhouSpring
 
             // enqueue a new context and chain with the previous one
             m_pendingCommands.Enqueue(new Commands.CommandContext(this, command, RunningCommand));
-        }
-
-        internal void IssueCommandAndFlush(Commands.ICommand command)
-        {
-            IssueCommand(command);
-            FlushCommandQueue();
-        }
-
-        internal void FlushCommandQueue()
-        {
-            Debug.Assert(RunningCommand == null);
-
-            while (m_pendingCommands.Count != 0)
-            {
-                RunningCommand = m_pendingCommands.Dequeue();
-                RunningCommand.Run();
-                RunningCommand = null;
-            }
         }
 
         public void Resolve()

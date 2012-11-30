@@ -14,5 +14,7 @@ namespace TouhouSpring.Behaviors
         void Initialize(BehaviorModel model, bool persistent);
         void Bind(BaseCard host);
         void Unbind();
+
+        void OnMessage(string message, object[] args);
 	}
 }

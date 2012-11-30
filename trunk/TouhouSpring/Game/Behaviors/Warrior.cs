@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
     {
         public WarriorState State
         {
-            get; internal set;
+            get; private set;
         }
 
         public IntegerEx Attack
@@ -44,6 +44,28 @@ namespace TouhouSpring.Behaviors
         {
             if (context.CardToLeft == Host)
             {
+                State = WarriorState.StandingBy;
+            }
+        }
+
+        public override void OnMessage(string message, object[] args)
+        {
+            if (message == "GoCoolingDown")
+            {
+                if (args != null)
+                {
+                    throw new ArgumentException("Formation of args is not expected.");
+                }
+
+                State = WarriorState.CoolingDown;
+            }
+            else if (message == "GoStandingBy")
+            {
+                if (args != null)
+                {
+                    throw new ArgumentException("Formation of args is not expected.");
+                }
+
                 State = WarriorState.StandingBy;
             }
         }

@@ -24,7 +24,7 @@ namespace TouhouSpring
             InPlayerPhases = true;
             Round = 0;
 
-            IssueCommandAndFlush(new Commands.DrawCard { PlayerDrawing = m_players[0] });
+            IssueCommandsAndFlush(new Commands.DrawCard { PlayerDrawing = m_players[0] });
 
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
@@ -44,7 +44,7 @@ namespace TouhouSpring
                     {
                         var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == PlayerPlayer);
-                        IssueCommandAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
+                        IssueCommandsAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
                     }
                     else if (result.ActionType == TacticalPhase.Action.CastSpell)
                     {
@@ -54,8 +54,9 @@ namespace TouhouSpring
                     }
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
-                        IssueCommand(new Commands.UpdateMana { Player = PlayerPlayer, Amount = -1, PreReserved = false });
-                        IssueCommandAndFlush(new Commands.DrawCard { PlayerDrawing = PlayerPlayer });
+                        IssueCommandsAndFlush(
+                            new Commands.UpdateMana { Player = PlayerPlayer, Amount = -1, PreReserved = false },
+                            new Commands.DrawCard { PlayerDrawing = PlayerPlayer });
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
                     {
@@ -94,7 +95,7 @@ namespace TouhouSpring
                     {
                         var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == OpponentPlayer);
-                        IssueCommandAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
+                        IssueCommandsAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
                     }
                     else
                     {
@@ -109,8 +110,9 @@ namespace TouhouSpring
                 ResolveBattlefieldCards();
                 ResetAccumulatedDamage();
 
-                IssueCommand(new Commands.UpdateMana { Player = PlayerPlayer, Amount = PlayerPlayer.ManaDelta, PreReserved = false });
-                IssueCommandAndFlush(new Commands.EndTurn());
+                IssueCommandsAndFlush(
+                    new Commands.UpdateMana { Player = PlayerPlayer, Amount = PlayerPlayer.ManaDelta, PreReserved = false },
+                    new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;

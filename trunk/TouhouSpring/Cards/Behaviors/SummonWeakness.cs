@@ -18,7 +18,15 @@ namespace TouhouSpring.Behaviors
             if (context.CardPlayed == Host)
             {
                 Host.Behaviors.Add(new Effect());
-                context.Game.SetWarriorState(Host, WarriorState.CoolingDown);
+
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoCoolingDown"
+                    });
+                }
             }
         }
 
@@ -31,7 +39,14 @@ namespace TouhouSpring.Behaviors
                 throw new NotImplementedException();
                 // TODO: issue commands for the following:
                 //Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
-                //context.Game.SetWarriorState(Host, WarriorState.StandingBy);
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoStandingBy"
+                    });
+                }
             }
         }
 

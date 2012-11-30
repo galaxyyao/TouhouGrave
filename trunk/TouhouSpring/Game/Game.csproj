@@ -72,6 +72,7 @@
     <Compile Include="Commands\ISetupTrigger.cs" />
     <Compile Include="Commands\EndTurn.cs" />
     <Compile Include="Commands\PlayCard.cs" />
+    <Compile Include="Commands\SendBehaviorMessage.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
     <Compile Include="Commands\Summon.cs" />
     <Compile Include="Commands\UpdateMana.cs" />

@@ -12,7 +12,14 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Game.Round == 1)
             {
-                Host.Behaviors.Get<Warrior>().State = WarriorState.CoolingDown;
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoCoolingDown"
+                    });
+                }
             }
         }
 

@@ -131,25 +131,14 @@ namespace TouhouSpring
 				throw new ArgumentNullException("player");
 			}
 
-			player.m_battlefieldCards
+            player.m_battlefieldCards
                 .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
-                .ForEach(card => card.Behaviors.Get<Behaviors.Warrior>().State = Behaviors.WarriorState.StandingBy);
-		}
-
-		public void SetWarriorState(BaseCard card, Behaviors.WarriorState state)
-		{
-			if (card == null)
-			{
-				throw new ArgumentNullException("card");
-			}
-
-            var warriorBhv = card.Behaviors.Get<Behaviors.Warrior>();
-            if (warriorBhv == null)
-            {
-                throw new ArgumentException(String.Format("Card {0} is not a warrior.", card.Model.Name));
-            }
-
-			warriorBhv.State = state;
+                .ForEach(card => IssueCommands(new Commands.SendBehaviorMessage
+                {
+                    Target = card.Behaviors.Get<Behaviors.Warrior>(),
+                    Message = "GoStandingBy"
+                }));
+            FlushCommandQueue();
 		}
 	}
 }

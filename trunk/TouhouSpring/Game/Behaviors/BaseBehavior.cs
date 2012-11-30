@@ -79,6 +79,8 @@ namespace TouhouSpring.Behaviors
             Host = null;
         }
 
+        public virtual void OnMessage(string message, object[] args) { }
+
 		protected bool IsOnBattlefield
 		{
 			get { return Host.Owner.CardsOnBattlefield.Contains(Host); }

@@ -48,11 +48,25 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {
-                throw new NotImplementedException();
-                // TODO: issue commands for the following:
-                //m_currentPlayer = null;
-                //m_isProtected = false;
-                //m_spellCaster = null;
+                context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                {
+                    Target = this,
+                    Message = "Reset"
+                });
+            }
+        }
+
+        public override void OnMessage(string message, object[] args)
+        {
+            if (message == "Reset")
+            {
+                if (args != null)
+                {
+                    throw new ArgumentException("args");
+                }
+                m_currentPlayer = null;
+                m_isProtected = false;
+                m_spellCaster = null;
             }
         }
 
