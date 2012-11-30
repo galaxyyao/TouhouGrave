@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
 {
     public class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
         , ITrigger<PostCardPlayedContext>
-        , Commands.IEpilogTrigger<Commands.EndTurn>
+        , IEpilogTrigger<EndTurn>
     {
         class Effect : SimpleBehavior<Effect>
         { }
@@ -21,7 +22,7 @@ namespace TouhouSpring.Behaviors
 
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    context.Game.IssueCommands(new SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoCoolingDown"
@@ -30,7 +31,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
+        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
         {
             if (IsOnBattlefield
                 && context.Game.PlayerPlayer == Host.Owner
@@ -41,7 +42,7 @@ namespace TouhouSpring.Behaviors
                 //Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    context.Game.IssueCommands(new SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoStandingBy"

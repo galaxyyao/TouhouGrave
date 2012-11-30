@@ -8,9 +8,9 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private Queue<Commands.CommandContext> m_pendingCommands = new Queue<Commands.CommandContext>();
+        private Queue<Commands.IRunnableCommandContext> m_pendingCommands = new Queue<Commands.IRunnableCommandContext>();
 
-        public Commands.CommandContext RunningCommand
+        public Commands.ICommandContext RunningCommand
         {
             get; private set;
         }
@@ -32,8 +32,9 @@ namespace TouhouSpring
 
             while (m_pendingCommands.Count != 0)
             {
-                RunningCommand = m_pendingCommands.Dequeue();
-                RunningCommand.Run();
+                var cmd = m_pendingCommands.Dequeue();
+                RunningCommand = cmd;
+                cmd.Run();
                 RunningCommand = null;
             }
         }
@@ -60,7 +61,9 @@ namespace TouhouSpring
             }
 
             // enqueue a new context and chain with the previous one
-            m_pendingCommands.Enqueue(new Commands.CommandContext(this, command, RunningCommand));
+            var cmdCtxType = typeof(Commands.CommandContext<>).MakeGenericType(command.GetType());
+            var cmdCtx = Activator.CreateInstance(cmdCtxType, this, command, RunningCommand);
+            m_pendingCommands.Enqueue(cmdCtx as Commands.IRunnableCommandContext);
         }
 
         public void Resolve()

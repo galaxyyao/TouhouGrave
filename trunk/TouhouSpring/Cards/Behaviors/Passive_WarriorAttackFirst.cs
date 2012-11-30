@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAttackFirst :
         BaseBehavior<Passive_WarriorAttackFirst.ModelType>,
         ITrigger<Triggers.PostCardDamagedContext>,
-        Commands.IEpilogTrigger<Commands.EndTurn>
+        IEpilogTrigger<EndTurn>
     {
         private Func<int, int> attackFirstCompensation = null;
 
@@ -26,7 +27,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
+        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
         {
             if (attackFirstCompensation != null)
             {

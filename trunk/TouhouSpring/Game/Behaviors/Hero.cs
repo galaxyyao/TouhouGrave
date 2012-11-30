@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -14,7 +15,7 @@ namespace TouhouSpring.Behaviors
             {
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    context.Game.IssueCommands(new SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoCoolingDown"

@@ -7,32 +7,20 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public enum ExecutionPhase
+    public class CommandContext<TCommand> : IRunnableCommandContext
+        where TCommand : ICommand
     {
-        Pending,
-        Prerequisite,
-        Setup,
-        Prolog,
-        Main,
-        Epilog
-    }
-
-    public struct Result
-    {
-        public bool Canceled;
-        public string Reason;
-
-        public readonly static Result Pass = new Result { Canceled = false, Reason = null };
-        
-        public static Result Cancel(string reason = null)
+        ICommand ICommandContext.Command
         {
-            return new Result { Canceled = true, Reason = reason };
+            get { return Command; }
         }
-    }
 
-    public class CommandContext
-    {
-        public ICommand Command
+        public TCommand Command
+        {
+            get; private set;
+        }
+
+        public ICommandContext Previous
         {
             get; private set;
         }
@@ -42,42 +30,27 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public CommandContext Previous
-        {
-            get; private set;
-        }
-
         public Game Game
         {
             get; private set;
         }
 
-        public Result Result
+        public CommandResult Result
         {
             get; private set;
         }
 
-        private List<BaseCard> m_associates = new List<BaseCard>();
-
-        internal CommandContext(Game game, ICommand command, CommandContext previous)
+        internal CommandContext(Game game, TCommand command, ICommandContext previous)
         {
             Command = command;
-            Phase = ExecutionPhase.Pending;
             Previous = previous;
+            Phase = ExecutionPhase.Pending;
             Game = game;
+            Result = CommandResult.Pass;
         }
 
-        internal void Run()
+        void IRunnableCommandContext.Run()
         {
-            var commandType = Command.GetType();
-            var method = typeof(CommandContext).GetMethod("RunTyped", BindingFlags.Instance | BindingFlags.NonPublic);
-            method.MakeGenericMethod(commandType).Invoke(this, null);
-        }
-
-        private void RunTyped<TCommand>() where TCommand : Commands.ICommand
-        {
-            Debug.Assert(typeof(TCommand) == Command.GetType());
-
             ////////////////////////////////////////////
 
             Phase = ExecutionPhase.Prerequisite;

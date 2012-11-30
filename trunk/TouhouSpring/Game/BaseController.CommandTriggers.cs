@@ -8,11 +8,11 @@ namespace TouhouSpring
 {
     public partial class BaseController
     {
-        public void OnCommandBegin(CommandContext context)
+        public void OnCommandBegin(ICommandContext context)
         {
         }
 
-        public void OnCommandEnd(CommandContext context)
+        public void OnCommandEnd(ICommandContext context)
         {
             if (context.Command is Commands.DrawCard && !context.Result.Canceled)
             {

@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Support : BaseBehavior<Support.ModelType>,
-        Commands.ISetupTrigger<Commands.PlayCard>,
-        Commands.IPrologTrigger<Commands.PlayCard>
+        ISetupTrigger<PlayCard>,
+        IPrologTrigger<PlayCard>
     {
         private bool m_chargeSkill = false;
 
-        Commands.Result Commands.ISetupTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        CommandResult ISetupTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 //TODO: add logic (what kind of logic?)
                 var cardsOnBattlefield = context.Game.PlayerPlayer.CardsOnBattlefield;
@@ -30,18 +30,17 @@ namespace TouhouSpring.Behaviors
                     }
                     else
                     {
-                        return Commands.Result.Cancel();
+                        return CommandResult.Cancel();
                     }
                 }
             }
 
-            return Commands.Result.Pass;
+            return CommandResult.Pass;
         }
 
-        void Commands.IPrologTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        void IPrologTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host && m_chargeSkill)
+            if (context.Command.CardToPlay == Host && m_chargeSkill)
             {
                 throw new NotImplementedException();
                 // TODO: issue commands for doing the following:

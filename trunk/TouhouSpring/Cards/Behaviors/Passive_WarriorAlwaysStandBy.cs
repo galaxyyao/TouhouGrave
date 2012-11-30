@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAlwaysStandBy:
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
-        Commands.IEpilogTrigger<Commands.EndTurn>
+        IEpilogTrigger<EndTurn>
     {
-        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
+        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
         {
             if (IsOnBattlefield)
             {
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    context.Game.IssueCommands(new SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoStandingBy"

@@ -2,36 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Assault_SingleWarriorBoostForXRounds :
         BaseBehavior<Assault_SingleWarriorBoostForXRounds.ModelType>,
-        Commands.IPrerequisiteTrigger<Commands.PlayCard>,
-        Commands.ISetupTrigger<Commands.PlayCard>,
-        Commands.IEpilogTrigger<Commands.PlayCard>,
+        IPrerequisiteTrigger<PlayCard>,
+        ISetupTrigger<PlayCard>,
+        IEpilogTrigger<PlayCard>,
         IPlayable
     {
         private BaseCard m_castTarget;
 
-        Commands.Result Commands.IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 if (!Host.Owner.CardsOnBattlefield.Any(c => c.Behaviors.Has<Warrior>()))
                 {
-                    return Commands.Result.Cancel("No card can be affected.");
+                    return CommandResult.Cancel("No card can be affected.");
                 }
             }
 
-            return Commands.Result.Pass;
+            return CommandResult.Pass;
         }
 
-        Commands.Result Commands.ISetupTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        CommandResult ISetupTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 var selectedCard = new Interactions.SelectCards(
                     context.Game.OpponentController, // TODO: host's controller
@@ -41,19 +40,18 @@ namespace TouhouSpring.Behaviors
 
                 if (selectedCard.Count == 0)
                 {
-                    return Commands.Result.Cancel("Boost is canceled.");
+                    return CommandResult.Cancel("Boost is canceled.");
                 }
 
                 m_castTarget = selectedCard[0];
             }
 
-            return Commands.Result.Pass;
+            return CommandResult.Pass;
         }
 
-        void Commands.IEpilogTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 if (m_castTarget == null)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -10,7 +11,7 @@ namespace TouhouSpring.Behaviors
         ICastableSpell,
         ITrigger<Triggers.PrePlayerDamageContext>,
         ITrigger<Triggers.PreCardDamageContext>,
-        Commands.IEpilogTrigger<Commands.EndTurn>
+        IEpilogTrigger<EndTurn>
     {
         private bool m_isProtected = false;
         private Player m_currentPlayer;
@@ -44,11 +45,11 @@ namespace TouhouSpring.Behaviors
                 context.DamageToDeal = 0;
         }
 
-        void Commands.IEpilogTrigger<Commands.EndTurn>.Run(Commands.CommandContext context)
+        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
         {
             if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {
-                context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                context.Game.IssueCommands(new SendBehaviorMessage
                 {
                     Target = this,
                     Message = "Reset"

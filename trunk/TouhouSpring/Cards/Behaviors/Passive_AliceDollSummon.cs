@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
@@ -15,7 +16,7 @@ namespace TouhouSpring.Behaviors
             {
                 1.Repeat(i =>
                 {
-                    context.Game.IssueCommands(new Commands.Summon
+                    context.Game.IssueCommands(new Summon
                     {
                         Model = Model.SummonType.Target,
                         Owner = Host.Owner

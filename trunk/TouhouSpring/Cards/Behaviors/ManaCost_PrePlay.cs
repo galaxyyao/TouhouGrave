@@ -2,37 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
 {
 	public class ManaCost_PrePlay : BaseBehavior<ManaCost_PrePlay.ModelType>,
-        Commands.IPrerequisiteTrigger<Commands.PlayCard>,
-        Commands.IPrologTrigger<Commands.PlayCard>,
+        IPrerequisiteTrigger<PlayCard>,
+        IPrologTrigger<PlayCard>,
         IPlayable
 	{
-        Commands.Result Commands.IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 if (!IsPlayable(context.Game))
                 {
-                    return Commands.Result.Cancel("Insufficient mana.");
+                    return CommandResult.Cancel("Insufficient mana.");
                 }
 
                 context.Game.ReserveMana(Host.Owner, Model.Cost);
             }
 
-            return Commands.Result.Pass;
+            return CommandResult.Pass;
         }
 
-        void Commands.IPrologTrigger<Commands.PlayCard>.Run(Commands.CommandContext context)
+        void IPrologTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            var command = context.Command as Commands.PlayCard;
-            if (command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
-                context.Game.IssueCommands(new Commands.UpdateMana
+                context.Game.IssueCommands(new UpdateMana
                 {
                     Player = Host.Owner,
                     Amount = -Model.Cost,
