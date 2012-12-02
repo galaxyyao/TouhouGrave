@@ -43,10 +43,11 @@ namespace TouhouSpring.Commands
             {
                 throw new CommandValidationFailException("Message can't be empty.");
             }
-            else if (Args != null && Args.Any(arg => !s_simpleTypes.Contains(arg.GetType())))
-            {
-                throw new CommandValidationFailException("Arguments can only be of some simple types.");
-            }
+            // TODO: proper serialization of complex data type
+            //else if (Args != null && Args.Any(arg => !s_simpleTypes.Contains(arg.GetType())))
+            //{
+            //    throw new CommandValidationFailException("Arguments can only be of some simple types.");
+            //}
         }
 
         public void RunMain(Game game)

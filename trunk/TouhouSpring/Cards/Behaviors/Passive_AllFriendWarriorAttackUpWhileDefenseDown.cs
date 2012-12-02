@@ -11,8 +11,8 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<PlayCard>,
         ITrigger<Triggers.CardLeftBattlefieldContext>
     {
-        private readonly Func<int, int> m_attackMod = x => x + 2;
-        private readonly Func<int, int> m_defenseMod = y => y = 1;
+        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 2);
+        private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1);
 
         void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
@@ -25,19 +25,38 @@ namespace TouhouSpring.Behaviors
                     if (card.Behaviors.Get<Hero>() != null)
                         continue;
 
-                    throw new NotImplementedException();
-                    // TODO: issue command for the following:
-                    //card.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
-                    //card.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
+                    context.Game.IssueCommands(
+                        new SendBehaviorMessage
+                        {
+                            Target = card.Behaviors.Get<Warrior>(),
+                            Message = "AttackModifiers",
+                            Args = new object[] { "add", m_attackMod }
+                        },
+                        new SendBehaviorMessage
+                        {
+                            Target = card.Behaviors.Get<Warrior>(),
+                            Message = "DefenseModifiers",
+                            Args = new object[] { "add", m_defenseMod }
+                        });
                 }
-                return;
             }
-            if (context.Command.CardToPlay.Owner == Host.Owner 
-                && IsOnBattlefield
-                && context.Command.CardToPlay.Behaviors.Get<Warrior>() != null)
+            else if (context.Command.CardToPlay.Owner == Host.Owner 
+                     && IsOnBattlefield
+                     && context.Command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
-                context.Command.CardToPlay.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
-                context.Command.CardToPlay.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
+                context.Game.IssueCommands(
+                    new SendBehaviorMessage
+                    {
+                        Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
+                        Message = "AttackModifiers",
+                        Args = new object[] { "add", m_attackMod }
+                    },
+                    new SendBehaviorMessage
+                    {
+                        Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
+                        Message = "DefenseModifiers",
+                        Args = new object[] { "add", m_defenseMod }
+                    });
             }
         }
 
@@ -49,17 +68,38 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.Behaviors.Get<Warrior>() != null)
                     {
-                        card.Behaviors.Get<Warrior>().Attack.RemoveModifier(m_attackMod);
-                        card.Behaviors.Get<Warrior>().Defense.RemoveModifier(m_defenseMod);
+                        context.Game.IssueCommands(
+                            new SendBehaviorMessage
+                            {
+                                Target = card.Behaviors.Get<Warrior>(),
+                                Message = "AttackModifiers",
+                                Args = new object[] { "remove", m_attackMod }
+                            },
+                            new SendBehaviorMessage
+                            {
+                                Target = card.Behaviors.Get<Warrior>(),
+                                Message = "DefenseModifiers",
+                                Args = new object[] { "remove", m_defenseMod }
+                            });
                     }
                 }
-                return;
             }
-            if (context.CardToLeft.Owner == Host.Owner
-                && IsOnBattlefield)
+            else if (context.CardToLeft.Owner == Host.Owner
+                     && IsOnBattlefield)
             {
-                context.CardToLeft.Behaviors.Get<Warrior>().Attack.RemoveModifier(m_attackMod);
-                context.CardToLeft.Behaviors.Get<Warrior>().Defense.RemoveModifier(m_defenseMod);
+                context.Game.IssueCommands(
+                    new SendBehaviorMessage
+                    {
+                        Target = context.CardToLeft.Behaviors.Get<Warrior>(),
+                        Message = "AttackModifiers",
+                        Args = new object[] { "remove", m_attackMod }
+                    },
+                    new SendBehaviorMessage
+                    {
+                        Target = context.CardToLeft.Behaviors.Get<Warrior>(),
+                        Message = "DefenseModifiers",
+                        Args = new object[] { "remove", m_defenseMod }
+                    });
             }
         }
 

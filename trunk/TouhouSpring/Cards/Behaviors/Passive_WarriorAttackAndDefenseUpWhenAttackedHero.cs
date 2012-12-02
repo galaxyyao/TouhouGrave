@@ -14,11 +14,10 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Command.Cause == Host)
             {
-                var attackMod = new AttackModifier(x => x + 1);
-                var defenseMod = new DefenseModifier(y => y + 1);
-
                 throw new NotImplementedException();
                 // TODO: issue commands for the following:
+                //var attackMod = new AttackModifier(x => x + 1);
+                //var defenseMod = new DefenseModifier(y => y + 1);
                 //Host.Behaviors.Add(attackMod);
                 //Host.Behaviors.Add(defenseMod);
             }

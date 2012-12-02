@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         ITrigger<Triggers.PostCardDamagedContext>,
         IEpilogTrigger<EndTurn>
     {
-        private Func<int, int> attackFirstCompensation = null;
+        private Warrior.ValueModifier attackFirstCompensation = null;
 
         public void Trigger(Triggers.PostCardDamagedContext context)
         {
@@ -21,8 +21,13 @@ namespace TouhouSpring.Behaviors
                 if (warriorAttackedBhv.AccumulatedDamage >= warriorAttackedBhv.Defense)
                 {
                     int damageWontDeal = context.CardDamaged.Behaviors.Get<Warrior>().Attack;
-                    attackFirstCompensation = x => x + damageWontDeal;
-                    Host.Behaviors.Get<Warrior>().Defense.AddModifierToTail(attackFirstCompensation);
+                    attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, damageWontDeal);
+                    context.Game.IssueCommands(new SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "DefenseModifiers",
+                        Args = new object[] { "add", attackFirstCompensation }
+                    });
                 }
             }
         }
@@ -31,10 +36,13 @@ namespace TouhouSpring.Behaviors
         {
             if (attackFirstCompensation != null)
             {
-                throw new NotImplementedException();
-                // TODO: issue commands for the following:
-                //Host.Behaviors.Get<Warrior>().Defense.RemoveModifier(attackFirstCompensation);
-                //attackFirstCompensation = null;
+                context.Game.IssueCommands(new SendBehaviorMessage
+                {
+                    Target = Host.Behaviors.Get<Warrior>(),
+                    Message = "DefenseModifiers",
+                    Args = new object[] { "remove", attackFirstCompensation }
+                });
+                attackFirstCompensation = null;
             }
         }
 
