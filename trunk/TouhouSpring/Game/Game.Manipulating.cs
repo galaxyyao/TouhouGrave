@@ -28,39 +28,6 @@ namespace TouhouSpring
 		}
 
 		/// <summary>
-		/// Deal health update to a player.
-		/// </summary>
-		/// <param name="player">The player whose health to be updated</param>
-		/// <param name="delta">Amount of health delta</param>
-		public void UpdateHealth(Player player, int delta, Behaviors.IBehavior cause)
-		{
-			if (player == null)
-			{
-				throw new ArgumentNullException("player");
-			}
-			else if (cause == null)
-			{
-				throw new ArgumentNullException("cause");
-			}
-
-			if (delta > 0)
-			{
-                player.Health += delta;
-			}
-			else if (delta < 0)
-			{
-				TriggerGlobal(new Triggers.PrePlayerDamageContext(this, player, -delta, cause));
-				player.Health += delta;
-				TriggerGlobal(new Triggers.PostPlayerDamagedContext(this, player, cause));
-				m_controllers.ForEach(c => c.InternalOnPlayerDamaged(player, -delta));
-			}
-			else
-			{
-				// TODO: if health unchanged should be handled
-			}
-		}
-
-		/// <summary>
 		/// Destroy a card.
 		/// </summary>
 		/// <param name="card">The card to be destroyed</param>

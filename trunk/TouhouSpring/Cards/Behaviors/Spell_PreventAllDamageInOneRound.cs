@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
     public class Spell_PreventAllDamageInOneRound :
         BaseBehavior<Spell_PreventAllDamageInOneRound.ModelType>,
         ICastableSpell,
-        ITrigger<Triggers.PrePlayerDamageContext>,
+        IPrologTrigger<DealDamageToPlayer>,
         ITrigger<Triggers.PreCardDamageContext>,
         IEpilogTrigger<EndTurn>
     {
@@ -33,10 +33,10 @@ namespace TouhouSpring.Behaviors
             return true;
         }
 
-        public void Trigger(Triggers.PrePlayerDamageContext context)
+        void IPrologTrigger<DealDamageToPlayer>.Run(CommandContext<DealDamageToPlayer> context)
         {
-            if(m_isProtected&& context.PlayerToDamage==m_spellCaster)
-                context.DamageToDeal = 0;
+            if(m_isProtected&& context.Command.Target==m_spellCaster)
+                context.Command.DamageToDeal = 0;
         }
 
         public void Trigger(Triggers.PreCardDamageContext context)

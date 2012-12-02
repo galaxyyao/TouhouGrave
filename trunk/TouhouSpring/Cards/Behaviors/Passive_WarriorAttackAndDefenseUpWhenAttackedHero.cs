@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAttackAndDefenseUpWhenAttackedHero:
         BaseBehavior<Passive_WarriorAttackAndDefenseUpWhenAttackedHero.ModelType>,
-        ITrigger<Triggers.PostPlayerDamagedContext>
+        IEpilogTrigger<DealDamageToPlayer>
     {
-        public void Trigger(Triggers.PostPlayerDamagedContext context)
+        void IEpilogTrigger<DealDamageToPlayer>.Run(CommandContext<DealDamageToPlayer> context)
         {
-            if (context.Cause == Host)
+            if (context.Command.Cause == Host)
             {
                 var attackMod = new AttackModifier(x => x + 1);
                 var defenseMod = new DefenseModifier(y => y + 1);
-                Host.Behaviors.Add(attackMod);
-                Host.Behaviors.Add(defenseMod);
+
+                throw new NotImplementedException();
+                // TODO: issue commands for the following:
+                //Host.Behaviors.Add(attackMod);
+                //Host.Behaviors.Add(defenseMod);
             }
         }
 

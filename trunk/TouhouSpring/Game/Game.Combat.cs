@@ -18,12 +18,18 @@ namespace TouhouSpring
 
                 if (blockers.Count == 0)
                 {
-                    UpdateHealth(OpponentPlayer, -attackerWarriorBhv.Attack, attackerWarriorBhv);
-                    IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = attackerWarriorBhv,
-                        Message = "GoCoolingDown"
-                    });
+                    IssueCommands(
+                        new Commands.DealDamageToPlayer
+                        {
+                            Target = OpponentPlayer,
+                            DamageToDeal = attackerWarriorBhv.Attack,
+                            Cause = attackerWarriorBhv
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = attackerWarriorBhv,
+                            Message = "GoCoolingDown"
+                        });
                 }
                 else if (blockers.Count == 1)
                 {

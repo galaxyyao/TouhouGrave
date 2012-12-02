@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -19,7 +20,12 @@ namespace TouhouSpring.Behaviors
 
             using (new IntegerEx.LockValues())
             {
-                game.UpdateHealth(game.OpponentPlayer, -Model.Damage, this);
+                game.IssueCommands(new DealDamageToPlayer
+                {
+                    Target = game.OpponentPlayer,
+                    DamageToDeal = Model.Damage,
+                    Cause = this
+                });
                 reason = String.Empty;
                 return true;
             }

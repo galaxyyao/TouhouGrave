@@ -64,6 +64,7 @@
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Commands\CommandContext.cs" />
+    <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\StartBlockPhase.cs" />
     <Compile Include="Commands\DrawCard.cs" />
     <Compile Include="Commands\ICommandContext.cs" />
@@ -113,10 +114,8 @@
     <Compile Include="Triggers\CardLeftBattlefieldContext.cs" />
     <Compile Include="Triggers\PostCardDestroyedContext.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />
-    <Compile Include="Triggers\PostPlayerDamagedContext.cs" />
     <Compile Include="Triggers\PreCardDamageContext.cs" />
     <Compile Include="Triggers\PreCardDestroyContext.cs" />
-    <Compile Include="Triggers\PrePlayerDamageContext.cs" />
     <Compile Include="Triggers\TriggerContext.cs" />
     <Compile Include="TypeIDAttribute.cs" />
   </ItemGroup>

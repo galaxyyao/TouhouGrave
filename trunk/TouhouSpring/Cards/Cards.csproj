@@ -53,6 +53,8 @@
     <None Include="Behaviors\Deprecated\Freeze.cs" />
     <None Include="Behaviors\Deprecated\Steal.cs" />
     <None Include="Behaviors\Deprecated\RedFog.cs" />
+    <None Include="Behaviors\Deprecated\JackTheRipper.cs" />
+    <None Include="Behaviors\Deprecated\Penetrate.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
@@ -61,7 +63,6 @@
     <Compile Include="Behaviors\DefenseModifier.cs" />
     <Compile Include="Behaviors\Environment.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
-    <Compile Include="Behaviors\JackTheRipper.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />
     <Compile Include="Behaviors\LowWit.cs" />
     <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
@@ -82,7 +83,6 @@
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Behaviors\MasterSpark.cs" />
-    <Compile Include="Behaviors\Penetrate.cs" />
     <Compile Include="Behaviors\Scapegoat.cs" />
     <Compile Include="Behaviors\SkillCharge.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />

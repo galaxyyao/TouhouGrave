@@ -8,17 +8,20 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_ManaGainUpWhenAttackedByWarrior
         : BaseBehavior<Passive_ManaGainUpWhenAttackedByWarrior.ModelType>,
-        ITrigger<Triggers.PostPlayerDamagedContext>,
+        IEpilogTrigger<DealDamageToPlayer>,
         IEpilogTrigger<StartTurn>
     {
         private bool isAttackedByWarriorLastRound = false;
 
-        public void Trigger(Triggers.PostPlayerDamagedContext context)
+        void IEpilogTrigger<DealDamageToPlayer>.Run(CommandContext<DealDamageToPlayer> context)
         {
-            if (context.PlayerDamaged == Host.Owner && context.Cause.Host.Behaviors.Get<Hero>() == null)
+            if (context.Command.Target == Host.Owner && !context.Command.Cause.Host.Behaviors.Has<Hero>())
             {
                 isAttackedByWarriorLastRound = true;
-                Host.Owner.ManaDelta += 1;
+
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //Host.Owner.ManaDelta += 1;
             }
         }
 
