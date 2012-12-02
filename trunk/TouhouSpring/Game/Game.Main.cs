@@ -69,7 +69,7 @@ namespace TouhouSpring
                 }
 
                 CurrentPhase = "Combat/Attack";
-                TriggerGlobal(new Triggers.AttackPhaseStartedContext(this));
+                IssueCommandsAndFlush(new Commands.StartAttackPhase { });
                 var declaredAttackers = new Interactions.SelectCards(
                     PlayerController,
                     PlayerPlayer.CardsOnBattlefield.Where(card =>
@@ -77,10 +77,9 @@ namespace TouhouSpring
                         && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Multiple,
                     "Select warriors in battlefield to make them attackers.").Run().Clone();
-                TriggerGlobal(new Triggers.AttackPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Block";
-                TriggerGlobal(new Triggers.BlockPhaseStartedContext(this));
+                IssueCommandsAndFlush(new Commands.StartBlockPhase { });
                 IIndexable<IIndexable<BaseCard>> declaredBlockers;
                 while (true)
                 {
@@ -102,7 +101,6 @@ namespace TouhouSpring
                     }
                     ResolveBattlefieldCards();
                 }
-                TriggerGlobal(new Triggers.BlockPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Resolve";
                 ResolveCombat(declaredAttackers, declaredBlockers);

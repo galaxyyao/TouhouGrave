@@ -7,9 +7,9 @@ using TouhouSpring.Commands;
 namespace TouhouSpring.Behaviors
 {
     public class Hero : BaseBehavior<Hero.ModelType>,
-        ITrigger<Triggers.AttackPhaseStartedContext>
+        IEpilogTrigger<StartAttackPhase>
     {
-        public void Trigger(Triggers.AttackPhaseStartedContext context)
+        void IEpilogTrigger<StartAttackPhase>.Run(CommandContext<StartAttackPhase> context)
         {
             if (context.Game.Round == 1)
             {
