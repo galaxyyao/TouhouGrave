@@ -115,7 +115,6 @@
     <Compile Include="Triggers\CardLeftBattlefieldContext.cs" />
     <Compile Include="Triggers\PostCardDestroyedContext.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />
-    <Compile Include="Triggers\PostCardDrawnContext.cs" />
     <Compile Include="Triggers\PostPlayerDamagedContext.cs" />
     <Compile Include="Triggers\PreCardDamageContext.cs" />
     <Compile Include="Triggers\PreCardDestroyContext.cs" />

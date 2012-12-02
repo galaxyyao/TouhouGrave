@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
-        ITrigger<Triggers.PostCardDrawnContext>,
+        IEpilogTrigger<DrawCard>,
         ITrigger<Triggers.CardLeftBattlefieldContext>,
         IEpilogTrigger<PlayCard>
     {
@@ -50,13 +50,16 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void Trigger(Triggers.PostCardDrawnContext context)
+        void IEpilogTrigger<DrawCard>.Run(CommandContext<DrawCard> context)
         {
-            if (IsOnBattlefield && context.CardDrawn.Owner != Host.Owner)
+            if (IsOnBattlefield && context.Command.CardDrawn.Owner != Host.Owner)
             {
-                if (costUpModels.Contains(context.CardDrawn.Model))
+                if (costUpModels.Contains(context.Command.CardDrawn.Model))
                     return;
-                context.CardDrawn.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
+
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //context.CardDrawn.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
             }
         }
 
