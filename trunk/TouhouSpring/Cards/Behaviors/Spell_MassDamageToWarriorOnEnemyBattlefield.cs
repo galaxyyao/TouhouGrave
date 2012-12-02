@@ -17,20 +17,17 @@ namespace TouhouSpring.Behaviors
                 return false;
             }
 
-            using (new IntegerEx.LockValues())
+            var warriors = (from card in game.OpponentPlayer.CardsOnBattlefield
+                            where card.Behaviors.Has<Warrior>()
+                            select card.Behaviors.Get<Warrior>()).ToArray();
+
+            foreach (var warrior in warriors)
             {
-                var warriors = (from card in game.OpponentPlayer.CardsOnBattlefield
-                                where card.Behaviors.Has<Warrior>()
-                                select card.Behaviors.Get<Warrior>()).ToArray();
-
-                foreach (var warrior in warriors)
-                {
-                    warrior.AccumulatedDamage += Model.Damage;
-                }
-
-                reason = String.Empty;
-                return true;
+                warrior.AccumulatedDamage += Model.Damage;
             }
+
+            reason = String.Empty;
+            return true;
         }
 
         [BehaviorModel(typeof(Spell_MassDamageToWarriorOnEnemyBattlefield), DefaultName = "Master Spark")]

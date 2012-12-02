@@ -18,17 +18,14 @@ namespace TouhouSpring.Behaviors
                 return false;
             }
 
-            using (new IntegerEx.LockValues())
+            game.IssueCommands(new DealDamageToPlayer
             {
-                game.IssueCommands(new DealDamageToPlayer
-                {
-                    Target = game.OpponentPlayer,
-                    DamageToDeal = Model.Damage,
-                    Cause = this
-                });
-                reason = String.Empty;
-                return true;
-            }
+                Target = game.OpponentPlayer,
+                DamageToDeal = Model.Damage,
+                Cause = this
+            });
+            reason = String.Empty;
+            return true;
         }
 
         [BehaviorModel(typeof(Spell_DamageDirectToPlayer), DefaultName = "五道难题")]

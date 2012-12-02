@@ -81,7 +81,6 @@
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Game.Resource.cs" />
     <Compile Include="Game.Trigger.cs" />
-    <Compile Include="IntegerEx.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Game.Combat.cs" />
     <Compile Include="Game.End.cs" />
