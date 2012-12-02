@@ -71,6 +71,7 @@
     <Compile Include="Commands\PlayCard.cs" />
     <Compile Include="Commands\SendBehaviorMessage.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
+    <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
     <Compile Include="Commands\Triggers.cs" />
     <Compile Include="Commands\UpdateMana.cs" />
@@ -112,7 +113,6 @@
     <Compile Include="Triggers\BlockPhaseStartedContext.cs" />
     <Compile Include="Triggers\CardEnteredGraveyardContext.cs" />
     <Compile Include="Triggers\CardLeftBattlefieldContext.cs" />
-    <Compile Include="Triggers\PlayerTurnStartedContext.cs" />
     <Compile Include="Triggers\PostCardDestroyedContext.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />
     <Compile Include="Triggers\PostCardDrawnContext.cs" />

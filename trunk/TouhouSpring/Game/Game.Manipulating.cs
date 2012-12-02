@@ -119,26 +119,5 @@ namespace TouhouSpring
 			toPlayer.m_battlefieldCards.Add(card);
 			card.Owner = toPlayer;
 		}
-
-		/// <summary>
-		/// Reset the cards' states in the specified player's battlefield.
-		/// </summary>
-		/// <param name="player">The player whose cards are going to be reset</param>
-		public void ResetWarriorState(Player player)
-		{
-			if (player == null)
-			{
-				throw new ArgumentNullException("player");
-			}
-
-            player.m_battlefieldCards
-                .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
-                .ForEach(card => IssueCommands(new Commands.SendBehaviorMessage
-                {
-                    Target = card.Behaviors.Get<Behaviors.Warrior>(),
-                    Message = "GoStandingBy"
-                }));
-            FlushCommandQueue();
-		}
 	}
 }

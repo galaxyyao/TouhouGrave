@@ -8,16 +8,20 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_CardDrawnNumberUp :
         BaseBehavior<Passive_CardDrawnNumberUp.ModelType>,
-        ITrigger<Triggers.PlayerTurnStartedContext>,
+        IEpilogTrigger<StartTurn>,
         IEpilogTrigger<DrawCard>
     {
         private bool m_isMoreCardDrawn = false;
+
+        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
+        {
+            m_isMoreCardDrawn = false;
+        }
 
         void IEpilogTrigger<DrawCard>.Run(CommandContext<DrawCard> context)
         {
             if (IsOnBattlefield && !m_isMoreCardDrawn)
             {
-                // TODO: issue command for the following:
                 m_isMoreCardDrawn = true;
                 int hostCardNumber = 0;
                 foreach (var card in Host.Owner.CardsOnBattlefield)
@@ -28,11 +32,6 @@ namespace TouhouSpring.Behaviors
                 for (int i = 0; i < hostCardNumber; i++)
                     context.Game.IssueCommands(new DrawCard { PlayerDrawing = Host.Owner });
             }
-        }
-
-        public void Trigger(Triggers.PlayerTurnStartedContext context)
-        {
-            m_isMoreCardDrawn = false;
         }
 
         [BehaviorModel(typeof(Passive_CardDrawnNumberUp), DefaultName = "星光")]

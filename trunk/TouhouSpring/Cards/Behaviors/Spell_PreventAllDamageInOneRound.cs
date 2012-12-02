@@ -49,22 +49,6 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {
-                context.Game.IssueCommands(new SendBehaviorMessage
-                {
-                    Target = this,
-                    Message = "Reset"
-                });
-            }
-        }
-
-        public override void OnMessage(string message, object[] args)
-        {
-            if (message == "Reset")
-            {
-                if (args != null)
-                {
-                    throw new ArgumentException("args");
-                }
                 m_currentPlayer = null;
                 m_isProtected = false;
                 m_spellCaster = null;

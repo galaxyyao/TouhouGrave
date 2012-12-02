@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_ManaGainUpWhenAttackedByWarrior
         : BaseBehavior<Passive_ManaGainUpWhenAttackedByWarrior.ModelType>,
         ITrigger<Triggers.PostPlayerDamagedContext>,
-        ITrigger<Triggers.PlayerTurnStartedContext>
+        IEpilogTrigger<StartTurn>
     {
         private bool isAttackedByWarriorLastRound = false;
 
@@ -21,13 +22,15 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void Trigger(Triggers.PlayerTurnStartedContext context)
+        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
         {
             if (context.Game.PlayerPlayer != Host.Owner
                 && isAttackedByWarriorLastRound)
             {
                 isAttackedByWarriorLastRound = false;
-                Host.Owner.ManaDelta -= 1;
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //Host.Owner.ManaDelta -= 1;
             }
         }
 

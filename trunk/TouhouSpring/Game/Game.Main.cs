@@ -32,8 +32,7 @@ namespace TouhouSpring
                 IsWarriorPlayedThisTurn = false;
 
                 CurrentPhase = "PhaseA";
-                ResetWarriorState(PlayerPlayer);
-                TriggerGlobal(new Triggers.PlayerTurnStartedContext(this));
+                IssueCommandsAndFlush(new Commands.StartTurn { });
 
                 CurrentPhase = "Tactical";
 

@@ -8,9 +8,9 @@ using TouhouSpring.Triggers;
 namespace TouhouSpring.Behaviors
 {
     public class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
-        ITrigger<PlayerTurnStartedContext>
+        IEpilogTrigger<StartTurn>
     {
-        public void Trigger(PlayerTurnStartedContext context)
+        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
         {
             if (context.Game.InPlayerPhases && IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
             {
