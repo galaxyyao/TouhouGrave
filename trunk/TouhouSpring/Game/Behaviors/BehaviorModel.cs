@@ -52,7 +52,7 @@ namespace TouhouSpring.Behaviors
         private IBehavior Instantiate(bool persistent)
         {
             var bhv = m_bhvModelAttr.BehaviorType.Assembly.CreateInstance(m_bhvModelAttr.BehaviorType.FullName) as IBehavior;
-            bhv.Initialize(this, persistent);
+            (bhv as IInternalBehavior).Initialize(this, persistent);
             return bhv;
         }
     }

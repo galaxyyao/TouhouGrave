@@ -22,13 +22,17 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
         {
-            if (context.Game.PlayerPlayer != Host.Owner && isBlockedLastRound)
+            if (context.Game.PlayerPlayer != Host.Owner
+                && Host.Behaviors.Has<Warrior>()
+                && isBlockedLastRound)
             {
-                throw new NotImplementedException();
-                // TODO: issue commands for the following:
-                //isBlockedLastRound = false;
-                //Func<int, int> defenseMod = y => y - 1;
-                //Host.Behaviors.Get<Warrior>().Defense.AddModifierToTail(defenseMod);
+                isBlockedLastRound = false;
+                context.Game.IssueCommands(new SendBehaviorMessage
+                {
+                    Target = Host.Behaviors.Get<Warrior>(),
+                    Message = "DefenseModifiers",
+                    Args = new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1) }
+                });
             }
         }
 

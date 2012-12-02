@@ -59,26 +59,22 @@ namespace TouhouSpring.Behaviors
                 }
 
                 var lasting = new LastingEffect(Model.Duration);
-                if (Model.AttackBoost > 0)
+                if (Model.AttackBoost > 0 || Model.DefenseBoost > 0)
                 {
-                    throw new NotImplementedException();
-                    //var attackMod = new AttackModifier(x => x + Model.AttackBoost);
-                    //lasting.CleanUps.Add(attackMod);
-                    // TODO: issue command for the following:
-                    //m_castTarget.Behaviors.Add(attackMod);
-                }
-                if (Model.DefenseBoost > 0)
-                {
-                    throw new NotImplementedException();
-                    //var defenseMod = new DefenseModifier(x => x + Model.DefenseBoost);
-                    //lasting.CleanUps.Add(defenseMod);
-                    // TODO: issue command for the following:
-                    //m_castTarget.Behaviors.Add(defenseMod);
+                    var enhanceMod = new Enhance(Model.AttackBoost, Model.DefenseBoost);
+                    lasting.CleanUps.Add(enhanceMod);
+                    context.Game.IssueCommands(new AddBehavior
+                    {
+                        Target = m_castTarget,
+                        Behavior = enhanceMod
+                    });
                 }
 
-                throw new NotImplementedException();
-                // TODO: issue command for the following:
-                //m_castTarget.Behaviors.Add(lasting);
+                context.Game.IssueCommands(new AddBehavior
+                {
+                    Target = m_castTarget,
+                    Behavior = lasting
+                });
             }
         }
 

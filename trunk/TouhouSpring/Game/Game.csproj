@@ -63,7 +63,9 @@
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
+    <Compile Include="Commands\AddBehavior.cs" />
     <Compile Include="Commands\CommandContext.cs" />
+    <Compile Include="Commands\RemoveBehavior.cs" />
     <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\StartBlockPhase.cs" />
     <Compile Include="Commands\DrawCard.cs" />

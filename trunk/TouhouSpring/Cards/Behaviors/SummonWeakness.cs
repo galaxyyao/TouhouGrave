@@ -16,20 +16,21 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.Command.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host
+                && Host.Behaviors.Has<Warrior>())
             {
-                throw new NotImplementedException();
-                // TODO: issue command for the following:
-                //Host.Behaviors.Add(new Effect());
-
-                if (Host.Behaviors.Has<Warrior>())
-                {
-                    context.Game.IssueCommands(new SendBehaviorMessage
+                context.Game.IssueCommands(
+                    new AddBehavior
+                    {
+                        Target = Host,
+                        Behavior = new Effect()
+                    },
+                    new SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoCoolingDown"
-                    });
-                }
+                    }
+                );
             }
         }
 
@@ -37,19 +38,21 @@ namespace TouhouSpring.Behaviors
         {
             if (IsOnBattlefield
                 && context.Game.PlayerPlayer == Host.Owner
+                && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {
-                throw new NotImplementedException();
-                // TODO: issue commands for the following:
-                //Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
-                if (Host.Behaviors.Has<Warrior>())
-                {
-                    context.Game.IssueCommands(new SendBehaviorMessage
+                context.Game.IssueCommands(
+                    new RemoveBehavior
+                    {
+                        Target = Host,
+                        Behavior = Host.Behaviors.Get<Effect>()
+                    },
+                    new SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoStandingBy"
-                    });
-                }
+                    }
+                );
             }
         }
 

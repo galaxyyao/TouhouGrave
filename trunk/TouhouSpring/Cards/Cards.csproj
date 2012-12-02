@@ -57,6 +57,7 @@
     <None Include="Behaviors\Deprecated\Penetrate.cs" />
     <None Include="Behaviors\Deprecated\LowWit.cs" />
     <None Include="Behaviors\Deprecated\MasterSpark.cs" />
+    <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />

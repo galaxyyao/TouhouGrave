@@ -45,7 +45,11 @@ namespace TouhouSpring.Behaviors
                 throw new NotImplementedException();
                 // TODO: issue commands for doing the following:
                 //context.Game.PlayerPlayer.IsSkillCharged = true;
-                //context.CardToPlay.Behaviors.Add(new Instant());
+                context.Game.IssueCommands(new AddBehavior
+                {
+                    Target = context.Command.CardToPlay,
+                    Behavior = new Instant()
+                });
             }
         }
 

@@ -36,9 +36,11 @@ namespace TouhouSpring.Behaviors
         {
             if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner && --Duration == 0)
             {
-                throw new NotImplementedException();
-                // TODO: issue command for the following:
-                //CleanUps.ForEach(bhv => Host.Behaviors.Remove(bhv));
+                CleanUps.ForEach(bhv => context.Game.IssueCommands(new RemoveBehavior
+                {
+                    Target = Host,
+                    Behavior = bhv
+                }));
             }
         }
     }
