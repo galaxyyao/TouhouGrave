@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_AllFriendWarriorAttackUpAndDefenseUp :
         BaseBehavior<Passive_AllFriendWarriorAttackUpAndDefenseUp.ModelType>,
-        ITrigger<Triggers.PostCardPlayedContext>,
+        IEpilogTrigger<PlayCard>,
         ITrigger<Triggers.CardLeftBattlefieldContext>
     {
         private readonly Func<int, int> m_attackMod = x => x + 1;
         private readonly Func<int, int> m_defenseMod = y => y + 1;
 
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 foreach (var card in context.Game.PlayerPlayer.CardsOnBattlefield)
                 {
@@ -23,17 +24,22 @@ namespace TouhouSpring.Behaviors
                         continue;
                     if (card.Behaviors.Get<Hero>() != null)
                         continue;
-                    card.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
-                    card.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
+
+                    throw new NotImplementedException();
+                    // TODO: issue commands for the following:
+                    //card.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
+                    //card.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
                 }
                 return;
             }
-            if (context.CardPlayed.Owner == Host.Owner
+            if (context.Command.CardToPlay.Owner == Host.Owner
                 && IsOnBattlefield
-                && context.CardPlayed.Behaviors.Get<Warrior>() != null)
+                && context.Command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
-                context.CardPlayed.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
-                context.CardPlayed.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
+                throw new NotImplementedException();
+                // TODO: issue commands for the following:
+                //context.Command.CardToPlay.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
+                //context.Command.CardToPlay.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
             }
         }
 

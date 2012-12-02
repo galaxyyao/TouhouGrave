@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Environment : BaseBehavior<Environment.ModelType>, ITrigger<Triggers.PostCardPlayedContext>
+    public class Environment : BaseBehavior<Environment.ModelType>,
+        IEpilogTrigger<PlayCard>
     {
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 foreach (var player in context.Game.Players)
                 {
@@ -17,7 +19,9 @@ namespace TouhouSpring.Behaviors
                         card => card.Behaviors.Has<Environment>() && card != Host);
                     if (lastEnv != null)
                     {
-                        context.Game.DestroyCard(lastEnv);
+                        throw new NotImplementedException();
+                        // TODO: issue command for the following:
+                        //context.Game.DestroyCard(lastEnv);
                         break;
                     }
                 }

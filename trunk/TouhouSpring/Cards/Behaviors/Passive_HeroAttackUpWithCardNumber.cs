@@ -2,40 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_HeroAttackUpWithCardNumber
         : BaseBehavior<Passive_HeroAttackUpWithCardNumber.ModelType>,
         ITrigger<Triggers.CardLeftBattlefieldContext>,
-        ITrigger<Triggers.PostCardPlayedContext>
+        IEpilogTrigger<PlayCard>
     {
         private List<AttackModifier> attackMods = new List<AttackModifier>();
 
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
-                int warriorNumber = 0;
-                foreach (var card in context.Game.PlayerPlayer.CardsOnBattlefield)
-                {
-                    if (card.Behaviors.Get<Warrior>() != null)
-                        warriorNumber++;
-                }
+                int warriorNumber = context.Game.PlayerPlayer.CardsOnBattlefield.Count(card => card.Behaviors.Has<Warrior>());
                 warriorNumber -= 1; //exclude Hero Card
                 for (int i = 0; i < warriorNumber; i++)
                 {
                     var attackMod = new AttackModifier(x => x + 1);
                     attackMods.Add(attackMod);
-                    Host.Owner.Hero.Host.Behaviors.Add(attackMod);
+
+                    throw new NotImplementedException();
+                    // TODO: issue command for the following:
+                    //Host.Owner.Hero.Host.Behaviors.Add(attackMod);
                 }
                 return;
             }
-            if (IsOnBattlefield && context.CardPlayed.Owner == Host.Owner)
+            if (IsOnBattlefield && context.Command.CardToPlay.Owner == Host.Owner)
             {
                 var attackMod = new AttackModifier(x => x + 1);
                 attackMods.Add(attackMod);
-                Host.Owner.Hero.Host.Behaviors.Add(attackMod);
+
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //Host.Owner.Hero.Host.Behaviors.Add(attackMod);
             }
         }
 

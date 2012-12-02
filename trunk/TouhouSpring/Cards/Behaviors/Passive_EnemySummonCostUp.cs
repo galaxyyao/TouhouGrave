@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -9,13 +10,13 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
         ITrigger<Triggers.PostCardDrawnContext>,
         ITrigger<Triggers.CardLeftBattlefieldContext>,
-        ITrigger<Triggers.PostCardPlayedContext>
+        IEpilogTrigger<PlayCard>
     {
         private List<CardModel> costUpModels = new List<CardModel>();
 
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 var hostOpponentPlayer = (context.Game.PlayerPlayer == Host.Owner) ? context.Game.OpponentPlayer : context.Game.PlayerPlayer;
                 foreach (var card in hostOpponentPlayer.CardsOnHand)
@@ -24,9 +25,11 @@ namespace TouhouSpring.Behaviors
                         throw new MissingMemberException("TouhouSpring.Behaviors.ManaCost_PrePlay Missing for card");
                     if (costUpModels.Contains(card.Model))
                         continue;
-                    card.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
-                    costUpModels.Add((CardModel)card.Model);
-                    var s = card.Behaviors.Get<ManaCost_PrePlay>();
+
+                    throw new NotImplementedException();
+                    // TODO: issue commands for the following:
+                    //card.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
+                    //costUpModels.Add((CardModel)card.Model);
                 }
             }
         }

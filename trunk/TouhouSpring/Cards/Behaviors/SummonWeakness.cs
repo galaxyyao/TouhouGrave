@@ -8,17 +8,19 @@ using TouhouSpring.Triggers;
 namespace TouhouSpring.Behaviors
 {
     public class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
-        , ITrigger<PostCardPlayedContext>
+        , IEpilogTrigger<PlayCard>
         , IEpilogTrigger<EndTurn>
     {
         class Effect : SimpleBehavior<Effect>
         { }
 
-        public void Trigger(PostCardPlayedContext context)
+        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
-                Host.Behaviors.Add(new Effect());
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //Host.Behaviors.Add(new Effect());
 
                 if (Host.Behaviors.Has<Warrior>())
                 {
