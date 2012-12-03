@@ -8,58 +8,31 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
-        IEpilogTrigger<DrawCard>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>,
-        IEpilogTrigger<PlayCard>
+        IPrerequisiteTrigger<PlayCard>,
+        IPrologTrigger<PlayCard>
     {
-        private List<CardModel> costUpModels = new List<CardModel>();
-
-        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.Command.CardToPlay == Host)
+            if (context.Command.CardToPlay.Owner != Host.Owner)
             {
-                var hostOpponentPlayer = (context.Game.PlayerPlayer == Host.Owner) ? context.Game.OpponentPlayer : context.Game.PlayerPlayer;
-                foreach (var card in hostOpponentPlayer.CardsOnHand)
+                if (context.Command.CardToPlay.Owner.FreeMana < 1)
                 {
-                    if (card.Behaviors.Get<ManaCost_PrePlay>() == null)
-                        throw new MissingMemberException("TouhouSpring.Behaviors.ManaCost_PrePlay Missing for card");
-                    if (costUpModels.Contains(card.Model))
-                        continue;
-
-                    throw new NotImplementedException();
-                    // TODO: issue commands for the following:
-                    //card.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
-                    //costUpModels.Add((CardModel)card.Model);
+                    return CommandResult.Cancel("Insufficient mana.");
                 }
+                context.Game.ReserveMana(context.Command.CardToPlay.Owner, 1);
             }
+            return CommandResult.Pass;
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IPrologTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
         {
-            if (context.CardToLeft == Host)
+            if (context.Command.CardToPlay.Owner != Host.Owner)
             {
-                var hostOpponentPlayer = (context.Game.PlayerPlayer == Host.Owner) ? context.Game.OpponentPlayer : context.Game.PlayerPlayer;
-                foreach (var card in hostOpponentPlayer.CardsOnHand)
+                context.Game.IssueCommands(new UpdateMana
                 {
-                    if (costUpModels.Contains(card.Model))
-                    {
-                        costUpModels.Remove((CardModel)card.Model);
-                        card.Behaviors.Get<ManaCost_PrePlay>().Model.Cost -= 1;
-                    }
-                }
-            }
-        }
-
-        void IEpilogTrigger<DrawCard>.Run(CommandContext<DrawCard> context)
-        {
-            if (IsOnBattlefield && context.Command.CardDrawn.Owner != Host.Owner)
-            {
-                if (costUpModels.Contains(context.Command.CardDrawn.Model))
-                    return;
-
-                throw new NotImplementedException();
-                // TODO: issue command for the following:
-                //context.CardDrawn.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
+                    Player = context.Command.CardToPlay.Owner,
+                    Amount = -1
+                });
             }
         }
 
