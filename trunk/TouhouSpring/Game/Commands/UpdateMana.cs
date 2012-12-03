@@ -25,11 +25,6 @@ namespace TouhouSpring.Commands
             get; set;
         }
 
-        public bool PreReserved
-        {
-            get; set;
-        }
-
         public void Validate(Game game)
         {
             if (Player == null)
@@ -44,27 +39,15 @@ namespace TouhouSpring.Commands
             {
                 throw new CommandValidationFailException("Mana will not be updated.");
             }
-            else if (PreReserved && Amount > 0)
-            {
-                throw new CommandValidationFailException("Amount must be negative value if the mana is pre-reserved.");
-            }
-            else if (!PreReserved && Player.FreeMana + Amount < 0)
+            else if (Player.Mana + Amount < 0)
             {
                 throw new CommandValidationFailException("Insufficient mana.");
-            }
-            else if (PreReserved && Player.ReservedMana < -Amount)
-            {
-                throw new CommandValidationFailException("Invalid mana reservation.");
             }
         }
 
         public void RunMain(Game game)
         {
             Player.Mana = Math.Min(Player.Mana + Amount, Player.Hero.Model.Mana);
-            if (PreReserved)
-            {
-                Player.ReservedMana += Amount;
-            }
         }
     }
 }

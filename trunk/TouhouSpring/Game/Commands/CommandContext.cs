@@ -62,6 +62,7 @@ namespace TouhouSpring.Commands
                 if (Result.Canceled)
                 {
                     Game.Controllers.ForEach(ctrl => ctrl.OnCommandEnd(this));
+                    Game.ClearReservations();
                     return;
                 }
             }
@@ -77,11 +78,14 @@ namespace TouhouSpring.Commands
                 if (Result.Canceled)
                 {
                     Game.Controllers.ForEach(ctrl => ctrl.OnCommandEnd(this));
+                    Game.ClearReservations();
                     return;
                 }
             }
 
             ////////////////////////////////////////////
+
+            Game.ClearReservations();
 
             Phase = ExecutionPhase.Prolog;
             Game.Controllers.ForEach(ctrl => ctrl.OnCommandBegin(this));

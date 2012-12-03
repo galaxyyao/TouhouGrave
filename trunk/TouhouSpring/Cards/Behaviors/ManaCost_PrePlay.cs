@@ -34,8 +34,7 @@ namespace TouhouSpring.Behaviors
                 context.Game.IssueCommands(new UpdateMana
                 {
                     Player = Host.Owner,
-                    Amount = -Model.Cost,
-                    PreReserved = true
+                    Amount = -Model.Cost
                 });
             }
         }

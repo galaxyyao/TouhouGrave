@@ -29,7 +29,12 @@ namespace TouhouSpring
         // TODO: clear reservation of any resource if the command is canceled
         public void ReserveHealth(Player player, int amount)
         {
-            if (player == null)
+            if (RunningCommand == null
+                || RunningCommand.Phase != Commands.ExecutionPhase.Prerequisite && RunningCommand.Phase != Commands.ExecutionPhase.Setup)
+            {
+                throw new InvalidOperationException("Health can only be reserved at command's prerequisite or setup phase.");
+            }
+            else if (player == null)
             {
                 throw new ArgumentNullException("player");
             }
@@ -51,7 +56,12 @@ namespace TouhouSpring
 
         public void ReserveMana(Player player, int amount)
         {
-            if (player == null)
+            if (RunningCommand == null
+                || RunningCommand.Phase != Commands.ExecutionPhase.Prerequisite && RunningCommand.Phase != Commands.ExecutionPhase.Setup)
+            {
+                throw new InvalidOperationException("Mana can only be reserved at command's prerequisite or setup phase.");
+            }
+            else if (player == null)
             {
                 throw new ArgumentNullException("player");
             }
@@ -69,6 +79,15 @@ namespace TouhouSpring
             }
 
             player.ReservedMana += amount;
+        }
+
+        internal void ClearReservations()
+        {
+            Players.ForEach(player =>
+            {
+                player.ReservedHealth = 0;
+                player.ReservedMana = 0;
+            });
         }
     }
 }
