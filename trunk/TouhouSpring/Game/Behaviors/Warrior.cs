@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -13,7 +14,7 @@ namespace TouhouSpring.Behaviors
     }
 
     public partial class Warrior : BaseBehavior<Warrior.ModelType>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>
+        IEpilogTrigger<Kill>
     {
         public WarriorState State
         {
@@ -40,11 +41,17 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
         {
-            if (context.CardToLeft == Host)
+            if (context.Command.Target == Host)
             {
                 State = WarriorState.StandingBy;
+                m_attackModifers.Clear();
+                m_defenseModifiers.Clear();
+                Attack = Model.Attack;
+                Defense = Model.Defense;
+                AccumulatedDamage = 0;
+                Equipments.Clear();
             }
         }
 

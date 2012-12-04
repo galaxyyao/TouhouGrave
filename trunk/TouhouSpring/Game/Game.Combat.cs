@@ -126,7 +126,10 @@ namespace TouhouSpring
                     var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                     if (warrior.Defense - warrior.AccumulatedDamage <= 0)
                     {
-                        DestroyCard(card);
+                        IssueCommands(new Commands.Kill
+                        {
+                            Target = card
+                        });
                         i--;
                     }
                 }

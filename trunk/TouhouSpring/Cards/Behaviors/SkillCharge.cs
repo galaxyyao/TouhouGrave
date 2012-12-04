@@ -9,9 +9,10 @@ namespace TouhouSpring.Behaviors
     {
         public bool Cast(Game game, out string reason)
         {
-            game.PlayerPlayer.IsSkillCharged = true;
-
-            game.DestroyCard(Host);
+            throw new NotImplementedException();
+            // TODO: issue commands for the following:
+            //game.PlayerPlayer.IsSkillCharged = true;
+            //game.DestroyCard(Host);
 
             reason = String.Empty;
             return true;

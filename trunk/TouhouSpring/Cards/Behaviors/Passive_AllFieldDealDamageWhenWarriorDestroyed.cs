@@ -2,32 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_AllFieldDealDamageWhenWarriorDestroyed:
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
-        ITrigger<Triggers.CardEnteredGraveyardContext>
+        IEpilogTrigger<Kill>
     {
-        public void Trigger(Triggers.CardEnteredGraveyardContext context)
+        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
         {
-            if (context.Card == Host)
+            if (context.Command.Target == Host && context.Command.EnteredGraveyard)
             {
-                foreach (BaseCard card in context.Game.PlayerPlayer.CardsOnBattlefield)
-                {
-                    if (card.Behaviors.Get<Hero>() != null)
-                        continue;
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if(warrior!=null)
-                        warrior.AccumulatedDamage += Model.Damage;
-                }
-                foreach (BaseCard card in context.Game.OpponentPlayer.CardsOnBattlefield)
+                foreach (var card in context.Game.Players.SelectMany(player => player.CardsOnBattlefield))
                 {
                     if (card.Behaviors.Get<Hero>() != null)
                         continue;
                     var warrior = card.Behaviors.Get<Warrior>();
                     if (warrior != null)
-                        warrior.AccumulatedDamage += Model.Damage;
+                    {
+                        throw new NotImplementedException();
+                        // TODO: issue command for the following:
+                        //warrior.AccumulatedDamage += Model.Damage;
+                    }
                 }
             }
         }

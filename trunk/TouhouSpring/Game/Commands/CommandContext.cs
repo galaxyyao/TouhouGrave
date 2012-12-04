@@ -112,10 +112,23 @@ namespace TouhouSpring.Commands
 
         private IEnumerable<BaseCard> EnumerateCards()
         {
-            if (Command is PlayCard)
+            if (Command is PlayCard && Phase < ExecutionPhase.Epilog)
             {
-                yield return (Command as PlayCard).CardToPlay;
+                var cardToPlay = (Command as PlayCard).CardToPlay;
+                if (cardToPlay != null)
+                {
+                    yield return cardToPlay;
+                }
             }
+            else if (Command is Kill && Phase == ExecutionPhase.Epilog)
+            {
+                var cardKilled = (Command as Kill).Target;
+                if (cardKilled != null)
+                {
+                    yield return cardKilled;
+                }
+            }
+
             foreach (var player in Game.Players)
             {
                 foreach (var card in player.CardsOnBattlefield)

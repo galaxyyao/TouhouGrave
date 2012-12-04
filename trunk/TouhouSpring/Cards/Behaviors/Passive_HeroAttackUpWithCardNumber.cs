@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_HeroAttackUpWithCardNumber
         : BaseBehavior<Passive_HeroAttackUpWithCardNumber.ModelType>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>,
+        IEpilogTrigger<Kill>,
         IEpilogTrigger<PlayCard>
     {
         private Warrior.ValueModifier m_attackModifier = null;
@@ -23,10 +23,11 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
         {
-            if (context.CardToLeft == Host
-                || IsOnBattlefield && context.CardToLeft.Owner == Host.Owner)
+            if (context.Command.LeftBattlefield
+                && (context.Command.Target == Host
+                    || IsOnBattlefield && context.Command.Target.Owner == Host.Owner))
             {
                 UpdateNumber(context.Game);
             }

@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
     public class Passive_AllFriendWarriorAttackUpAndDefenseUp :
         BaseBehavior<Passive_AllFriendWarriorAttackUpAndDefenseUp.ModelType>,
         IEpilogTrigger<PlayCard>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>
+        IEpilogTrigger<Kill>
     {
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 1);
         private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 1);
@@ -60,9 +60,14 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
         {
-            if (context.CardToLeft == Host)
+            if (!context.Command.LeftBattlefield)
+            {
+                return;
+            }
+
+            if (context.Command.Target == Host)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
@@ -84,19 +89,19 @@ namespace TouhouSpring.Behaviors
                     }
                 }
             }
-            else if (context.CardToLeft.Owner == Host.Owner
+            else if (context.Command.Target.Owner == Host.Owner
                      && IsOnBattlefield)
             {
                 context.Game.IssueCommands(
                     new SendBehaviorMessage
                     {
-                        Target = context.CardToLeft.Behaviors.Get<Warrior>(),
+                        Target = context.Command.Target.Behaviors.Get<Warrior>(),
                         Message = "AttackModifiers",
                         Args = new object[] { "remove", m_attackMod }
                     },
                     new SendBehaviorMessage
                     {
-                        Target = context.CardToLeft.Behaviors.Get<Warrior>(),
+                        Target = context.Command.Target.Behaviors.Get<Warrior>(),
                         Message = "DefenseModifiers",
                         Args = new object[] { "remove", m_defenseMod }
                     });

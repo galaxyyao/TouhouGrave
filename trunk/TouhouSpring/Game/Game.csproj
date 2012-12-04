@@ -66,6 +66,7 @@
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
     <Compile Include="Commands\CommandContext.cs" />
+    <Compile Include="Commands\Kill.cs" />
     <Compile Include="Commands\RemoveBehavior.cs" />
     <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\StartBlockPhase.cs" />
@@ -112,12 +113,8 @@
     <Compile Include="Player.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Triggers\CardEnteredGraveyardContext.cs" />
-    <Compile Include="Triggers\CardLeftBattlefieldContext.cs" />
-    <Compile Include="Triggers\PostCardDestroyedContext.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />
     <Compile Include="Triggers\PreCardDamageContext.cs" />
-    <Compile Include="Triggers\PreCardDestroyContext.cs" />
     <Compile Include="Triggers\TriggerContext.cs" />
     <Compile Include="TypeIDAttribute.cs" />
   </ItemGroup>

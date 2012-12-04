@@ -45,6 +45,14 @@ namespace TouhouSpring
                     new Interactions.NotifyControllerEvent(this, "OnPlayerDamaged", Player, string.Format("Damage:{0}", cmd.DamageToDeal)).Run();
                 }
             }
+            else if (context.Command is Kill && !context.Result.Canceled)
+            {
+                var card = (context.Command as Kill).Target;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent(this, "OnCardDestroyed", card).Run();
+                }
+            }
         }
     }
 }

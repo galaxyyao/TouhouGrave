@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -13,8 +14,14 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Cause == Host)
             {
-                if(context.CardDamaged.Owner.CardsOnBattlefield.Contains(context.CardDamaged))
-                    context.Game.DestroyCard(context.CardDamaged);
+                if (context.CardDamaged.Owner.CardsOnBattlefield.Contains(context.CardDamaged))
+                {
+                    context.Game.IssueCommands(new Kill
+                    {
+                        Target = context.CardDamaged,
+                        Cause = this
+                    });
+                }
             }
         }
 
