@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -23,7 +24,13 @@ namespace TouhouSpring.Behaviors
 
             foreach (var warrior in warriors)
             {
-                warrior.AccumulatedDamage += Model.Damage;
+                // TODO: don't use damage command?
+                game.IssueCommands(new SendBehaviorMessage
+                {
+                    Target = warrior,
+                    Message = "DealDamage",
+                    Args = new object[] { Model.Damage }
+                });
             }
 
             reason = String.Empty;

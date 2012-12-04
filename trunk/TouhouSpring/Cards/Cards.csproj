@@ -57,6 +57,7 @@
     <None Include="Behaviors\Deprecated\Penetrate.cs" />
     <None Include="Behaviors\Deprecated\LowWit.cs" />
     <None Include="Behaviors\Deprecated\MasterSpark.cs" />
+    <None Include="Behaviors\Deprecated\Scapegoat.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
@@ -82,7 +83,6 @@
     <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
-    <Compile Include="Behaviors\Scapegoat.cs" />
     <Compile Include="Behaviors\SkillCharge.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />

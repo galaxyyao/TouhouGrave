@@ -42,8 +42,19 @@ namespace TouhouSpring
                     TriggerGlobal(preDamageOnAttacker);
                     TriggerGlobal(preDamageOnBlocker);
 
-                    attackerWarriorBhv.AccumulatedDamage += preDamageOnAttacker.DamageToDeal;
-                    blockerWarriorBhv.AccumulatedDamage += preDamageOnBlocker.DamageToDeal;
+                    IssueCommands(
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = attackerWarriorBhv,
+                            Message = "DealDamage",
+                            Args = new object[] { preDamageOnAttacker.DamageToDeal }
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = blockerWarriorBhv,
+                            Message = "DealDamage",
+                            Args = new object[] { preDamageOnBlocker.DamageToDeal }
+                        });
 
                     TriggerGlobal(new Triggers.PostCardDamagedContext(this, attacker, preDamageOnAttacker.DamageToDeal, blockerWarriorBhv));
                     TriggerGlobal(new Triggers.PostCardDamagedContext(this, blocker, preDamageOnBlocker.DamageToDeal, attackerWarriorBhv));
@@ -130,10 +141,10 @@ namespace TouhouSpring
                         {
                             Target = card
                         });
-                        i--;
                     }
                 }
             }
+            FlushCommandQueue();
         }
 
         private void ResetAccumulatedDamage()
@@ -145,9 +156,14 @@ namespace TouhouSpring
                     if (!card.Behaviors.Has<Behaviors.Warrior>())
                         continue;
                     var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                    warrior.AccumulatedDamage = 0;
+                    IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = warrior,
+                        Message = "ResetDamage"
+                    });
                 }
             }
+            FlushCommandQueue();
         }
     }
 }
