@@ -61,6 +61,7 @@
     <Compile Include="Behaviors\Support.cs" />
     <Compile Include="Behaviors\Unblockable.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
+    <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
