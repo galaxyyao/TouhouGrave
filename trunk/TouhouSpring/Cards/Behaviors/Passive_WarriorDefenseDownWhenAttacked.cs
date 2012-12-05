@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorDefenseDownWhenAttacked
         : BaseBehavior<Passive_WarriorDefenseDownWhenAttacked.ModelType>,
         ITrigger<Triggers.PostCardDamagedContext>,
-        IEpilogTrigger<EndTurn>
+        IEpilogTrigger<Commands.EndTurn>
     {
         private bool isBlockedLastRound = false;
 
@@ -20,14 +19,14 @@ namespace TouhouSpring.Behaviors
                 isBlockedLastRound = true;
         }
 
-        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
             if (context.Game.PlayerPlayer != Host.Owner
                 && Host.Behaviors.Has<Warrior>()
                 && isBlockedLastRound)
             {
                 isBlockedLastRound = false;
-                context.Game.IssueCommands(new SendBehaviorMessage
+                context.Game.IssueCommands(new Commands.SendBehaviorMessage
                 {
                     Target = Host.Behaviors.Get<Warrior>(),
                     Message = "DefenseModifiers",

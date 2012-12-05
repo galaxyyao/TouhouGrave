@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Spell_PreventAllDamageInOneRound :
         BaseBehavior<Spell_PreventAllDamageInOneRound.ModelType>,
         ICastableSpell,
-        IPrologTrigger<DealDamageToPlayer>,
+        IPrologTrigger<Commands.DealDamageToPlayer>,
         ITrigger<Triggers.PreCardDamageContext>,
-        IEpilogTrigger<EndTurn>
+        IEpilogTrigger<Commands.EndTurn>
     {
         private bool m_isProtected = false;
         private Player m_currentPlayer;
@@ -33,7 +32,7 @@ namespace TouhouSpring.Behaviors
             return true;
         }
 
-        void IPrologTrigger<DealDamageToPlayer>.Run(CommandContext<DealDamageToPlayer> context)
+        void IPrologTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
         {
             if(m_isProtected&& context.Command.Target==m_spellCaster)
                 context.Command.DamageToDeal = 0;
@@ -45,7 +44,7 @@ namespace TouhouSpring.Behaviors
                 context.DamageToDeal = 0;
         }
 
-        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
             if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {

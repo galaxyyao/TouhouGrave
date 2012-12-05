@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Environment : BaseBehavior<Environment.ModelType>,
-        IEpilogTrigger<PlayCard>
+        IEpilogTrigger<Commands.PlayCard>
     {
-        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {

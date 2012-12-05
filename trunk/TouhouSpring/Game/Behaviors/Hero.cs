@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Hero : BaseBehavior<Hero.ModelType>,
-        IEpilogTrigger<StartAttackPhase>
+        IEpilogTrigger<Commands.StartAttackPhase>
     {
-        void IEpilogTrigger<StartAttackPhase>.Run(CommandContext<StartAttackPhase> context)
+        void IEpilogTrigger<Commands.StartAttackPhase>.Run(CommandContext<Commands.StartAttackPhase> context)
         {
             if (context.Game.Round == 1)
             {
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new SendBehaviorMessage
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoCoolingDown"

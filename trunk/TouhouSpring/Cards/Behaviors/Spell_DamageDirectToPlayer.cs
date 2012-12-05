@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -18,7 +17,7 @@ namespace TouhouSpring.Behaviors
                 return false;
             }
 
-            game.IssueCommands(new DealDamageToPlayer
+            game.IssueCommands(new Commands.DealDamageToPlayer
             {
                 Target = game.OpponentPlayer,
                 DamageToDeal = Model.Damage,

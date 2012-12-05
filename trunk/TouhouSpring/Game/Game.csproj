@@ -64,15 +64,13 @@
     <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
+    <Compile Include="CommandContext.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
-    <Compile Include="Commands\CommandContext.cs" />
     <Compile Include="Commands\Kill.cs" />
     <Compile Include="Commands\RemoveBehavior.cs" />
     <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\StartBlockPhase.cs" />
     <Compile Include="Commands\DrawCard.cs" />
-    <Compile Include="Commands\ICommandContext.cs" />
-    <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\EndTurn.cs" />
     <Compile Include="Commands\PlayCard.cs" />
     <Compile Include="Commands\SendBehaviorMessage.cs" />
@@ -80,7 +78,6 @@
     <Compile Include="Commands\StartAttackPhase.cs" />
     <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
-    <Compile Include="Commands\Triggers.cs" />
     <Compile Include="Commands\UpdateMana.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Game.Resource.cs" />
@@ -97,6 +94,8 @@
     <Compile Include="Game.Phase.cs" />
     <Compile Include="Game.Players.cs" />
     <Compile Include="Game.Threading.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="ICommandContext.cs" />
     <Compile Include="Interactions\BlockPhase.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\NotifyControllerEvent.cs" />
@@ -113,6 +112,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Triggers.cs" />
     <Compile Include="Triggers\PostCardDamagedContext.cs" />
     <Compile Include="Triggers\PreCardDamageContext.cs" />
     <Compile Include="Triggers\TriggerContext.cs" />

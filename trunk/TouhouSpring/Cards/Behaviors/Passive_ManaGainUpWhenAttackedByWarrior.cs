@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_ManaGainUpWhenAttackedByWarrior
         : BaseBehavior<Passive_ManaGainUpWhenAttackedByWarrior.ModelType>,
-        IEpilogTrigger<DealDamageToPlayer>,
-        IEpilogTrigger<StartTurn>
+        IEpilogTrigger<Commands.DealDamageToPlayer>,
+        IEpilogTrigger<Commands.StartTurn>
     {
         private bool isAttackedByWarriorLastRound = false;
 
-        void IEpilogTrigger<DealDamageToPlayer>.Run(CommandContext<DealDamageToPlayer> context)
+        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
         {
             if (context.Command.Target == Host.Owner && !context.Command.Cause.Host.Behaviors.Has<Hero>())
             {
@@ -25,7 +24,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
         {
             if (context.Game.PlayerPlayer != Host.Owner
                 && isAttackedByWarriorLastRound)

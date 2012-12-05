@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_CardDrawnNumberUp :
         BaseBehavior<Passive_CardDrawnNumberUp.ModelType>,
-        IEpilogTrigger<StartTurn>,
-        IEpilogTrigger<DrawCard>
+        IEpilogTrigger<Commands.StartTurn>,
+        IEpilogTrigger<Commands.DrawCard>
     {
         private bool m_isMoreCardDrawn = false;
 
-        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
         {
             m_isMoreCardDrawn = false;
         }
 
-        void IEpilogTrigger<DrawCard>.Run(CommandContext<DrawCard> context)
+        void IEpilogTrigger<Commands.DrawCard>.Run(CommandContext<Commands.DrawCard> context)
         {
             if (IsOnBattlefield && !m_isMoreCardDrawn)
             {
@@ -30,7 +29,7 @@ namespace TouhouSpring.Behaviors
                         hostCardNumber++;
                 }
                 for (int i = 0; i < hostCardNumber; i++)
-                    context.Game.IssueCommands(new DrawCard { PlayerDrawing = Host.Owner });
+                    context.Game.IssueCommands(new Commands.DrawCard { PlayerDrawing = Host.Owner });
             }
         }
 

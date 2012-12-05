@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_AllFriendWarriorAttackUpWhileDefenseDown :
         BaseBehavior<Passive_AllFriendWarriorAttackUpWhileDefenseDown.ModelType>,
-        IEpilogTrigger<PlayCard>,
-        IEpilogTrigger<Kill>
+        IEpilogTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.Kill>
     {
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 2);
         private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1);
 
-        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
@@ -26,13 +25,13 @@ namespace TouhouSpring.Behaviors
                         continue;
 
                     context.Game.IssueCommands(
-                        new SendBehaviorMessage
+                        new Commands.SendBehaviorMessage
                         {
                             Target = card.Behaviors.Get<Warrior>(),
                             Message = "AttackModifiers",
                             Args = new object[] { "add", m_attackMod }
                         },
-                        new SendBehaviorMessage
+                        new Commands.SendBehaviorMessage
                         {
                             Target = card.Behaviors.Get<Warrior>(),
                             Message = "DefenseModifiers",
@@ -45,13 +44,13 @@ namespace TouhouSpring.Behaviors
                      && context.Command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
                 context.Game.IssueCommands(
-                    new SendBehaviorMessage
+                    new Commands.SendBehaviorMessage
                     {
                         Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
                         Message = "AttackModifiers",
                         Args = new object[] { "add", m_attackMod }
                     },
-                    new SendBehaviorMessage
+                    new Commands.SendBehaviorMessage
                     {
                         Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
                         Message = "DefenseModifiers",
@@ -60,7 +59,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
             if (!context.Command.LeftBattlefield)
             {
@@ -74,13 +73,13 @@ namespace TouhouSpring.Behaviors
                     if (card.Behaviors.Get<Warrior>() != null)
                     {
                         context.Game.IssueCommands(
-                            new SendBehaviorMessage
+                            new Commands.SendBehaviorMessage
                             {
                                 Target = card.Behaviors.Get<Warrior>(),
                                 Message = "AttackModifiers",
                                 Args = new object[] { "remove", m_attackMod }
                             },
-                            new SendBehaviorMessage
+                            new Commands.SendBehaviorMessage
                             {
                                 Target = card.Behaviors.Get<Warrior>(),
                                 Message = "DefenseModifiers",
@@ -93,13 +92,13 @@ namespace TouhouSpring.Behaviors
                      && IsOnBattlefield)
             {
                 context.Game.IssueCommands(
-                    new SendBehaviorMessage
+                    new Commands.SendBehaviorMessage
                     {
                         Target = context.Command.Target.Behaviors.Get<Warrior>(),
                         Message = "AttackModifiers",
                         Args = new object[] { "remove", m_attackMod }
                     },
-                    new SendBehaviorMessage
+                    new Commands.SendBehaviorMessage
                     {
                         Target = context.Command.Target.Behaviors.Get<Warrior>(),
                         Message = "DefenseModifiers",

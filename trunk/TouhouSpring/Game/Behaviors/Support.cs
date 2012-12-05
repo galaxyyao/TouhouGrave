@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Support : BaseBehavior<Support.ModelType>,
-        ISetupTrigger<PlayCard>,
-        IPrologTrigger<PlayCard>
+        ISetupTrigger<Commands.PlayCard>,
+        IPrologTrigger<Commands.PlayCard>
     {
         private bool m_chargeSkill = false;
 
-        CommandResult ISetupTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult ISetupTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
@@ -38,14 +37,14 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host && m_chargeSkill)
             {
                 throw new NotImplementedException();
                 // TODO: issue commands for doing the following:
                 //context.Game.PlayerPlayer.IsSkillCharged = true;
-                context.Game.IssueCommands(new AddBehavior
+                context.Game.IssueCommands(new Commands.AddBehavior
                 {
                     Target = context.Command.CardToPlay,
                     Behavior = new Instant()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -17,7 +16,7 @@ namespace TouhouSpring.Behaviors
                 && context.Cause.Host.Behaviors.Get<Behaviors.Hero>() == null
                 && context.Cause.Host.Behaviors.Get<Behaviors.Warrior>() != null)
             {
-                context.Game.IssueCommands(new DealDamageToPlayer
+                context.Game.IssueCommands(new Commands.DealDamageToPlayer
                 {
                     Target = Host.Owner,
                     DamageToDeal = context.DamageDealt,

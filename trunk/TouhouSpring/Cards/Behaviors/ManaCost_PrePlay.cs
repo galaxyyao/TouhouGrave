@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
 {
 	public class ManaCost_PrePlay : BaseBehavior<ManaCost_PrePlay.ModelType>,
-        IPrerequisiteTrigger<PlayCard>,
-        IPrologTrigger<PlayCard>,
+        IPrerequisiteTrigger<Commands.PlayCard>,
+        IPrologTrigger<Commands.PlayCard>,
         IPlayable
 	{
-        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
@@ -27,11 +26,11 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
-                context.Game.IssueCommands(new UpdateMana
+                context.Game.IssueCommands(new Commands.UpdateMana
                 {
                     Player = Host.Owner,
                     Amount = -Model.Cost

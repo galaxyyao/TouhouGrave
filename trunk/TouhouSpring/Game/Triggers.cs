@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TouhouSpring.Commands
+namespace TouhouSpring
 {
     public interface IPrerequisiteTrigger<TCommand> where TCommand : ICommand
     {

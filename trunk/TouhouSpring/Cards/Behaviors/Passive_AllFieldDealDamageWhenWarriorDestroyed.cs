@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_AllFieldDealDamageWhenWarriorDestroyed:
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
-        IEpilogTrigger<Kill>
+        IEpilogTrigger<Commands.Kill>
     {
-        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
             if (context.Command.Target == Host && context.Command.EnteredGraveyard)
             {

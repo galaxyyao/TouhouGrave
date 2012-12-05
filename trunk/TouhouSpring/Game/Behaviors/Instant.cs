@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Instant : BaseBehavior<Instant.ModelType>,
-        IEpilogTrigger<PlayCard>
+        IEpilogTrigger<Commands.PlayCard>
     {
-        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
-                throw new NotImplementedException();
-                // TODO: issue command for the following:
-                //context.Game.DestroyCard(Host);
+                context.Game.IssueCommands(new Commands.Kill
+                {
+                    Target = Host,
+                    Cause = this
+                });
             }
         }
 

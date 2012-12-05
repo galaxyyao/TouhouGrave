@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Assault_SingleWarriorBoostForXRounds :
         BaseBehavior<Assault_SingleWarriorBoostForXRounds.ModelType>,
-        IPrerequisiteTrigger<PlayCard>,
-        ISetupTrigger<PlayCard>,
-        IEpilogTrigger<PlayCard>,
+        IPrerequisiteTrigger<Commands.PlayCard>,
+        ISetupTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.PlayCard>,
         IPlayable
     {
         private BaseCard m_castTarget;
 
-        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
@@ -28,7 +27,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        CommandResult ISetupTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult ISetupTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
@@ -49,7 +48,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
@@ -63,14 +62,14 @@ namespace TouhouSpring.Behaviors
                 {
                     var enhanceMod = new Enhance(Model.AttackBoost, Model.DefenseBoost);
                     lasting.CleanUps.Add(enhanceMod);
-                    context.Game.IssueCommands(new AddBehavior
+                    context.Game.IssueCommands(new Commands.AddBehavior
                     {
                         Target = m_castTarget,
                         Behavior = enhanceMod
                     });
                 }
 
-                context.Game.IssueCommands(new AddBehavior
+                context.Game.IssueCommands(new Commands.AddBehavior
                 {
                     Target = m_castTarget,
                     Behavior = lasting

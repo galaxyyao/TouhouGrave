@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAttackFirst :
         BaseBehavior<Passive_WarriorAttackFirst.ModelType>,
         ITrigger<Triggers.PostCardDamagedContext>,
-        IEpilogTrigger<EndTurn>
+        IEpilogTrigger<Commands.EndTurn>
     {
         private Warrior.ValueModifier attackFirstCompensation = null;
 
@@ -22,7 +21,7 @@ namespace TouhouSpring.Behaviors
                 {
                     int damageWontDeal = context.CardDamaged.Behaviors.Get<Warrior>().Attack;
                     attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, damageWontDeal);
-                    context.Game.IssueCommands(new SendBehaviorMessage
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "DefenseModifiers",
@@ -32,11 +31,11 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<EndTurn>.Run(CommandContext<EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
             if (attackFirstCompensation != null)
             {
-                context.Game.IssueCommands(new SendBehaviorMessage
+                context.Game.IssueCommands(new Commands.SendBehaviorMessage
                 {
                     Target = Host.Behaviors.Get<Warrior>(),
                     Message = "DefenseModifiers",

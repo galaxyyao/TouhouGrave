@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -16,7 +15,7 @@ namespace TouhouSpring.Behaviors
             {
                 if (context.CardDamaged.Owner.CardsOnBattlefield.Contains(context.CardDamaged))
                 {
-                    context.Game.IssueCommands(new Kill
+                    context.Game.IssueCommands(new Commands.Kill
                     {
                         Target = context.CardDamaged,
                         Cause = this

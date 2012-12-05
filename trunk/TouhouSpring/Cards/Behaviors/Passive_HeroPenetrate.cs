@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
@@ -17,7 +16,7 @@ namespace TouhouSpring.Behaviors
             {
                 var damagedWarrior = context.CardDamaged.Behaviors.Get<Warrior>();
                 int overflow = Math.Min(Math.Max(damagedWarrior.AccumulatedDamage - damagedWarrior.Defense, 0), context.DamageDealt);
-                context.Game.IssueCommands(new DealDamageToPlayer
+                context.Game.IssueCommands(new Commands.DealDamageToPlayer
                 {
                     Target = context.CardDamaged.Owner,
                     DamageToDeal = overflow,

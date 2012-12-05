@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TouhouSpring.Commands
+namespace TouhouSpring
 {
-    public enum ExecutionPhase
+    public enum CommandPhase
     {
         Pending,
         Prerequisite,
@@ -32,7 +32,7 @@ namespace TouhouSpring.Commands
     {
         ICommand Command { get; }
         ICommandContext Previous { get; }
-        ExecutionPhase Phase { get; }
+        CommandPhase Phase { get; }
         Game Game { get; }
         CommandResult Result { get; }
     }

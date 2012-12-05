@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Immobilize : SimpleBehavior<Immobilize>,
-        IEpilogTrigger<StartTurn>
+        IEpilogTrigger<Commands.StartTurn>
     {
-        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
         {
             if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
             {
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new SendBehaviorMessage
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
                     {
                         Target = Host.Behaviors.Get<Warrior>(),
                         Message = "GoCoolingDown"

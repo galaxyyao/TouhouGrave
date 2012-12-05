@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace TouhouSpring.Commands
+namespace TouhouSpring
 {
     public class CommandContext<TCommand> : IRunnableCommandContext
         where TCommand : ICommand
@@ -25,7 +25,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public ExecutionPhase Phase
+        public CommandPhase Phase
         {
             get; private set;
         }
@@ -44,7 +44,7 @@ namespace TouhouSpring.Commands
         {
             Command = command;
             Previous = previous;
-            Phase = ExecutionPhase.Pending;
+            Phase = CommandPhase.Pending;
             Game = game;
             Result = CommandResult.Pass;
         }
@@ -53,7 +53,7 @@ namespace TouhouSpring.Commands
         {
             ////////////////////////////////////////////
 
-            Phase = ExecutionPhase.Prerequisite;
+            Phase = CommandPhase.Prerequisite;
             foreach (var trigger in EnumerateCards().SelectMany(card =>
                                        card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
                                        ).ToList())
@@ -69,7 +69,7 @@ namespace TouhouSpring.Commands
 
             ////////////////////////////////////////////
 
-            Phase = ExecutionPhase.Setup;
+            Phase = CommandPhase.Setup;
             foreach (var trigger in EnumerateCards().SelectMany(card =>
                                        card.Behaviors.OfType<ISetupTrigger<TCommand>>()
                                        ).ToList())
@@ -87,7 +87,7 @@ namespace TouhouSpring.Commands
 
             Game.ClearReservations();
 
-            Phase = ExecutionPhase.Prolog;
+            Phase = CommandPhase.Prolog;
             Game.Controllers.ForEach(ctrl => ctrl.OnCommandBegin(this));
             EnumerateCards().SelectMany(card =>
                                        card.Behaviors.OfType<IPrologTrigger<TCommand>>())
@@ -96,13 +96,13 @@ namespace TouhouSpring.Commands
 
             ////////////////////////////////////////////
 
-            Phase = ExecutionPhase.Main;
+            Phase = CommandPhase.Main;
             Command.RunMain(Game);
             Game.Resolve();
 
             ////////////////////////////////////////////
 
-            Phase = ExecutionPhase.Epilog;
+            Phase = CommandPhase.Epilog;
             EnumerateCards().SelectMany(card =>
                                        card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.Run(this));
@@ -112,17 +112,17 @@ namespace TouhouSpring.Commands
 
         private IEnumerable<BaseCard> EnumerateCards()
         {
-            if (Command is PlayCard && Phase < ExecutionPhase.Epilog)
+            if (Command is Commands.PlayCard && Phase < CommandPhase.Epilog)
             {
-                var cardToPlay = (Command as PlayCard).CardToPlay;
+                var cardToPlay = (Command as Commands.PlayCard).CardToPlay;
                 if (cardToPlay != null)
                 {
                     yield return cardToPlay;
                 }
             }
-            else if (Command is Kill && Phase == ExecutionPhase.Epilog)
+            else if (Command is Commands.Kill && Phase == CommandPhase.Epilog)
             {
-                var cardKilled = (Command as Kill).Target;
+                var cardKilled = (Command as Commands.Kill).Target;
                 if (cardKilled != null)
                 {
                     yield return cardKilled;

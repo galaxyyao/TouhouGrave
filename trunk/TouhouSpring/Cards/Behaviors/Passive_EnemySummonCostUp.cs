@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
-        IPrerequisiteTrigger<PlayCard>,
-        IPrologTrigger<PlayCard>
+        IPrerequisiteTrigger<Commands.PlayCard>,
+        IPrologTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay.Owner != Host.Owner)
             {
@@ -24,11 +23,11 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay.Owner != Host.Owner)
             {
-                context.Game.IssueCommands(new UpdateMana
+                context.Game.IssueCommands(new Commands.UpdateMana
                 {
                     Player = context.Command.CardToPlay.Owner,
                     Amount = -1

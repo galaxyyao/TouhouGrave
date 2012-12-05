@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_HeroAttackUpWithCardNumber
         : BaseBehavior<Passive_HeroAttackUpWithCardNumber.ModelType>,
-        IEpilogTrigger<Kill>,
-        IEpilogTrigger<PlayCard>
+        IEpilogTrigger<Commands.Kill>,
+        IEpilogTrigger<Commands.PlayCard>
     {
         private Warrior.ValueModifier m_attackModifier = null;
 
-        void IEpilogTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host
                 || IsOnBattlefield && context.Command.CardToPlay.Owner == Host.Owner)
@@ -23,7 +22,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Kill>.Run(CommandContext<Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
             if (context.Command.LeftBattlefield
                 && (context.Command.Target == Host
@@ -47,7 +46,7 @@ namespace TouhouSpring.Behaviors
 
             if (m_attackModifier != null && m_attackModifier.Amount != numberOfWarriors)
             {
-                game.IssueCommands(new SendBehaviorMessage
+                game.IssueCommands(new Commands.SendBehaviorMessage
                 {
                     Target = Host.Behaviors.Get<Warrior>(),
                     Message = "AttackModifiers",
@@ -58,7 +57,7 @@ namespace TouhouSpring.Behaviors
             if (m_attackModifier == null)
             {
                 m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, numberOfWarriors);
-                game.IssueCommands(new SendBehaviorMessage
+                game.IssueCommands(new Commands.SendBehaviorMessage
                 {
                     Target = Host.Behaviors.Get<Warrior>(),
                     Message = "AttackModifiers",

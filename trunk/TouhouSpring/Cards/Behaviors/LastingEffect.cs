@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class LastingEffect : SimpleBehavior<LastingEffect>,
-        IEpilogTrigger<StartTurn>
+        IEpilogTrigger<Commands.StartTurn>
     {
         public int Duration
         {
@@ -32,11 +31,11 @@ namespace TouhouSpring.Behaviors
             CleanUps = new List<IBehavior>();
         }
 
-        void IEpilogTrigger<StartTurn>.Run(CommandContext<StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
         {
             if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner && --Duration == 0)
             {
-                CleanUps.ForEach(bhv => context.Game.IssueCommands(new RemoveBehavior
+                CleanUps.ForEach(bhv => context.Game.IssueCommands(new Commands.RemoveBehavior
                 {
                     Target = Host,
                     Behavior = bhv

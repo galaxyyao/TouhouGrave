@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Commands;
 
 namespace TouhouSpring.Behaviors
 {
     public class PhaseSpecific : BaseBehavior<PhaseSpecific.ModelType>,
-        IPrerequisiteTrigger<PlayCard>, IPlayable
+        IPrerequisiteTrigger<Commands.PlayCard>, IPlayable
     {
-        CommandResult IPrerequisiteTrigger<PlayCard>.Run(CommandContext<PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host && !IsPlayable(context.Game))
             {
