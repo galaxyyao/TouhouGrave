@@ -135,6 +135,10 @@ namespace TouhouSpring
                 {
                     yield return card;
                 }
+                if (!player.CardsOnBattlefield.Contains(player.Hero.Host))
+                {
+                    yield return player.Hero.Host;
+                }
             }
         }
     }

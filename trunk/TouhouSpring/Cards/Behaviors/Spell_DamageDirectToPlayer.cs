@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
 
             game.IssueCommands(new Commands.DealDamageToPlayer
             {
-                Target = game.OpponentPlayer,
+                Player = game.OpponentPlayer,
                 DamageToDeal = Model.Damage,
                 Cause = this
             });

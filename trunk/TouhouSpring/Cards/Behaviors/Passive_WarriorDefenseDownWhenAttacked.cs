@@ -7,14 +7,14 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorDefenseDownWhenAttacked
         : BaseBehavior<Passive_WarriorDefenseDownWhenAttacked.ModelType>,
-        ITrigger<Triggers.PostCardDamagedContext>,
+        IEpilogTrigger<Commands.DealDamageToCard>,
         IEpilogTrigger<Commands.EndTurn>
     {
         private bool isBlockedLastRound = false;
 
-        public void Trigger(Triggers.PostCardDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (context.CardDamaged == Host
+            if (context.Command.Target == Host
                 && context.Game.PlayerPlayer != Host.Owner)
                 isBlockedLastRound = true;
         }

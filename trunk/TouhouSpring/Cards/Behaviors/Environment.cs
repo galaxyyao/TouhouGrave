@@ -18,9 +18,11 @@ namespace TouhouSpring.Behaviors
                         card => card.Behaviors.Has<Environment>() && card != Host);
                     if (lastEnv != null)
                     {
-                        throw new NotImplementedException();
-                        // TODO: issue command for the following:
-                        //context.Game.DestroyCard(lastEnv);
+                        context.Game.IssueCommands(new Commands.Kill
+                        {
+                            Target = lastEnv,
+                            Cause = this
+                        });
                         break;
                     }
                 }

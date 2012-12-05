@@ -18,17 +18,15 @@ namespace TouhouSpring.Behaviors
             }
 
             var warriors = (from card in game.OpponentPlayer.CardsOnBattlefield
-                            where card.Behaviors.Has<Warrior>()
-                            select card.Behaviors.Get<Warrior>()).ToArray();
+                            where card.Behaviors.Has<Warrior>() select card).ToArray();
 
             foreach (var warrior in warriors)
             {
-                // TODO: don't use damage command?
-                game.IssueCommands(new Commands.SendBehaviorMessage
+                game.IssueCommands(new Commands.DealDamageToCard
                 {
                     Target = warrior,
-                    Message = "DealDamage",
-                    Args = new object[] { Model.Damage }
+                    Cause = this,
+                    DamageToDeal = Model.Damage
                 });
             }
 

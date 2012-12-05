@@ -30,9 +30,10 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
+        // set by DealDamageToCard and ResetAccumulatedDamage command
         public int AccumulatedDamage
         {
-            get; private set;
+            get; internal set;
         }
 
         public List<BaseCard> Equipments
@@ -73,29 +74,6 @@ namespace TouhouSpring.Behaviors
                 }
 
                 State = WarriorState.StandingBy;
-            }
-            else if (message == "DealDamage")
-            {
-                if (args == null || args.Length != 1 || args[0].GetType() != typeof(int))
-                {
-                    throw new ArgumentException("Formation of args is not expected.");
-                }
-
-                var damage = (int)args[0];
-                if (damage < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Damage should not be negative.");
-                }
-                AccumulatedDamage += damage;
-            }
-            else if (message == "ResetDamage")
-            {
-                if (args != null)
-                {
-                    throw new ArgumentException("Formation of args is not expected.");
-                }
-
-                AccumulatedDamage = 0;
             }
             else if (message == "AttackModifiers")
             {

@@ -55,7 +55,6 @@
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\IPlayable.cs" />
-    <Compile Include="Behaviors\ITrigger.cs" />
     <Compile Include="Behaviors\NonBlocker.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Support.cs" />
@@ -66,9 +65,12 @@
     <Compile Include="CardModelReference.cs" />
     <Compile Include="CommandContext.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
+    <Compile Include="Commands\HealPlayer.cs" />
+    <Compile Include="Commands\DealDamageToCard.cs" />
     <Compile Include="Commands\Kill.cs" />
     <Compile Include="Commands\RemoveBehavior.cs" />
     <Compile Include="Commands\DealDamageToPlayer.cs" />
+    <Compile Include="Commands\ResetAccumulatedDamage.cs" />
     <Compile Include="Commands\StartBlockPhase.cs" />
     <Compile Include="Commands\DrawCard.cs" />
     <Compile Include="Commands\EndTurn.cs" />
@@ -81,7 +83,6 @@
     <Compile Include="Commands\UpdateMana.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Game.Resource.cs" />
-    <Compile Include="Game.Trigger.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Game.Combat.cs" />
     <Compile Include="Game.End.cs" />
@@ -113,9 +114,6 @@
     <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Triggers.cs" />
-    <Compile Include="Triggers\PostCardDamagedContext.cs" />
-    <Compile Include="Triggers\PreCardDamageContext.cs" />
-    <Compile Include="Triggers\TriggerContext.cs" />
     <Compile Include="TypeIDAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

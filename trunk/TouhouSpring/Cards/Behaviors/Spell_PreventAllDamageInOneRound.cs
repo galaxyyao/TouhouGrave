@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_PreventAllDamageInOneRound.ModelType>,
         ICastableSpell,
         IPrologTrigger<Commands.DealDamageToPlayer>,
-        ITrigger<Triggers.PreCardDamageContext>,
+        IPrologTrigger<Commands.DealDamageToCard>,
         IEpilogTrigger<Commands.EndTurn>
     {
         private bool m_isProtected = false;
@@ -34,14 +34,14 @@ namespace TouhouSpring.Behaviors
 
         void IPrologTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
         {
-            if(m_isProtected&& context.Command.Target==m_spellCaster)
+            if(m_isProtected&& context.Command.Player == m_spellCaster)
                 context.Command.DamageToDeal = 0;
         }
 
-        public void Trigger(Triggers.PreCardDamageContext context)
+        void IPrologTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (m_isProtected && context.CardToDamage.Owner == m_spellCaster)
-                context.DamageToDeal = 0;
+            if (m_isProtected && context.Command.Target.Owner == m_spellCaster)
+                context.Command.DamageToDeal = 0;
         }
 
         void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)

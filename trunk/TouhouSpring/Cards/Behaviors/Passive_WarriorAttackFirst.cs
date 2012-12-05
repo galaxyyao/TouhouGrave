@@ -7,19 +7,20 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAttackFirst :
         BaseBehavior<Passive_WarriorAttackFirst.ModelType>,
-        ITrigger<Triggers.PostCardDamagedContext>,
+        IEpilogTrigger<Commands.DealDamageToCard>,
         IEpilogTrigger<Commands.EndTurn>
     {
         private Warrior.ValueModifier attackFirstCompensation = null;
 
-        public void Trigger(Triggers.PostCardDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (context.Cause == Host.Behaviors.Get<Warrior>())
+            if (context.Command.Cause == Host.Behaviors.Get<Warrior>())
             {
-                var warriorAttackedBhv=context.CardDamaged.Behaviors.Get<Warrior>();
+                // TODO: looks like this impl won't work...
+                var warriorAttackedBhv = context.Command.Target.Behaviors.Get<Warrior>();
                 if (warriorAttackedBhv.AccumulatedDamage >= warriorAttackedBhv.Defense)
                 {
-                    int damageWontDeal = context.CardDamaged.Behaviors.Get<Warrior>().Attack;
+                    int damageWontDeal = context.Command.Target.Behaviors.Get<Warrior>().Attack;
                     attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, damageWontDeal);
                     context.Game.IssueCommands(new Commands.SendBehaviorMessage
                     {

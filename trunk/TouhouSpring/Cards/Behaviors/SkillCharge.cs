@@ -12,7 +12,11 @@ namespace TouhouSpring.Behaviors
             throw new NotImplementedException();
             // TODO: issue commands for the following:
             //game.PlayerPlayer.IsSkillCharged = true;
-            //game.DestroyCard(Host);
+            game.IssueCommands(new Commands.Kill
+            {
+                Target = Host,
+                Cause = this
+            });
 
             reason = String.Empty;
             return true;

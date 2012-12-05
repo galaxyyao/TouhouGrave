@@ -21,7 +21,7 @@ namespace TouhouSpring
                     IssueCommands(
                         new Commands.DealDamageToPlayer
                         {
-                            Target = OpponentPlayer,
+                            Player = OpponentPlayer,
                             DamageToDeal = attackerWarriorBhv.Attack,
                             Cause = attackerWarriorBhv
                         },
@@ -36,30 +36,19 @@ namespace TouhouSpring
                     var blocker = blockers[0];
                     var blockerWarriorBhv = blocker.Behaviors.Get<Behaviors.Warrior>();
 
-                    var preDamageOnAttacker = new Triggers.PreCardDamageContext(this, attacker, blockerWarriorBhv.Attack, blockerWarriorBhv);
-                    var preDamageOnBlocker = new Triggers.PreCardDamageContext(this, blocker, attackerWarriorBhv.Attack, attackerWarriorBhv);
-
-                    TriggerGlobal(preDamageOnAttacker);
-                    TriggerGlobal(preDamageOnBlocker);
-
                     IssueCommands(
-                        new Commands.SendBehaviorMessage
+                        new Commands.DealDamageToCard
                         {
-                            Target = attackerWarriorBhv,
-                            Message = "DealDamage",
-                            Args = new object[] { preDamageOnAttacker.DamageToDeal }
+                            Target = attacker,
+                            Cause = blockerWarriorBhv,
+                            DamageToDeal = blockerWarriorBhv.Attack
                         },
-                        new Commands.SendBehaviorMessage
+                        new Commands.DealDamageToCard
                         {
-                            Target = blockerWarriorBhv,
-                            Message = "DealDamage",
-                            Args = new object[] { preDamageOnBlocker.DamageToDeal }
-                        });
-
-                    TriggerGlobal(new Triggers.PostCardDamagedContext(this, attacker, preDamageOnAttacker.DamageToDeal, blockerWarriorBhv));
-                    TriggerGlobal(new Triggers.PostCardDamagedContext(this, blocker, preDamageOnBlocker.DamageToDeal, attackerWarriorBhv));
-
-                    IssueCommands(
+                            Target = blocker,
+                            Cause = attackerWarriorBhv,
+                            DamageToDeal = attackerWarriorBhv.Attack
+                        },
                         new Commands.SendBehaviorMessage
                         {
                             Target = attackerWarriorBhv,
@@ -142,25 +131,6 @@ namespace TouhouSpring
                             Target = card
                         });
                     }
-                }
-            }
-            FlushCommandQueue();
-        }
-
-        private void ResetAccumulatedDamage()
-        {
-            foreach (var player in Players)
-            {
-                foreach (var card in player.m_battlefieldCards)
-                {
-                    if (!card.Behaviors.Has<Behaviors.Warrior>())
-                        continue;
-                    var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                    IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = warrior,
-                        Message = "ResetDamage"
-                    });
                 }
             }
             FlushCommandQueue();

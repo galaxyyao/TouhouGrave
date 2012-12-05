@@ -39,7 +39,7 @@ namespace TouhouSpring
             else if (context.Command is Commands.DealDamageToPlayer && !context.Result.Canceled)
             {
                 var cmd = context.Command as Commands.DealDamageToPlayer;
-                if (cmd.Target == Player)
+                if (cmd.Player == Player)
                 {
                     new Interactions.NotifyControllerEvent(this, "OnPlayerDamaged", Player, string.Format("Damage:{0}", cmd.DamageToDeal)).Run();
                 }

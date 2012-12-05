@@ -105,9 +105,9 @@ namespace TouhouSpring
                 CurrentPhase = "Combat/Resolve";
                 ResolveCombat(declaredAttackers, declaredBlockers);
                 ResolveBattlefieldCards();
-                ResetAccumulatedDamage();
 
                 IssueCommandsAndFlush(
+                    new Commands.ResetAccumulatedDamage {},
                     new Commands.UpdateMana { Player = PlayerPlayer, Amount = PlayerPlayer.ManaDelta },
                     new Commands.EndTurn());
             };

@@ -15,15 +15,17 @@ namespace TouhouSpring.Behaviors
             {
                 foreach (var card in context.Game.Players.SelectMany(player => player.CardsOnBattlefield))
                 {
-                    if (card.Behaviors.Get<Hero>() != null)
+                    if (card.Behaviors.Has<Hero>())
                         continue;
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if (warrior != null)
+                    if (!card.Behaviors.Has<Warrior>())
+                        continue;
+
+                    context.Game.IssueCommands(new Commands.DealDamageToCard
                     {
-                        throw new NotImplementedException();
-                        // TODO: issue command for the following:
-                        //warrior.AccumulatedDamage += Model.Damage;
-                    }
+                        Target = card,
+                        Cause = this,
+                        DamageToDeal = Model.Damage
+                    });
                 }
             }
         }

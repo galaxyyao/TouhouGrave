@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
 {
