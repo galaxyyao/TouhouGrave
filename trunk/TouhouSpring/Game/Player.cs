@@ -77,7 +77,7 @@ namespace TouhouSpring
 
         public bool IsSkillCharged
         {
-            get; set;
+            get; internal set;
         }
 
         public Behaviors.Hero Hero

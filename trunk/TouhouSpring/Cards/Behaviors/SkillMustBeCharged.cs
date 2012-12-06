@@ -23,7 +23,10 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Command.Spell.Host == Host && Model.Discharge)
             {
-                // TODO: issue command to discharge
+                context.Game.IssueCommands(new Commands.Discharge
+                {
+                    Player = Host.Owner
+                });
             }
         }
 
