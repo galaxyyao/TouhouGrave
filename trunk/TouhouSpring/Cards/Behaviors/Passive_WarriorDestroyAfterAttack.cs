@@ -7,14 +7,18 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorDestroyAfterAttack:
         BaseBehavior<Passive_WarriorDestroyAfterAttack.ModelType>,
-        ITrigger<Triggers.PostCardDamagedContext>
+        IEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void Trigger(Triggers.PostCardDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (context.Cause == Host)
+            if (context.Command.Cause != null
+                && context.Command.Cause.Host == Host)
             {
-                if(context.CardDamaged.Owner.CardsOnBattlefield.Contains(context.CardDamaged))
-                    context.Game.DestroyCard(context.CardDamaged);
+                context.Game.IssueCommands(new Commands.Kill
+                {
+                    Target = context.Command.Target,
+                    Cause = this
+                });
             }
         }
 

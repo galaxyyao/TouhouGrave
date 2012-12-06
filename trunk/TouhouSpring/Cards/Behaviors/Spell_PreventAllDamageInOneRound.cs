@@ -8,43 +8,34 @@ namespace TouhouSpring.Behaviors
     public class Spell_PreventAllDamageInOneRound :
         BaseBehavior<Spell_PreventAllDamageInOneRound.ModelType>,
         ICastableSpell,
-        ITrigger<Triggers.PrePlayerDamageContext>,
-        ITrigger<Triggers.PreCardDamageContext>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        IPrologTrigger<Commands.DealDamageToPlayer>,
+        IPrologTrigger<Commands.DealDamageToCard>,
+        IEpilogTrigger<Commands.EndTurn>
     {
         private bool m_isProtected = false;
         private Player m_currentPlayer;
         private Player m_spellCaster;
 
-        public bool Cast(Game game, out string reason)
+        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
         {
-            if (!game.PlayerPlayer.IsSkillCharged)
-            {
-                reason = "主角技能还没有被充能！";
-                return false;
-            }
-
             m_isProtected = true;
-            m_currentPlayer = game.PlayerPlayer;
+            m_currentPlayer = context.Game.PlayerPlayer;
             m_spellCaster = Host.Owner;
-
-            reason = String.Empty;
-            return true;
         }
 
-        public void Trigger(Triggers.PrePlayerDamageContext context)
+        void IPrologTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
         {
-            if(m_isProtected&& context.PlayerToDamage==m_spellCaster)
-                context.DamageToDeal = 0;
+            if(m_isProtected&& context.Command.Player == m_spellCaster)
+                context.Command.DamageToDeal = 0;
         }
 
-        public void Trigger(Triggers.PreCardDamageContext context)
+        void IPrologTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (m_isProtected && context.CardToDamage.Owner == m_spellCaster)
-                context.DamageToDeal = 0;
+            if (m_isProtected && context.Command.Target.Owner == m_spellCaster)
+                context.Command.DamageToDeal = 0;
         }
 
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
             if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {

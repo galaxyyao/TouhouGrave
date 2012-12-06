@@ -17,22 +17,25 @@ namespace TouhouSpring
         [Interactions.MessageMap.Handler(typeof(Interactions.NotifyCardEvent))]
         private bool OnNotified(Interactions.NotifyCardEvent interactionObj)
         {
-            switch (interactionObj.Notification)
+            if (interactionObj.Card.Owner == Player)
             {
-                case "OnCardDrawn":
-                    Console.WriteLine(">> Player {0} drew card {1}", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name);
-                    break;
-				case "OnCardPlayed":
-					Console.WriteLine(">> Player {0} played card {1} onto the battlefield.", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name);
-					break;
-				case "OnCardPlayCanceled":
-					Console.WriteLine(">> Player {0} canceled playing card {1}: {2}", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name, interactionObj.Message);
-					break;
-				case "OnCardDestroyed":
-					Console.WriteLine(">> Player {0} card {1} is Destroyed", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name);
-					break;
-                default:
-					throw new ArgumentException(string.Format("Argument {0} is illegal.", interactionObj.Notification));
+                switch (interactionObj.Notification)
+                {
+                    case "OnCardDrawn":
+                        Console.WriteLine(">> Player {0} drew card {1}", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name);
+                        break;
+                    case "OnCardPlayed":
+                        Console.WriteLine(">> Player {0} played card {1} onto the battlefield.", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name);
+                        break;
+                    case "OnCardPlayCanceled":
+                        Console.WriteLine(">> Player {0} canceled playing card {1}: {2}", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name, interactionObj.Message);
+                        break;
+                    case "OnCardDestroyed":
+                        Console.WriteLine(">> Player {0} card {1} is Destroyed", interactionObj.Card.Owner.Name, interactionObj.Card.Model.Name);
+                        break;
+                    default:
+                        throw new ArgumentException(string.Format("Argument {0} is illegal.", interactionObj.Notification));
+                }
             }
 
             interactionObj.Respond();
@@ -55,19 +58,22 @@ namespace TouhouSpring
 		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyControllerEvent))]
 		private bool OnNotified(Interactions.NotifyControllerEvent interactionObj)
 		{
-			switch (interactionObj.Notification)
-			{
-				case "OnPlayerPhaseChanged":
-					{
-						Console.WriteLine(">> ---Player {0}'s {1}---", interactionObj.Player.Name, interactionObj.Message);
-					}
-					break;
-				case "OnPlayerDamaged":
-					Console.WriteLine(">> Player {0} suffers damage {1}.", interactionObj.Player.Name, interactionObj.Message);
-					break;
-				default:
-					break;
-			}
+            if (interactionObj.Player == Player)
+            {
+                switch (interactionObj.Notification)
+                {
+                    case "OnPlayerPhaseChanged":
+                        {
+                            Console.WriteLine(">> ---Player {0}'s {1}---", interactionObj.Player.Name, interactionObj.Message);
+                        }
+                        break;
+                    case "OnPlayerDamaged":
+                        Console.WriteLine(">> Player {0} suffers damage {1}.", interactionObj.Player.Name, interactionObj.Message);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
 			interactionObj.Respond();
 			return false;

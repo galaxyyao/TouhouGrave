@@ -7,53 +7,31 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
-        ITrigger<Triggers.PostCardDrawnContext>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>,
-        ITrigger<Triggers.PostCardPlayedContext>
+        IPrerequisiteTrigger<Commands.PlayCard>,
+        IPrologTrigger<Commands.PlayCard>
     {
-        private List<CardModel> costUpModels = new List<CardModel>();
-
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay.Owner != Host.Owner)
             {
-                var hostOpponentPlayer = (context.Game.PlayerPlayer == Host.Owner) ? context.Game.OpponentPlayer : context.Game.PlayerPlayer;
-                foreach (var card in hostOpponentPlayer.CardsOnHand)
+                if (context.Command.CardToPlay.Owner.FreeMana < 1)
                 {
-                    if (card.Behaviors.Get<ManaCost_PrePlay>() == null)
-                        throw new MissingMemberException("TouhouSpring.Behaviors.ManaCost_PrePlay Missing for card");
-                    if (costUpModels.Contains(card.Model))
-                        continue;
-                    card.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
-                    costUpModels.Add((CardModel)card.Model);
-                    var s = card.Behaviors.Get<ManaCost_PrePlay>();
+                    return CommandResult.Cancel("Insufficient mana.");
                 }
+                context.Game.ReserveMana(context.Command.CardToPlay.Owner, 1);
             }
+            return CommandResult.Pass;
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardToLeft == Host)
+            if (context.Command.CardToPlay.Owner != Host.Owner)
             {
-                var hostOpponentPlayer = (context.Game.PlayerPlayer == Host.Owner) ? context.Game.OpponentPlayer : context.Game.PlayerPlayer;
-                foreach (var card in hostOpponentPlayer.CardsOnHand)
+                context.Game.IssueCommands(new Commands.UpdateMana
                 {
-                    if (costUpModels.Contains(card.Model))
-                    {
-                        costUpModels.Remove((CardModel)card.Model);
-                        card.Behaviors.Get<ManaCost_PrePlay>().Model.Cost -= 1;
-                    }
-                }
-            }
-        }
-
-        public void Trigger(Triggers.PostCardDrawnContext context)
-        {
-            if (IsOnBattlefield && context.CardDrawn.Owner != Host.Owner)
-            {
-                if (costUpModels.Contains(context.CardDrawn.Model))
-                    return;
-                context.CardDrawn.Behaviors.Get<ManaCost_PrePlay>().Model.Cost += 1;
+                    Player = context.Command.CardToPlay.Owner,
+                    Amount = -1
+                });
             }
         }
 

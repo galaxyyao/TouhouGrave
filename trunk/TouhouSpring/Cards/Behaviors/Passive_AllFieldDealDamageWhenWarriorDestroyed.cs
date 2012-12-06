@@ -7,27 +7,25 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_AllFieldDealDamageWhenWarriorDestroyed:
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
-        ITrigger<Triggers.CardEnteredGraveyardContext>
+        IEpilogTrigger<Commands.Kill>
     {
-        public void Trigger(Triggers.CardEnteredGraveyardContext context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
-            if (context.Card == Host)
+            if (context.Command.Target == Host && context.Command.EnteredGraveyard)
             {
-                foreach (BaseCard card in context.Game.PlayerPlayer.CardsOnBattlefield)
+                foreach (var card in context.Game.Players.SelectMany(player => player.CardsOnBattlefield))
                 {
-                    if (card.Behaviors.Get<Hero>() != null)
+                    if (card.Behaviors.Has<Hero>())
                         continue;
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if(warrior!=null)
-                        warrior.AccumulatedDamage += Model.Damage;
-                }
-                foreach (BaseCard card in context.Game.OpponentPlayer.CardsOnBattlefield)
-                {
-                    if (card.Behaviors.Get<Hero>() != null)
+                    if (!card.Behaviors.Has<Warrior>())
                         continue;
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                        warrior.AccumulatedDamage += Model.Damage;
+
+                    context.Game.IssueCommands(new Commands.DealDamageToCard
+                    {
+                        Target = card,
+                        Cause = this,
+                        DamageToDeal = Model.Damage
+                    });
                 }
             }
         }

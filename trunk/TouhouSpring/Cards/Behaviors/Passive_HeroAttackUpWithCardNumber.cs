@@ -7,52 +7,62 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_HeroAttackUpWithCardNumber
         : BaseBehavior<Passive_HeroAttackUpWithCardNumber.ModelType>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>,
-        ITrigger<Triggers.PostCardPlayedContext>
+        IEpilogTrigger<Commands.Kill>,
+        IEpilogTrigger<Commands.PlayCard>
     {
-        private List<AttackModifier> attackMods = new List<AttackModifier>();
+        private Warrior.ValueModifier m_attackModifier = null;
 
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host
+                || IsOnBattlefield && context.Command.CardToPlay.Owner == Host.Owner)
             {
-                int warriorNumber = 0;
-                foreach (var card in context.Game.PlayerPlayer.CardsOnBattlefield)
-                {
-                    if (card.Behaviors.Get<Warrior>() != null)
-                        warriorNumber++;
-                }
-                warriorNumber -= 1; //exclude Hero Card
-                for (int i = 0; i < warriorNumber; i++)
-                {
-                    var attackMod = new AttackModifier(x => x + 1);
-                    attackMods.Add(attackMod);
-                    Host.Owner.Hero.Host.Behaviors.Add(attackMod);
-                }
-                return;
-            }
-            if (IsOnBattlefield && context.CardPlayed.Owner == Host.Owner)
-            {
-                var attackMod = new AttackModifier(x => x + 1);
-                attackMods.Add(attackMod);
-                Host.Owner.Hero.Host.Behaviors.Add(attackMod);
+                
+                UpdateNumber(context.Game);
             }
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
-            if (context.CardToLeft != Host && IsOnBattlefield)
+            if (context.Command.LeftBattlefield
+                && (context.Command.Target == Host
+                    || IsOnBattlefield && context.Command.Target.Owner == Host.Owner))
             {
-                Host.Owner.Hero.Host.Behaviors.Remove(attackMods.LastOrDefault());
+                UpdateNumber(context.Game);
+            }
+        }
+
+        private void UpdateNumber(Game game)
+        {
+            if (!Host.Behaviors.Has<Warrior>() || !Host.Behaviors.Has<Hero>())
+            {
                 return;
             }
-            if (context.CardToLeft == Host)
+
+            int numberOfWarriors = !IsOnBattlefield
+                ? 0
+                : Host.Owner.CardsOnBattlefield.Count(
+                    card => card.Behaviors.Has<Warrior>() && !card.Behaviors.Has<Hero>());
+
+            if (m_attackModifier != null && m_attackModifier.Amount != numberOfWarriors)
             {
-                foreach (var attackMod in attackMods)
+                game.IssueCommands(new Commands.SendBehaviorMessage
                 {
-                    Host.Owner.Hero.Host.Behaviors.Remove(attackMod);
-                }
-                return;
+                    Target = Host.Behaviors.Get<Warrior>(),
+                    Message = "AttackModifiers",
+                    Args = new object[] { "remove", m_attackModifier }
+                });
+                m_attackModifier = null;
+            }
+            if (m_attackModifier == null)
+            {
+                m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, numberOfWarriors);
+                game.IssueCommands(new Commands.SendBehaviorMessage
+                {
+                    Target = Host.Behaviors.Get<Warrior>(),
+                    Message = "AttackModifiers",
+                    Args = new object[] { "add", m_attackModifier }
+                });
             }
         }
 

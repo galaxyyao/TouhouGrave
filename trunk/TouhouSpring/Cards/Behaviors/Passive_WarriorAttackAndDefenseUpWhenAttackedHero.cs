@@ -7,16 +7,17 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAttackAndDefenseUpWhenAttackedHero:
         BaseBehavior<Passive_WarriorAttackAndDefenseUpWhenAttackedHero.ModelType>,
-        ITrigger<Triggers.PostPlayerDamagedContext>
+        IEpilogTrigger<Commands.DealDamageToPlayer>
     {
-        public void Trigger(Triggers.PostPlayerDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
         {
-            if (context.Cause == Host)
+            if (context.Command.Cause == Host)
             {
-                var attackMod = new AttackModifier(x => x + 1);
-                var defenseMod = new DefenseModifier(y => y + 1);
-                Host.Behaviors.Add(attackMod);
-                Host.Behaviors.Add(defenseMod);
+                context.Game.IssueCommands(new Commands.AddBehavior
+                {
+                    Target = Host,
+                    Behavior = new Enhance(1, 1)
+                });
             }
         }
 

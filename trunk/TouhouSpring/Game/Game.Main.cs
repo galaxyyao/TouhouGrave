@@ -24,14 +24,15 @@ namespace TouhouSpring
             InPlayerPhases = true;
             Round = 0;
 
+            IssueCommandsAndFlush(new Commands.DrawCard { PlayerDrawing = m_players[0] });
+
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 Round++;
                 IsWarriorPlayedThisTurn = false;
 
                 CurrentPhase = "PhaseA";
-                ResetWarriorState(PlayerPlayer);
-                TriggerGlobal(new Triggers.PlayerTurnStartedContext(this));
+                IssueCommandsAndFlush(new Commands.StartTurn { });
 
                 CurrentPhase = "Tactical";
 
@@ -42,18 +43,19 @@ namespace TouhouSpring
                     {
                         var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == PlayerPlayer);
-                        PlayCard(cardToPlay);
+                        IssueCommandsAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
                     }
                     else if (result.ActionType == TacticalPhase.Action.CastSpell)
                     {
                         var spellToCast = (Behaviors.ICastableSpell)result.Data;
                         Debug.Assert(spellToCast.Host.Owner == PlayerPlayer);
-                        CastSpell(spellToCast);
+                        IssueCommandsAndFlush(new Commands.CastSpell { Spell = spellToCast });
                     }
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
-                        UpdateMana(PlayerPlayer, -1);
-                        DrawCard(PlayerPlayer);
+                        IssueCommandsAndFlush(
+                            new Commands.UpdateMana { Player = PlayerPlayer, Amount = -1 },
+                            new Commands.DrawCard { PlayerDrawing = PlayerPlayer });
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
                     {
@@ -67,7 +69,7 @@ namespace TouhouSpring
                 }
 
                 CurrentPhase = "Combat/Attack";
-                TriggerGlobal(new Triggers.AttackPhaseStartedContext(this));
+                IssueCommandsAndFlush(new Commands.StartAttackPhase { });
                 var declaredAttackers = new Interactions.SelectCards(
                     PlayerController,
                     PlayerPlayer.CardsOnBattlefield.Where(card =>
@@ -75,10 +77,9 @@ namespace TouhouSpring
                         && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Multiple,
                     "Select warriors in battlefield to make them attackers.").Run().Clone();
-                TriggerGlobal(new Triggers.AttackPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Block";
-                TriggerGlobal(new Triggers.BlockPhaseStartedContext(this));
+                IssueCommandsAndFlush(new Commands.StartBlockPhase { });
                 IIndexable<IIndexable<BaseCard>> declaredBlockers;
                 while (true)
                 {
@@ -92,7 +93,7 @@ namespace TouhouSpring
                     {
                         var cardToPlay = (BaseCard)result.Data;
                         Debug.Assert(cardToPlay.Owner == OpponentPlayer);
-                        PlayCard(cardToPlay);
+                        IssueCommandsAndFlush(new Commands.PlayCard { CardToPlay = cardToPlay });
                     }
                     else
                     {
@@ -100,17 +101,15 @@ namespace TouhouSpring
                     }
                     ResolveBattlefieldCards();
                 }
-                TriggerGlobal(new Triggers.BlockPhaseEndedContext(this));
 
                 CurrentPhase = "Combat/Resolve";
                 ResolveCombat(declaredAttackers, declaredBlockers);
                 ResolveBattlefieldCards();
-                ResetAccumulatedDamage();
 
-                TriggerGlobal(new Triggers.PlayerTurnEndedContext(this));
-
-                UpdateMana(PlayerPlayer, PlayerPlayer.ManaDelta);
-                PlayerPlayer.ResetManaDelta();
+                IssueCommandsAndFlush(
+                    new Commands.ResetAccumulatedDamage {},
+                    new Commands.UpdateMana { Player = PlayerPlayer, Amount = PlayerPlayer.ManaDelta },
+                    new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;

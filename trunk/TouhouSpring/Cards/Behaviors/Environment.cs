@@ -5,11 +5,12 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Environment : BaseBehavior<Environment.ModelType>, ITrigger<Triggers.PostCardPlayedContext>
+    public class Environment : BaseBehavior<Environment.ModelType>,
+        IEpilogTrigger<Commands.PlayCard>
     {
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 foreach (var player in context.Game.Players)
                 {
@@ -17,7 +18,11 @@ namespace TouhouSpring.Behaviors
                         card => card.Behaviors.Has<Environment>() && card != Host);
                     if (lastEnv != null)
                     {
-                        context.Game.DestroyCard(lastEnv);
+                        context.Game.IssueCommands(new Commands.Kill
+                        {
+                            Target = lastEnv,
+                            Cause = this
+                        });
                         break;
                     }
                 }

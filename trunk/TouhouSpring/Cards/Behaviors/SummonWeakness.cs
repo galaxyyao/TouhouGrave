@@ -2,34 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
 {
     public class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
-        , ITrigger<PostCardPlayedContext>
-        , ITrigger<PlayerTurnEndedContext>
+        , IEpilogTrigger<Commands.PlayCard>
+        , IEpilogTrigger<Commands.EndTurn>
     {
         class Effect : SimpleBehavior<Effect>
         { }
 
-        public void Trigger(PostCardPlayedContext context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host
+                && Host.Behaviors.Has<Warrior>())
             {
-                Host.Behaviors.Add(new Effect());
-                context.Game.SetWarriorState(Host, WarriorState.CoolingDown);
+                context.Game.IssueCommands(
+                    new Commands.AddBehavior
+                    {
+                        Target = Host,
+                        Behavior = new Effect()
+                    },
+                    new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoCoolingDown"
+                    }
+                );
             }
         }
 
-        public void Trigger(PlayerTurnEndedContext context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
             if (IsOnBattlefield
                 && context.Game.PlayerPlayer == Host.Owner
+                && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {
-                Host.Behaviors.Remove(Host.Behaviors.Get<Effect>());
-                context.Game.SetWarriorState(Host, WarriorState.StandingBy);
+                context.Game.IssueCommands(
+                    new Commands.RemoveBehavior
+                    {
+                        Target = Host,
+                        Behavior = Host.Behaviors.Get<Effect>()
+                    },
+                    new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoStandingBy"
+                    }
+                );
             }
         }
 

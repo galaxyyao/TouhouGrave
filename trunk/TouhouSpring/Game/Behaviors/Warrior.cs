@@ -12,27 +12,28 @@ namespace TouhouSpring.Behaviors
         CoolingDown
     }
 
-    public class Warrior : BaseBehavior<Warrior.ModelType>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>
+    public partial class Warrior : BaseBehavior<Warrior.ModelType>,
+        IEpilogTrigger<Commands.Kill>
     {
         public WarriorState State
         {
-            get; internal set;
+            get; private set;
         }
 
-        public IntegerEx Attack
+        public int Attack
         {
             get; private set;
         }
 
-        public IntegerEx Defense
+        public int Defense
         {
             get; private set;
         }
 
+        // set by DealDamageToCard and ResetAccumulatedDamage command
         public int AccumulatedDamage
         {
-            get; set;
+            get; internal set;
         }
 
         public List<BaseCard> Equipments
@@ -40,19 +41,101 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
-            if (context.CardToLeft == Host)
+            if (context.Command.Target == Host)
             {
                 State = WarriorState.StandingBy;
+                m_attackModifers.Clear();
+                m_defenseModifiers.Clear();
+                Attack = Model.Attack;
+                Defense = Model.Defense;
+                AccumulatedDamage = 0;
+                Equipments.Clear();
+            }
+        }
+
+        public override void OnMessage(string message, object[] args)
+        {
+            if (message == "GoCoolingDown")
+            {
+                if (args != null)
+                {
+                    throw new ArgumentException("Formation of args is not expected.");
+                }
+
+                State = WarriorState.CoolingDown;
+            }
+            else if (message == "GoStandingBy")
+            {
+                if (args != null)
+                {
+                    throw new ArgumentException("Formation of args is not expected.");
+                }
+
+                State = WarriorState.StandingBy;
+            }
+            else if (message == "AttackModifiers")
+            {
+                if (args == null || args.Length != 2
+                    || args[0].GetType() != typeof(string) || args[1].GetType() != typeof(ValueModifier))
+                {
+                    throw new ArgumentException("Formation of args is not expected.");
+                }
+                if ((string)args[0] == "add")
+                {
+                    var mod = (ValueModifier)args[1];
+                    if (m_attackModifers.Contains(mod))
+                    {
+                        throw new ArgumentException("The modifier has already been added.");
+                    }
+                    m_attackModifers.Add(mod);
+                }
+                else if ((string)args[0] == "remove")
+                {
+                    var mod = (ValueModifier)args[1];
+                    if (!m_attackModifers.Contains(mod))
+                    {
+                        throw new ArgumentException("The modifier has not been added.");
+                    }
+                    m_attackModifers.Remove(mod);
+                }
+                Attack = m_attackModifers.Aggregate(Model.Attack, (i, v) => v.Process(i));
+            }
+            else if (message == "DefenseModifiers")
+            {
+                if (args == null || args.Length != 2
+                    || args[0].GetType() != typeof(string) || args[1].GetType() != typeof(ValueModifier))
+                {
+                    throw new ArgumentException("Formation of args is not expected.");
+                }
+                if ((string)args[0] == "add")
+                {
+                    var mod = (ValueModifier)args[1];
+                    if (m_defenseModifiers.Contains(mod))
+                    {
+                        throw new ArgumentException("The modifier has already been added.");
+                    }
+                    m_defenseModifiers.Add(mod);
+                }
+                else if ((string)args[0] == "remove")
+                {
+                    var mod = (ValueModifier)args[1];
+                    if (!m_defenseModifiers.Contains(mod))
+                    {
+                        throw new ArgumentException("The modifier has not been added.");
+                    }
+                    m_defenseModifiers.Remove(mod);
+                }
+                Defense = m_defenseModifiers.Aggregate(Model.Defense, (i, v) => v.Process(i));
             }
         }
 
         protected override void OnInitialize()
         {
             State = WarriorState.StandingBy;
-            Attack = new IntegerEx(Model.Attack);
-            Defense = new IntegerEx(Model.Defense);
+            Attack = Model.Attack;
+            Defense = Model.Defense;
             Equipments = new List<BaseCard>();
         }
 

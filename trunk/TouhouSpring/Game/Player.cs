@@ -42,32 +42,47 @@ namespace TouhouSpring
 
         public int Health
         {
-            get;
-            internal set;
+            get; internal set;
+        }
+
+        public int ReservedHealth
+        {
+            get; internal set;
+        }
+
+        public int FreeHealth
+        {
+            get { return Health - ReservedHealth; }
         }
 
         public int Mana
         {
-            get;
-            internal set;
+            get; internal set;
+        }
+
+        public int ReservedMana
+        {
+            get; internal set;
+        }
+
+        public int FreeMana
+        {
+            get { return Mana - ReservedMana; }
         }
 
         public int ManaDelta
         {
-            get;
-            set;
+            get; set;
         }
 
         public bool IsSkillCharged
         {
-            get;
-            set;
+            get; internal set;
         }
 
         public Behaviors.Hero Hero
         {
-            get;
-            private set;
+            get; private set;
         }
 
         internal Player(Profile profile)

@@ -5,16 +5,32 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class SkillCharge : BaseBehavior<SkillCharge.ModelType>, ICastableSpell
+    public class SkillCharge : BaseBehavior<SkillCharge.ModelType>,
+        IPrerequisiteTrigger<Commands.CastSpell>,
+        ICastableSpell
     {
-        public bool Cast(Game game, out string reason)
+        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(CommandContext<Commands.CastSpell> context)
         {
-            game.PlayerPlayer.IsSkillCharged = true;
+            if (context.Command.Spell == this && Host.Owner.IsSkillCharged)
+            {
+                return CommandResult.Cancel("Player is already charged.");
+            }
 
-            game.DestroyCard(Host);
+            return CommandResult.Pass;
+        }
 
-            reason = String.Empty;
-            return true;
+        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
+        {
+            context.Game.IssueCommands(
+                new Commands.Charge
+                {
+                    Player = Host.Owner
+                },
+                new Commands.Kill
+                {
+                    Target = Host,
+                    Cause = this
+                });
         }
 
         [BehaviorModel(typeof(SkillCharge), DefaultName = "补魔")]

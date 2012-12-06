@@ -7,27 +7,32 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_ManaGainUpWhenAttackedByWarrior
         : BaseBehavior<Passive_ManaGainUpWhenAttackedByWarrior.ModelType>,
-        ITrigger<Triggers.PostPlayerDamagedContext>,
-        ITrigger<Triggers.PlayerTurnStartedContext>
+        IEpilogTrigger<Commands.DealDamageToPlayer>,
+        IEpilogTrigger<Commands.StartTurn>
     {
         private bool isAttackedByWarriorLastRound = false;
 
-        public void Trigger(Triggers.PostPlayerDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
         {
-            if (context.PlayerDamaged == Host.Owner && context.Cause.Host.Behaviors.Get<Hero>() == null)
+            if (context.Command.Player == Host.Owner && !context.Command.Cause.Host.Behaviors.Has<Hero>())
             {
                 isAttackedByWarriorLastRound = true;
-                Host.Owner.ManaDelta += 1;
+
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //Host.Owner.ManaDelta += 1;
             }
         }
 
-        public void Trigger(Triggers.PlayerTurnStartedContext context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
         {
             if (context.Game.PlayerPlayer != Host.Owner
                 && isAttackedByWarriorLastRound)
             {
                 isAttackedByWarriorLastRound = false;
-                Host.Owner.ManaDelta -= 1;
+                throw new NotImplementedException();
+                // TODO: issue command for the following:
+                //Host.Owner.ManaDelta -= 1;
             }
         }
 

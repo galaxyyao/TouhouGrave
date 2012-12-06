@@ -48,7 +48,7 @@ namespace TouhouSpring.Behaviors
 			}
 
 			m_behaviors.Insert(index, item);
-			item.Bind(m_host);
+			(item as IInternalBehavior).Bind(m_host);
 		}
 
 		public void RemoveAt(int index)
@@ -59,7 +59,7 @@ namespace TouhouSpring.Behaviors
 			}
 
 			Debug.Assert(m_behaviors[index].Host == m_host);
-			m_behaviors[index].Unbind();
+			(m_behaviors[index] as IInternalBehavior).Unbind();
 			m_behaviors.RemoveAt(index);
 		}
 
@@ -93,12 +93,12 @@ namespace TouhouSpring.Behaviors
 			}
 
 			m_behaviors.Add(item);
-			item.Bind(m_host);
+			(item as IInternalBehavior).Bind(m_host);
 		}
 
 		public void Clear()
 		{
-			m_behaviors.ForEach(bhv => bhv.Unbind());
+			m_behaviors.ForEach(bhv => (bhv as IInternalBehavior).Unbind());
 			m_behaviors.Clear();
 		}
 
@@ -123,7 +123,7 @@ namespace TouhouSpring.Behaviors
 			if (index != -1)
 			{
 				Debug.Assert(item.Host == m_host);
-				item.Unbind();
+				(item as IInternalBehavior).Unbind();
 				m_behaviors.RemoveAt(index);
 				return true;
 			}

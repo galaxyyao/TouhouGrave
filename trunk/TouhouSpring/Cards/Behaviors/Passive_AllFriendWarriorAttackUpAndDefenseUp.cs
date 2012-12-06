@@ -7,15 +7,15 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_AllFriendWarriorAttackUpAndDefenseUp :
         BaseBehavior<Passive_AllFriendWarriorAttackUpAndDefenseUp.ModelType>,
-        ITrigger<Triggers.PostCardPlayedContext>,
-        ITrigger<Triggers.CardLeftBattlefieldContext>
+        IEpilogTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.Kill>
     {
-        private readonly Func<int, int> m_attackMod = x => x + 1;
-        private readonly Func<int, int> m_defenseMod = y => y + 1;
+        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 1);
+        private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 1);
 
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 foreach (var card in context.Game.PlayerPlayer.CardsOnBattlefield)
                 {
@@ -23,42 +23,89 @@ namespace TouhouSpring.Behaviors
                         continue;
                     if (card.Behaviors.Get<Hero>() != null)
                         continue;
-                    card.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
-                    card.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
+
+                    context.Game.IssueCommands(
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = card.Behaviors.Get<Warrior>(),
+                            Message = "AttackModifiers",
+                            Args = new object[] { "add", m_attackMod }
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = card.Behaviors.Get<Warrior>(),
+                            Message = "DefenseModifiers",
+                            Args = new object[] { "add", m_defenseMod }
+                        });
                 }
-                return;
             }
-            if (context.CardPlayed.Owner == Host.Owner
-                && IsOnBattlefield
-                && context.CardPlayed.Behaviors.Get<Warrior>() != null)
+            else if (context.Command.CardToPlay.Owner == Host.Owner
+                     && IsOnBattlefield
+                     && context.Command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
-                context.CardPlayed.Behaviors.Get<Warrior>().Attack.AddModifierToTail(m_attackMod);
-                context.CardPlayed.Behaviors.Get<Warrior>().Defense.AddModifierToTail(m_defenseMod);
+                context.Game.IssueCommands(
+                    new Commands.SendBehaviorMessage
+                    {
+                        Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
+                        Message = "AttackModifiers",
+                        Args = new object[] { "add", m_attackMod }
+                    },
+                    new Commands.SendBehaviorMessage
+                    {
+                        Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
+                        Message = "DefenseModifiers",
+                        Args = new object[] { "add", m_defenseMod }
+                    });
             }
         }
 
-        public void Trigger(Triggers.CardLeftBattlefieldContext context)
+        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
         {
-            if (context.CardToLeft == Host)
+            if (!context.Command.LeftBattlefield)
+            {
+                return;
+            }
+
+            if (context.Command.Target == Host)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
                     if (card.Behaviors.Get<Warrior>() != null)
                     {
-                        card.Behaviors.Get<Warrior>().Attack.RemoveModifier(m_attackMod);
-                        card.Behaviors.Get<Warrior>().Defense.RemoveModifier(m_defenseMod);
+                        context.Game.IssueCommands(
+                            new Commands.SendBehaviorMessage
+                            {
+                                Target = card.Behaviors.Get<Warrior>(),
+                                Message = "AttackModifiers",
+                                Args = new object[] { "remove", m_attackMod }
+                            },
+                            new Commands.SendBehaviorMessage
+                            {
+                                Target = card.Behaviors.Get<Warrior>(),
+                                Message = "DefenseModifiers",
+                                Args = new object[] { "remove", m_defenseMod }
+                            });
                     }
                 }
-                return;
             }
-            if (context.CardToLeft.Owner == Host.Owner
-                && IsOnBattlefield)
+            else if (context.Command.Target.Owner == Host.Owner
+                     && IsOnBattlefield)
             {
-                context.CardToLeft.Behaviors.Get<Warrior>().Attack.RemoveModifier(m_attackMod);
-                context.CardToLeft.Behaviors.Get<Warrior>().Defense.RemoveModifier(m_defenseMod);
+                context.Game.IssueCommands(
+                    new Commands.SendBehaviorMessage
+                    {
+                        Target = context.Command.Target.Behaviors.Get<Warrior>(),
+                        Message = "AttackModifiers",
+                        Args = new object[] { "remove", m_attackMod }
+                    },
+                    new Commands.SendBehaviorMessage
+                    {
+                        Target = context.Command.Target.Behaviors.Get<Warrior>(),
+                        Message = "DefenseModifiers",
+                        Args = new object[] { "remove", m_defenseMod }
+                    });
             }
         }
-
 
         [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpAndDefenseUp), DefaultName = "秘药")]
         public class ModelType : BehaviorModel

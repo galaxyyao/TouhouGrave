@@ -18,28 +18,47 @@ namespace TouhouSpring
 
                 if (blockers.Count == 0)
                 {
-                    UpdateHealth(OpponentPlayer, -attackerWarriorBhv.Attack, attackerWarriorBhv);
-                    attackerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
+                    IssueCommands(
+                        new Commands.DealDamageToPlayer
+                        {
+                            Player = OpponentPlayer,
+                            DamageToDeal = attackerWarriorBhv.Attack,
+                            Cause = attackerWarriorBhv
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = attackerWarriorBhv,
+                            Message = "GoCoolingDown"
+                        });
                 }
                 else if (blockers.Count == 1)
                 {
                     var blocker = blockers[0];
                     var blockerWarriorBhv = blocker.Behaviors.Get<Behaviors.Warrior>();
 
-                    var preDamageOnAttacker = new Triggers.PreCardDamageContext(this, attacker, blockerWarriorBhv.Attack, blockerWarriorBhv);
-                    var preDamageOnBlocker = new Triggers.PreCardDamageContext(this, blocker, attackerWarriorBhv.Attack, attackerWarriorBhv);
-
-                    TriggerGlobal(preDamageOnAttacker);
-                    TriggerGlobal(preDamageOnBlocker);
-
-                    attackerWarriorBhv.AccumulatedDamage += preDamageOnAttacker.DamageToDeal;
-                    blockerWarriorBhv.AccumulatedDamage += preDamageOnBlocker.DamageToDeal;
-
-                    TriggerGlobal(new Triggers.PostCardDamagedContext(this, attacker, preDamageOnAttacker.DamageToDeal, blockerWarriorBhv));
-                    TriggerGlobal(new Triggers.PostCardDamagedContext(this, blocker, preDamageOnBlocker.DamageToDeal, attackerWarriorBhv));
-
-                    attackerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
-                    blockerWarriorBhv.State = Behaviors.WarriorState.CoolingDown;
+                    IssueCommands(
+                        new Commands.DealDamageToCard
+                        {
+                            Target = attacker,
+                            Cause = blockerWarriorBhv,
+                            DamageToDeal = blockerWarriorBhv.Attack
+                        },
+                        new Commands.DealDamageToCard
+                        {
+                            Target = blocker,
+                            Cause = attackerWarriorBhv,
+                            DamageToDeal = attackerWarriorBhv.Attack
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = attackerWarriorBhv,
+                            Message = "GoCoolingDown"
+                        },
+                        new Commands.SendBehaviorMessage
+                        {
+                            Target = blockerWarriorBhv,
+                            Message = "GoCoolingDown"
+                        });
                 }
                 //else if (blockers.Count == 2)
                 //{
@@ -91,6 +110,8 @@ namespace TouhouSpring
                     throw new NotSupportedException("Currently only two blockers can be declared on one single attacker.");
                 }
             }
+
+            FlushCommandQueue();
         }
 
         private void ResolveBattlefieldCards()
@@ -105,25 +126,14 @@ namespace TouhouSpring
                     var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                     if (warrior.Defense - warrior.AccumulatedDamage <= 0)
                     {
-                        DestroyCard(card);
-                        i--;
+                        IssueCommands(new Commands.Kill
+                        {
+                            Target = card
+                        });
                     }
                 }
             }
-        }
-
-        private void ResetAccumulatedDamage()
-        {
-            foreach (var player in Players)
-            {
-                foreach (var card in player.m_battlefieldCards)
-                {
-                    if (!card.Behaviors.Has<Behaviors.Warrior>())
-                        continue;
-                    var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                    warrior.AccumulatedDamage = 0;
-                }
-            }
+            FlushCommandQueue();
         }
     }
 }

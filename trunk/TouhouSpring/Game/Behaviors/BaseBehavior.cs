@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
 	/// <summary>
 	/// The base class for all behaviors
 	/// </summary>
-	public abstract class BaseBehavior<T> : IBehavior
+	public abstract class BaseBehavior<T> : IInternalBehavior
         where T : BehaviorModel
 	{
 		/// <summary>
@@ -38,7 +38,7 @@ namespace TouhouSpring.Behaviors
             get { return Model; }
         }
 
-        public void Initialize(BehaviorModel model, bool persistent)
+        void IInternalBehavior.Initialize(BehaviorModel model, bool persistent)
         {
             if (model == null)
             {
@@ -62,22 +62,22 @@ namespace TouhouSpring.Behaviors
         /// Called by BaseCard for binding this behavior to it.
         /// </summary>
         /// <param name="host">The hosting card</param>
-        public void Bind(BaseCard host)
+        void IInternalBehavior.Bind(BaseCard host)
         {
             Debug.Assert(Host == null && host != null);
             Host = host;
-            OnBind();
         }
 
         /// <summary>
         /// Called by BaseCard for unbinding this behavior from it.
         /// </summary>
-        public void Unbind()
+        void IInternalBehavior.Unbind()
         {
             Debug.Assert(Host != null);
-            OnUnbind();
             Host = null;
         }
+
+        public virtual void OnMessage(string message, object[] args) { }
 
 		protected bool IsOnBattlefield
 		{
@@ -85,11 +85,5 @@ namespace TouhouSpring.Behaviors
 		}
 
         protected virtual void OnInitialize() { }
-
-		/// <summary>
-		/// Overriden by derivatives to customize binding/unbinding.
-		/// </summary>
-		protected virtual void OnBind() { }
-		protected virtual void OnUnbind() { }
 	}
 }

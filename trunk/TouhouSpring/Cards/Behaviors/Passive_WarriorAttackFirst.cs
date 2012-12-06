@@ -7,30 +7,41 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorAttackFirst :
         BaseBehavior<Passive_WarriorAttackFirst.ModelType>,
-        ITrigger<Triggers.PostCardDamagedContext>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        IEpilogTrigger<Commands.DealDamageToCard>,
+        IEpilogTrigger<Commands.EndTurn>
     {
-        private Func<int, int> attackFirstCompensation = null;
+        private Warrior.ValueModifier attackFirstCompensation = null;
 
-        public void Trigger(Triggers.PostCardDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (context.Cause == Host.Behaviors.Get<Warrior>())
+            if (context.Command.Cause == Host.Behaviors.Get<Warrior>())
             {
-                var warriorAttackedBhv=context.CardDamaged.Behaviors.Get<Warrior>();
+                // TODO: looks like this impl won't work...
+                var warriorAttackedBhv = context.Command.Target.Behaviors.Get<Warrior>();
                 if (warriorAttackedBhv.AccumulatedDamage >= warriorAttackedBhv.Defense)
                 {
-                    int damageWontDeal = context.CardDamaged.Behaviors.Get<Warrior>().Attack;
-                    attackFirstCompensation = x => x + damageWontDeal;
-                    Host.Behaviors.Get<Warrior>().Defense.AddModifierToTail(attackFirstCompensation);
+                    int damageWontDeal = context.Command.Target.Behaviors.Get<Warrior>().Attack;
+                    attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, damageWontDeal);
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "DefenseModifiers",
+                        Args = new object[] { "add", attackFirstCompensation }
+                    });
                 }
             }
         }
 
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
             if (attackFirstCompensation != null)
             {
-                Host.Behaviors.Get<Warrior>().Defense.RemoveModifier(attackFirstCompensation);
+                context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                {
+                    Target = Host.Behaviors.Get<Warrior>(),
+                    Message = "DefenseModifiers",
+                    Args = new object[] { "remove", attackFirstCompensation }
+                });
                 attackFirstCompensation = null;
             }
         }

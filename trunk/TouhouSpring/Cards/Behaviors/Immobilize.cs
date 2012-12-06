@@ -5,14 +5,22 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-	public class Immobilize : SimpleBehavior<Immobilize>, ITrigger<Triggers.PlayerTurnStartedContext>
-	{
-		public void Trigger(Triggers.PlayerTurnStartedContext context)
-		{
-			if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
-			{
-				context.Game.SetWarriorState(Host, WarriorState.CoolingDown);
-			}
-		}
-	}
+    public class Immobilize : SimpleBehavior<Immobilize>,
+        IEpilogTrigger<Commands.StartTurn>
+    {
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
+        {
+            if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
+            {
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoCoolingDown"
+                    });
+                }
+            }
+        }
+    }
 }

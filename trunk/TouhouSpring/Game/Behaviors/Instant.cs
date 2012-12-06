@@ -5,13 +5,18 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Instant : BaseBehavior<Instant.ModelType>, ITrigger<Triggers.PostCardPlayedContext>
+    public class Instant : BaseBehavior<Instant.ModelType>,
+        IEpilogTrigger<Commands.PlayCard>
     {
-        public void Trigger(Triggers.PostCardPlayedContext context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardPlayed == Host)
+            if (context.Command.CardToPlay == Host)
             {
-                context.Game.DestroyCard(Host);
+                context.Game.IssueCommands(new Commands.Kill
+                {
+                    Target = Host,
+                    Cause = this
+                });
             }
         }
 

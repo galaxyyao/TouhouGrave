@@ -7,25 +7,31 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_WarriorDefenseDownWhenAttacked
         : BaseBehavior<Passive_WarriorDefenseDownWhenAttacked.ModelType>,
-        ITrigger<Triggers.PostCardDamagedContext>,
-        ITrigger<Triggers.PlayerTurnEndedContext>
+        IEpilogTrigger<Commands.DealDamageToCard>,
+        IEpilogTrigger<Commands.EndTurn>
     {
         private bool isBlockedLastRound = false;
 
-        public void Trigger(Triggers.PostCardDamagedContext context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
         {
-            if (context.CardDamaged == Host
+            if (context.Command.Target == Host
                 && context.Game.PlayerPlayer != Host.Owner)
                 isBlockedLastRound = true;
         }
 
-        public void Trigger(Triggers.PlayerTurnEndedContext context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
         {
-            if (context.Game.PlayerPlayer != Host.Owner && isBlockedLastRound)
+            if (context.Game.PlayerPlayer != Host.Owner
+                && Host.Behaviors.Has<Warrior>()
+                && isBlockedLastRound)
             {
                 isBlockedLastRound = false;
-                Func<int, int> defenseMod = y => y - 1;
-                Host.Behaviors.Get<Warrior>().Defense.AddModifierToTail(defenseMod);
+                context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                {
+                    Target = Host.Behaviors.Get<Warrior>(),
+                    Message = "DefenseModifiers",
+                    Args = new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1) }
+                });
             }
         }
 

@@ -6,13 +6,20 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class Hero : BaseBehavior<Hero.ModelType>,
-        ITrigger<Triggers.AttackPhaseStartedContext>
+        IEpilogTrigger<Commands.StartAttackPhase>
     {
-        public void Trigger(Triggers.AttackPhaseStartedContext context)
+        void IEpilogTrigger<Commands.StartAttackPhase>.Run(CommandContext<Commands.StartAttackPhase> context)
         {
             if (context.Game.Round == 1)
             {
-                Host.Behaviors.Get<Warrior>().State = WarriorState.CoolingDown;
+                if (Host.Behaviors.Has<Warrior>())
+                {
+                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
+                    {
+                        Target = Host.Behaviors.Get<Warrior>(),
+                        Message = "GoCoolingDown"
+                    });
+                }
             }
         }
 

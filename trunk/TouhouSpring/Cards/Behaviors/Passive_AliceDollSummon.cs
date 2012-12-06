@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TouhouSpring.Triggers;
 
 namespace TouhouSpring.Behaviors
 {
     public class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
-        ITrigger<PlayerTurnStartedContext>
+        IEpilogTrigger<Commands.StartTurn>
     {
-        public void Trigger(PlayerTurnStartedContext context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
         {
             if (context.Game.InPlayerPhases && IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
             {
                 1.Repeat(i =>
                 {
-                    var card = new BaseCard(Model.SummonType.Target, Host.Owner);
-                    context.Game.PlayCard(card);
+                    context.Game.IssueCommands(new Commands.Summon
+                    {
+                        Model = Model.SummonType.Target,
+                        Owner = Host.Owner
+                    });
                 });
             }
         }

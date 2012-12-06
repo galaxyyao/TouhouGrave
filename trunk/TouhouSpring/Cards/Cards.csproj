@@ -40,21 +40,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Behaviors\Deprecated\Boost.cs" />
+    <None Include="Behaviors\Deprecated\PenetrateEquip.cs" />
+    <None Include="Behaviors\Deprecated\Ripples.cs" />
+    <None Include="Behaviors\Deprecated\Sacrifice.cs" />
+    <None Include="Behaviors\Deprecated\Silence.cs" />
+    <None Include="Behaviors\Deprecated\Summon_PostPlay.cs" />
+    <None Include="Behaviors\Deprecated\TheWorld.cs" />
+    <None Include="Behaviors\Deprecated\CautionaryBorder.cs" />
+    <None Include="Behaviors\Deprecated\IceWall.cs" />
+    <None Include="Behaviors\Deprecated\Baga.cs" />
+    <None Include="Behaviors\Deprecated\Freeze.cs" />
+    <None Include="Behaviors\Deprecated\Steal.cs" />
+    <None Include="Behaviors\Deprecated\RedFog.cs" />
+    <None Include="Behaviors\Deprecated\JackTheRipper.cs" />
+    <None Include="Behaviors\Deprecated\Penetrate.cs" />
+    <None Include="Behaviors\Deprecated\LowWit.cs" />
+    <None Include="Behaviors\Deprecated\MasterSpark.cs" />
+    <None Include="Behaviors\Deprecated\Scapegoat.cs" />
+    <None Include="Behaviors\Deprecated\CardTransfer.cs" />
+    <Compile Include="Behaviors\Enhance.cs" />
+    <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
-    <Compile Include="Behaviors\AttackModifier.cs" />
-    <Compile Include="Behaviors\Baga.cs" />
-    <Compile Include="Behaviors\Boost.cs" />
-    <Compile Include="Behaviors\CardTransfer.cs" />
-    <Compile Include="Behaviors\CautionaryBorder.cs" />
-    <Compile Include="Behaviors\DefenseModifier.cs" />
     <Compile Include="Behaviors\Environment.cs" />
-    <Compile Include="Behaviors\Freeze.cs" />
-    <Compile Include="Behaviors\IceWall.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
-    <Compile Include="Behaviors\JackTheRipper.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />
-    <Compile Include="Behaviors\LowWit.cs" />
     <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
     <Compile Include="Behaviors\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
     <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
@@ -72,21 +83,10 @@
     <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
-    <Compile Include="Behaviors\MasterSpark.cs" />
-    <Compile Include="Behaviors\Penetrate.cs" />
-    <Compile Include="Behaviors\PenetrateEquip.cs" />
-    <Compile Include="Behaviors\PhaseSpecific.cs" />
-    <Compile Include="Behaviors\RedFog.cs" />
-    <Compile Include="Behaviors\Ripples.cs" />
-    <Compile Include="Behaviors\Sacrifice.cs" />
-    <Compile Include="Behaviors\Scapegoat.cs" />
-    <Compile Include="Behaviors\Silence.cs" />
     <Compile Include="Behaviors\SkillCharge.cs" />
+    <Compile Include="Behaviors\SkillMustBeCharged.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />
-    <Compile Include="Behaviors\Steal.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
-    <Compile Include="Behaviors\Summon_PostPlay.cs" />
-    <Compile Include="Behaviors\TheWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

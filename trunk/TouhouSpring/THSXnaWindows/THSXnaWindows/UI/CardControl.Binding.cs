@@ -12,10 +12,10 @@ namespace TouhouSpring.UI
 			switch (id)
 			{
 				case "Card.Attack":
-					replacement = Card.Behaviors.Has<Behaviors.Warrior>() ? Card.Behaviors.Get<Behaviors.Warrior>().Attack.FinalValue.ToString() : "?";
+					replacement = Card.Behaviors.Has<Behaviors.Warrior>() ? Card.Behaviors.Get<Behaviors.Warrior>().Attack.ToString() : "?";
 					break;
 				case "Card.Defense":
-					replacement = Card.Behaviors.Has<Behaviors.Warrior>() ? Card.Behaviors.Get<Behaviors.Warrior>().Defense.FinalValue.ToString() : "?";
+					replacement = Card.Behaviors.Has<Behaviors.Warrior>() ? Card.Behaviors.Get<Behaviors.Warrior>().Defense.ToString() : "?";
 					break;
 				case "Card.Description":
 					replacement = Card.Model.Description;

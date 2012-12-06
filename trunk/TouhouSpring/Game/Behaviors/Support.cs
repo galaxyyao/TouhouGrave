@@ -6,11 +6,14 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class Support : BaseBehavior<Support.ModelType>,
-        ITrigger<Triggers.PreCardPlayContext>
+        ISetupTrigger<Commands.PlayCard>,
+        IPrologTrigger<Commands.PlayCard>
     {
-        public void Trigger(Triggers.PreCardPlayContext context)
+        private bool m_chargeSkill = false;
+
+        CommandResult ISetupTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
-            if (context.CardToPlay == Host)
+            if (context.Command.CardToPlay == Host)
             {
                 //TODO: add logic (what kind of logic?)
                 var cardsOnBattlefield = context.Game.PlayerPlayer.CardsOnBattlefield;
@@ -22,14 +25,32 @@ namespace TouhouSpring.Behaviors
                         , Interactions.MessageBox.Button.Yes | Interactions.MessageBox.Button.No).Run();
                     if (result == Interactions.MessageBox.Button.Yes)
                     {
-                        context.Game.PlayerPlayer.IsSkillCharged = true;
-                        context.CardToPlay.Behaviors.Add(new Instant());
+                        m_chargeSkill = true;
                     }
                     else
                     {
-                        context.Cancel = true;
+                        return CommandResult.Cancel();
                     }
                 }
+            }
+
+            return CommandResult.Pass;
+        }
+
+        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        {
+            if (context.Command.CardToPlay == Host && m_chargeSkill)
+            {
+                context.Game.IssueCommands(
+                    new Commands.Charge
+                    {
+                        Player = Host.Owner
+                    },
+                    new Commands.AddBehavior
+                    {
+                        Target = context.Command.CardToPlay,
+                        Behavior = new Instant()
+                    });
             }
         }
 
