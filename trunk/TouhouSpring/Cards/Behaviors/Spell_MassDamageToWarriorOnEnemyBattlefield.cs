@@ -9,29 +9,20 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_MassDamageToWarriorOnEnemyBattlefield.ModelType>,
         ICastableSpell
     {
-        public bool Cast(Game game, out string reason)
+        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
         {
-            if (!game.PlayerPlayer.IsSkillCharged)
-            {
-                reason = "主角技能还没有被充能！";
-                return false;
-            }
-
-            var warriors = (from card in game.OpponentPlayer.CardsOnBattlefield
+            var warriors = (from card in context.Game.OpponentPlayer.CardsOnBattlefield
                             where card.Behaviors.Has<Warrior>() select card).ToArray();
 
             foreach (var warrior in warriors)
             {
-                game.IssueCommands(new Commands.DealDamageToCard
+                context.Game.IssueCommands(new Commands.DealDamageToCard
                 {
                     Target = warrior,
                     Cause = this,
                     DamageToDeal = Model.Damage
                 });
             }
-
-            reason = String.Empty;
-            return true;
         }
 
         [BehaviorModel(typeof(Spell_MassDamageToWarriorOnEnemyBattlefield), DefaultName = "Master Spark")]

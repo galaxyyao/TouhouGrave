@@ -65,6 +65,7 @@
     <Compile Include="CardModelReference.cs" />
     <Compile Include="CommandContext.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
+    <Compile Include="Commands\CastSpell.cs" />
     <Compile Include="Commands\HealPlayer.cs" />
     <Compile Include="Commands\DealDamageToCard.cs" />
     <Compile Include="Commands\Kill.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="Game.Controllers.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
-    <Compile Include="Game.Manipulating.cs" />
     <Compile Include="Game.Messaging.cs" />
     <Compile Include="Game.Phase.cs" />
     <Compile Include="Game.Players.cs" />

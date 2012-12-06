@@ -16,20 +16,11 @@ namespace TouhouSpring.Behaviors
         private Player m_currentPlayer;
         private Player m_spellCaster;
 
-        public bool Cast(Game game, out string reason)
+        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
         {
-            if (!game.PlayerPlayer.IsSkillCharged)
-            {
-                reason = "主角技能还没有被充能！";
-                return false;
-            }
-
             m_isProtected = true;
-            m_currentPlayer = game.PlayerPlayer;
+            m_currentPlayer = context.Game.PlayerPlayer;
             m_spellCaster = Host.Owner;
-
-            reason = String.Empty;
-            return true;
         }
 
         void IPrologTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)

@@ -52,6 +52,21 @@ namespace TouhouSpring
                     new Interactions.NotifyCardEvent(this, "OnCardDestroyed", card).Run();
                 }
             }
+            else if (context.Command is Commands.CastSpell)
+            {
+                var spell = (context.Command as Commands.CastSpell).Spell;
+                if (spell.Host.Owner == Player)
+                {
+                    if (!context.Result.Canceled)
+                    {
+                        new Interactions.NotifySpellEvent(this, "OnSpellCasted", spell).Run();
+                    }
+                    else
+                    {
+                        new Interactions.NotifySpellEvent(this, "OnSpellCastCanceled", spell, context.Result.Reason).Run();
+                    }
+                }
+            }
         }
     }
 }

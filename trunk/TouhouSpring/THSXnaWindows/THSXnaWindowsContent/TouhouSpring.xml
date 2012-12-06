@@ -326,6 +326,10 @@
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillMustBeCharged+ModelType">
+          <Name>SkillMustBeCharged</Name>
+          <Discharge>true</Discharge>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -365,6 +369,10 @@
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillMustBeCharged+ModelType">
+          <Name>SkillMustBeCharged</Name>
+          <Discharge>true</Discharge>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -403,6 +411,10 @@
         <Behavior Type="TouhouSpring.Behaviors.Spell_DamageDirectToPlayer+ModelType">
           <Name>五道难题</Name>
           <Damage>5</Damage>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SkillMustBeCharged+ModelType">
+          <Name>SkillMustBeCharged</Name>
+          <Discharge>true</Discharge>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>

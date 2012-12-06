@@ -84,6 +84,7 @@
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Behaviors\SkillCharge.cs" />
+    <Compile Include="Behaviors\SkillMustBeCharged.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

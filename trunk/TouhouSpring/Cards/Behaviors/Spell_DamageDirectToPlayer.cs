@@ -9,22 +9,14 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_DamageDirectToPlayer.ModelType>,
         ICastableSpell
     {
-        public bool Cast(Game game, out string reason)
+        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
         {
-            if (!game.PlayerPlayer.IsSkillCharged)
+            context.Game.IssueCommands(new Commands.DealDamageToPlayer
             {
-                reason = "主角技能还没有被充能！";
-                return false;
-            }
-
-            game.IssueCommands(new Commands.DealDamageToPlayer
-            {
-                Player = game.OpponentPlayer,
+                Player = context.Game.OpponentPlayer, // TODO: opponent of Host.Owner
                 DamageToDeal = Model.Damage,
                 Cause = this
             });
-            reason = String.Empty;
-            return true;
         }
 
         [BehaviorModel(typeof(Spell_DamageDirectToPlayer), DefaultName = "五道难题")]

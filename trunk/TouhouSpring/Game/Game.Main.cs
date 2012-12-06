@@ -49,7 +49,7 @@ namespace TouhouSpring
                     {
                         var spellToCast = (Behaviors.ICastableSpell)result.Data;
                         Debug.Assert(spellToCast.Host.Owner == PlayerPlayer);
-                        CastSpell(spellToCast);
+                        IssueCommandsAndFlush(new Commands.CastSpell { Spell = spellToCast });
                     }
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
