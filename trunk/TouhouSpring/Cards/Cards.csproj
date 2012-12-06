@@ -58,11 +58,11 @@
     <None Include="Behaviors\Deprecated\LowWit.cs" />
     <None Include="Behaviors\Deprecated\MasterSpark.cs" />
     <None Include="Behaviors\Deprecated\Scapegoat.cs" />
+    <None Include="Behaviors\Deprecated\CardTransfer.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
-    <Compile Include="Behaviors\CardTransfer.cs" />
     <Compile Include="Behaviors\Environment.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />

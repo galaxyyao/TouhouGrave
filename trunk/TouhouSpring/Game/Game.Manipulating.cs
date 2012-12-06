@@ -26,12 +26,5 @@ namespace TouhouSpring
 				m_controllers.ForEach(c => c.InternalOnSpellCastCanceled(spell, reason));
 			}
 		}
-
-		public void TransferCard(BaseCard card, Player fromPlayer, Player toPlayer)
-		{
-			fromPlayer.m_battlefieldCards.Remove(card);
-			toPlayer.m_battlefieldCards.Add(card);
-			card.Owner = toPlayer;
-		}
 	}
 }
