@@ -27,6 +27,11 @@ namespace TouhouSpring.Commands
             get; set;
         }
 
+        public BaseCard CardSummoned
+        {
+            get; private set;
+        }
+
         public void Validate(Game game)
         {
             if (Model == null)
@@ -45,8 +50,8 @@ namespace TouhouSpring.Commands
 
         public void RunMain(Game game)
         {
-            BaseCard summoned = new BaseCard(Model, Owner);
-            Owner.m_battlefieldCards.Add(summoned);
+            CardSummoned = new BaseCard(Model, Owner);
+            Owner.m_battlefieldCards.Add(CardSummoned);
         }
     }
 }

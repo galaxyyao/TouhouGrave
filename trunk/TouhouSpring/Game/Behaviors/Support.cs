@@ -41,14 +41,16 @@ namespace TouhouSpring.Behaviors
         {
             if (context.Command.CardToPlay == Host && m_chargeSkill)
             {
-                throw new NotImplementedException();
-                // TODO: issue commands for doing the following:
-                //context.Game.PlayerPlayer.IsSkillCharged = true;
-                context.Game.IssueCommands(new Commands.AddBehavior
-                {
-                    Target = context.Command.CardToPlay,
-                    Behavior = new Instant()
-                });
+                context.Game.IssueCommands(
+                    new Commands.Charge
+                    {
+                        Player = Host.Owner
+                    },
+                    new Commands.AddBehavior
+                    {
+                        Target = context.Command.CardToPlay,
+                        Behavior = new Instant()
+                    });
             }
         }
 

@@ -36,6 +36,14 @@ namespace TouhouSpring
                     }
                 }
             }
+            else if (context.Command is Commands.Summon && !context.Result.Canceled)
+            {
+                var card = (context.Command as Commands.Summon).CardSummoned;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent(this, "OnCardSummoned", card).Run();
+                }
+            }
             else if (context.Command is Commands.DealDamageToPlayer && !context.Result.Canceled)
             {
                 var cmd = context.Command as Commands.DealDamageToPlayer;

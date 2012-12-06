@@ -64,6 +64,9 @@ namespace TouhouSpring
                             GameApp.Service<GameUI>().BlockerPhase_ClearSelected();
                         }
                         break;
+                    case "OnCardSummoned":
+                        GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
+                        break;
                     default:
                         break;
                 }
