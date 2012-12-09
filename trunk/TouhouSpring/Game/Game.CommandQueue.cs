@@ -40,6 +40,16 @@ namespace TouhouSpring
             }
         }
 
+        internal bool IsCardPlayable(BaseCard card)
+        {
+            Debug.Assert(RunningCommand == null);
+            var ctx = ConstructCommandContext(new Commands.PlayCard { CardToPlay = card });
+            RunningCommand = ctx;
+            bool ret = !ctx.RunPrerequisite().Canceled;
+            RunningCommand = null;
+            return ret;
+        }
+
         private void IssueCommand(ICommand command)
         {
             if (command == null)
@@ -62,10 +72,14 @@ namespace TouhouSpring
             }
 
             // enqueue a new context and chain with the previous one
+            m_pendingCommands.Enqueue(ConstructCommandContext(command));
+        }
+
+        private IRunnableCommandContext ConstructCommandContext(ICommand command)
+        {
             var cmdCtxType = typeof(CommandContext<>).MakeGenericType(command.GetType());
             var cmdCtxCtor = cmdCtxType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance)[0];
-            var cmdCtx = cmdCtxCtor.Invoke(new object[] { this, command, RunningCommand });
-            m_pendingCommands.Enqueue(cmdCtx as IRunnableCommandContext);
+            return cmdCtxCtor.Invoke(new object[] { this, command, RunningCommand }) as IRunnableCommandContext;
         }
 
         public void Resolve()

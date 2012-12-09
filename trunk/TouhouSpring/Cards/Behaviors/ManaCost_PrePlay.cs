@@ -7,14 +7,13 @@ namespace TouhouSpring.Behaviors
 {
 	public class ManaCost_PrePlay : BaseBehavior<ManaCost_PrePlay.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        IPrologTrigger<Commands.PlayCard>,
-        IPlayable
+        IPrologTrigger<Commands.PlayCard>
 	{
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
             if (context.Command.CardToPlay == Host)
             {
-                if (!IsPlayable(context.Game))
+                if (Host.Owner.FreeMana < Model.Cost)
                 {
                     return CommandResult.Cancel("Insufficient mana.");
                 }
@@ -36,11 +35,6 @@ namespace TouhouSpring.Behaviors
                 });
             }
         }
-
-		public bool IsPlayable(Game game)
-		{
-			return Host.Owner.FreeMana >= Model.Cost;
-		}
 
 		[BehaviorModel(typeof(ManaCost_PrePlay))]
 		public class ModelType : BehaviorModel

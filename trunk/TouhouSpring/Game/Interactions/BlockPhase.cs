@@ -103,7 +103,7 @@ namespace TouhouSpring.Interactions
 
         private IEnumerable<BaseCard> GetPlayableCandidates()
         {
-            return Controller.Player.CardsOnHand.Where(card => !card.Behaviors.OfType<Behaviors.IPlayable>().Any(p => !p.IsPlayable(Controller.Game)));
+            return Controller.Player.CardsOnHand.Where(card => Controller.Game.IsCardPlayable(card));
         }
 
         private void Validate(Result result)

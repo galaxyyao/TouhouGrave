@@ -110,6 +110,25 @@ namespace TouhouSpring
             Game.Resolve();
         }
 
+        CommandResult IRunnableCommandContext.RunPrerequisite()
+        {
+            Phase = CommandPhase.Prerequisite;
+            foreach (var trigger in EnumerateCards().SelectMany(card =>
+                                       card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
+                                       ).ToList())
+            {
+                var result = trigger.Run(this);
+                if (result.Canceled)
+                {
+                    Game.ClearReservations();
+                    return result;
+                }
+            }
+
+            Game.ClearReservations();
+            return CommandResult.Pass;
+        }
+
         private IEnumerable<BaseCard> EnumerateCards()
         {
             if (Command is Commands.PlayCard && Phase < CommandPhase.Epilog)

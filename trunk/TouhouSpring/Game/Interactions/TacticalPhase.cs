@@ -136,7 +136,7 @@ namespace TouhouSpring.Interactions
 
         private static IEnumerable<BaseCard> ComputeFromSet(BaseController controller)
         {
-            return GetFromSet(controller.Player).Where(card => !card.Behaviors.OfType<Behaviors.IPlayable>().Any(p => !p.IsPlayable(controller.Game)));
+            return GetFromSet(controller.Player).Where(card => controller.Game.IsCardPlayable(card));
         }
 
         private static IEnumerable<BaseCard> GetFromSet(Player player)

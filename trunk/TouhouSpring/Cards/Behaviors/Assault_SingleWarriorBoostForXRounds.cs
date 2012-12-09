@@ -9,8 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Assault_SingleWarriorBoostForXRounds.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>,
         ISetupTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>,
-        IPlayable
+        IEpilogTrigger<Commands.PlayCard>
     {
         private BaseCard m_castTarget;
 
@@ -75,11 +74,6 @@ namespace TouhouSpring.Behaviors
                     Behavior = lasting
                 });
             }
-        }
-
-        public bool IsPlayable(Game game)
-        {
-            return Host.Owner.CardsOnBattlefield.Any(c => c.Behaviors.Has<Warrior>());
         }
 
         [BehaviorModel(typeof(Assault_SingleWarriorBoostForXRounds), DefaultName = "鬼神")]

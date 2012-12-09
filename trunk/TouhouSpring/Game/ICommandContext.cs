@@ -40,5 +40,6 @@ namespace TouhouSpring
     internal interface IRunnableCommandContext : ICommandContext
     {
         void Run();
+        CommandResult RunPrerequisite();
     }
 }

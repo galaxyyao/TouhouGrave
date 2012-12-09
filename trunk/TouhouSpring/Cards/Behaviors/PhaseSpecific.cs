@@ -6,7 +6,7 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class PhaseSpecific : BaseBehavior<PhaseSpecific.ModelType>,
-        IPrerequisiteTrigger<Commands.PlayCard>, IPlayable
+        IPrerequisiteTrigger<Commands.PlayCard>
     {
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
         {
@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public bool IsPlayable(Game game)
+        private bool IsPlayable(Game game)
         {
             return Model.TacticalPhase && game.CurrentPhase == "Tactical" && game.PlayerPlayer == Host.Owner
                    || Model.BlockPhase && game.CurrentPhase == "Combat/Block" && game.OpponentPlayer == Host.Owner;
