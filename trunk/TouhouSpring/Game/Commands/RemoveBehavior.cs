@@ -46,7 +46,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Target.Behaviors.Add(Behavior);
+            Target.Behaviors.Remove(Behavior);
         }
     }
 }
