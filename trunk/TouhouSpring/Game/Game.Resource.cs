@@ -30,7 +30,7 @@ namespace TouhouSpring
         public void ReserveHealth(Player player, int amount)
         {
             if (RunningCommand == null
-                || RunningCommand.Phase != CommandPhase.Prerequisite && RunningCommand.Phase != CommandPhase.Setup)
+                || RunningCommand.ExecutionPhase != Commands.CommandPhase.Prerequisite && RunningCommand.ExecutionPhase != Commands.CommandPhase.Setup)
             {
                 throw new InvalidOperationException("Health can only be reserved at command's prerequisite or setup phase.");
             }
@@ -57,7 +57,7 @@ namespace TouhouSpring
         public void ReserveMana(Player player, int amount)
         {
             if (RunningCommand == null
-                || RunningCommand.Phase != CommandPhase.Prerequisite && RunningCommand.Phase != CommandPhase.Setup)
+                || RunningCommand.ExecutionPhase != Commands.CommandPhase.Prerequisite && RunningCommand.ExecutionPhase != Commands.CommandPhase.Setup)
             {
                 throw new InvalidOperationException("Mana can only be reserved at command's prerequisite or setup phase.");
             }

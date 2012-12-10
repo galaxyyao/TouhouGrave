@@ -8,36 +8,35 @@ namespace TouhouSpring.Commands
     /// <summary>
     /// Shuffle a player's library
     /// </summary>
-    public class ShuffleLibrary : ICommand
+    public class ShuffleLibrary : BaseCommand
     {
-        public string Token
+        public Player Player
         {
-            get { return "ShuffleLibrary"; }
+            get; private set;
         }
 
-        /// <summary>
-        /// The player whose library is going to be shuffled
-        /// </summary>
-        public Player PlayerShuffling
+        public ShuffleLibrary(Player player)
         {
-            get; set;
-        }
-
-        public void Validate(Game game)
-        {
-            if (PlayerShuffling == null)
+            if (player == null)
             {
-                throw new CommandValidationFailException("PlayerShuffling can't be null.");
+                throw new ArgumentNullException("player");
             }
-            else if (!game.Players.Contains(PlayerShuffling))
-            {
-                throw new CommandValidationFailException("The Player object is not registered in game.");
-            }
+
+            Player = player;
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnIssue()
         {
-            PlayerShuffling.m_library.Shuffle(game.Random);
+            Validate(Player);
+        }
+
+        internal override void ValidateOnRun()
+        {
+        }
+
+        internal override void RunMain()
+        {
+            Player.m_library.Shuffle(Game.Random);
         }
     }
 }

@@ -31,15 +31,11 @@ namespace TouhouSpring.Behaviors
             CleanUps = new List<IBehavior>();
         }
 
-        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner && --Duration == 0)
+            if (IsOnBattlefield && command.Game.PlayerPlayer == Host.Owner && --Duration == 0)
             {
-                CleanUps.ForEach(bhv => context.Game.IssueCommands(new Commands.RemoveBehavior
-                {
-                    Target = Host,
-                    Behavior = bhv
-                }));
+                CleanUps.ForEach(bhv => command.Game.IssueCommands(new Commands.RemoveBehavior(Host, bhv)));
             }
         }
     }

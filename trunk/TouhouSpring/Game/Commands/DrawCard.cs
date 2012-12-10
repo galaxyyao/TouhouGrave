@@ -9,19 +9,11 @@ namespace TouhouSpring.Commands
     /// <summary>
     /// Draw a card for the specified player.
     /// </summary>
-    public class DrawCard : ICommand
+    public class DrawCard : BaseCommand
     {
-        public string Token
+        public Player Player
         {
-            get { return "DrawCard"; }
-        }
-
-        /// <summary>
-        /// The player drawing a card
-        /// </summary>
-        public Player PlayerDrawing
-        {
-            get; set;
+            get; private set;
         }
 
         public BaseCard CardDrawn
@@ -29,23 +21,30 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public void Validate(Game game)
+        public DrawCard(Player player)
         {
-            if (PlayerDrawing == null)
+            if (player == null)
             {
-                throw new CommandValidationFailException("PlayerDrawing can't be null.");
+                throw new ArgumentNullException("player");
             }
-            else if (!game.Players.Contains(PlayerDrawing))
-            {
-                throw new CommandValidationFailException("The Player object is not registered in game.");
-            }
+
+            Player = player;
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnIssue()
         {
-            var card = PlayerDrawing.m_library.RemoveCardFromTop();
-            Debug.Assert(card != null && card.Owner == PlayerDrawing);
-            PlayerDrawing.m_handSet.Add(card);
+            Validate(Player);
+        }
+
+        internal override void ValidateOnRun()
+        {
+        }
+
+        internal override void RunMain()
+        {
+            var card = Player.m_library.RemoveCardFromTop();
+            Debug.Assert(card != null && card.Owner == Player);
+            Player.m_handSet.Add(card);
             CardDrawn = card;
         }
     }

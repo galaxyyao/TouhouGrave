@@ -5,25 +5,23 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class EndTurn : ICommand
+    public class EndTurn : BaseCommand
     {
-        public string Token
-        {
-            get { return "EndTurn"; }
-        }
-
-        public void Validate(Game game)
+        internal override void ValidateOnIssue()
         {
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
         {
-            if (game.CurrentPhase != "Combat/Resolve")
+            if (Game.CurrentPhase != "Combat/Resolve")
             {
-                throw new InvalidOperationException(String.Format("EndTurn can't be executed at the phase {0}.", game.CurrentPhase));
+                FailValidation(String.Format("EndTurn can't be executed at the phase {0}.", Game.CurrentPhase));
             }
+        }
 
-            game.PlayerPlayer.ResetManaDelta();
+        internal override void RunMain()
+        {
+            Game.PlayerPlayer.ResetManaDelta();
         }
     }
 }

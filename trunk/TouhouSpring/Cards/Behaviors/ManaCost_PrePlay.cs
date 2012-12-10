@@ -9,30 +9,26 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
 	{
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
                 if (Host.Owner.FreeMana < Model.Cost)
                 {
                     return CommandResult.Cancel("Insufficient mana.");
                 }
 
-                context.Game.ReserveMana(Host.Owner, Model.Cost);
+                command.Game.ReserveMana(Host.Owner, Model.Cost);
             }
 
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IPrologTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
-                context.Game.IssueCommands(new Commands.UpdateMana
-                {
-                    Player = Host.Owner,
-                    Amount = -Model.Cost
-                });
+                command.Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -Model.Cost));
             }
         }
 

@@ -5,49 +5,51 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class UpdateMana : ICommand
+    public class UpdateMana : BaseCommand
     {
-        public string Token
-        {
-            get { return "UpdateMana"; }
-        }
-
         public Player Player
         {
-            get; set;
+            get; private set;
         }
 
-        public int Amount
+        public int DeltaAmount
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public UpdateMana(Player player, int deltaAmount)
         {
-            if (Player == null)
+            if (player == null)
             {
-                throw new CommandValidationFailException("Player can't be null.");
+                throw new ArgumentNullException("player");
             }
-            else if (!game.Players.Contains(Player))
+
+            Player = player;
+            DeltaAmount = deltaAmount;
+        }
+
+        public void PatchDeltaAmount(int value)
+        {
+            CheckPatchable("DeltaAmount");
+            DeltaAmount = value;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Player);
+        }
+
+        internal override void ValidateOnRun()
+        {
+            if (Player.Mana + DeltaAmount < 0)
             {
-                throw new CommandValidationFailException("The Player object is not registered in game.");
-            }
-            else if (Amount == 0)
-            {
-                throw new CommandValidationFailException("Mana will not be updated.");
-            }
-            else if (Player.Mana + Amount < 0)
-            {
-                throw new CommandValidationFailException("Insufficient mana.");
+                FailValidation("Insufficient mana.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void RunMain()
         {
-            Player.Mana = Math.Min(Player.Mana + Amount, Player.Hero.Model.Mana);
+            Player.Mana = Math.Min(Player.Mana + DeltaAmount, Player.Hero.Model.Mana);
         }
     }
 }

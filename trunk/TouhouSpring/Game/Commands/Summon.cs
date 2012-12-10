@@ -8,23 +8,17 @@ namespace TouhouSpring.Commands
     /// <summary>
     /// Directly play a card onto the 
     /// </summary>
-    public class Summon : ICommand
+    public class Summon : BaseCommand
     {
-        public string Token
-        {
-            get { return "Summon"; }
-        }
-
         // TODO: change to serializable behavior ID
         public ICardModel Model
         {
-            get; set;
+            get; private set;
         }
 
-        // TODO: change to serializable behavior ID
         public Player Owner
         {
-            get; set;
+            get; private set;
         }
 
         public BaseCard CardSummoned
@@ -32,23 +26,35 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public void Validate(Game game)
+        public Summon(ICardModel model, Player owner)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+            else if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
+
+            Model = model;
+            Owner = owner;
+        }
+
+        internal override void ValidateOnIssue()
         {
             if (Model == null)
             {
-                throw new CommandValidationFailException("Card model can't be null.");
+                FailValidation("Card model can't be null.");
             }
-            else if (Owner == null)
-            {
-                throw new CommandValidationFailException("Owner can't be null.");
-            }
-            else if (!game.Players.Contains(Owner))
-            {
-                throw new CommandValidationFailException("Owner player is not registered in game.");
-            }
+            Validate(Owner);
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
+        {
+        }
+
+        internal override void RunMain()
         {
             CardSummoned = new BaseCard(Model, Owner);
             Owner.m_battlefieldCards.Add(CardSummoned);

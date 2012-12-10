@@ -12,12 +12,12 @@ namespace TouhouSpring.Behaviors
     {
         private bool m_isMoreCardDrawn = false;
 
-        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
             m_isMoreCardDrawn = false;
         }
 
-        void IEpilogTrigger<Commands.DrawCard>.Run(CommandContext<Commands.DrawCard> context)
+        void IEpilogTrigger<Commands.DrawCard>.Run(Commands.DrawCard command)
         {
             if (IsOnBattlefield && !m_isMoreCardDrawn)
             {
@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
                         hostCardNumber++;
                 }
                 for (int i = 0; i < hostCardNumber; i++)
-                    context.Game.IssueCommands(new Commands.DrawCard { PlayerDrawing = Host.Owner });
+                    command.Game.IssueCommands(new Commands.DrawCard(Host.Owner));
             }
         }
 

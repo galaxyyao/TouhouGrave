@@ -8,47 +8,59 @@ namespace TouhouSpring.Commands
     /// <summary>
     /// 
     /// </summary>
-    public class HealPlayer : ICommand
+    public class HealPlayer : BaseCommand
     {
-        public string Token
-        {
-            get { return "HealPlayer"; }
-        }
-
         public Player Player
         {
-            get; set;
+            get; private set;
         }
 
-        public int Amount
-        {
-            get; set;
-        }
-
+        // TODO: change to some serializable reference
         public Behaviors.IBehavior Cause
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public int HealAmount
         {
-            if (Player == null)
+            get; private set;
+        }
+
+        public HealPlayer(Player player, Behaviors.IBehavior cause, int healAmount)
+        {
+            if (player == null)
             {
-                throw new CommandValidationFailException("Player can't be null.");
+                throw new ArgumentNullException("player");
             }
-            else if (!game.Players.Contains(Player))
+
+            Player = player;
+            Cause = cause;
+            HealAmount = healAmount;
+        }
+
+        public void PatchHealAmount(int value)
+        {
+            CheckPatchable("HealAmount");
+            HealAmount = value;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Player);
+            ValidateOrNull(Cause);
+        }
+
+        internal override void ValidateOnRun()
+        {
+            if (HealAmount < 0)
             {
-                throw new CommandValidationFailException("The Player object is not registered in game.");
-            }
-            else if (Amount <= 0)
-            {
-                throw new CommandValidationFailException("Amount must be greater than zero.");
+                FailValidation("Amount must be greater than zero.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void RunMain()
         {
-            Player.Health += Math.Max(Amount, 0);
+            Player.Health += Math.Max(HealAmount, 0);
         }
     }
 }

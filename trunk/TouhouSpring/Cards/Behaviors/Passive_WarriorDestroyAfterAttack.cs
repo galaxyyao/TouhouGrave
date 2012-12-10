@@ -9,16 +9,12 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_WarriorDestroyAfterAttack.ModelType>,
         IEpilogTrigger<Commands.DealDamageToCard>
     {
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
-            if (context.Command.Cause != null
-                && context.Command.Cause.Host == Host)
+            if (command.Cause != null
+                && command.Cause.Host == Host)
             {
-                context.Game.IssueCommands(new Commands.Kill
-                {
-                    Target = context.Command.Target,
-                    Cause = this
-                });
+                command.Game.IssueCommands(new Commands.Kill(command.Target, this));
             }
         }
 

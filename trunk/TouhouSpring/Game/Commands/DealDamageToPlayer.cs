@@ -5,46 +5,57 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class DealDamageToPlayer : ICommand
+    public class DealDamageToPlayer : BaseCommand
     {
-        public string Token
-        {
-            get { return "DealDamageToPlayer"; }
-        }
-
         public Player Player
         {
-            get; set;
+            get; private set;
         }
 
         // TODO: change to some serializable reference
         public Behaviors.IBehavior Cause
         {
-            get; set;
+            get; private set;
         }
 
         public int DamageToDeal
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public DealDamageToPlayer(Player player, Behaviors.IBehavior cause, int damageToDeal)
         {
-            if (Player == null)
+            if (player == null)
             {
-                throw new CommandValidationFailException("Target player can't be null.");
+                throw new ArgumentNullException("player");
             }
-            else if (!game.Players.Contains(Player))
+
+            Player = player;
+            Cause = cause;
+            DamageToDeal = damageToDeal;
+        }
+
+        public void PatchDamageToDeal(int value)
+        {
+            CheckPatchable("DamageToDeal");
+            DamageToDeal = value;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Player);
+            ValidateOrNull(Cause);
+        }
+
+        internal override void ValidateOnRun()
+        {
+            if (DamageToDeal < 0)
             {
-                throw new CommandValidationFailException("The Player object is not registered in game.");
-            }
-            else if (DamageToDeal <= 0)
-            {
-                throw new CommandValidationFailException("Damage must be greater than zero.");
+                FailValidation("Damage must be greater than zero.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void RunMain()
         {
             Player.Health -= Math.Max(DamageToDeal, 0);
         }

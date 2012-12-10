@@ -11,16 +11,16 @@ namespace TouhouSpring.Behaviors
     {
         private bool m_chargeSkill = false;
 
-        CommandResult ISetupTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
                 //TODO: add logic (what kind of logic?)
-                var cardsOnBattlefield = context.Game.PlayerPlayer.CardsOnBattlefield;
+                var cardsOnBattlefield = command.Game.PlayerPlayer.CardsOnBattlefield;
                 bool hasSupportOnBattlefield = cardsOnBattlefield.Any(card => card.Behaviors.Get<Behaviors.Support>() != null);
                 if (hasSupportOnBattlefield)
                 {
-                    var result = new Interactions.MessageBox(context.Game.PlayerController
+                    var result = new Interactions.MessageBox(command.Game.PlayerController
                         , "场上已有一张支援卡，要直接从手牌补魔么？"
                         , Interactions.MessageBox.Button.Yes | Interactions.MessageBox.Button.No).Run();
                     if (result == Interactions.MessageBox.Button.Yes)
@@ -37,20 +37,13 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IPrologTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host && m_chargeSkill)
+            if (command.CardToPlay == Host && m_chargeSkill)
             {
-                context.Game.IssueCommands(
-                    new Commands.Charge
-                    {
-                        Player = Host.Owner
-                    },
-                    new Commands.AddBehavior
-                    {
-                        Target = context.Command.CardToPlay,
-                        Behavior = new Instant()
-                    });
+                command.Game.IssueCommands(
+                    new Commands.Charge(Host.Owner),
+                    new Commands.AddBehavior(command.CardToPlay, new Instant()));
             }
         }
 

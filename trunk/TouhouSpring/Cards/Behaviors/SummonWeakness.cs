@@ -12,45 +12,27 @@ namespace TouhouSpring.Behaviors
         class Effect : SimpleBehavior<Effect>
         { }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host
+            if (command.CardToPlay == Host
                 && Host.Behaviors.Has<Warrior>())
             {
-                context.Game.IssueCommands(
-                    new Commands.AddBehavior
-                    {
-                        Target = Host,
-                        Behavior = new Effect()
-                    },
-                    new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "GoCoolingDown"
-                    }
-                );
+                command.Game.IssueCommands(
+                    new Commands.AddBehavior(Host, new Effect()),
+                    new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
         }
 
-        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
             if (IsOnBattlefield
-                && context.Game.PlayerPlayer == Host.Owner
+                && command.Game.PlayerPlayer == Host.Owner
                 && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {
-                context.Game.IssueCommands(
-                    new Commands.RemoveBehavior
-                    {
-                        Target = Host,
-                        Behavior = Host.Behaviors.Get<Effect>()
-                    },
-                    new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "GoStandingBy"
-                    }
-                );
+                command.Game.IssueCommands(
+                    new Commands.RemoveBehavior(Host, Host.Behaviors.Get<Effect>()),
+                    new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }
         }
 

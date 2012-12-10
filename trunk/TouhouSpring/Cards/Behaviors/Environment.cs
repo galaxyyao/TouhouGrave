@@ -8,21 +8,17 @@ namespace TouhouSpring.Behaviors
     public class Environment : BaseBehavior<Environment.ModelType>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
-                foreach (var player in context.Game.Players)
+                foreach (var player in command.Game.Players)
                 {
                     var lastEnv = player.CardsOnBattlefield.FirstOrDefault(
                         card => card.Behaviors.Has<Environment>() && card != Host);
                     if (lastEnv != null)
                     {
-                        context.Game.IssueCommands(new Commands.Kill
-                        {
-                            Target = lastEnv,
-                            Cause = this
-                        });
+                        command.Game.IssueCommands(new Commands.Kill(lastEnv, this));
                         break;
                     }
                 }

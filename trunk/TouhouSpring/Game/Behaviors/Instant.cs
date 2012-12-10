@@ -8,15 +8,11 @@ namespace TouhouSpring.Behaviors
     public class Instant : BaseBehavior<Instant.ModelType>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
-                context.Game.IssueCommands(new Commands.Kill
-                {
-                    Target = Host,
-                    Cause = this
-                });
+                command.Game.IssueCommands(new Commands.Kill(Host, this));
             }
         }
 

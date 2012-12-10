@@ -8,11 +8,11 @@ namespace TouhouSpring.Behaviors
     public class PhaseSpecific : BaseBehavior<PhaseSpecific.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host && !IsPlayable(context.Game))
+            if (command.CardToPlay == Host && !IsPlayable(command.Game))
             {
-                return CommandResult.Cancel(String.Format("{0} can't be played in {1} phase.", Host.Model.Name, context.Game.CurrentPhase));
+                return CommandResult.Cancel(String.Format("{0} can't be played in {1} phase.", Host.Model.Name, command.Game.CurrentPhase));
             }
 
             return CommandResult.Pass;

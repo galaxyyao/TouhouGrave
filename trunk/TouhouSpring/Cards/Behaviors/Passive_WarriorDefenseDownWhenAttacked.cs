@@ -12,26 +12,24 @@ namespace TouhouSpring.Behaviors
     {
         private bool isBlockedLastRound = false;
 
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
-            if (context.Command.Target == Host
-                && context.Game.PlayerPlayer != Host.Owner)
+            if (command.Target == Host
+                && command.Game.PlayerPlayer != Host.Owner)
                 isBlockedLastRound = true;
         }
 
-        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (context.Game.PlayerPlayer != Host.Owner
+            if (command.Game.PlayerPlayer != Host.Owner
                 && Host.Behaviors.Has<Warrior>()
                 && isBlockedLastRound)
             {
                 isBlockedLastRound = false;
-                context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                {
-                    Target = Host.Behaviors.Get<Warrior>(),
-                    Message = "DefenseModifiers",
-                    Args = new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1) }
-                });
+                command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Host.Behaviors.Get<Warrior>(),
+                    "DefenseModifiers",
+                    new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1) }));
             }
         }
 

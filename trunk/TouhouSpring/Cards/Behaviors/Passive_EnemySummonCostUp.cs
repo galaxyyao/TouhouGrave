@@ -10,28 +10,24 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay.Owner != Host.Owner)
+            if (command.CardToPlay.Owner != Host.Owner)
             {
-                if (context.Command.CardToPlay.Owner.FreeMana < 1)
+                if (command.CardToPlay.Owner.FreeMana < 1)
                 {
                     return CommandResult.Cancel("Insufficient mana.");
                 }
-                context.Game.ReserveMana(context.Command.CardToPlay.Owner, 1);
+                command.Game.ReserveMana(command.CardToPlay.Owner, 1);
             }
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IPrologTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay.Owner != Host.Owner)
+            if (command.CardToPlay.Owner != Host.Owner)
             {
-                context.Game.IssueCommands(new Commands.UpdateMana
-                {
-                    Player = context.Command.CardToPlay.Owner,
-                    Amount = -1
-                });
+                command.Game.IssueCommands(new Commands.UpdateMana(command.CardToPlay.Owner, -1));
             }
         }
 

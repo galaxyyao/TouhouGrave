@@ -5,31 +5,26 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class StartTurn : ICommand
+    public class StartTurn : BaseCommand
     {
-        public string Token
-        {
-            get { return "StartTurn"; }
-        }
-
-        public void Validate(Game game)
+        internal override void ValidateOnIssue()
         {
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
         {
-            if (game.CurrentPhase != "PhaseA")
+            if (Game.CurrentPhase != "PhaseA")
             {
-                throw new InvalidOperationException(String.Format("StartTurn can't be executed at the phase {0}.", game.CurrentPhase));
+                FailValidation(String.Format("StartTurn can't be executed at the phase {0}.", Game.CurrentPhase));
             }
+        }
 
-            game.PlayerPlayer.m_battlefieldCards
+        internal override void RunMain()
+        {
+            Game.PlayerPlayer.m_battlefieldCards
                 .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
-                .ForEach(card => game.IssueCommands(new Commands.SendBehaviorMessage
-                {
-                    Target = card.Behaviors.Get<Behaviors.Warrior>(),
-                    Message = "GoStandingBy"
-                }));
+                .ForEach(card => Game.IssueCommands(
+                    new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
         }
     }
 }

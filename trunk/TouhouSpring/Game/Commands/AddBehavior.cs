@@ -5,50 +5,57 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class AddBehavior : ICommand
+    public class AddBehavior : BaseCommand
     {
-        public string Token
-        {
-            get { return "AddBehavior"; }
-        }
-
         // TODO: change to serialization-friendly ID
         public BaseCard Target
         {
-            get; set;
+            get; private set;
         }
 
         // TODO: change to serialization-friendly ID
         public Behaviors.IBehavior Behavior
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public AddBehavior(BaseCard target, Behaviors.IBehavior behavior)
         {
-            if (Target == null)
+            if (target == null)
             {
-                throw new CommandValidationFailException("Target card can't be null.");
+                throw new ArgumentNullException("target");
             }
-            else if (!game.Players.Contains(Target.Owner))
+            else if (behavior == null)
             {
-                throw new CommandValidationFailException("Target's owner is not registered in game.");
+                throw new ArgumentNullException("behavior");
             }
-            else if (Behavior == null)
+
+            Target = target;
+            Behavior = behavior;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Target);
+            if (Behavior == null)
             {
-                throw new CommandValidationFailException("Behavior to be added can't be null.");
+                FailValidation("Behavior to be added can't be null.");
             }
             else if (Behavior.Host != null)
             {
-                throw new CommandValidationFailException("Behavior can't be bound already.");
+                FailValidation("Behavior can't be bound already.");
             }
             else if (Behavior.Persistent)
             {
-                throw new CommandValidationFailException("Persistent behavior can't be added dynamically.");
+                FailValidation("Persistent behavior can't be added dynamically.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
+        {
+        }
+
+        internal override void RunMain()
         {
             Target.Behaviors.Add(Behavior);
         }

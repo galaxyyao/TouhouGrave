@@ -12,9 +12,9 @@ namespace TouhouSpring.Behaviors
     {
         private bool isAttackedByWarriorLastRound = false;
 
-        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
+        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
         {
-            if (context.Command.Player == Host.Owner && !context.Command.Cause.Host.Behaviors.Has<Hero>())
+            if (command.Player == Host.Owner && !command.Cause.Host.Behaviors.Has<Hero>())
             {
                 isAttackedByWarriorLastRound = true;
 
@@ -24,9 +24,9 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (context.Game.PlayerPlayer != Host.Owner
+            if (command.Game.PlayerPlayer != Host.Owner
                 && isAttackedByWarriorLastRound)
             {
                 isAttackedByWarriorLastRound = false;

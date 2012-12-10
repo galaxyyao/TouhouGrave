@@ -8,17 +8,14 @@ namespace TouhouSpring.Behaviors
     public class Hero : BaseBehavior<Hero.ModelType>,
         IEpilogTrigger<Commands.StartAttackPhase>
     {
-        void IEpilogTrigger<Commands.StartAttackPhase>.Run(CommandContext<Commands.StartAttackPhase> context)
+        void IEpilogTrigger<Commands.StartAttackPhase>.Run(Commands.StartAttackPhase command)
         {
-            if (context.Game.Round == 1)
+            if (command.Game.Round == 1)
             {
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "GoCoolingDown"
-                    });
+                    command.Game.IssueCommands(
+                        new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
                 }
             }
         }

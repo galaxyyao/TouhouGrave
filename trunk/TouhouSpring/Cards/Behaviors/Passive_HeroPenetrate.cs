@@ -9,20 +9,15 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_HeroPenetrate.ModelType>,
         IEpilogTrigger<Commands.DealDamageToCard>
     {
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
             if (IsOnBattlefield
-                && context.Command.Cause is Warrior
-                && context.Command.Cause.Host == Host.Owner.Hero.Host)
+                && command.Cause is Warrior
+                && command.Cause.Host == Host.Owner.Hero.Host)
             {
-                var damagedWarrior = context.Command.Target.Behaviors.Get<Warrior>();
-                int overflow = Math.Min(Math.Max(damagedWarrior.AccumulatedDamage - damagedWarrior.Defense, 0), context.Command.DamageToDeal);
-                context.Game.IssueCommands(new Commands.DealDamageToPlayer
-                {
-                    Player = context.Command.Target.Owner,
-                    DamageToDeal = overflow,
-                    Cause = this
-                });
+                var damagedWarrior = command.Target.Behaviors.Get<Warrior>();
+                int overflow = Math.Min(Math.Max(damagedWarrior.AccumulatedDamage - damagedWarrior.Defense, 0), command.DamageToDeal);
+                command.Game.IssueCommands(new Commands.DealDamageToPlayer(command.Target.Owner, this, overflow));
             }
         }
 

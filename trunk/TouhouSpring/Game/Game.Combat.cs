@@ -19,17 +19,8 @@ namespace TouhouSpring
                 if (blockers.Count == 0)
                 {
                     IssueCommands(
-                        new Commands.DealDamageToPlayer
-                        {
-                            Player = OpponentPlayer,
-                            DamageToDeal = attackerWarriorBhv.Attack,
-                            Cause = attackerWarriorBhv
-                        },
-                        new Commands.SendBehaviorMessage
-                        {
-                            Target = attackerWarriorBhv,
-                            Message = "GoCoolingDown"
-                        });
+                        new Commands.DealDamageToPlayer(OpponentPlayer, attackerWarriorBhv, attackerWarriorBhv.Attack),
+                        new Commands.SendBehaviorMessage(attackerWarriorBhv, "GoCoolingDown", null));
                 }
                 else if (blockers.Count == 1)
                 {
@@ -37,28 +28,10 @@ namespace TouhouSpring
                     var blockerWarriorBhv = blocker.Behaviors.Get<Behaviors.Warrior>();
 
                     IssueCommands(
-                        new Commands.DealDamageToCard
-                        {
-                            Target = attacker,
-                            Cause = blockerWarriorBhv,
-                            DamageToDeal = blockerWarriorBhv.Attack
-                        },
-                        new Commands.DealDamageToCard
-                        {
-                            Target = blocker,
-                            Cause = attackerWarriorBhv,
-                            DamageToDeal = attackerWarriorBhv.Attack
-                        },
-                        new Commands.SendBehaviorMessage
-                        {
-                            Target = attackerWarriorBhv,
-                            Message = "GoCoolingDown"
-                        },
-                        new Commands.SendBehaviorMessage
-                        {
-                            Target = blockerWarriorBhv,
-                            Message = "GoCoolingDown"
-                        });
+                        new Commands.DealDamageToCard(attacker, blockerWarriorBhv, blockerWarriorBhv.Attack),
+                        new Commands.DealDamageToCard(blocker, attackerWarriorBhv, attackerWarriorBhv.Attack),
+                        new Commands.SendBehaviorMessage(attackerWarriorBhv, "GoCoolingDown", null),
+                        new Commands.SendBehaviorMessage(blockerWarriorBhv, "GoCoolingDown", null));
                 }
                 //else if (blockers.Count == 2)
                 //{
@@ -126,10 +99,7 @@ namespace TouhouSpring
                     var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                     if (warrior.Defense - warrior.AccumulatedDamage <= 0)
                     {
-                        IssueCommands(new Commands.Kill
-                        {
-                            Target = card
-                        });
+                        IssueCommands(new Commands.Kill(card, null));
                     }
                 }
             }

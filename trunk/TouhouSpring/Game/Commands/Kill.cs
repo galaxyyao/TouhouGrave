@@ -6,23 +6,18 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class Kill : ICommand
+    public class Kill : BaseCommand
     {
-        public string Token
-        {
-            get { return "Kill"; }
-        }
-
         // TODO: change to serialization-friendly ID
         public BaseCard Target
         {
-            get; set;
+            get; private set;
         }
 
         // TODO: change to serialization-friendly ID
         public Behaviors.IBehavior Cause
         {
-            get; set;
+            get; private set;
         }
 
         public bool LeftBattlefield
@@ -35,26 +30,34 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public void Validate(Game game)
+        public Kill(BaseCard target, Behaviors.IBehavior cause)
         {
-            if (Target == null)
+            if (target == null)
             {
-                throw new CommandValidationFailException("Target card can't be null.");
+                throw new ArgumentNullException("target");
             }
-            else if (!game.Players.Contains(Target.Owner))
+
+            Target = target;
+            Cause = cause;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Target);
+            ValidateOrNull(Cause);
+            if (!Target.Owner.CardsOnBattlefield.Contains(Target)
+                && !Target.Owner.CardsOnHand.Contains(Target))
             {
-                throw new CommandValidationFailException("Target card's owner player is not registered in the game.");
-            }
-            else if (!Target.Owner.CardsOnBattlefield.Contains(Target)
-                     && !Target.Owner.CardsOnHand.Contains(Target))
-            {
-                throw new CommandValidationFailException("Target card is not on battlefield nor on hand.");
+                FailValidation("Target card is not on battlefield nor on hand.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
         {
-            Debug.Assert(Target != null);
+        }
+
+        internal override void RunMain()
+        {
             if (Target.Owner.CardsOnBattlefield.Contains(Target))
             {
                 Target.Owner.m_battlefieldCards.Remove(Target);

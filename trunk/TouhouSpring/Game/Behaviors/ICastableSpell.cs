@@ -7,6 +7,6 @@ namespace TouhouSpring.Behaviors
 {
 	public interface ICastableSpell : IBehavior
 	{
-		void Run(CommandContext<Commands.CastSpell> context);
+		void Run(Commands.CastSpell command);
 	}
 }

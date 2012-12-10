@@ -5,35 +5,37 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class Discharge : ICommand
+    public class Discharge : BaseCommand
     {
-        public string Token
-        {
-            get { return "Discharge"; }
-        }
-
         public Player Player
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public Discharge(Player player)
         {
-            if (Player == null)
+            if (player == null)
             {
-                throw new CommandValidationFailException("Player can't be null.");
+                throw new ArgumentNullException("player");
             }
-            else if (!game.Players.Contains(Player))
+
+            Player = player;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Player);
+        }
+
+        internal override void ValidateOnRun()
+        {
+            if (!Player.IsSkillCharged)
             {
-                throw new CommandValidationFailException("The Player is not registered in game.");
-            }
-            else if (!Player.IsSkillCharged)
-            {
-                throw new CommandValidationFailException("Player is already discharged.");
+                FailValidation("Player is already discharged.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void RunMain()
         {
             Player.IsSkillCharged = false;
         }

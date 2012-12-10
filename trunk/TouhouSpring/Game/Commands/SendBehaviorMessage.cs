@@ -5,44 +5,62 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class SendBehaviorMessage : ICommand
+    public class SendBehaviorMessage : BaseCommand
     {
         private static readonly Type[] s_simpleTypes = new Type[]
         {
             typeof(int), typeof(string), typeof(float)
         };
 
-        public string Token
-        {
-            get { return "SendBhvMsg"; }
-        }
-
         // TODO: change to serializable behavior ID
         public Behaviors.IBehavior Target
         {
-            get; set;
+            get; private set;
         }
 
         public string Message
         {
-            get; set;
+            get; private set;
         }
 
         public object[] Args
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public SendBehaviorMessage(Behaviors.IBehavior target, string message, object[] args)
         {
-            if (Target == null)
+            if (target == null)
             {
-                throw new CommandValidationFailException("Target can't be null.");
+                throw new ArgumentNullException("target");
             }
-            else if (Message == null || Message == String.Empty)
+            else if (String.IsNullOrEmpty(message))
             {
-                throw new CommandValidationFailException("Message can't be empty.");
+                throw new ArgumentNullException("message");
             }
+
+            Target = target;
+            Message = message;
+            Args = args;
+        }
+
+        public void PatchMessageArgs(object[] args)
+        {
+            CheckPatchable("Args");
+            Args = args;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Target);
+            if (String.IsNullOrEmpty(Message))
+            {
+                FailValidation("Message can't be empty.");
+            }
+        }
+
+        internal override void ValidateOnRun()
+        {
             // TODO: proper serialization of complex data type
             //else if (Args != null && Args.Any(arg => !s_simpleTypes.Contains(arg.GetType())))
             //{
@@ -50,7 +68,7 @@ namespace TouhouSpring.Commands
             //}
         }
 
-        public void RunMain(Game game)
+        internal override void RunMain()
         {
             Target.OnMessage(Message, Args);
         }

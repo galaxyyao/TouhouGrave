@@ -8,17 +8,13 @@ namespace TouhouSpring.Behaviors
     public class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
         IEpilogTrigger<Commands.StartTurn>
     {
-        void IEpilogTrigger<Commands.StartTurn>.Run(CommandContext<Commands.StartTurn> context)
+        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (context.Game.InPlayerPhases && IsOnBattlefield && context.Game.PlayerPlayer == Host.Owner)
+            if (command.Game.InPlayerPhases && IsOnBattlefield && command.Game.PlayerPlayer == Host.Owner)
             {
                 1.Repeat(i =>
                 {
-                    context.Game.IssueCommands(new Commands.Summon
-                    {
-                        Model = Model.SummonType.Target,
-                        Owner = Host.Owner
-                    });
+                    command.Game.IssueCommands(new Commands.Summon(Model.SummonType.Target, Host.Owner));
                 });
             }
         }

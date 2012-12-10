@@ -15,10 +15,10 @@ namespace TouhouSpring
             foreach (var player in Players)
             {
                 // shuffle player's library
-                IssueCommand(new Commands.ShuffleLibrary { PlayerShuffling = player });
+                IssueCommand(new Commands.ShuffleLibrary(player));
 
                 // draw initial hands
-                5.Repeat(i => IssueCommand(new Commands.DrawCard { PlayerDrawing = player }));
+                5.Repeat(i => IssueCommand(new Commands.DrawCard(player)));
             }
 
             FlushCommandQueue();

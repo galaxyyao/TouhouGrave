@@ -5,48 +5,48 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class RemoveBehavior : ICommand
+    public class RemoveBehavior : BaseCommand
     {
-        public string Token
-        {
-            get { return "RemoveBehavior"; }
-        }
-
         // TODO: change to serialization-friendly ID
         public BaseCard Target
         {
-            get; set;
+            get; private set;
         }
 
         // TODO: change to serialization-friendly ID
         public Behaviors.IBehavior Behavior
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public RemoveBehavior(BaseCard target, Behaviors.IBehavior behavior)
         {
-            if (Target == null)
+            if (target == null)
             {
-                throw new CommandValidationFailException("Target card can't be null.");
+                throw new ArgumentNullException("target");
             }
-            else if (!game.Players.Contains(Target.Owner))
+            else if (behavior == null)
             {
-                throw new CommandValidationFailException("Target's owner is not registered in game.");
+                throw new ArgumentNullException("behavior");
             }
-            else if (Behavior == null)
-            {
-                throw new CommandValidationFailException("Behavior to be added can't be null.");
-            }
-            else if (!Target.Behaviors.Contains(Behavior))
-            {
-                throw new CommandValidationFailException("Behavior is not bound to the target card.");
-            }
+
+            Target = target;
+            Behavior = behavior;
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnIssue()
         {
-            Target.Behaviors.Remove(Behavior);
+            Validate(Target);
+            Validate(Behavior);
+        }
+
+        internal override void ValidateOnRun()
+        {
+        }
+
+        internal override void RunMain()
+        {
+            Target.Behaviors.Add(Behavior);
         }
     }
 }

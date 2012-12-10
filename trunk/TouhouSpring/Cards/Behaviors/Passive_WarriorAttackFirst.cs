@@ -12,36 +12,32 @@ namespace TouhouSpring.Behaviors
     {
         private Warrior.ValueModifier attackFirstCompensation = null;
 
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
-            if (context.Command.Cause == Host.Behaviors.Get<Warrior>())
+            if (command.Cause == Host.Behaviors.Get<Warrior>())
             {
                 // TODO: looks like this impl won't work...
-                var warriorAttackedBhv = context.Command.Target.Behaviors.Get<Warrior>();
+                var warriorAttackedBhv = command.Target.Behaviors.Get<Warrior>();
                 if (warriorAttackedBhv.AccumulatedDamage >= warriorAttackedBhv.Defense)
                 {
-                    int damageWontDeal = context.Command.Target.Behaviors.Get<Warrior>().Attack;
+                    int damageWontDeal = command.Target.Behaviors.Get<Warrior>().Attack;
                     attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, damageWontDeal);
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "DefenseModifiers",
-                        Args = new object[] { "add", attackFirstCompensation }
-                    });
+                    command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                        Host.Behaviors.Get<Warrior>(),
+                        "DefenseModifiers",
+                        new object[] { "add", attackFirstCompensation }));
                 }
             }
         }
 
-        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
             if (attackFirstCompensation != null)
             {
-                context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                {
-                    Target = Host.Behaviors.Get<Warrior>(),
-                    Message = "DefenseModifiers",
-                    Args = new object[] { "remove", attackFirstCompensation }
-                });
+                command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Host.Behaviors.Get<Warrior>(),
+                    "DefenseModifiers",
+                    new object[] { "remove", attackFirstCompensation }));
                 attackFirstCompensation = null;
             }
         }

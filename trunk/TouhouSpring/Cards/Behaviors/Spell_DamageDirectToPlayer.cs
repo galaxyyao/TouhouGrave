@@ -9,14 +9,11 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_DamageDirectToPlayer.ModelType>,
         ICastableSpell
     {
-        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
+        void ICastableSpell.Run(Commands.CastSpell command)
         {
-            context.Game.IssueCommands(new Commands.DealDamageToPlayer
-            {
-                Player = context.Game.OpponentPlayer, // TODO: opponent of Host.Owner
-                DamageToDeal = Model.Damage,
-                Cause = this
-            });
+            command.Game.IssueCommands(new Commands.DealDamageToPlayer(
+                command.Game.OpponentPlayer, // TODO: opponent of Host.Owner
+                this, Model.Damage));
         }
 
         [BehaviorModel(typeof(Spell_DamageDirectToPlayer), DefaultName = "五道难题")]

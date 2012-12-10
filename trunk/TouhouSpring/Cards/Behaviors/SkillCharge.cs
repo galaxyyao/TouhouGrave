@@ -9,9 +9,9 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.CastSpell>,
         ICastableSpell
     {
-        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(CommandContext<Commands.CastSpell> context)
+        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(Commands.CastSpell command)
         {
-            if (context.Command.Spell == this && Host.Owner.IsSkillCharged)
+            if (command.Spell == this && Host.Owner.IsSkillCharged)
             {
                 return CommandResult.Cancel("Player is already charged.");
             }
@@ -19,18 +19,11 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
+        void ICastableSpell.Run(Commands.CastSpell command)
         {
-            context.Game.IssueCommands(
-                new Commands.Charge
-                {
-                    Player = Host.Owner
-                },
-                new Commands.Kill
-                {
-                    Target = Host,
-                    Cause = this
-                });
+            command.Game.IssueCommands(
+                new Commands.Charge(Host.Owner),
+                new Commands.Kill(Host, this));
         }
 
         [BehaviorModel(typeof(SkillCharge), DefaultName = "补魔")]

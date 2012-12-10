@@ -9,9 +9,9 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.CastSpell>,
         IEpilogTrigger<Commands.CastSpell>
     {
-        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(CommandContext<Commands.CastSpell> context)
+        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(Commands.CastSpell command)
         {
-            if (context.Command.Spell.Host == Host && !Host.Owner.IsSkillCharged)
+            if (command.Spell.Host == Host && !Host.Owner.IsSkillCharged)
             {
                 return CommandResult.Cancel("主角技能还没有被充能！");
             }
@@ -19,14 +19,11 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.CastSpell>.Run(CommandContext<Commands.CastSpell> context)
+        void IEpilogTrigger<Commands.CastSpell>.Run(Commands.CastSpell command)
         {
-            if (context.Command.Spell.Host == Host && Model.Discharge)
+            if (command.Spell.Host == Host && Model.Discharge)
             {
-                context.Game.IssueCommands(new Commands.Discharge
-                {
-                    Player = Host.Owner
-                });
+                command.Game.IssueCommands(new Commands.Discharge(Host.Owner));
             }
         }
 

@@ -6,59 +6,67 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class DealDamageToCard : ICommand
+    public class DealDamageToCard : BaseCommand
     {
-        public string Token
-        {
-            get { return "DealDamageToCard"; }
-        }
-
         // TODO: change to some serializable reference
         public BaseCard Target
         {
-            get; set;
+            get; private set;
         }
 
         // TODO: change to some serializable reference
         public Behaviors.IBehavior Cause
         {
-            get; set;
+            get; private set;
         }
 
         public int DamageToDeal
         {
-            get; set;
+            get; private set;
         }
 
-        public void Validate(Game game)
+        public DealDamageToCard(BaseCard target, Behaviors.IBehavior cause, int damageToDeal)
         {
-            if (Target == null)
+            if (target == null)
             {
-                throw new CommandValidationFailException("Target player can't be null.");
+                throw new ArgumentNullException("target");
             }
-            else if (!game.Players.Contains(Target.Owner))
+
+            Target = target;
+            Cause = cause;
+            DamageToDeal = damageToDeal;
+        }
+
+        public void PatchDamageToDeal(int value)
+        {
+            CheckPatchable("DamageToDeal");
+            DamageToDeal = value;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(Target);
+            ValidateOrNull(Cause);
+            if (!Target.Owner.CardsOnBattlefield.Contains(Target))
             {
-                throw new CommandValidationFailException("The Player object is not registered in game.");
-            }
-            else if (!Target.Owner.CardsOnBattlefield.Contains(Target))
-            {
-                throw new CommandValidationFailException("Damage can only be dealt to cards on battlefield.");
+                FailValidation("Damage can only be dealt to cards on battlefield.");
             }
             else if (!Target.Behaviors.Has<Behaviors.Warrior>())
             {
-                throw new CommandValidationFailException("Damage can only be dealt to non-warrior cards.");
-            }
-            else if (DamageToDeal <= 0)
-            {
-                throw new CommandValidationFailException("Damage must be greater than zero.");
+                FailValidation("Damage can only be dealt to non-warrior cards.");
             }
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
         {
-            Debug.Assert(Target != null);
-            Debug.Assert(Target.Behaviors.Has<Behaviors.Warrior>());
-            Debug.Assert(DamageToDeal >= 0);
+            if (DamageToDeal < 0)
+            {
+                FailValidation("Damage must be greater than zero.");
+            }
+        }
+
+        internal override void RunMain()
+        {
             Target.Behaviors.Get<Behaviors.Warrior>().AccumulatedDamage += DamageToDeal;
         }
     }

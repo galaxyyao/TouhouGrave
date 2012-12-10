@@ -13,97 +13,71 @@ namespace TouhouSpring.Behaviors
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 2);
         private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1);
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
-                foreach (var card in context.Game.PlayerPlayer.CardsOnBattlefield)
+                foreach (var card in command.Game.PlayerPlayer.CardsOnBattlefield)
                 {
                     if (card.Behaviors.Get<Warrior>() == null)
                         continue;
                     if (card.Behaviors.Get<Hero>() != null)
                         continue;
 
-                    context.Game.IssueCommands(
-                        new Commands.SendBehaviorMessage
-                        {
-                            Target = card.Behaviors.Get<Warrior>(),
-                            Message = "AttackModifiers",
-                            Args = new object[] { "add", m_attackMod }
-                        },
-                        new Commands.SendBehaviorMessage
-                        {
-                            Target = card.Behaviors.Get<Warrior>(),
-                            Message = "DefenseModifiers",
-                            Args = new object[] { "add", m_defenseMod }
-                        });
+                    var warrior = card.Behaviors.Get<Warrior>();
+                    command.Game.IssueCommands(
+                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
+                        new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
                 }
             }
-            else if (context.Command.CardToPlay.Owner == Host.Owner 
+            else if (command.CardToPlay.Owner == Host.Owner 
                      && IsOnBattlefield
-                     && context.Command.CardToPlay.Behaviors.Get<Warrior>() != null)
+                     && command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
-                context.Game.IssueCommands(
-                    new Commands.SendBehaviorMessage
-                    {
-                        Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
-                        Message = "AttackModifiers",
-                        Args = new object[] { "add", m_attackMod }
-                    },
-                    new Commands.SendBehaviorMessage
-                    {
-                        Target = context.Command.CardToPlay.Behaviors.Get<Warrior>(),
-                        Message = "DefenseModifiers",
-                        Args = new object[] { "add", m_defenseMod }
-                    });
+                var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
+                command.Game.IssueCommands(
+                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
+                    new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
             }
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
         {
-            if (!context.Command.LeftBattlefield)
+            if (!command.LeftBattlefield)
             {
                 return;
             }
 
-            if (context.Command.Target == Host)
+            if (command.Target == Host)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
                     if (card.Behaviors.Get<Warrior>() != null)
                     {
-                        context.Game.IssueCommands(
-                            new Commands.SendBehaviorMessage
-                            {
-                                Target = card.Behaviors.Get<Warrior>(),
-                                Message = "AttackModifiers",
-                                Args = new object[] { "remove", m_attackMod }
-                            },
-                            new Commands.SendBehaviorMessage
-                            {
-                                Target = card.Behaviors.Get<Warrior>(),
-                                Message = "DefenseModifiers",
-                                Args = new object[] { "remove", m_defenseMod }
-                            });
+                        command.Game.IssueCommands(
+                            new Commands.SendBehaviorMessage(
+                                card.Behaviors.Get<Warrior>(),
+                                "AttackModifiers",
+                                new object[] { "remove", m_attackMod }),
+                            new Commands.SendBehaviorMessage(
+                                card.Behaviors.Get<Warrior>(),
+                                "DefenseModifiers",
+                                new object[] { "remove", m_defenseMod }));
                     }
                 }
             }
-            else if (context.Command.Target.Owner == Host.Owner
+            else if (command.Target.Owner == Host.Owner
                      && IsOnBattlefield)
             {
-                context.Game.IssueCommands(
-                    new Commands.SendBehaviorMessage
-                    {
-                        Target = context.Command.Target.Behaviors.Get<Warrior>(),
-                        Message = "AttackModifiers",
-                        Args = new object[] { "remove", m_attackMod }
-                    },
-                    new Commands.SendBehaviorMessage
-                    {
-                        Target = context.Command.Target.Behaviors.Get<Warrior>(),
-                        Message = "DefenseModifiers",
-                        Args = new object[] { "remove", m_defenseMod }
-                    });
+                command.Game.IssueCommands(
+                    new Commands.SendBehaviorMessage(
+                        command.Target.Behaviors.Get<Warrior>(),
+                        "AttackModifiers",
+                        new object[] { "remove", m_attackMod }),
+                    new Commands.SendBehaviorMessage(
+                        command.Target.Behaviors.Get<Warrior>(),
+                        "DefenseModifiers",
+                        new object[] { "remove", m_defenseMod }));
             }
         }
 

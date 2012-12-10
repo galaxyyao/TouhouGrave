@@ -5,23 +5,22 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class StartAttackPhase : ICommand
+    public class StartAttackPhase : BaseCommand
     {
-        public string Token
-        {
-            get { return "StartAttackPhase"; }
-        }
-
-        public void Validate(Game game)
+        internal override void ValidateOnIssue()
         {
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
         {
-            if (game.CurrentPhase != "Combat/Attack")
+            if (Game.CurrentPhase != "Combat/Attack")
             {
-                throw new InvalidOperationException(String.Format("StartTurn can't be executed at the phase {0}.", game.CurrentPhase));
+                FailValidation(String.Format("StartTurn can't be executed at the phase {0}.", Game.CurrentPhase));
             }
+        }
+
+        internal override void RunMain()
+        {
         }
     }
 }

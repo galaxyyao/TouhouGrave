@@ -12,23 +12,23 @@ namespace TouhouSpring.Behaviors
     {
         private Warrior.ValueModifier m_attackModifier = null;
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host
-                || IsOnBattlefield && context.Command.CardToPlay.Owner == Host.Owner)
+            if (command.CardToPlay == Host
+                || IsOnBattlefield && command.CardToPlay.Owner == Host.Owner)
             {
-                
-                UpdateNumber(context.Game);
+
+                UpdateNumber(command.Game);
             }
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
         {
-            if (context.Command.LeftBattlefield
-                && (context.Command.Target == Host
-                    || IsOnBattlefield && context.Command.Target.Owner == Host.Owner))
+            if (command.LeftBattlefield
+                && (command.Target == Host
+                    || IsOnBattlefield && command.Target.Owner == Host.Owner))
             {
-                UpdateNumber(context.Game);
+                UpdateNumber(command.Game);
             }
         }
 
@@ -46,23 +46,19 @@ namespace TouhouSpring.Behaviors
 
             if (m_attackModifier != null && m_attackModifier.Amount != numberOfWarriors)
             {
-                game.IssueCommands(new Commands.SendBehaviorMessage
-                {
-                    Target = Host.Behaviors.Get<Warrior>(),
-                    Message = "AttackModifiers",
-                    Args = new object[] { "remove", m_attackModifier }
-                });
+                game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Host.Behaviors.Get<Warrior>(),
+                    "AttackModifiers",
+                    new object[] { "remove", m_attackModifier }));
                 m_attackModifier = null;
             }
             if (m_attackModifier == null)
             {
                 m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, numberOfWarriors);
-                game.IssueCommands(new Commands.SendBehaviorMessage
-                {
-                    Target = Host.Behaviors.Get<Warrior>(),
-                    Message = "AttackModifiers",
-                    Args = new object[] { "add", m_attackModifier }
-                });
+                game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Host.Behaviors.Get<Warrior>(),
+                    "AttackModifiers",
+                    new object[] { "add", m_attackModifier }));
             }
         }
 

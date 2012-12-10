@@ -23,29 +23,25 @@ namespace TouhouSpring.Behaviors
             m_defenseModifier = defenseMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, defenseMod) : null;
         }
 
-        void IEpilogTrigger<Commands.AddBehavior>.Run(CommandContext<Commands.AddBehavior> context)
+        void IEpilogTrigger<Commands.AddBehavior>.Run(Commands.AddBehavior command)
         {
-            if (context.Command.Behavior == this)
+            if (command.Behavior == this)
             {
-                if (context.Command.Target.Behaviors.Has<Warrior>())
+                if (command.Target.Behaviors.Has<Warrior>())
                 {
                     if (m_attackModifier != null)
                     {
-                        context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                        {
-                            Target = context.Command.Target.Behaviors.Get<Warrior>(),
-                            Message = "AttackModifiers",
-                            Args = new object[] { "add", m_attackModifier }
-                        });
+                        command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                            command.Target.Behaviors.Get<Warrior>(),
+                            "AttackModifiers",
+                            new object[] { "add", m_attackModifier }));
                     }
                     if (m_defenseModifier != null)
                     {
-                        context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                        {
-                            Target = context.Command.Target.Behaviors.Get<Warrior>(),
-                            Message = "DefenseModifiers",
-                            Args = new object[] { "add", m_defenseModifier }
-                        });
+                        command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                            command.Target.Behaviors.Get<Warrior>(),
+                            "DefenseModifiers",
+                            new object[] { "add", m_defenseModifier }));
                     }
                 }
                 else
@@ -56,28 +52,24 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IPrologTrigger<Commands.RemoveBehavior>.Run(CommandContext<Commands.RemoveBehavior> context)
+        void IPrologTrigger<Commands.RemoveBehavior>.Run(Commands.RemoveBehavior command)
         {
-            if (context.Command.Behavior == this)
+            if (command.Behavior == this)
             {
                 if (m_attackModifier != null)
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "AttackModifiers",
-                        Args = new object[] { "remove", m_attackModifier }
-                    });
+                    command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                        Host.Behaviors.Get<Warrior>(),
+                        "AttackModifiers",
+                        new object[] { "remove", m_attackModifier }));
                     m_attackModifier = null;
                 }
                 if (m_defenseModifier != null)
                 {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "DefenseModifiers",
-                        Args = new object[] { "remove", m_defenseModifier }
-                    });
+                    command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                        Host.Behaviors.Get<Warrior>(),
+                        "DefenseModifiers",
+                        new object[] { "remove", m_defenseModifier }));
                     m_defenseModifier = null;
                 }
             }

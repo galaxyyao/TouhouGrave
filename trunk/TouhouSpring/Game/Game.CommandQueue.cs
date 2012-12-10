@@ -9,19 +9,19 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private Queue<IRunnableCommandContext> m_pendingCommands = new Queue<IRunnableCommandContext>();
+        private Queue<Commands.BaseCommand> m_pendingCommands = new Queue<Commands.BaseCommand>();
 
-        public ICommandContext RunningCommand
+        public Commands.BaseCommand RunningCommand
         {
             get; private set;
         }
 
-        public void IssueCommands(params ICommand[] commands)
+        public void IssueCommands(params Commands.BaseCommand[] commands)
         {
             commands.ForEach(cmd => IssueCommand(cmd));
         }
 
-        internal void IssueCommandsAndFlush(params ICommand[] commands)
+        internal void IssueCommandsAndFlush(params Commands.BaseCommand[] commands)
         {
             IssueCommands(commands);
             FlushCommandQueue();
@@ -35,7 +35,7 @@ namespace TouhouSpring
             {
                 var cmd = m_pendingCommands.Dequeue();
                 RunningCommand = cmd;
-                cmd.Run();
+                RunCommandGeneric(cmd);
                 RunningCommand = null;
             }
         }
@@ -43,43 +43,165 @@ namespace TouhouSpring
         internal bool IsCardPlayable(BaseCard card)
         {
             Debug.Assert(RunningCommand == null);
-            var ctx = ConstructCommandContext(new Commands.PlayCard { CardToPlay = card });
-            RunningCommand = ctx;
-            bool ret = !ctx.RunPrerequisite().Canceled;
+            var cmd = new Commands.PlayCard(card);
+            InitializeCommand(cmd);
+            RunningCommand = cmd;
+            bool ret = !RunPrerequisiteGeneric(cmd).Canceled;
             RunningCommand = null;
             return ret;
         }
 
-        private void IssueCommand(ICommand command)
+        private void IssueCommand(Commands.BaseCommand command)
         {
             if (command == null)
             {
                 throw new ArgumentNullException("command");
             }
 
-            command.Validate(this);
+            InitializeCommand(command);
+            command.ValidateOnIssue();
 
             // check whether a new command can be issued at this timing
             if (RunningCommand != null)
             {
-                Debug.Assert(RunningCommand.Phase != CommandPhase.Pending);
+                Debug.Assert(RunningCommand.ExecutionPhase != Commands.CommandPhase.Pending);
 
-                if (RunningCommand.Phase == CommandPhase.Prerequisite
-                    || RunningCommand.Phase == CommandPhase.Setup)
+                if (RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite
+                    || RunningCommand.ExecutionPhase == Commands.CommandPhase.Setup)
                 {
-                    throw new InvalidOperationException(String.Format("Command can't be issued in {0} phase.", RunningCommand.Phase.ToString()));
+                    throw new InvalidOperationException(String.Format("Command can't be issued in {0} phase.", RunningCommand.ExecutionPhase.ToString()));
                 }
             }
 
-            // enqueue a new context and chain with the previous one
-            m_pendingCommands.Enqueue(ConstructCommandContext(command));
+            m_pendingCommands.Enqueue(command);
         }
 
-        private IRunnableCommandContext ConstructCommandContext(ICommand command)
+        private void InitializeCommand(Commands.BaseCommand command)
         {
-            var cmdCtxType = typeof(CommandContext<>).MakeGenericType(command.GetType());
-            var cmdCtxCtor = cmdCtxType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance)[0];
-            return cmdCtxCtor.Invoke(new object[] { this, command, RunningCommand }) as IRunnableCommandContext;
+            command.ExecutionPhase = Commands.CommandPhase.Pending;
+            command.Game = this;
+            command.Previous = RunningCommand;
+        }
+
+        private void RunCommandGeneric(Commands.BaseCommand command)
+        {
+            var method = GetType().GetMethod("RunCommand", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(command.GetType());
+            method.Invoke(this, new object[] { command });
+        }
+
+        private CommandResult RunPrerequisiteGeneric(Commands.BaseCommand command)
+        {
+            var method = GetType().GetMethod("RunPrerequisite", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(command.GetType());
+            return (CommandResult)method.Invoke(this, new object[] { command });
+        }
+
+        private void RunCommand<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
+        {
+            ////////////////////////////////////////////
+
+            command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
+            foreach (var trigger in EnumerateCommandTargets(command).SelectMany(card =>
+                                       card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
+                                       ).ToList())
+            {
+                var result = trigger.Run(command);
+                if (result.Canceled)
+                {
+                    Controllers.ForEach(ctrl => ctrl.OnCommandCanceled(command, result.Reason));
+                    ClearReservations();
+                    return;
+                }
+            }
+
+            ////////////////////////////////////////////
+
+            command.ExecutionPhase = Commands.CommandPhase.Setup;
+            foreach (var trigger in EnumerateCommandTargets(command).SelectMany(card =>
+                                       card.Behaviors.OfType<ISetupTrigger<TCommand>>()
+                                       ).ToList())
+            {
+                var result = trigger.Run(command);
+                if (result.Canceled)
+                {
+                    Controllers.ForEach(ctrl => ctrl.OnCommandCanceled(command, result.Reason));
+                    ClearReservations();
+                    return;
+                }
+            }
+
+            ////////////////////////////////////////////
+
+            ClearReservations();
+
+            command.ExecutionPhase = Commands.CommandPhase.Prolog;
+            Controllers.ForEach(ctrl => ctrl.OnCommandBegin(command));
+            EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IPrologTrigger<TCommand>>())
+                .ToList().ForEach(trigger => trigger.Run(command));
+            Resolve();
+
+            ////////////////////////////////////////////
+
+            command.ExecutionPhase = Commands.CommandPhase.Main;
+            command.RunMain();
+            Resolve();
+
+            ////////////////////////////////////////////
+
+            command.ExecutionPhase = Commands.CommandPhase.Epilog;
+            EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
+                .ToList().ForEach(trigger => trigger.Run(command));
+            Controllers.ForEach(ctrl => ctrl.OnCommandEnd(command));
+            Resolve();
+        }
+
+        private CommandResult RunPrerequisite<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
+        {
+            command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
+            foreach (var trigger in EnumerateCommandTargets(command)
+                .SelectMany(card => card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()).ToList())
+            {
+                var result = trigger.Run(command);
+                if (result.Canceled)
+                {
+                    ClearReservations();
+                    return result;
+                }
+            }
+
+            ClearReservations();
+            return CommandResult.Pass;
+        }
+
+        private IEnumerable<BaseCard> EnumerateCommandTargets(Commands.BaseCommand command)
+        {
+            if (command is Commands.PlayCard && command.ExecutionPhase < Commands.CommandPhase.Epilog)
+            {
+                var cardToPlay = (command as Commands.PlayCard).CardToPlay;
+                if (cardToPlay != null)
+                {
+                    yield return cardToPlay;
+                }
+            }
+            else if (command is Commands.Kill && command.ExecutionPhase == Commands.CommandPhase.Epilog)
+            {
+                var cardKilled = (command as Commands.Kill).Target;
+                if (cardKilled != null)
+                {
+                    yield return cardKilled;
+                }
+            }
+
+            foreach (var player in Players)
+            {
+                foreach (var card in player.CardsOnBattlefield)
+                {
+                    yield return card;
+                }
+                if (!player.CardsOnBattlefield.Contains(player.Hero.Host))
+                {
+                    yield return player.Hero.Host;
+                }
+            }
         }
 
         public void Resolve()

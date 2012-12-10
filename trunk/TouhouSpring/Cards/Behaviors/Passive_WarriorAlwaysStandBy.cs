@@ -9,18 +9,11 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
         IEpilogTrigger<Commands.EndTurn>
     {
-        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (IsOnBattlefield)
+            if (IsOnBattlefield && Host.Behaviors.Has<Warrior>())
             {
-                if (Host.Behaviors.Has<Warrior>())
-                {
-                    context.Game.IssueCommands(new Commands.SendBehaviorMessage
-                    {
-                        Target = Host.Behaviors.Get<Warrior>(),
-                        Message = "GoStandingBy"
-                    });
-                }
+                command.Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }
         }
 

@@ -62,8 +62,9 @@
     <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
-    <Compile Include="CommandContext.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\BaseCommand.Validation.cs" />
     <Compile Include="Commands\CastSpell.cs" />
     <Compile Include="Commands\Charge.cs" />
     <Compile Include="Commands\Discharge.cs" />
@@ -96,8 +97,6 @@
     <Compile Include="Game.Phase.cs" />
     <Compile Include="Game.Players.cs" />
     <Compile Include="Game.Threading.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="ICommandContext.cs" />
     <Compile Include="Interactions\BlockPhase.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\NotifyControllerEvent.cs" />

@@ -5,20 +5,19 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class ResetAccumulatedDamage : ICommand
+    public class ResetAccumulatedDamage : BaseCommand
     {
-        public string Token
-        {
-            get { return "ResetAccuDmg"; }
-        }
-
-        public void Validate(Game game)
+        internal override void ValidateOnIssue()
         {
         }
 
-        public void RunMain(Game game)
+        internal override void ValidateOnRun()
         {
-            foreach (var player in game.Players)
+        }
+
+        internal override void RunMain()
+        {
+            foreach (var player in Game.Players)
             {
                 player.CardsOnBattlefield.Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                     .ForEach(card => card.Behaviors.Get<Behaviors.Warrior>().AccumulatedDamage = 0);

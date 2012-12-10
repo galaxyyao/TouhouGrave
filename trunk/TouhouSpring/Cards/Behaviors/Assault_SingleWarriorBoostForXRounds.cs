@@ -13,9 +13,9 @@ namespace TouhouSpring.Behaviors
     {
         private BaseCard m_castTarget;
 
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
                 if (!Host.Owner.CardsOnBattlefield.Any(c => c.Behaviors.Has<Warrior>()))
                 {
@@ -26,12 +26,12 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        CommandResult ISetupTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
                 var selectedCard = new Interactions.SelectCards(
-                    context.Game.OpponentController, // TODO: host's controller
+                    command.Game.OpponentController, // TODO: host's controller
                     Host.Owner.CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Single,
                     "Select a card to boost its attack and defense.").Run();
@@ -47,32 +47,24 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(CommandContext<Commands.PlayCard> context)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (context.Command.CardToPlay == Host)
+            if (command.CardToPlay == Host)
             {
                 if (m_castTarget == null)
                 {
                     throw new InvalidOperationException("Internal error: no target is selected.");
                 }
 
-                var lasting = new LastingEffect(Model.Duration);
                 if (Model.AttackBoost > 0 || Model.DefenseBoost > 0)
                 {
+                    var lasting = new LastingEffect(Model.Duration);
                     var enhanceMod = new Enhance(Model.AttackBoost, Model.DefenseBoost);
                     lasting.CleanUps.Add(enhanceMod);
-                    context.Game.IssueCommands(new Commands.AddBehavior
-                    {
-                        Target = m_castTarget,
-                        Behavior = enhanceMod
-                    });
+                    command.Game.IssueCommands(
+                        new Commands.AddBehavior(m_castTarget, enhanceMod),
+                        new Commands.AddBehavior(m_castTarget, lasting));
                 }
-
-                context.Game.IssueCommands(new Commands.AddBehavior
-                {
-                    Target = m_castTarget,
-                    Behavior = lasting
-                });
             }
         }
 

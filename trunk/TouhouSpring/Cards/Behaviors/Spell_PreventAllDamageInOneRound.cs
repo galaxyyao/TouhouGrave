@@ -16,28 +16,28 @@ namespace TouhouSpring.Behaviors
         private Player m_currentPlayer;
         private Player m_spellCaster;
 
-        void ICastableSpell.Run(CommandContext<Commands.CastSpell> context)
+        void ICastableSpell.Run(Commands.CastSpell command)
         {
             m_isProtected = true;
-            m_currentPlayer = context.Game.PlayerPlayer;
+            m_currentPlayer = command.Game.PlayerPlayer;
             m_spellCaster = Host.Owner;
         }
 
-        void IPrologTrigger<Commands.DealDamageToPlayer>.Run(CommandContext<Commands.DealDamageToPlayer> context)
+        void IPrologTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
         {
-            if(m_isProtected&& context.Command.Player == m_spellCaster)
-                context.Command.DamageToDeal = 0;
+            if(m_isProtected&& command.Player == m_spellCaster)
+                command.PatchDamageToDeal(0);
         }
 
-        void IPrologTrigger<Commands.DealDamageToCard>.Run(CommandContext<Commands.DealDamageToCard> context)
+        void IPrologTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
-            if (m_isProtected && context.Command.Target.Owner == m_spellCaster)
-                context.Command.DamageToDeal = 0;
+            if (m_isProtected && command.Target.Owner == m_spellCaster)
+                command.PatchDamageToDeal(0);
         }
 
-        void IEpilogTrigger<Commands.EndTurn>.Run(CommandContext<Commands.EndTurn> context)
+        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (context.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
+            if (command.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
             {
                 m_currentPlayer = null;
                 m_isProtected = false;

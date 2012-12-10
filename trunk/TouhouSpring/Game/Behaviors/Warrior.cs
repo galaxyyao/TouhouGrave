@@ -41,9 +41,9 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
         {
-            if (context.Command.Target == Host)
+            if (command.Target == Host)
             {
                 State = WarriorState.StandingBy;
                 m_attackModifers.Clear();

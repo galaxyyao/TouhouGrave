@@ -9,23 +9,18 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
         IEpilogTrigger<Commands.Kill>
     {
-        void IEpilogTrigger<Commands.Kill>.Run(CommandContext<Commands.Kill> context)
+        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
         {
-            if (context.Command.Target == Host && context.Command.EnteredGraveyard)
+            if (command.Target == Host && command.EnteredGraveyard)
             {
-                foreach (var card in context.Game.Players.SelectMany(player => player.CardsOnBattlefield))
+                foreach (var card in command.Game.Players.SelectMany(player => player.CardsOnBattlefield))
                 {
                     if (card.Behaviors.Has<Hero>())
                         continue;
                     if (!card.Behaviors.Has<Warrior>())
                         continue;
 
-                    context.Game.IssueCommands(new Commands.DealDamageToCard
-                    {
-                        Target = card,
-                        Cause = this,
-                        DamageToDeal = Model.Damage
-                    });
+                    command.Game.IssueCommands(new Commands.DealDamageToCard(card, this, Model.Damage));
                 }
             }
         }
