@@ -15,7 +15,7 @@ namespace TouhouSpring.Commands
         Epilog
     }
 
-    public partial class BaseCommand
+    public abstract partial class BaseCommand
     {
         public CommandPhase ExecutionPhase
         {
@@ -32,9 +32,9 @@ namespace TouhouSpring.Commands
             get; internal set;
         }
 
-        internal virtual void ValidateOnIssue() { }
-        internal virtual void ValidateOnRun() { }
-        internal virtual void RunMain() { }
+        internal abstract void ValidateOnIssue();
+        internal abstract void ValidateOnRun();
+        internal abstract void RunMain();
 
         protected void CheckPatchable(string propertyName)
         {

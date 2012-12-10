@@ -15,7 +15,7 @@ namespace TouhouSpring.Commands
         { }
     }
 
-    public partial class BaseCommand
+    public abstract partial class BaseCommand
     {
         public static void FailValidation(string message)
         {
