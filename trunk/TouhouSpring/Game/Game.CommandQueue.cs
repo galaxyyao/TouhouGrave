@@ -31,6 +31,7 @@ namespace TouhouSpring
         {
             Debug.Assert(RunningCommand == null);
 
+            IssueCommand(new Commands.Resolve());
             while (m_pendingCommands.Count != 0)
             {
                 var cmd = m_pendingCommands.Dequeue();
@@ -137,13 +138,11 @@ namespace TouhouSpring
             Controllers.ForEach(ctrl => ctrl.OnCommandBegin(command));
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IPrologTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.Run(command));
-            Resolve();
 
             ////////////////////////////////////////////
 
             command.ExecutionPhase = Commands.CommandPhase.Main;
             command.RunMain();
-            Resolve();
 
             ////////////////////////////////////////////
 
@@ -151,7 +150,6 @@ namespace TouhouSpring
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.Run(command));
             Controllers.ForEach(ctrl => ctrl.OnCommandEnd(command));
-            Resolve();
         }
 
         private CommandResult RunPrerequisite<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
@@ -202,11 +200,6 @@ namespace TouhouSpring
                     yield return player.Hero.Host;
                 }
             }
-        }
-
-        public void Resolve()
-        {
-            // TODO: (command) Resolve
         }
     }
 }

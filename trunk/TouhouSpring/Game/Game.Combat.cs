@@ -86,24 +86,5 @@ namespace TouhouSpring
 
             FlushCommandQueue();
         }
-
-        private void ResolveBattlefieldCards()
-        {
-            foreach (var player in Players)
-            {
-                for (int i = 0; i < player.m_battlefieldCards.Count; i++)
-                {
-                    var card = player.m_battlefieldCards[i];
-                    if (!card.Behaviors.Has<Behaviors.Warrior>())
-                        continue;
-                    var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                    if (warrior.Defense - warrior.AccumulatedDamage <= 0)
-                    {
-                        IssueCommands(new Commands.Kill(card, null));
-                    }
-                }
-            }
-            FlushCommandQueue();
-        }
     }
 }

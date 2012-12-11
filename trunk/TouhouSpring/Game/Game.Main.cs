@@ -65,7 +65,6 @@ namespace TouhouSpring
                     {
                         throw new InvalidDataException();
                     }
-                    ResolveBattlefieldCards();
                 }
 
                 CurrentPhase = "Combat/Attack";
@@ -99,12 +98,10 @@ namespace TouhouSpring
                     {
                         throw new InvalidDataException();
                     }
-                    ResolveBattlefieldCards();
                 }
 
                 CurrentPhase = "Combat/Resolve";
                 ResolveCombat(declaredAttackers, declaredBlockers);
-                ResolveBattlefieldCards();
 
                 IssueCommandsAndFlush(
                     new Commands.ResetAccumulatedDamage(),
