@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class SkillMustBeCharged : BaseBehavior<SkillMustBeCharged.ModelType>,
+    public sealed class SkillMustBeCharged : BaseBehavior<SkillMustBeCharged.ModelType>,
         IPrerequisiteTrigger<Commands.CastSpell>,
         IEpilogTrigger<Commands.CastSpell>
     {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_WarriorAlwaysStandBy:
+    public sealed class Passive_WarriorAlwaysStandBy :
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
         IEpilogTrigger<Commands.EndTurn>
     {

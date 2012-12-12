@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_AllFieldDealDamageWhenWarriorDestroyed:
+    public sealed class Passive_AllFieldDealDamageWhenWarriorDestroyed :
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
         IEpilogTrigger<Commands.Kill>
     {

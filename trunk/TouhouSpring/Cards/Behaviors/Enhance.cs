@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Enhance : SimpleBehavior<Enhance>,
+    public sealed class Enhance : SimpleBehavior<Enhance>,
         IEpilogTrigger<Commands.AddBehavior>,
         IPrologTrigger<Commands.RemoveBehavior>
     {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_HealedWhenWarriorAttacks :
+    public sealed class Passive_HealedWhenWarriorAttacks :
         BaseBehavior<Passive_HealedWhenWarriorAttacks.ModelType>,
         IEpilogTrigger<Commands.DealDamageToCard>
     {

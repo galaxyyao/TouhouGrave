@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_WarriorAttackAndDefenseUpWhenAttackedHero:
+    public sealed class Passive_WarriorAttackAndDefenseUpWhenAttackedHero :
         BaseBehavior<Passive_WarriorAttackAndDefenseUpWhenAttackedHero.ModelType>,
         IEpilogTrigger<Commands.DealDamageToPlayer>
     {

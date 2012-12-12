@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
+    public sealed class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
         , IEpilogTrigger<Commands.PlayCard>
         , IEpilogTrigger<Commands.EndTurn>
     {

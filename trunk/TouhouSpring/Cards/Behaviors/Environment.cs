@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Environment : BaseBehavior<Environment.ModelType>,
+    public sealed class Environment : BaseBehavior<Environment.ModelType>,
         IEpilogTrigger<Commands.PlayCard>
     {
         void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_HeroAttackUpWithCardNumber
+    public sealed class Passive_HeroAttackUpWithCardNumber
         : BaseBehavior<Passive_HeroAttackUpWithCardNumber.ModelType>,
         IEpilogTrigger<Commands.Kill>,
         IEpilogTrigger<Commands.PlayCard>

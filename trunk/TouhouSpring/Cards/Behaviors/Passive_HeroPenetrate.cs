@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_HeroPenetrate :
+    public sealed class Passive_HeroPenetrate :
         BaseBehavior<Passive_HeroPenetrate.ModelType>,
         IEpilogTrigger<Commands.DealDamageToCard>
     {

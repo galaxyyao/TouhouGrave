@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Assault_SingleWarriorBoostForXRounds :
+    public sealed class Assault_SingleWarriorBoostForXRounds :
         BaseBehavior<Assault_SingleWarriorBoostForXRounds.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>,
         ISetupTrigger<Commands.PlayCard>,

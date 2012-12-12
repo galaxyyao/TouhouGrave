@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
+    public sealed class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
         IEpilogTrigger<Commands.StartTurn>
     {
         void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)

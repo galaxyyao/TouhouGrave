@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Passive_EnemySummonCostUp :
+    public sealed class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>

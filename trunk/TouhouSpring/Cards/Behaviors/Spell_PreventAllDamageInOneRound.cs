@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Spell_PreventAllDamageInOneRound :
+    public sealed class Spell_PreventAllDamageInOneRound :
         BaseBehavior<Spell_PreventAllDamageInOneRound.ModelType>,
         ICastableSpell,
         IPrologTrigger<Commands.DealDamageToPlayer>,

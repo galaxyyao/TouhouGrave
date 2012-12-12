@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class LastingEffect : SimpleBehavior<LastingEffect>,
+    public sealed class LastingEffect : SimpleBehavior<LastingEffect>,
         IEpilogTrigger<Commands.StartTurn>
     {
         public int Duration

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Spell_MassDamageToWarriorOnEnemyBattlefield :
+    public sealed class Spell_MassDamageToWarriorOnEnemyBattlefield :
         BaseBehavior<Spell_MassDamageToWarriorOnEnemyBattlefield.ModelType>,
         ICastableSpell
     {

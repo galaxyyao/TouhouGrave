@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class PhaseSpecific : BaseBehavior<PhaseSpecific.ModelType>,
+    public sealed class PhaseSpecific : BaseBehavior<PhaseSpecific.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>
     {
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)

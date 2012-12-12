@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Immobilize : SimpleBehavior<Immobilize>,
+    public sealed class Immobilize : SimpleBehavior<Immobilize>,
         IEpilogTrigger<Commands.StartTurn>
     {
         void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
