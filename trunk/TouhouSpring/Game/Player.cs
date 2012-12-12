@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -108,7 +109,7 @@ namespace TouhouSpring
             }
             else if (heroCard == null)
             {
-                throw new ArgumentNullException("hero");
+                throw new ArgumentNullException("heroCard");
             }
             else if (!m_profile.Decks.Contains(deck))
             {
@@ -126,7 +127,7 @@ namespace TouhouSpring
             var heroBhv = hero.Behaviors.Get<Behaviors.Hero>();
             if (heroBhv == null)
             {
-                throw new ArgumentException(String.Format("Invalid hero card: {0}", hero.Model.Name));
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Invalid hero card: {0}", hero.Model.Name));
             }
 
             Hero = heroBhv;

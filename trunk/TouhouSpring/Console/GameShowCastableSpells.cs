@@ -28,7 +28,7 @@ namespace TouhouSpring
             for (int i = 0; i < cards.Count; ++i)
             {
                 var card = cards[i];
-                foreach (var spell in card.GetSpells())
+                foreach (var spell in card.Spells)
                 {
                     Console.WriteLine("> [{0}] {1} on {2} ({3})", ++counter, spell.Model.Name, card.Model.Name, GetLocation(card));
                 }

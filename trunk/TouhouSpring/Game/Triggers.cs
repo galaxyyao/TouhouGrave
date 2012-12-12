@@ -12,7 +12,12 @@ namespace TouhouSpring
 
         public readonly static CommandResult Pass = new CommandResult { Canceled = false, Reason = null };
 
-        public static CommandResult Cancel(string reason = null)
+        public static CommandResult Cancel()
+        {
+            return Cancel(null);
+        }
+
+        public static CommandResult Cancel(string reason)
         {
             return new CommandResult { Canceled = true, Reason = reason };
         }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace TouhouSpring.Commands
 {
+    [Serializable]
     public class CommandValidationFailException : Exception
     {
         public CommandValidationFailException()
@@ -13,13 +16,21 @@ namespace TouhouSpring.Commands
         public CommandValidationFailException(string message)
             : base(message)
         { }
+
+        public CommandValidationFailException(string message, Exception innerException)
+            : base(message, innerException)
+        { }
+
+        protected CommandValidationFailException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        { }
     }
 
     public abstract partial class BaseCommand
     {
-        public static void FailValidation(string message)
+        public static void FailValidation(string format, params object[] args)
         {
-            throw new CommandValidationFailException(message);
+            throw new CommandValidationFailException(String.Format(CultureInfo.CurrentCulture, format, args));
         }
 
         protected void Validate(Player player)

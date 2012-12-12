@@ -32,7 +32,7 @@ namespace TouhouSpring.Behaviors
 		{
 			if (index < 0 || index > m_behaviors.Count)
 			{
-				throw new ArgumentOutOfRangeException("Index is out of range.");
+				throw new ArgumentOutOfRangeException("index", "Index is out of range.");
 			}
 			else if (item == null)
 			{
@@ -55,7 +55,7 @@ namespace TouhouSpring.Behaviors
 		{
 			if (index < 0 || index > m_behaviors.Count)
 			{
-				throw new ArgumentOutOfRangeException("Index is out of range.");
+				throw new ArgumentOutOfRangeException("index", "Index is out of range.");
 			}
 
 			Debug.Assert(m_behaviors[index].Host == m_host);

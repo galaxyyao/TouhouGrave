@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -46,7 +47,7 @@ namespace TouhouSpring.Behaviors
             }
             else if (!(model is T))
             {
-                throw new ArgumentException(String.Format("Model must be of type {0}.", typeof(T).Name));
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Model must be of type {0}.", typeof(T).Name));
             }
             else if (Model != null)
             {

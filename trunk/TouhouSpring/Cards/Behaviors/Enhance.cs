@@ -19,8 +19,8 @@ namespace TouhouSpring.Behaviors
                 throw new ArgumentException("Attack and defense must not both be zero.");
             }
 
-            m_attackModifier = attackMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, attackMod) : null;
-            m_defenseModifier = defenseMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, defenseMod) : null;
+            m_attackModifier = attackMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, attackMod) : null;
+            m_defenseModifier = defenseMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, defenseMod) : null;
         }
 
         void IEpilogTrigger<Commands.AddBehavior>.Run(Commands.AddBehavior command)

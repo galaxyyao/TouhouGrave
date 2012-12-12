@@ -19,10 +19,9 @@ namespace TouhouSpring
 		/// <summary>
 		/// Get a collection of behaviors which implements ISpell.
 		/// </summary>
-		/// <returns>The collection</returns>
-		public IEnumerable<Behaviors.ICastableSpell> GetSpells()
+		public IEnumerable<Behaviors.ICastableSpell> Spells
 		{
-			return Behaviors.OfType<Behaviors.ICastableSpell>();
-		}
+            get { return Behaviors.OfType<Behaviors.ICastableSpell>(); }
+        }
 	}
 }

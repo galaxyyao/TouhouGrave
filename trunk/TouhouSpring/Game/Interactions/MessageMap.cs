@@ -9,6 +9,7 @@ namespace TouhouSpring.Interactions
 {
 	public class MessageMap
 	{
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 		public class HandlerAttribute : Attribute
 		{
 			public Type InteractionType

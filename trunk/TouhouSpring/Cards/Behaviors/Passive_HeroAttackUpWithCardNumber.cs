@@ -54,7 +54,7 @@ namespace TouhouSpring.Behaviors
             }
             if (m_attackModifier == null)
             {
-                m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, numberOfWarriors);
+                m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, numberOfWarriors);
                 game.IssueCommands(new Commands.SendBehaviorMessage(
                     Host.Behaviors.Get<Warrior>(),
                     "AttackModifiers",

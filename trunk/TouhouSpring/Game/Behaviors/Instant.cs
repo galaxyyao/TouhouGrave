@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Instant : BaseBehavior<Instant.ModelType>,
+    public sealed class Instant : BaseBehavior<Instant.ModelType>,
         IEpilogTrigger<Commands.PlayCard>
     {
         void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)

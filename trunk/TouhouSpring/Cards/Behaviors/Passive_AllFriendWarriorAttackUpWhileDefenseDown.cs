@@ -10,8 +10,8 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.Kill>
     {
-        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, 2);
-        private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1);
+        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 2);
+        private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1);
 
         void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {

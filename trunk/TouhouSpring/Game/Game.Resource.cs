@@ -40,7 +40,7 @@ namespace TouhouSpring
             }
             else if (amount <= 0)
             {
-                throw new ArgumentOutOfRangeException("Argument amount must be greater than zero.");
+                throw new ArgumentOutOfRangeException("amount", "Argument amount must be greater than zero.");
             }
             else if (!Players.Contains(player))
             {
@@ -67,7 +67,7 @@ namespace TouhouSpring
             }
             else if (amount <= 0)
             {
-                throw new ArgumentOutOfRangeException("Argument amount must be greater than zero.");
+                throw new ArgumentOutOfRangeException("amount", "Argument amount must be greater than zero.");
             }
             else if (!Players.Contains(player))
             {

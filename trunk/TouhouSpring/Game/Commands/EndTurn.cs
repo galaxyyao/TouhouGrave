@@ -15,7 +15,7 @@ namespace TouhouSpring.Commands
         {
             if (Game.CurrentPhase != "Combat/Resolve")
             {
-                FailValidation(String.Format("EndTurn can't be executed at the phase {0}.", Game.CurrentPhase));
+                FailValidation("EndTurn can't be executed at the phase {0}.", Game.CurrentPhase);
             }
         }
 

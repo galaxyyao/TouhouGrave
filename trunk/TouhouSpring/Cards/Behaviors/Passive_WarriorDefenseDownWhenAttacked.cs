@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
                 command.Game.IssueCommands(new Commands.SendBehaviorMessage(
                     Host.Behaviors.Get<Warrior>(),
                     "DefenseModifiers",
-                    new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, -1) }));
+                    new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1) }));
             }
         }
 

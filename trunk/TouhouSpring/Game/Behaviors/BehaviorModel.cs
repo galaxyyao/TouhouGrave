@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         public string Name
         {
             get { return m_name ?? m_bhvModelAttr.DefaultName; }
-            set { m_name = value != String.Empty ? value : null; }
+            set { m_name = String.IsNullOrEmpty(value) ? null : value; }
         }
 
         [System.ComponentModel.Category("Basic")]
@@ -57,7 +57,8 @@ namespace TouhouSpring.Behaviors
         }
     }
 
-    public class BehaviorModelAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public sealed class BehaviorModelAttribute : Attribute
     {
         private string m_defaultName;
         private string m_description;

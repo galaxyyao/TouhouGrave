@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -40,7 +41,7 @@ namespace TouhouSpring.Commands
         {
             if (ExecutionPhase != CommandPhase.Prolog)
             {
-                throw new InvalidOperationException(String.Format("{0} can't be set when the command is read-only.", propertyName));
+                throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "{0} can't be set when the command is read-only.", propertyName));
             }
         }
     }

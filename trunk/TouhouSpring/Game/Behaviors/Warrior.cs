@@ -12,7 +12,7 @@ namespace TouhouSpring.Behaviors
         CoolingDown
     }
 
-    public partial class Warrior : BaseBehavior<Warrior.ModelType>,
+    public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
         IEpilogTrigger<Commands.Kill>
     {
         public WarriorState State
@@ -36,7 +36,7 @@ namespace TouhouSpring.Behaviors
             get; internal set;
         }
 
-        public List<BaseCard> Equipments
+        public IList<BaseCard> Equipments
         {
             get; private set;
         }

@@ -5,46 +5,46 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public partial class Warrior
+    public sealed partial class Warrior
     {
+        public enum ValueModifierOperator
+        {
+            Add,
+            Multiply,
+            DivideRoundUp,
+            DivideRoundDown
+        }
+
         public class ValueModifier
         {
-            public enum Operators
-            {
-                Add,
-                Multiply,
-                DivideRoundUp,
-                DivideRoundDown
-            }
-
-            public Operators Operator { get; private set; }
+            public ValueModifierOperator Operator { get; private set; }
             public int Amount { get; private set; }
 
-            public ValueModifier(Operators op, int amount)
+            public ValueModifier(ValueModifierOperator op, int amount)
             {
                 switch (op)
                 {
-                    case Operators.Add:
+                    case ValueModifierOperator.Add:
                         if (amount == 0)
                         {
-                            throw new ArgumentOutOfRangeException("Amount should not be zero.");
+                            throw new ArgumentOutOfRangeException("amount", "Amount should not be zero.");
                         }
                         break;
-                    case Operators.Multiply:
+                    case ValueModifierOperator.Multiply:
                         if (amount <= 0)
                         {
-                            throw new ArgumentOutOfRangeException("Amount should be greater than zero.");
+                            throw new ArgumentOutOfRangeException("amount", "Amount should be greater than zero.");
                         }
                         break;
-                    case Operators.DivideRoundUp:
-                    case Operators.DivideRoundDown:
+                    case ValueModifierOperator.DivideRoundUp:
+                    case ValueModifierOperator.DivideRoundDown:
                         if (amount <= 0)
                         {
-                            throw new ArgumentOutOfRangeException("Amount should be greater than zero.");
+                            throw new ArgumentOutOfRangeException("amount", "Amount should be greater than zero.");
                         }
                         break;
                     default:
-                        throw new ArgumentException("op");
+                        throw new ArgumentException("Invalid value.", "op");
                 }
 
                 Operator = op;
@@ -55,13 +55,13 @@ namespace TouhouSpring.Behaviors
             {
                 switch (Operator)
                 {
-                    case Operators.Add:
+                    case ValueModifierOperator.Add:
                         return Math.Max(input + Amount, 0);
-                    case Operators.Multiply:
+                    case ValueModifierOperator.Multiply:
                         return Math.Max(input * Amount, 0);
-                    case Operators.DivideRoundUp:
+                    case ValueModifierOperator.DivideRoundUp:
                         return Math.Max((int)Math.Ceiling((float)input / Amount), 0);
-                    case Operators.DivideRoundDown:
+                    case ValueModifierOperator.DivideRoundDown:
                         return Math.Max((int)Math.Floor((float)input / Amount), 0);
                     default:
                         throw new ArgumentException("Operator");

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Support : BaseBehavior<Support.ModelType>,
+    public sealed class Support : BaseBehavior<Support.ModelType>,
         ISetupTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
     {

@@ -15,7 +15,7 @@ namespace TouhouSpring.Commands
         {
             if (Game.CurrentPhase != "Combat/Attack")
             {
-                FailValidation(String.Format("StartTurn can't be executed at the phase {0}.", Game.CurrentPhase));
+                FailValidation("StartTurn can't be executed at the phase {0}.", Game.CurrentPhase);
             }
         }
 

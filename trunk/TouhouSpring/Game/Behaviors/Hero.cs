@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Hero : BaseBehavior<Hero.ModelType>,
+    public sealed class Hero : BaseBehavior<Hero.ModelType>,
         IEpilogTrigger<Commands.StartAttackPhase>
     {
         void IEpilogTrigger<Commands.StartAttackPhase>.Run(Commands.StartAttackPhase command)

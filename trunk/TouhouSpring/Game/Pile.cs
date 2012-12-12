@@ -107,9 +107,9 @@ namespace TouhouSpring
 		/// </summary>
 		/// <param name="p">The predication.</param>
 		/// <returns>A collection of the queried cards.</returns>
-		public BaseCard[] QueryCards(Predicate<BaseCard> p)
+		public BaseCard[] QueryCards(Predicate<BaseCard> predicate)
         {
-            return (from card in m_orderedCards where p(card) select card).ToArray();
+            return (from card in m_orderedCards where predicate(card) select card).ToArray();
         }
 
 		/// <summary>

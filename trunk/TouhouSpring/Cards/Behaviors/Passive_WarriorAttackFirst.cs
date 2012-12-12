@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
                 if (warriorAttackedBhv.AccumulatedDamage >= warriorAttackedBhv.Defense)
                 {
                     int damageWontDeal = command.Target.Behaviors.Get<Warrior>().Attack;
-                    attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifier.Operators.Add, damageWontDeal);
+                    attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, damageWontDeal);
                     command.Game.IssueCommands(new Commands.SendBehaviorMessage(
                         Host.Behaviors.Get<Warrior>(),
                         "DefenseModifiers",

@@ -40,7 +40,7 @@ namespace TouhouSpring
             for (int i = 0; i < cards.Count; ++i)
             {
                 var card = cards[i];
-                foreach (var spell in card.GetSpells())
+                foreach (var spell in card.Spells)
                 {
                     if (++counter == spellNo)
                     {

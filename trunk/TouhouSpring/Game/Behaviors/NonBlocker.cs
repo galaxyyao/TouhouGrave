@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class NonBlocker : BaseBehavior<NonBlocker.ModelType>
+    public sealed class NonBlocker : BaseBehavior<NonBlocker.ModelType>
     {
         [BehaviorModel(typeof(NonBlocker), Category = "Core", Description = "The card can't be engaged into combats as a blocker.")]
         public class ModelType : BehaviorModel

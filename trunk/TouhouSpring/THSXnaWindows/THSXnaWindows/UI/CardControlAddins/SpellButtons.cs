@@ -31,7 +31,7 @@ namespace TouhouSpring.UI.CardControlAddins
             var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI", 16);
 
             int y = 0;
-            foreach (var spell in Card.GetSpells())
+            foreach (var spell in Card.Spells)
             {
                 y -= m_buttonFaceTexture.Height + IntervalV;
 
@@ -128,7 +128,7 @@ namespace TouhouSpring.UI.CardControlAddins
         private void SpellButton_MouseButton1Up(object sender, MouseEventArgs e)
         {
             var index = m_spellButtons.IndexOf((Button)sender);
-            var spell = Card.GetSpells().Skip(index).First();
+            var spell = Card.Spells.Skip(index).First();
             GameApp.Service<Services.GameUI>().OnSpellClicked(Control, spell);
         }
     }
