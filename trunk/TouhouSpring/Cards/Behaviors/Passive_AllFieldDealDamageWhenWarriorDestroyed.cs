@@ -13,14 +13,14 @@ namespace TouhouSpring.Behaviors
         {
             if (command.Target == Host && command.EnteredGraveyard)
             {
-                foreach (var card in command.Game.Players.SelectMany(player => player.CardsOnBattlefield))
+                foreach (var card in Game.Players.SelectMany(player => player.CardsOnBattlefield))
                 {
                     if (card.Behaviors.Has<Hero>())
                         continue;
                     if (!card.Behaviors.Has<Warrior>())
                         continue;
 
-                    command.Game.IssueCommands(new Commands.DealDamageToCard(card, this, Model.Damage));
+                    Game.IssueCommands(new Commands.DealDamageToCard(card, this, Model.Damage));
                 }
             }
         }

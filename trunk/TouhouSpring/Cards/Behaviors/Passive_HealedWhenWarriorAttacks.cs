@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause.Host.Owner == Host.Owner
                 && !command.Cause.Host.Behaviors.Has<Behaviors.Hero>())
             {
-                command.Game.IssueCommands(new Commands.HealPlayer(Host.Owner, this, command.DamageToDeal));
+                Game.IssueCommands(new Commands.HealPlayer(Host.Owner, this, command.DamageToDeal));
             }
         }
 

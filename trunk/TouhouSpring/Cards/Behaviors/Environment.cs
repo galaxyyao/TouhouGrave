@@ -12,13 +12,13 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                foreach (var player in command.Game.Players)
+                foreach (var player in Game.Players)
                 {
                     var lastEnv = player.CardsOnBattlefield.FirstOrDefault(
-                        card => card.Behaviors.Has<Environment>() && card != Host);
+                        card => card != Host && card.Behaviors.Has<Environment>());
                     if (lastEnv != null)
                     {
-                        command.Game.IssueCommands(new Commands.Kill(lastEnv, this));
+                        Game.IssueCommands(new Commands.Kill(lastEnv, this));
                         break;
                     }
                 }

@@ -33,9 +33,9 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (IsOnBattlefield && command.Game.PlayerPlayer == Host.Owner && --Duration == 0)
+            if (IsOnBattlefield && Game.ActingPlayer == Host.Owner && --Duration == 0)
             {
-                CleanUps.ForEach(bhv => command.Game.IssueCommands(new Commands.RemoveBehavior(Host, bhv)));
+                CleanUps.ForEach(bhv => Game.IssueCommands(new Commands.RemoveBehavior(Host, bhv)));
             }
         }
     }

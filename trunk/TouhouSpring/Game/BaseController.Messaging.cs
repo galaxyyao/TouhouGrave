@@ -21,7 +21,7 @@ namespace TouhouSpring
 
 		public Messaging.LetterBox Outbox
 		{
-			get { return Game.LetterBoxes[Game.Controllers.IndexOf(this)]; }
+			get { return Game.LetterBoxes[Game.Players.IndexOf(Player)]; }
 		}
 
 		/// <summary>

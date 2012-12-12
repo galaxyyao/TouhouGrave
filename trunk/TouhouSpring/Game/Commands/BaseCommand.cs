@@ -23,14 +23,14 @@ namespace TouhouSpring.Commands
             get; internal set;
         }
 
-        public Game Game
+        public BaseCommand Previous
         {
             get; internal set;
         }
 
-        public BaseCommand Previous
+        internal Game Game
         {
-            get; internal set;
+            get; set;
         }
 
         internal abstract void ValidateOnIssue();

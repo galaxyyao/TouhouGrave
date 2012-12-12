@@ -15,18 +15,18 @@ namespace TouhouSpring.Behaviors
         void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
             if (command.Target == Host
-                && command.Game.PlayerPlayer != Host.Owner)
+                && Game.ActingPlayer != Host.Owner)
                 isBlockedLastRound = true;
         }
 
         void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (command.Game.PlayerPlayer != Host.Owner
+            if (Game.ActingPlayer != Host.Owner
                 && Host.Behaviors.Has<Warrior>()
                 && isBlockedLastRound)
             {
                 isBlockedLastRound = false;
-                command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                Game.IssueCommands(new Commands.SendBehaviorMessage(
                     Host.Behaviors.Get<Warrior>(),
                     "DefenseModifiers",
                     new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1) }));

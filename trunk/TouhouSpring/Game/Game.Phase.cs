@@ -23,7 +23,7 @@ namespace TouhouSpring
 
 					if (InPlayerPhases)
 					{
-						m_controllers.ForEach(c => c.InternalOnPlayerPhaseChanged(PlayerPlayer));
+						m_controllers.ForEach(c => c.InternalOnPlayerPhaseChanged(ActingPlayer));
 					}
 				}
 			}

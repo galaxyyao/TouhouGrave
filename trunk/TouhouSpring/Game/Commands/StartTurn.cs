@@ -21,7 +21,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Game.PlayerPlayer.m_battlefieldCards
+            Game.ActingPlayer.m_battlefieldCards
                 .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                 .ForEach(card => Game.IssueCommands(
                     new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));

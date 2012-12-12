@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host)
             {
                 var selectedCard = new Interactions.SelectCards(
-                    command.Game.OpponentController, // TODO: host's controller
+                    Host.Owner,
                     Host.Owner.CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Single,
                     "Select a card to boost its attack and defense.").Run();
@@ -61,7 +61,7 @@ namespace TouhouSpring.Behaviors
                     var lasting = new LastingEffect(Model.Duration);
                     var enhanceMod = new Enhance(Model.AttackBoost, Model.DefenseBoost);
                     lasting.CleanUps.Add(enhanceMod);
-                    command.Game.IssueCommands(
+                    Game.IssueCommands(
                         new Commands.AddBehavior(m_castTarget, enhanceMod),
                         new Commands.AddBehavior(m_castTarget, lasting));
                 }

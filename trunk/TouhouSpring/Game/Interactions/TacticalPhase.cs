@@ -21,17 +21,17 @@ namespace TouhouSpring.Interactions
             public object Data;
         }
 
-        public TacticalPhase(BaseController controller)
-            : base(controller, ComputeFromSet(controller).ToArray().ToIndexable(), SelectMode.Single,
+        public TacticalPhase(Player player)
+            : base(player, ComputeFromSet(player).ToArray().ToIndexable(), SelectMode.Single,
                    "Select a card from hand to play onto the battlefield or cast a spell from a card on battlefield.")
         {
-            if (controller == null)
+            if (player == null)
             {
-                throw new ArgumentNullException("controller");
+                throw new ArgumentNullException("player");
             }
-            else if (controller != controller.Game.PlayerController)
+            else if (player != player.Game.ActingPlayer)
             {
-                throw new InvalidOperationException("TacticalPhase can only be invoked on the current player.");
+                throw new InvalidOperationException("TacticalPhase can only be invoked on the acting player.");
             }
         }
 
@@ -134,9 +134,9 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> ComputeFromSet(BaseController controller)
+        private static IEnumerable<BaseCard> ComputeFromSet(Player player)
         {
-            return GetFromSet(controller.Player).Where(card => controller.Game.IsCardPlayable(card));
+            return GetFromSet(player).Where(card => player.Game.IsCardPlayable(card));
         }
 
         private static IEnumerable<BaseCard> GetFromSet(Player player)

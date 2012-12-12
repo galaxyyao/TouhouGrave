@@ -13,7 +13,7 @@ namespace TouhouSpring.Interactions
             Multiple		// select 0-N cards, N is the number of cards at the specified location
         }
 
-        public BaseController Controller
+        public Player Player
         {
             get; private set;
         }
@@ -33,18 +33,23 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public SelectCards(BaseController controller, IIndexable<BaseCard> fromSet, SelectMode mode)
-            : this(controller, fromSet, mode, null)
+        protected BaseController Controller
+        {
+            get { return Player.Controller; }
+        }
+
+        public SelectCards(Player player, IIndexable<BaseCard> fromSet, SelectMode mode)
+            : this(player, fromSet, mode, null)
         { }
 
-        public SelectCards(BaseController controller, IIndexable<BaseCard> fromSet, SelectMode mode, string message)
+        public SelectCards(Player player, IIndexable<BaseCard> fromSet, SelectMode mode, string message)
         {
-            if (controller == null)
+            if (player == null)
             {
                 throw new ArgumentNullException("controller");
             }
 
-            Controller = controller;
+            Player = player;
             FromSet = fromSet;
             Message = message ?? String.Empty;
             Mode = mode;

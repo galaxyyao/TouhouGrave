@@ -91,7 +91,6 @@
     <Compile Include="Game.Combat.cs" />
     <Compile Include="Game.End.cs" />
     <Compile Include="Game.Begin.cs" />
-    <Compile Include="Game.Controllers.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Messaging.cs" />

@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host
                 && Host.Behaviors.Has<Warrior>())
             {
-                command.Game.IssueCommands(
+                Game.IssueCommands(
                     new Commands.AddBehavior(Host, new Effect()),
                     new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
@@ -26,11 +26,11 @@ namespace TouhouSpring.Behaviors
         void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
             if (IsOnBattlefield
-                && command.Game.PlayerPlayer == Host.Owner
+                && Game.ActingPlayer == Host.Owner
                 && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {
-                command.Game.IssueCommands(
+                Game.IssueCommands(
                     new Commands.RemoveBehavior(Host, Host.Behaviors.Get<Effect>()),
                     new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }

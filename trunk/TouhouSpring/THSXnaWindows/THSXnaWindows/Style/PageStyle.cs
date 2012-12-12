@@ -87,7 +87,7 @@ namespace TouhouSpring.Style
 					replacement = "Textures/Yozora";
 					break;
 				case "Game.Player0.AvatarBorder":
-					replacement = game.InPlayerPhases && game.PlayerPlayer == game.Players[0]
+					replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[0]
 								  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
 					break;
 				case "Game.Player0.Name":
@@ -103,7 +103,7 @@ namespace TouhouSpring.Style
 					replacement = "Textures/Sena";
 					break;
 				case "Game.Player1.AvatarBorder":
-					replacement = game.InPlayerPhases && game.PlayerPlayer == game.Players[1]
+					replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[1]
 								  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
 					break;
 				case "Game.Player1.Name":

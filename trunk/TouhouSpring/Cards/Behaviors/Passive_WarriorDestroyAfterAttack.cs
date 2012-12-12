@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
             if (command.Cause != null
                 && command.Cause.Host == Host)
             {
-                command.Game.IssueCommands(new Commands.Kill(command.Target, this));
+                Game.IssueCommands(new Commands.Kill(command.Target, this));
             }
         }
 

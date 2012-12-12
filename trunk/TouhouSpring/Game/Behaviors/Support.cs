@@ -16,13 +16,13 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host)
             {
                 //TODO: add logic (what kind of logic?)
-                var cardsOnBattlefield = command.Game.PlayerPlayer.CardsOnBattlefield;
+                var cardsOnBattlefield = Host.Owner.CardsOnBattlefield;
                 bool hasSupportOnBattlefield = cardsOnBattlefield.Any(card => card.Behaviors.Get<Behaviors.Support>() != null);
                 if (hasSupportOnBattlefield)
                 {
-                    var result = new Interactions.MessageBox(command.Game.PlayerController
-                        , "场上已有一张支援卡，要直接从手牌补魔么？"
-                        , Interactions.MessageBox.Button.Yes | Interactions.MessageBox.Button.No).Run();
+                    var result = new Interactions.MessageBox(Host.Owner,
+                        "场上已有一张支援卡，要直接从手牌补魔么？",
+                        Interactions.MessageBox.Button.Yes | Interactions.MessageBox.Button.No).Run();
                     if (result == Interactions.MessageBox.Button.Yes)
                     {
                         m_chargeSkill = true;
@@ -41,7 +41,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host && m_chargeSkill)
             {
-                command.Game.IssueCommands(
+                Game.IssueCommands(
                     new Commands.Charge(Host.Owner),
                     new Commands.AddBehavior(command.CardToPlay, new Instant()));
             }

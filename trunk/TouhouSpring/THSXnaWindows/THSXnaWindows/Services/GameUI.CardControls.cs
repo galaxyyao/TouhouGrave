@@ -220,16 +220,20 @@ namespace TouhouSpring.Services
             var card = control.Card;
 
             var io = InteractionObject;
-            if (io is Interactions.TacticalPhase && Game.PlayerPlayer.CardsOnBattlefield.Contains(card))
+            if (io is Interactions.TacticalPhase
+                && (io as Interactions.TacticalPhase).Player.CardsOnBattlefield.Contains(card))
             {
-                GameApp.Service<ModalDialog>().Show(String.Format("Cast {0}?", spell.Model.Name), ModalDialog.Button.Yes | ModalDialog.Button.Cancel, btn =>
-                {
-                    if (btn == ModalDialog.Button.Yes)
+                GameApp.Service<ModalDialog>().Show(
+                    String.Format("Cast {0}?", spell.Model.Name),
+                    ModalDialog.Button.Yes | ModalDialog.Button.Cancel,
+                    btn =>
                     {
-                        InteractionObject = null;
-                        (io as Interactions.TacticalPhase).Respond(spell);
-                    }
-                });
+                        if (btn == ModalDialog.Button.Yes)
+                        {
+                            InteractionObject = null;
+                            (io as Interactions.TacticalPhase).Respond(spell);
+                        }
+                    });
             }
         }
 
@@ -279,7 +283,7 @@ namespace TouhouSpring.Services
                 {
                     locationAnimation.NextLocation = new LocationAnimation.LocationParameter
                     {
-                        m_zone = (m_interactionObject as Interactions.BlockPhase).Controller == Game.Controllers[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo,
+                        m_zone = (m_interactionObject as Interactions.BlockPhase).Player == Game.Players[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo,
                         m_numCards = (m_interactionObject as Interactions.BlockPhase).DeclaredAttackers.Count,
                         m_thisIndex = (m_interactionObject as Interactions.BlockPhase).DeclaredAttackers.IndexOf(card),
                         m_focusIndex = -1
@@ -293,7 +297,7 @@ namespace TouhouSpring.Services
                     var blockers = m_declaredBlockers.SelectMany(b => b.Where(c => c != null));
                     locationAnimation.NextLocation = new LocationAnimation.LocationParameter
                     {
-                        m_zone = (m_interactionObject as Interactions.BlockPhase).Controller == Game.Controllers[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo,
+                        m_zone = (m_interactionObject as Interactions.BlockPhase).Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo,
 
                         m_numCards = blockers.Count(),
                         m_thisIndex = blockers.FindIndex(c => c == cc),

@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                foreach (var card in command.Game.PlayerPlayer.CardsOnBattlefield)
+                foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
                     if (card.Behaviors.Get<Warrior>() == null)
                         continue;
@@ -25,7 +25,7 @@ namespace TouhouSpring.Behaviors
                         continue;
 
                     var warrior = card.Behaviors.Get<Warrior>();
-                    command.Game.IssueCommands(
+                    Game.IssueCommands(
                         new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
                         new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
                 }
@@ -35,7 +35,7 @@ namespace TouhouSpring.Behaviors
                      && command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
                 var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
-                command.Game.IssueCommands(
+                Game.IssueCommands(
                     new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
                     new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
             }
@@ -54,7 +54,7 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.Behaviors.Get<Warrior>() != null)
                     {
-                        command.Game.IssueCommands(
+                        Game.IssueCommands(
                             new Commands.SendBehaviorMessage(
                                 card.Behaviors.Get<Warrior>(),
                                 "AttackModifiers",
@@ -69,7 +69,7 @@ namespace TouhouSpring.Behaviors
             else if (command.Target.Owner == Host.Owner
                      && IsOnBattlefield)
             {
-                command.Game.IssueCommands(
+                Game.IssueCommands(
                     new Commands.SendBehaviorMessage(
                         command.Target.Behaviors.Get<Warrior>(),
                         "AttackModifiers",

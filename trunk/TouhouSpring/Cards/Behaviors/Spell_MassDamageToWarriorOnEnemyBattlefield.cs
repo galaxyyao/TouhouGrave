@@ -11,12 +11,13 @@ namespace TouhouSpring.Behaviors
     {
         void ICastableSpell.Run(Commands.CastSpell command)
         {
-            var warriors = (from card in command.Game.OpponentPlayer.CardsOnBattlefield
-                            where card.Behaviors.Has<Warrior>() select card).ToArray();
+            var warriors = Game.Players.Where(player => player != Host.Owner)
+                            .SelectMany(player => player.CardsOnBattlefield)
+                            .Where(card => card.Behaviors.Has<Warrior>());
 
             foreach (var warrior in warriors)
             {
-                command.Game.IssueCommands(new Commands.DealDamageToCard(warrior, this, Model.Damage));
+                Game.IssueCommands(new Commands.DealDamageToCard(warrior, this, Model.Damage));
             }
         }
 

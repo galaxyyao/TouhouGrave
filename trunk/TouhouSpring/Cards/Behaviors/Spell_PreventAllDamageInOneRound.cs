@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
         void ICastableSpell.Run(Commands.CastSpell command)
         {
             m_isProtected = true;
-            m_currentPlayer = command.Game.PlayerPlayer;
+            m_currentPlayer = Game.ActingPlayer;
             m_spellCaster = Host.Owner;
         }
 
@@ -37,7 +37,7 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (command.Game.PlayerPlayer != m_currentPlayer && m_isProtected)
+            if (Game.ActingPlayer != m_currentPlayer && m_isProtected)
             {
                 m_currentPlayer = null;
                 m_isProtected = false;

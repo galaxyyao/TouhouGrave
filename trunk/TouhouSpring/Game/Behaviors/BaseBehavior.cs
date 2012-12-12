@@ -34,6 +34,11 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
+        protected Game Game
+        {
+            get { return Host != null && Host.Owner != null ? Host.Owner.Game : null; }
+        }
+
         BehaviorModel IBehavior.Model
         {
             get { return Model; }

@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
                 {
                     return CommandResult.Cancel("Insufficient mana.");
                 }
-                command.Game.ReserveMana(command.CardToPlay.Owner, 1);
+                Game.ReserveMana(command.CardToPlay.Owner, 1);
             }
             return CommandResult.Pass;
         }
@@ -27,7 +27,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay.Owner != Host.Owner)
             {
-                command.Game.IssueCommands(new Commands.UpdateMana(command.CardToPlay.Owner, -1));
+                Game.IssueCommands(new Commands.UpdateMana(command.CardToPlay.Owner, -1));
             }
         }
 

@@ -21,7 +21,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Game.PlayerPlayer.ResetManaDelta();
+            Game.ActingPlayer.ResetManaDelta();
         }
     }
 }

@@ -10,12 +10,11 @@ namespace TouhouSpring.Behaviors
     {
         void IEpilogTrigger<Commands.StartAttackPhase>.Run(Commands.StartAttackPhase command)
         {
-            if (command.Game.Round == 1)
+            if (Game.Round == 1)
             {
                 if (Host.Behaviors.Has<Warrior>())
                 {
-                    command.Game.IssueCommands(
-                        new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
+                    Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
                 }
             }
         }

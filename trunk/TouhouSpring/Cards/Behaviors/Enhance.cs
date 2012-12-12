@@ -31,14 +31,14 @@ namespace TouhouSpring.Behaviors
                 {
                     if (m_attackModifier != null)
                     {
-                        command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                        Game.IssueCommands(new Commands.SendBehaviorMessage(
                             command.Target.Behaviors.Get<Warrior>(),
                             "AttackModifiers",
                             new object[] { "add", m_attackModifier }));
                     }
                     if (m_defenseModifier != null)
                     {
-                        command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                        Game.IssueCommands(new Commands.SendBehaviorMessage(
                             command.Target.Behaviors.Get<Warrior>(),
                             "DefenseModifiers",
                             new object[] { "add", m_defenseModifier }));
@@ -58,7 +58,7 @@ namespace TouhouSpring.Behaviors
             {
                 if (m_attackModifier != null)
                 {
-                    command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Game.IssueCommands(new Commands.SendBehaviorMessage(
                         Host.Behaviors.Get<Warrior>(),
                         "AttackModifiers",
                         new object[] { "remove", m_attackModifier }));
@@ -66,7 +66,7 @@ namespace TouhouSpring.Behaviors
                 }
                 if (m_defenseModifier != null)
                 {
-                    command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Game.IssueCommands(new Commands.SendBehaviorMessage(
                         Host.Behaviors.Get<Warrior>(),
                         "DefenseModifiers",
                         new object[] { "remove", m_defenseModifier }));

@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
 
         void ICastableSpell.Run(Commands.CastSpell command)
         {
-            command.Game.IssueCommands(
+            Game.IssueCommands(
                 new Commands.Charge(Host.Owner),
                 new Commands.Kill(Host, this));
         }

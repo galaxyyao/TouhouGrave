@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.Spell.Host == Host && Model.Discharge)
             {
-                command.Game.IssueCommands(new Commands.Discharge(Host.Owner));
+                Game.IssueCommands(new Commands.Discharge(Host.Owner));
             }
         }
 

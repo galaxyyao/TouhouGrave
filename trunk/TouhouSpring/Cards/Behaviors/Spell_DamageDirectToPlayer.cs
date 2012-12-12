@@ -11,8 +11,9 @@ namespace TouhouSpring.Behaviors
     {
         void ICastableSpell.Run(Commands.CastSpell command)
         {
-            command.Game.IssueCommands(new Commands.DealDamageToPlayer(
-                command.Game.OpponentPlayer, // TODO: opponent of Host.Owner
+            // TODO: select player to deal damage to
+            Game.IssueCommands(new Commands.DealDamageToPlayer(
+                Game.Players.First(player => player != Host.Owner),
                 this, Model.Damage));
         }
 

@@ -10,7 +10,7 @@ namespace TouhouSpring
     /// <summary>
     /// Represent a collection of player-specific states.
     /// </summary>
-    public class Player
+    public sealed class Player
     {
         private Profile m_profile;
 
@@ -86,14 +86,39 @@ namespace TouhouSpring
             get; private set;
         }
 
-        internal Player(Profile profile)
+        public Game Game
+        {
+            get; private set;
+        }
+
+        public BaseController Controller
+        {
+            get; private set;
+        }
+
+        internal Player(Profile profile, Game game, BaseController controller)
         {
             if (profile == null)
             {
                 throw new ArgumentNullException("profile");
             }
+            else if (game == null)
+            {
+                throw new ArgumentNullException("game");
+            }
+            else if (controller == null)
+            {
+                throw new ArgumentNullException("controller");
+            }
+            else if (controller.Player != null)
+            {
+                throw new InvalidOperationException("The controller is bound to some player before.");
+            }
 
             m_profile = profile;
+            Game = game;
+            Controller = controller;
+            Controller.Player = this;
         }
 
         /// <summary>

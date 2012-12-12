@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
                 {
                     int damageWontDeal = command.Target.Behaviors.Get<Warrior>().Attack;
                     attackFirstCompensation = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, damageWontDeal);
-                    command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Game.IssueCommands(new Commands.SendBehaviorMessage(
                         Host.Behaviors.Get<Warrior>(),
                         "DefenseModifiers",
                         new object[] { "add", attackFirstCompensation }));
@@ -34,7 +34,7 @@ namespace TouhouSpring.Behaviors
         {
             if (attackFirstCompensation != null)
             {
-                command.Game.IssueCommands(new Commands.SendBehaviorMessage(
+                Game.IssueCommands(new Commands.SendBehaviorMessage(
                     Host.Behaviors.Get<Warrior>(),
                     "DefenseModifiers",
                     new object[] { "remove", attackFirstCompensation }));

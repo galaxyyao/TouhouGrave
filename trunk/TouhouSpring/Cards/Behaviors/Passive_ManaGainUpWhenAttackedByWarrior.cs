@@ -26,7 +26,7 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (command.Game.PlayerPlayer != Host.Owner
+            if (Game.ActingPlayer != Host.Owner
                 && isAttackedByWarriorLastRound)
             {
                 isAttackedByWarriorLastRound = false;

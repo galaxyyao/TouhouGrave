@@ -19,7 +19,7 @@ namespace TouhouSpring.Interactions
             public object Data;
         }
 
-        public BaseController Controller
+        public Player Player
         {
             get; private set;
         }
@@ -44,18 +44,23 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public BlockPhase(BaseController controller, IIndexable<BaseCard> declaredAttackers)
+        protected BaseController Controller
         {
-            if (controller == null)
+            get { return Player.Controller; }
+        }
+
+        public BlockPhase(Player player, IIndexable<BaseCard> declaredAttackers)
+        {
+            if (player == null)
             {
-                throw new ArgumentNullException("controller");
+                throw new ArgumentNullException("player");
             }
             else if (declaredAttackers == null)
             {
                 throw new ArgumentNullException("declaredAttackers");
             }
 
-            Controller = controller;
+            Player = player;
             DeclaredAttackers = declaredAttackers;
             BlockableAttackers = declaredAttackers.Where(card => !card.Behaviors.Has<Behaviors.Unblockable>());
             BlockerCandidates = GetBlockerCandidates().ToArray().ToIndexable();

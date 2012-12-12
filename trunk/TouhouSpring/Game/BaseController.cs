@@ -15,7 +15,7 @@ namespace TouhouSpring
 		/// </summary>
 		public Game Game
 		{
-			get; internal set;
+            get { return Player != null ? Player.Game : null; }
 		}
 
 		/// <summary>

@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
                         hostCardNumber++;
                 }
                 for (int i = 0; i < hostCardNumber; i++)
-                    command.Game.IssueCommands(new Commands.DrawCard(Host.Owner));
+                    Game.IssueCommands(new Commands.DrawCard(Host.Owner));
             }
         }
 

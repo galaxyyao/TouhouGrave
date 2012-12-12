@@ -38,24 +38,24 @@ namespace TouhouSpring
 
                 while (true)
                 {
-                    var result = new Interactions.TacticalPhase(PlayerController).Run();
+                    var result = new Interactions.TacticalPhase(ActingPlayer).Run();
                     if (result.ActionType == TacticalPhase.Action.PlayCard)
                     {
                         var cardToPlay = (BaseCard)result.Data;
-                        Debug.Assert(cardToPlay.Owner == PlayerPlayer);
+                        Debug.Assert(cardToPlay.Owner == ActingPlayer);
                         IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
                     }
                     else if (result.ActionType == TacticalPhase.Action.CastSpell)
                     {
                         var spellToCast = (Behaviors.ICastableSpell)result.Data;
-                        Debug.Assert(spellToCast.Host.Owner == PlayerPlayer);
+                        Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
                         IssueCommandsAndFlush(new Commands.CastSpell(spellToCast));
                     }
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
                         IssueCommandsAndFlush(
-                            new Commands.UpdateMana(PlayerPlayer, -1),
-                            new Commands.DrawCard(PlayerPlayer));
+                            new Commands.UpdateMana(ActingPlayer, -1),
+                            new Commands.DrawCard(ActingPlayer));
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
                     {
@@ -70,8 +70,8 @@ namespace TouhouSpring
                 CurrentPhase = "Combat/Attack";
                 IssueCommandsAndFlush(new Commands.StartAttackPhase { });
                 var declaredAttackers = new Interactions.SelectCards(
-                    PlayerController,
-                    PlayerPlayer.CardsOnBattlefield.Where(card =>
+                    ActingPlayer,
+                    ActingPlayer.CardsOnBattlefield.Where(card =>
                         card.Behaviors.Has<Behaviors.Warrior>()
                         && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Multiple,
@@ -82,7 +82,8 @@ namespace TouhouSpring
                 IIndexable<IIndexable<BaseCard>> declaredBlockers;
                 while (true)
                 {
-                    var result = new Interactions.BlockPhase(OpponentController, declaredAttackers).Run();
+                    var opponentPlayer = ActingPlayerEnemies.First(); // TODO: multiplayer game
+                    var result = new Interactions.BlockPhase(opponentPlayer, declaredAttackers).Run();
                     if (result.ActionType == BlockPhase.Action.ConfirmBlock)
                     {
                         declaredBlockers = (result.Data as IIndexable<IIndexable<BaseCard>>).Clone(e => e.Clone());
@@ -91,7 +92,7 @@ namespace TouhouSpring
                     else if (result.ActionType == BlockPhase.Action.PlayCard)
                     {
                         var cardToPlay = (BaseCard)result.Data;
-                        Debug.Assert(cardToPlay.Owner == OpponentPlayer);
+                        Debug.Assert(cardToPlay.Owner == opponentPlayer);
                         IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
                     }
                     else
@@ -105,13 +106,13 @@ namespace TouhouSpring
 
                 IssueCommandsAndFlush(
                     new Commands.ResetAccumulatedDamage(),
-                    new Commands.UpdateMana(PlayerPlayer, PlayerPlayer.ManaDelta),
+                    new Commands.UpdateMana(ActingPlayer, ActingPlayer.ManaDelta),
                     new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;
 
-            new Interactions.NotifyOnly(PlayerController, string.Format("{0} 获得了胜利", Winner.Name));
+            new Interactions.NotifyOnly(ActingPlayer.Controller, string.Format("{0} 获得了胜利", Winner.Name));
             CurrentPhase = "End";
             End();
 
@@ -122,12 +123,12 @@ namespace TouhouSpring
         {
             if (Players.Any(player => player.Health <= 0))
             {
-                Winner = OpponentPlayer;
+                Winner = ActingPlayerEnemies.First();
                 return true;
             }
             if (Players.Any(player => player.m_library.Count() <= 0))
             {
-                Winner = OpponentPlayer;
+                Winner = ActingPlayerEnemies.First();
                 return true;
             }
 

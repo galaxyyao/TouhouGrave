@@ -19,7 +19,8 @@ namespace TouhouSpring
                 if (blockers.Count == 0)
                 {
                     IssueCommands(
-                        new Commands.DealDamageToPlayer(OpponentPlayer, attackerWarriorBhv, attackerWarriorBhv.Attack),
+                        // TODO: attackers be declared on some target player
+                        new Commands.DealDamageToPlayer(ActingPlayerEnemies.First(), attackerWarriorBhv, attackerWarriorBhv.Attack),
                         new Commands.SendBehaviorMessage(attackerWarriorBhv, "GoCoolingDown", null));
                 }
                 else if (blockers.Count == 1)

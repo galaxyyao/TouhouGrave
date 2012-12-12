@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -17,12 +18,12 @@ namespace TouhouSpring.Interactions
 			No = 0x08,
 		}
 
-		public BaseController Controller
-		{
-			get; private set;
-		}
+        public Player Player
+        {
+            get; private set;
+        }
 
-		public string Text
+        public string Text
 		{
 			get; private set;
 		}
@@ -34,23 +35,23 @@ namespace TouhouSpring.Interactions
 
 		public Button Run()
 		{
-			return NotifyAndWait<Button>(Controller);
+			return NotifyAndWait<Button>(Player.Controller);
 		}
 
 		public void Respond(Button button)
 		{
 			if ((Buttons & button) == 0)
 			{
-				throw new ArgumentException(String.Format("Button '{0}' shall not be selected.", button));
+				throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Button '{0}' shall not be selected.", button));
 			}
 
-			RespondBack(Controller, button);
+			RespondBack(Player.Controller, button);
 		}
 
-		public MessageBox(BaseController controller, string text, Button buttons)
+		public MessageBox(Player player, string text, Button buttons)
 		{
-			Debug.Assert(controller != null && text != null);
-			Controller = controller;
+			Debug.Assert(player != null && text != null);
+			Player = player;
 			Text = text;
 			Buttons = buttons;
 		}

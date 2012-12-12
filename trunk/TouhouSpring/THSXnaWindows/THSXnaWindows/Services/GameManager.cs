@@ -26,10 +26,7 @@ namespace TouhouSpring.Services
 				return;
 			}
 
-			foreach (var controller in Game.Controllers)
-			{
-				controller.ProcessMessage();
-			}
+            Game.Players.Select(player => player.Controller).ForEach(ctrl => ctrl.ProcessMessage());
 		}
 
         public void EnterConversation()

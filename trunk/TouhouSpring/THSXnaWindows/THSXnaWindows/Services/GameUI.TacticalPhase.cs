@@ -61,7 +61,7 @@ namespace TouhouSpring.Services
             }
             else if (buttonText == PhaseButtonText.Draw)
             {
-                if (Game.PlayerPlayer.Mana < 1)
+                if (io.Player.Mana < 1)
                 {
                     GameApp.Service<ModalDialog>().Show("Insufficient mana.", ModalDialog.Button.OK, btn => { });
                     return false;

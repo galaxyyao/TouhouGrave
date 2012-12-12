@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             if (IsOnBattlefield && Host.Behaviors.Has<Warrior>())
             {
-                command.Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
+                Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }
         }
 

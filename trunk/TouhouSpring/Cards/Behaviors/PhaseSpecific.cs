@@ -10,18 +10,18 @@ namespace TouhouSpring.Behaviors
     {
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (command.CardToPlay == Host && !IsPlayable(command.Game))
+            if (command.CardToPlay == Host && !IsPlayable())
             {
-                return CommandResult.Cancel(String.Format("{0} can't be played in {1} phase.", Host.Model.Name, command.Game.CurrentPhase));
+                return CommandResult.Cancel(String.Format("{0} can't be played in {1} phase.", Host.Model.Name, Game.CurrentPhase));
             }
 
             return CommandResult.Pass;
         }
 
-        private bool IsPlayable(Game game)
+        private bool IsPlayable()
         {
-            return Model.TacticalPhase && game.CurrentPhase == "Tactical" && game.PlayerPlayer == Host.Owner
-                   || Model.BlockPhase && game.CurrentPhase == "Combat/Block" && game.OpponentPlayer == Host.Owner;
+            return Model.TacticalPhase && Game.CurrentPhase == "Tactical" && Game.ActingPlayer == Host.Owner
+                   || Model.BlockPhase && Game.CurrentPhase == "Combat/Block" && Game.ActingPlayer != Host.Owner;
         }
 
         [BehaviorModel(typeof(PhaseSpecific))]

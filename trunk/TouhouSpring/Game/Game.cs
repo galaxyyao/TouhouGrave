@@ -62,13 +62,10 @@ namespace TouhouSpring
 				}
 
 				m_profiles[i] = startUpParams[i].m_profile;
+                m_controllers[i] = startUpParams[i].m_controller;
 
-				m_players[i] = new Player(m_profiles[i]);
+                m_players[i] = new Player(m_profiles[i], this, m_controllers[i]);
 				m_players[i].Initialize(startUpParams[i].m_deck, startUpParams[i].m_hero);
-
-				m_controllers[i] = startUpParams[i].m_controller;
-				m_controllers[i].Game = this;
-				m_controllers[i].Player = m_players[i];
 			}
             for (int i = 1; i < numPlayers; ++i)
             {
