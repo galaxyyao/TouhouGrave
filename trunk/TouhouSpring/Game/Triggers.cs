@@ -14,7 +14,7 @@ namespace TouhouSpring
 
         public static CommandResult Cancel()
         {
-            return Cancel(null);
+            return Cancel(String.Empty);
         }
 
         public static CommandResult Cancel(string reason)
