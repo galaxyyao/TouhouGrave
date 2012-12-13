@@ -14,7 +14,9 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
         {
-            if (command.Player == Host.Owner && !command.Cause.Host.Behaviors.Has<Hero>())
+            if (command.Player == Host.Owner
+                && command.Cause is Warrior
+                && !(command.Cause as Warrior).Host.Behaviors.Has<Hero>())
             {
                 isAttackedByWarriorLastRound = true;
 

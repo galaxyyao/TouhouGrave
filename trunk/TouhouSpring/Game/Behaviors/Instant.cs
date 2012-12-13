@@ -6,6 +6,7 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Instant : BaseBehavior<Instant.ModelType>,
+        Commands.ICause,
         IEpilogTrigger<Commands.PlayCard>
     {
         void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)

@@ -7,6 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_HealedWhenWarriorAttacks :
         BaseBehavior<Passive_HealedWhenWarriorAttacks.ModelType>,
+        Commands.ICause,
         IEpilogTrigger<Commands.DealDamageToCard>
     {
         void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
@@ -14,10 +15,10 @@ namespace TouhouSpring.Behaviors
             if (command.Target.Owner != Host.Owner
                 && IsOnBattlefield
                 && command.Cause is Warrior
-                && command.Cause.Host.Owner == Host.Owner
-                && !command.Cause.Host.Behaviors.Has<Behaviors.Hero>())
+                && (command.Cause as Warrior).Host.Owner == Host.Owner
+                && !(command.Cause as Warrior).Host.Behaviors.Has<Behaviors.Hero>())
             {
-                Game.IssueCommands(new Commands.HealPlayer(Host.Owner, this, command.DamageToDeal));
+                Game.IssueCommands(new Commands.HealPlayer(Host.Owner, command.DamageToDeal, this));
             }
         }
 

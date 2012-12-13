@@ -20,7 +20,7 @@ namespace TouhouSpring
                 {
                     IssueCommands(
                         // TODO: attackers be declared on some target player
-                        new Commands.DealDamageToPlayer(ActingPlayerEnemies.First(), attackerWarriorBhv, attackerWarriorBhv.Attack),
+                        new Commands.DealDamageToPlayer(ActingPlayerEnemies.First(), attackerWarriorBhv.Attack, attackerWarriorBhv),
                         new Commands.SendBehaviorMessage(attackerWarriorBhv, "GoCoolingDown", null));
                 }
                 else if (blockers.Count == 1)
@@ -29,8 +29,8 @@ namespace TouhouSpring
                     var blockerWarriorBhv = blocker.Behaviors.Get<Behaviors.Warrior>();
 
                     IssueCommands(
-                        new Commands.DealDamageToCard(attacker, blockerWarriorBhv, blockerWarriorBhv.Attack),
-                        new Commands.DealDamageToCard(blocker, attackerWarriorBhv, attackerWarriorBhv.Attack),
+                        new Commands.DealDamageToCard(attacker, blockerWarriorBhv.Attack, blockerWarriorBhv),
+                        new Commands.DealDamageToCard(blocker, attackerWarriorBhv.Attack, attackerWarriorBhv),
                         new Commands.SendBehaviorMessage(attackerWarriorBhv, "GoCoolingDown", null),
                         new Commands.SendBehaviorMessage(blockerWarriorBhv, "GoCoolingDown", null));
                 }

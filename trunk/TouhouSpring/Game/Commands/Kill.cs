@@ -14,12 +14,6 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        // TODO: change to serialization-friendly ID
-        public Behaviors.IBehavior Cause
-        {
-            get; private set;
-        }
-
         public bool LeftBattlefield
         {
             get; private set;
@@ -30,7 +24,8 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public Kill(BaseCard target, Behaviors.IBehavior cause)
+        public Kill(BaseCard target, ICause cause)
+            : base(cause)
         {
             if (target == null)
             {
@@ -38,13 +33,11 @@ namespace TouhouSpring.Commands
             }
 
             Target = target;
-            Cause = cause;
         }
 
         internal override void ValidateOnIssue()
         {
             Validate(Target);
-            ValidateOrNull(Cause);
             if (!Target.Owner.CardsOnBattlefield.Contains(Target)
                 && !Target.Owner.CardsOnHand.Contains(Target))
             {

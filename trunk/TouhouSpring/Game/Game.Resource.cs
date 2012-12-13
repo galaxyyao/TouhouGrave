@@ -26,7 +26,6 @@ namespace TouhouSpring
             throw new NotImplementedException();
         }
 
-        // TODO: clear reservation of any resource if the command is canceled
         public void ReserveHealth(Player player, int amount)
         {
             if (RunningCommand == null

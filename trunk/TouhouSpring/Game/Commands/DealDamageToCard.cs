@@ -14,18 +14,13 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        // TODO: change to some serializable reference
-        public Behaviors.IBehavior Cause
-        {
-            get; private set;
-        }
-
         public int DamageToDeal
         {
             get; private set;
         }
 
-        public DealDamageToCard(BaseCard target, Behaviors.IBehavior cause, int damageToDeal)
+        public DealDamageToCard(BaseCard target, int damageToDeal, ICause cause)
+            : base(cause)
         {
             if (target == null)
             {
@@ -33,7 +28,6 @@ namespace TouhouSpring.Commands
             }
 
             Target = target;
-            Cause = cause;
             DamageToDeal = damageToDeal;
         }
 
@@ -46,7 +40,6 @@ namespace TouhouSpring.Commands
         internal override void ValidateOnIssue()
         {
             Validate(Target);
-            ValidateOrNull(Cause);
             if (!Target.Owner.CardsOnBattlefield.Contains(Target))
             {
                 FailValidation("Damage can only be dealt to cards on battlefield.");

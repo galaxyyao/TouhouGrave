@@ -7,6 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Spell_MassDamageToWarriorOnEnemyBattlefield :
         BaseBehavior<Spell_MassDamageToWarriorOnEnemyBattlefield.ModelType>,
+        Commands.ICause,
         ICastableSpell
     {
         void ICastableSpell.Run(Commands.CastSpell command)
@@ -17,7 +18,7 @@ namespace TouhouSpring.Behaviors
 
             foreach (var warrior in warriors)
             {
-                Game.IssueCommands(new Commands.DealDamageToCard(warrior, this, Model.Damage));
+                Game.IssueCommands(new Commands.DealDamageToCard(warrior, Model.Damage, this));
             }
         }
 

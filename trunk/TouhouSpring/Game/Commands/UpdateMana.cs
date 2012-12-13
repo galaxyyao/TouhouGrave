@@ -17,7 +17,8 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public UpdateMana(Player player, int deltaAmount)
+        public UpdateMana(Player player, int deltaAmount, ICause cause)
+            : base(cause)
         {
             if (player == null)
             {

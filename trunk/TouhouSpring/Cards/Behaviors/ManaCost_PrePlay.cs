@@ -6,6 +6,7 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class ManaCost_PrePlay : BaseBehavior<ManaCost_PrePlay.ModelType>,
+        Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
 	{
@@ -28,7 +29,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -Model.Cost));
+                Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -Model.Cost, this));
             }
         }
 

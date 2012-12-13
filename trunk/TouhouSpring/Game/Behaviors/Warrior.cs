@@ -13,6 +13,7 @@ namespace TouhouSpring.Behaviors
     }
 
     public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
+        Commands.ICause,
         IEpilogTrigger<Commands.Kill>
     {
         public WarriorState State

@@ -8,7 +8,7 @@ using TouhouSpring.Interactions;
 
 namespace TouhouSpring
 {
-    public partial class Game
+    public partial class Game : Commands.ICause
     {
         public Player Winner
         {
@@ -55,7 +55,7 @@ namespace TouhouSpring
                     else if (result.ActionType == TacticalPhase.Action.DrawCard)
                     {
                         IssueCommandsAndFlush(
-                            new Commands.UpdateMana(ActingPlayer, -1),
+                            new Commands.UpdateMana(ActingPlayer, -1, this),
                             new Commands.DrawCard(ActingPlayer));
                     }
                     else if (result.ActionType == TacticalPhase.Action.Skip)
@@ -105,9 +105,10 @@ namespace TouhouSpring
                 CurrentPhase = "Combat/Resolve";
                 ResolveCombat(declaredAttackers, declaredBlockers);
 
+                CurrentPhase = "PhaseB";
                 IssueCommandsAndFlush(
                     new Commands.ResetAccumulatedDamage(),
-                    new Commands.UpdateMana(ActingPlayer, ActingPlayer.ManaDelta),
+                    new Commands.UpdateMana(ActingPlayer, ActingPlayer.ManaDelta, this),
                     new Commands.EndTurn());
             };
 

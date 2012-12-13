@@ -12,18 +12,13 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        // TODO: change to some serializable reference
-        public Behaviors.IBehavior Cause
-        {
-            get; private set;
-        }
-
         public int DamageToDeal
         {
             get; private set;
         }
 
-        public DealDamageToPlayer(Player player, Behaviors.IBehavior cause, int damageToDeal)
+        public DealDamageToPlayer(Player player, int damageToDeal, ICause cause)
+            : base(cause)
         {
             if (player == null)
             {
@@ -31,7 +26,6 @@ namespace TouhouSpring.Commands
             }
 
             Player = player;
-            Cause = cause;
             DamageToDeal = damageToDeal;
         }
 
@@ -44,7 +38,6 @@ namespace TouhouSpring.Commands
         internal override void ValidateOnIssue()
         {
             Validate(Player);
-            ValidateOrNull(Cause);
         }
 
         internal override void ValidateOnRun()

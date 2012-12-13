@@ -16,6 +16,10 @@ namespace TouhouSpring.Commands
         Epilog
     }
 
+    public interface ICause
+    {
+    }
+
     public abstract partial class BaseCommand
     {
         public CommandPhase ExecutionPhase
@@ -28,6 +32,11 @@ namespace TouhouSpring.Commands
             get; internal set;
         }
 
+        public ICause Cause
+        {
+            get; private set;
+        }
+
         internal Game Game
         {
             get; set;
@@ -36,6 +45,9 @@ namespace TouhouSpring.Commands
         internal abstract void ValidateOnIssue();
         internal abstract void ValidateOnRun();
         internal abstract void RunMain();
+
+        protected BaseCommand() { }
+        protected BaseCommand(ICause cause) { Cause = cause; }
 
         protected void CheckPatchable(string propertyName)
         {

@@ -7,6 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_AllFieldDealDamageWhenWarriorDestroyed :
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
+        Commands.ICause,
         IEpilogTrigger<Commands.Kill>
     {
         void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
@@ -20,7 +21,7 @@ namespace TouhouSpring.Behaviors
                     if (!card.Behaviors.Has<Warrior>())
                         continue;
 
-                    Game.IssueCommands(new Commands.DealDamageToCard(card, this, Model.Damage));
+                    Game.IssueCommands(new Commands.DealDamageToCard(card, Model.Damage, this));
                 }
             }
         }

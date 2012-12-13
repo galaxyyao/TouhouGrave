@@ -7,6 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Spell_DamageDirectToPlayer :
         BaseBehavior<Spell_DamageDirectToPlayer.ModelType>,
+        Commands.ICause,
         ICastableSpell
     {
         void ICastableSpell.Run(Commands.CastSpell command)
@@ -14,7 +15,7 @@ namespace TouhouSpring.Behaviors
             // TODO: select player to deal damage to
             Game.IssueCommands(new Commands.DealDamageToPlayer(
                 Game.Players.First(player => player != Host.Owner),
-                this, Model.Damage));
+                Model.Damage, this));
         }
 
         [BehaviorModel(typeof(Spell_DamageDirectToPlayer), DefaultName = "五道难题")]

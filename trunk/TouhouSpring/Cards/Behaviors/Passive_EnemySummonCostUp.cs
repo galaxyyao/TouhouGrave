@@ -7,6 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
+        Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
     {
@@ -27,7 +28,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay.Owner != Host.Owner)
             {
-                Game.IssueCommands(new Commands.UpdateMana(command.CardToPlay.Owner, -1));
+                Game.IssueCommands(new Commands.UpdateMana(command.CardToPlay.Owner, -1, this));
             }
         }
 
