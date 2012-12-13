@@ -46,7 +46,7 @@ namespace TouhouSpring.Interactions
         {
             if (player == null)
             {
-                throw new ArgumentNullException("controller");
+                throw new ArgumentNullException("player");
             }
 
             Player = player;

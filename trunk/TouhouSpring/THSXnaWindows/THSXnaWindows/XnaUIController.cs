@@ -165,19 +165,19 @@ namespace TouhouSpring
 
 			// translate from Interactions.MessageBox.Button to Services.ModalDialog.Button
 			Services.ModalDialog.Button buttons = 0;
-			if ((interactionObj.Buttons & Interactions.MessageBox.Button.OK) != 0)
+			if ((interactionObj.Buttons & Interactions.MessageBoxButtons.OK) != 0)
 			{
 				buttons |= Services.ModalDialog.Button.OK;
 			}
-			if ((interactionObj.Buttons & Interactions.MessageBox.Button.Cancel) != 0)
+			if ((interactionObj.Buttons & Interactions.MessageBoxButtons.Cancel) != 0)
 			{
 				buttons |= Services.ModalDialog.Button.Cancel;
 			}
-			if ((interactionObj.Buttons & Interactions.MessageBox.Button.Yes) != 0)
+			if ((interactionObj.Buttons & Interactions.MessageBoxButtons.Yes) != 0)
 			{
 				buttons |= Services.ModalDialog.Button.Yes;
 			}
-			if ((interactionObj.Buttons & Interactions.MessageBox.Button.No) != 0)
+			if ((interactionObj.Buttons & Interactions.MessageBoxButtons.No) != 0)
 			{
 				buttons |= Services.ModalDialog.Button.No;
 			}
@@ -186,20 +186,20 @@ namespace TouhouSpring
 				GameApp.Service<GameUI>().InteractionObject = null;
 
 				// translate back...
-				Interactions.MessageBox.Button ibtn;
+				Interactions.MessageBoxButtons ibtn;
 				switch (btn)
 				{
 					case Services.ModalDialog.Button.OK:
-						ibtn = Interactions.MessageBox.Button.OK;
+						ibtn = Interactions.MessageBoxButtons.OK;
 						break;
 					case Services.ModalDialog.Button.Cancel:
-						ibtn = Interactions.MessageBox.Button.Cancel;
+						ibtn = Interactions.MessageBoxButtons.Cancel;
 						break;
 					case Services.ModalDialog.Button.Yes:
-						ibtn = Interactions.MessageBox.Button.Yes;
+						ibtn = Interactions.MessageBoxButtons.Yes;
 						break;
 					case Services.ModalDialog.Button.No:
-						ibtn = Interactions.MessageBox.Button.No;
+						ibtn = Interactions.MessageBoxButtons.No;
 						break;
 					default:
 						throw new ArgumentException("btn");

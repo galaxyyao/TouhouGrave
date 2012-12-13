@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,18 +15,17 @@ namespace TouhouSpring.Interactions
 		{
 			public Type InteractionType
 			{
-				get;
-				private set;
+				get; private set;
 			}
 
-			public HandlerAttribute(Type type)
+            public HandlerAttribute(Type interactionType)
 			{
-				if (type == null)
+                if (interactionType == null)
 				{
-					throw new ArgumentNullException("type");
+                    throw new ArgumentNullException("interactionType");
 				}
 
-				InteractionType = type;
+                InteractionType = interactionType;
 			}
 		}
 
@@ -48,7 +48,7 @@ namespace TouhouSpring.Interactions
 
 				if (m_messageMap.ContainsKey(msgText))
 				{
-					throw new InvalidDataException(String.Format("Interaction type {0} is handled more than once.", interactionType.FullName));
+					throw new InvalidDataException(String.Format(CultureInfo.CurrentCulture, "Interaction type {0} is handled more than once.", interactionType.FullName));
 				}
 				else if (method.GetParameters().Length > 1)
 				{

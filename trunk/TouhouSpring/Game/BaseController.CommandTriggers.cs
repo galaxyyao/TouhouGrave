@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -42,7 +43,7 @@ namespace TouhouSpring
                 var cmd = command as Commands.DealDamageToPlayer;
                 if (cmd.Player == Player)
                 {
-                    new Interactions.NotifyControllerEvent(this, "OnPlayerDamaged", Player, string.Format("Damage:{0}", cmd.DamageToDeal)).Run();
+                    new Interactions.NotifyControllerEvent(this, "OnPlayerDamaged", Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.DamageToDeal)).Run();
                 }
             }
             else if (command is Commands.Kill)

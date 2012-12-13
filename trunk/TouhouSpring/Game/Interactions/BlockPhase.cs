@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -192,7 +193,7 @@ namespace TouhouSpring.Interactions
             }
             else if (!PlayableCandidates.Contains(cardToPlay))
             {
-                throw new ArgumentException(String.Format("{0} can't be played."), cardToPlay.Model.Name);
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "{0} can't be played."), cardToPlay.Model.Name);
             }
         }
     }

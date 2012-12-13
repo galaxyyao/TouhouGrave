@@ -22,8 +22,8 @@ namespace TouhouSpring.Behaviors
                 {
                     var result = new Interactions.MessageBox(Host.Owner,
                         "场上已有一张支援卡，要直接从手牌补魔么？",
-                        Interactions.MessageBox.Button.Yes | Interactions.MessageBox.Button.No).Run();
-                    if (result == Interactions.MessageBox.Button.Yes)
+                        Interactions.MessageBoxButtons.Yes | Interactions.MessageBoxButtons.No).Run();
+                    if (result == Interactions.MessageBoxButtons.Yes)
                     {
                         m_chargeSkill = true;
                     }

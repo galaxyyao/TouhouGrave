@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using TouhouSpring.Interactions;
@@ -112,7 +113,7 @@ namespace TouhouSpring
 
             //InPlayerPhases = false;
 
-            new Interactions.NotifyOnly(ActingPlayer.Controller, string.Format("{0} 获得了胜利", Winner.Name));
+            new Interactions.NotifyOnly(ActingPlayer.Controller, String.Format(CultureInfo.CurrentCulture, "{0} 获得了胜利", Winner.Name));
             CurrentPhase = "End";
             End();
 

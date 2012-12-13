@@ -7,17 +7,17 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
+    [Flags]
+    public enum MessageBoxButtons
+    {
+        OK = 0x01,
+        Cancel = 0x02,
+        Yes = 0x04,
+        No = 0x08,
+    }
+
 	public class MessageBox : BaseInteraction
 	{
-		[Flags]
-		public enum Button
-		{
-			OK = 0x01,
-			Cancel = 0x02,
-			Yes = 0x04,
-			No = 0x08,
-		}
-
         public Player Player
         {
             get; private set;
@@ -28,17 +28,17 @@ namespace TouhouSpring.Interactions
 			get; private set;
 		}
 
-		public Button Buttons
+        public MessageBoxButtons Buttons
+        {
+            get; private set;
+        }
+
+        public MessageBoxButtons Run()
 		{
-			get; private set;
+            return NotifyAndWait<MessageBoxButtons>(Player.Controller);
 		}
 
-		public Button Run()
-		{
-			return NotifyAndWait<Button>(Player.Controller);
-		}
-
-		public void Respond(Button button)
+        public void Respond(MessageBoxButtons button)
 		{
 			if ((Buttons & button) == 0)
 			{
@@ -48,7 +48,7 @@ namespace TouhouSpring.Interactions
 			RespondBack(Player.Controller, button);
 		}
 
-		public MessageBox(Player player, string text, Button buttons)
+        public MessageBox(Player player, string text, MessageBoxButtons buttons)
 		{
 			Debug.Assert(player != null && text != null);
 			Player = player;

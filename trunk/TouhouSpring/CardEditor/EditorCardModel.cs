@@ -40,6 +40,8 @@ namespace TouhouSpring
             get; set;
         }
 
+        IList<Behaviors.BehaviorModel> ICardModel.Behaviors { get { return Behaviors; } }
+
         private string m_category;
 
         public string Category

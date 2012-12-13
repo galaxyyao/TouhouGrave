@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -70,7 +71,7 @@ namespace TouhouSpring
                 if (RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite
                     || RunningCommand.ExecutionPhase == Commands.CommandPhase.Setup)
                 {
-                    throw new InvalidOperationException(String.Format("Command can't be issued in {0} phase.", RunningCommand.ExecutionPhase.ToString()));
+                    throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "Command can't be issued in {0} phase.", RunningCommand.ExecutionPhase.ToString()));
                 }
             }
 

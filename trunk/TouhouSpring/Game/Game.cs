@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -54,11 +54,11 @@ namespace TouhouSpring
 			{
 				if (startUpParams[i].m_profile == null)
 				{
-					throw new ArgumentNullException(String.Format("parms[{0}].m_profile", i));
+					throw new ArgumentNullException(String.Format(CultureInfo.CurrentCulture, "parms[{0}].m_profile", i));
 				}
 				if (startUpParams[i].m_controller == null)
 				{
-					throw new ArgumentNullException(String.Format("parms[{0}].m_controller", i));
+                    throw new ArgumentNullException(String.Format(CultureInfo.CurrentCulture, "parms[{0}].m_controller", i));
 				}
 
 				m_profiles[i] = startUpParams[i].m_profile;
