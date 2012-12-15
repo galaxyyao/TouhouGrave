@@ -410,7 +410,13 @@ namespace TouhouSpring.Services
                             : 0f;
             }
 
-            return MatrixHelper.Translate(zoneOffset + location.m_thisIndex * interval + xOffset, 0, zOffset);
+            var ret = MatrixHelper.Translate(zoneOffset + location.m_thisIndex * interval + xOffset, 0, zOffset);
+            if (location.m_thisIndex == location.m_focusIndex)
+            {
+                ret = MatrixHelper.Translate(-0.5f, 0.5f) * MatrixHelper.Scale(1.2f, 1.2f) * MatrixHelper.Translate(0.5f, -0.5f) * ret;
+            }
+
+            return ret;
         }
 
         private void RearrangeZone(UI.EventDispatcher zone)
