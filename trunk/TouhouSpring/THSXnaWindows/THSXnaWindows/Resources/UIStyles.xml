@@ -123,7 +123,7 @@
           <Bounds Left="12" Top="7" />
           <Transform Scaling="0.75,0.75" />
         </Label>
-        <Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
+        <Label Font="Segoe UI, 20" Text="#Card.Values#" Color="White">
           <Bounds Top="240" HorizontalAlignment="Center" />
         </Label>
         <Label Font="Segoe UI, 28, bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />

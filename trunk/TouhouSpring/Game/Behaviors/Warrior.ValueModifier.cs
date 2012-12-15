@@ -25,10 +25,6 @@ namespace TouhouSpring.Behaviors
                 switch (op)
                 {
                     case ValueModifierOperator.Add:
-                        if (amount == 0)
-                        {
-                            throw new ArgumentOutOfRangeException("amount", "Amount should not be zero.");
-                        }
                         break;
                     case ValueModifierOperator.Multiply:
                         if (amount <= 0)

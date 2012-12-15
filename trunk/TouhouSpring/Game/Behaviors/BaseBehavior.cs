@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
-        public T Model
+        protected T Model
         {
             get; private set;
         }

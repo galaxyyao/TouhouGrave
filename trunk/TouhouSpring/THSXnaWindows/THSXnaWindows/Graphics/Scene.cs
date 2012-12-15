@@ -7,31 +7,31 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouSpring.Graphics
 {
-	class Scene : Services.GameService
-	{
-		private bool m_loaded = false;
+    class Scene : Services.GameService
+    {
+        private bool m_loaded = false;
 
-		private Graphics.TexturedQuad m_backgroundImage;
+        private Graphics.TexturedQuad m_backgroundImage;
 
-		// rotating background image
-		private Matrix m_backgroundImageTransform;
-		private float m_rotationDegree = 0;
+        // rotating background image
+        private Matrix m_backgroundImageTransform;
+        private float m_rotationDegree = 0;
 
         private string m_currentEnvImageUri;
         private int m_currentEnvImageIndex;
 
         private Graphics.TexturedQuad[] m_envImages = new TexturedQuad[2];
 
-		private Particle.ParticleSystem m_beamMeUp;
-		private Matrix m_transform;
+        private Particle.ParticleSystem m_beamMeUp;
+        private Matrix m_transform;
         private Matrix m_toScreenSpace;
 
-		public override void Update(float deltaTime)
-		{
-			if (!m_loaded)
-			{
-				return;
-			}
+        public override void Update(float deltaTime)
+        {
+            if (!m_loaded)
+            {
+                return;
+            }
 
             // find the environment image
             string envImageUri = null;
@@ -40,7 +40,7 @@ namespace TouhouSpring.Graphics
                 var envCard = player.CardsOnBattlefield.FirstOrDefault(card => card.Behaviors.Has<Behaviors.Environment>());
                 if (envCard != null)
                 {
-                    envImageUri = envCard.Behaviors.Get<Behaviors.Environment>().Model.VisualId;
+                    envImageUri = envCard.Behaviors.Get<Behaviors.Environment>().VisualId;
                     break;
                 }
             }
@@ -74,36 +74,36 @@ namespace TouhouSpring.Graphics
                 m_envImages[otherIndex] = null;
             }
 
-			////////////////////////////////////////////////////
-			// rotating background image
+            ////////////////////////////////////////////////////
+            // rotating background image
 
-			float vw = GameApp.Instance.GraphicsDevice.Viewport.Width;
-			float vh = GameApp.Instance.GraphicsDevice.Viewport.Height;
-			float scaleFactor = (float)Math.Sqrt(vw * vw + vh * vh) / Math.Min(vw, vh);
+            float vw = GameApp.Instance.GraphicsDevice.Viewport.Width;
+            float vh = GameApp.Instance.GraphicsDevice.Viewport.Height;
+            float scaleFactor = (float)Math.Sqrt(vw * vw + vh * vh) / Math.Min(vw, vh);
 
-			m_backgroundImageTransform
-				= MatrixHelper.Translate(-vw / 2, -vh / 2)
-				  * MatrixHelper.RotateZ(MathHelper.ToRadians(m_rotationDegree))
-				  * MatrixHelper.Scale(scaleFactor, scaleFactor)
-				  * MatrixHelper.Translate(vw / 2, vh / 2)
-				  * m_toScreenSpace;
-			
-			m_rotationDegree = (m_rotationDegree + 360.0f / (10 * 60.0f) * deltaTime) % 360.0f;
+            m_backgroundImageTransform
+                = MatrixHelper.Translate(-vw / 2, -vh / 2)
+                  * MatrixHelper.RotateZ(MathHelper.ToRadians(m_rotationDegree))
+                  * MatrixHelper.Scale(scaleFactor, scaleFactor)
+                  * MatrixHelper.Translate(vw / 2, vh / 2)
+                  * m_toScreenSpace;
 
-			m_beamMeUp.Update(deltaTime);
-			m_transform = /*Matrix.CreateScale(0.01f, 0.01f, 0.01f) **/
-				Matrix.CreateLookAt(Vector3.UnitX * -100, Vector3.Zero, Vector3.UnitZ)
-				* Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 1.3333f, 1f, 1000f); 
-		}
+            m_rotationDegree = (m_rotationDegree + 360.0f / (10 * 60.0f) * deltaTime) % 360.0f;
 
-		public override void Render()
-		{
-			if (!m_loaded)
-			{
-				return;
-			}
+            m_beamMeUp.Update(deltaTime);
+            m_transform = /*Matrix.CreateScale(0.01f, 0.01f, 0.01f) **/
+                Matrix.CreateLookAt(Vector3.UnitX * -100, Vector3.Zero, Vector3.UnitZ)
+                * Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 1.3333f, 1f, 1000f);
+        }
 
-			var renderMgr = GameApp.Service<RenderManager>();
+        public override void Render()
+        {
+            if (!m_loaded)
+            {
+                return;
+            }
+
+            var renderMgr = GameApp.Service<RenderManager>();
             var vpBounds = new Rectangle(0, 0, renderMgr.Device.Viewport.Width, renderMgr.Device.Viewport.Height);
 
             int otherIndex = 1 - m_currentEnvImageIndex;
@@ -118,11 +118,11 @@ namespace TouhouSpring.Graphics
             renderMgr.Draw(m_envImages[m_currentEnvImageIndex], vpBounds,
                     m_envImages[m_currentEnvImageIndex] == m_backgroundImage ? m_backgroundImageTransform : m_toScreenSpace);
 
-			GameApp.Service<ParticleRenderer>().Draw(m_beamMeUp, m_transform, 1.0f, 1.333f);
-		}
+            GameApp.Service<ParticleRenderer>().Draw(m_beamMeUp, m_transform, 1.0f, 1.333f);
+        }
 
-		internal void GameStarted()
-		{
+        internal void GameStarted()
+        {
             float vw = GameApp.Instance.GraphicsDevice.Viewport.Width;
             float vh = GameApp.Instance.GraphicsDevice.Viewport.Height;
 
@@ -132,13 +132,13 @@ namespace TouhouSpring.Graphics
             m_toScreenSpace.M41 = -1.0f;
             m_toScreenSpace.M42 = 1.0f;
 
-			var resourceMgr = GameApp.Service<Services.ResourceManager>();
-			m_backgroundImage = new TexturedQuad(resourceMgr.Acquire<VirtualTexture>("Textures/Scene2"));
-			m_beamMeUp = resourceMgr.Acquire<Particle.ParticleSystem>("BeamMeUp");
-			m_loaded = true;
+            var resourceMgr = GameApp.Service<Services.ResourceManager>();
+            m_backgroundImage = new TexturedQuad(resourceMgr.Acquire<VirtualTexture>("Textures/Scene2"));
+            m_beamMeUp = resourceMgr.Acquire<Particle.ParticleSystem>("BeamMeUp");
+            m_loaded = true;
 
             m_currentEnvImageIndex = 0;
             m_envImages[m_currentEnvImageIndex] = m_backgroundImage;
-		}
-	}
+        }
+    }
 }

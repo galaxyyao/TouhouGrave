@@ -158,7 +158,7 @@ namespace TouhouSpring
             Hero = heroBhv;
             m_battlefieldCards.Add(hero);
 
-            Health = heroBhv.Model.Health;
+            Health = heroBhv.InitialHealth;
             Mana = 2;
             IsSkillCharged = false;
             ResetManaDelta();

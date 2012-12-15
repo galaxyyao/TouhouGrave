@@ -9,6 +9,11 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.PlayCard>
     {
+        public string VisualId
+        {
+            get { return Model.VisualId; }
+        }
+
         void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)

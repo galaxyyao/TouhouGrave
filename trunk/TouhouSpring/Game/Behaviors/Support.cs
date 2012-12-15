@@ -6,8 +6,9 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Support : BaseBehavior<Support.ModelType>,
+        Commands.ICause,
         ISetupTrigger<Commands.PlayCard>,
-        IPrologTrigger<Commands.PlayCard>
+        IEpilogTrigger<Commands.PlayCard>
     {
         private bool m_chargeSkill = false;
 
@@ -37,13 +38,13 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host && m_chargeSkill)
             {
                 Game.IssueCommands(
                     new Commands.Charge(Host.Owner),
-                    new Commands.AddBehavior(command.CardToPlay, new Instant()));
+                    new Commands.Kill(command.CardToPlay, this));
             }
         }
 

@@ -31,6 +31,16 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
+        public int InitialAttack
+        {
+            get { return Model.Attack; }
+        }
+
+        public int InitialDefense
+        {
+            get { return Model.Defense; }
+        }
+
         // set by DealDamageToCard and ResetAccumulatedDamage command
         public int AccumulatedDamage
         {
@@ -109,7 +119,7 @@ namespace TouhouSpring.Behaviors
                     }
                     m_attackModifers.Remove(mod);
                 }
-                Attack = m_attackModifers.Aggregate(Model.Attack, (i, v) => v.Process(i));
+                Attack = m_attackModifers.Aggregate(InitialAttack, (i, v) => v.Process(i));
             }
             else if (message == "DefenseModifiers")
             {
@@ -136,7 +146,7 @@ namespace TouhouSpring.Behaviors
                     }
                     m_defenseModifiers.Remove(mod);
                 }
-                Defense = m_defenseModifiers.Aggregate(Model.Defense, (i, v) => v.Process(i));
+                Defense = m_defenseModifiers.Aggregate(InitialDefense, (i, v) => v.Process(i));
             }
         }
 

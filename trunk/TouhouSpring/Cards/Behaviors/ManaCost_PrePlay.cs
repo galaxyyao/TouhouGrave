@@ -10,6 +10,11 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
 	{
+        public int Cost
+        {
+            get { return Model.Cost; }
+        }
+
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)

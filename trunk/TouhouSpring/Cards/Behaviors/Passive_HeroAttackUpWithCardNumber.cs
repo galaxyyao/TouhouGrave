@@ -17,7 +17,6 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host
                 || Host.IsOnBattlefield && command.CardToPlay.Owner == Host.Owner)
             {
-
                 UpdateNumber();
             }
         }
@@ -34,7 +33,7 @@ namespace TouhouSpring.Behaviors
 
         private void UpdateNumber()
         {
-            if (!Host.Behaviors.Has<Warrior>() || !Host.Behaviors.Has<Hero>())
+            if (Host.Owner.Hero == null || !Host.Owner.Hero.Host.Behaviors.Has<Warrior>())
             {
                 return;
             }
@@ -47,16 +46,16 @@ namespace TouhouSpring.Behaviors
             if (m_attackModifier != null && m_attackModifier.Amount != numberOfWarriors)
             {
                 Game.IssueCommands(new Commands.SendBehaviorMessage(
-                    Host.Behaviors.Get<Warrior>(),
+                    Host.Owner.Hero.Host.Behaviors.Get<Warrior>(),
                     "AttackModifiers",
                     new object[] { "remove", m_attackModifier }));
                 m_attackModifier = null;
             }
-            if (m_attackModifier == null)
+            if (m_attackModifier == null && numberOfWarriors != 0)
             {
                 m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, numberOfWarriors);
                 Game.IssueCommands(new Commands.SendBehaviorMessage(
-                    Host.Behaviors.Get<Warrior>(),
+                    Host.Owner.Hero.Host.Behaviors.Get<Warrior>(),
                     "AttackModifiers",
                     new object[] { "add", m_attackModifier }));
             }

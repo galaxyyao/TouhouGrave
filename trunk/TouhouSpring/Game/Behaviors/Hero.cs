@@ -8,6 +8,16 @@ namespace TouhouSpring.Behaviors
     public sealed class Hero : BaseBehavior<Hero.ModelType>,
         IEpilogTrigger<Commands.StartAttackPhase>
     {
+        public int MaxMana
+        {
+            get { return Model.Mana; }
+        }
+
+        public int InitialHealth
+        {
+            get { return Model.Health; }
+        }
+
         void IEpilogTrigger<Commands.StartAttackPhase>.Run(Commands.StartAttackPhase command)
         {
             if (Game.Round == 1)
