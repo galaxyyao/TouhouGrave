@@ -126,7 +126,7 @@
         <Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
           <Bounds Top="240" HorizontalAlignment="Center" />
         </Label>
-        <Label Font="Segoe UI, 28, bold" Text="#Card.SummonCost#" Color="Black" Right="0" Top="0" />
+        <Label Font="Segoe UI, 28, bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />
       </Layout>
     </Layout>
   </Card>

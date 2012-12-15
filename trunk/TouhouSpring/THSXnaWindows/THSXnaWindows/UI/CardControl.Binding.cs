@@ -27,7 +27,7 @@ namespace TouhouSpring.UI
 					replacement = Card.Model.Name;
 					break;
                 case "Card.SummonCost":
-                    var manaCost = Card.Behaviors.Get<Behaviors.ManaCost_PrePlay>();
+                    var manaCost = Card.IsOnHand ? Card.Behaviors.Get<Behaviors.ManaCost_PrePlay>() : null;
                     replacement = manaCost != null ? manaCost.Model.Cost.ToString() : "";
                     break;
 				default:

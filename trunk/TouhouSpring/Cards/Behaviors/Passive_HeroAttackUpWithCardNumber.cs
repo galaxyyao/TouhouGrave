@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
         void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
-                || IsOnBattlefield && command.CardToPlay.Owner == Host.Owner)
+                || Host.IsOnBattlefield && command.CardToPlay.Owner == Host.Owner)
             {
 
                 UpdateNumber();
@@ -26,7 +26,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.LeftBattlefield
                 && (command.Target == Host
-                    || IsOnBattlefield && command.Target.Owner == Host.Owner))
+                    || Host.IsOnBattlefield && command.Target.Owner == Host.Owner))
             {
                 UpdateNumber();
             }
@@ -39,10 +39,10 @@ namespace TouhouSpring.Behaviors
                 return;
             }
 
-            int numberOfWarriors = !IsOnBattlefield
-                ? 0
-                : Host.Owner.CardsOnBattlefield.Count(
-                    card => card.Behaviors.Has<Warrior>() && !card.Behaviors.Has<Hero>());
+            int numberOfWarriors = Host.IsOnBattlefield
+                                   ? Host.Owner.CardsOnBattlefield.Count(
+                                        card => card.Behaviors.Has<Warrior>() && !card.Behaviors.Has<Hero>())
+                                   : 0;
 
             if (m_attackModifier != null && m_attackModifier.Amount != numberOfWarriors)
             {

@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
             if (command.Target.Owner != Host.Owner
-                && IsOnBattlefield
+                && Host.IsOnBattlefield
                 && command.Cause is Warrior
                 && (command.Cause as Warrior).Host.Owner == Host.Owner
                 && !(command.Cause as Warrior).Host.Behaviors.Has<Behaviors.Hero>())

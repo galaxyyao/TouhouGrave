@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.DrawCard>.Run(Commands.DrawCard command)
         {
-            if (IsOnBattlefield && !m_isMoreCardDrawn)
+            if (Host.IsOnBattlefield && !m_isMoreCardDrawn)
             {
                 m_isMoreCardDrawn = true;
                 int hostCardNumber = 0;

@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
     {
         void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (IsOnBattlefield && Host.Behaviors.Has<Warrior>())
+            if (Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())
             {
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }

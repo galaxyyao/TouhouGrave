@@ -7,27 +7,27 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-	/// <summary>
-	/// The base class for all behaviors
-	/// </summary>
-	public abstract class BaseBehavior<T> : IInternalBehavior
+    /// <summary>
+    /// The base class for all behaviors
+    /// </summary>
+    public abstract class BaseBehavior<T> : IInternalBehavior
         where T : BehaviorModel
-	{
-		/// <summary>
-		/// The hosting card i.e. the card to which this behavior is bound
-		/// </summary>
-		public BaseCard Host
-		{
-			get; private set;
-		}
+    {
+        /// <summary>
+        /// The hosting card i.e. the card to which this behavior is bound
+        /// </summary>
+        public BaseCard Host
+        {
+            get; private set;
+        }
 
-		/// <summary>
-		/// Persistent behavior is those created from card model.
-		/// </summary>
-		public bool Persistent
-		{
-			get; private set;
-		}
+        /// <summary>
+        /// Persistent behavior is those created from card model.
+        /// </summary>
+        public bool Persistent
+        {
+            get; private set;
+        }
 
         public T Model
         {
@@ -83,13 +83,9 @@ namespace TouhouSpring.Behaviors
             Host = null;
         }
 
-        public virtual void OnMessage(string message, object[] args) { }
+        void IInternalBehavior.ReceiveMessage(string message, object[] args) { OnMessage(message, args); }
 
-		protected bool IsOnBattlefield
-		{
-			get { return Host.Owner.CardsOnBattlefield.Contains(Host); }
-		}
-
+        protected virtual void OnMessage(string message, object[] args) { }
         protected virtual void OnInitialize() { }
-	}
+    }
 }

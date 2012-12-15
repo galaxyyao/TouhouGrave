@@ -25,7 +25,7 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
         {
-            if (IsOnBattlefield
+            if (Host.IsOnBattlefield
                 && Game.ActingPlayer == Host.Owner
                 && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())

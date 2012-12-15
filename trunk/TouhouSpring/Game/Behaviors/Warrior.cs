@@ -56,7 +56,15 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public override void OnMessage(string message, object[] args)
+        protected override void OnInitialize()
+        {
+            State = WarriorState.StandingBy;
+            Attack = Model.Attack;
+            Defense = Model.Defense;
+            Equipments = new List<BaseCard>();
+        }
+
+        protected override void OnMessage(string message, object[] args)
         {
             if (message == "GoCoolingDown")
             {
@@ -130,14 +138,6 @@ namespace TouhouSpring.Behaviors
                 }
                 Defense = m_defenseModifiers.Aggregate(Model.Defense, (i, v) => v.Process(i));
             }
-        }
-
-        protected override void OnInitialize()
-        {
-            State = WarriorState.StandingBy;
-            Attack = Model.Attack;
-            Defense = Model.Defense;
-            Equipments = new List<BaseCard>();
         }
 
         [BehaviorModel(typeof(Warrior), Category = "Core", Description = "The card is capable of being engaged into combats.")]

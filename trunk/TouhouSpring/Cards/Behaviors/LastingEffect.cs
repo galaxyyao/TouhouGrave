@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
 
         void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (IsOnBattlefield && Game.ActingPlayer == Host.Owner && --Duration == 0)
+            if (Host.IsOnBattlefield && Game.ActingPlayer == Host.Owner && --Duration == 0)
             {
                 CleanUps.ForEach(bhv => Game.IssueCommands(new Commands.RemoveBehavior(Host, bhv)));
             }

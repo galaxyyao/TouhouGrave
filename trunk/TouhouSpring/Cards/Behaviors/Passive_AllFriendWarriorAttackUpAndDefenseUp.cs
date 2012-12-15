@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
                 }
             }
             else if (command.CardToPlay.Owner == Host.Owner
-                     && IsOnBattlefield
+                     && Host.IsOnBattlefield
                      && command.CardToPlay.Behaviors.Get<Warrior>() != null)
             {
                 var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
@@ -67,7 +67,7 @@ namespace TouhouSpring.Behaviors
                 }
             }
             else if (command.Target.Owner == Host.Owner
-                     && IsOnBattlefield)
+                     && Host.IsOnBattlefield)
             {
                 Game.IssueCommands(
                     new Commands.SendBehaviorMessage(

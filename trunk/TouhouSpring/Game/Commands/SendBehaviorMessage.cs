@@ -70,7 +70,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Target.OnMessage(Message, Args);
+            (Target as Behaviors.IInternalBehavior).ReceiveMessage(Message, Args);
         }
     }
 }
