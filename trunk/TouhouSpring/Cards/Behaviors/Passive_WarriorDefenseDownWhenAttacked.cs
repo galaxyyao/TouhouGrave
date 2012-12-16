@@ -7,25 +7,14 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_WarriorDefenseDownWhenAttacked
         : BaseBehavior<Passive_WarriorDefenseDownWhenAttacked.ModelType>,
-        IEpilogTrigger<Commands.DealDamageToCard>,
-        IEpilogTrigger<Commands.EndTurn>
+        IEpilogTrigger<Commands.DealDamageToCard>
     {
-        private bool isBlockedLastRound = false;
-
         void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
             if (command.Target == Host
-                && Game.ActingPlayer != Host.Owner)
-                isBlockedLastRound = true;
-        }
-
-        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
-        {
-            if (Game.ActingPlayer != Host.Owner
-                && Host.Behaviors.Has<Warrior>()
-                && isBlockedLastRound)
+                && command.Cause is Warrior
+                && command.DamageToDeal > 0)
             {
-                isBlockedLastRound = false;
                 Game.IssueCommands(new Commands.SendBehaviorMessage(
                     Host.Behaviors.Get<Warrior>(),
                     "DefenseModifiers",
