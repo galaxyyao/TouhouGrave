@@ -13,6 +13,7 @@ namespace TouhouSpring.Graphics
         {
             public string m_id;
             public float m_spaceWidth;
+            public float m_fullWidthSpaceWidth;
             public Font m_fontObject;
         }
 
@@ -53,7 +54,8 @@ namespace TouhouSpring.Graphics
                 {
                     m_id = fontId,
                     m_fontObject = fontObject,
-                    m_spaceWidth = MeasureSpace(fontObject).Width
+                    m_spaceWidth = MeasureSpace(fontObject).Width,
+                    m_fullWidthSpaceWidth = MeasureFullwidthSpace(fontObject).Width
                 });
                 index = m_registeredFonts.Count - 1;
             }

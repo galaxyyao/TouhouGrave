@@ -62,7 +62,7 @@ namespace TouhouSpring.Style.Properties
 					throw new FormatException(String.Format("Can't find a binding for '{0}'.", id));
 				}
 				strBuilder.Append(rawExpr.Substring(i, firstToken - i));
-				strBuilder.Append(replacement);
+				strBuilder.Append(BindValuesFor(replacement));
 				i = secondToken + 1;
 			}
 			return strBuilder.ToString();

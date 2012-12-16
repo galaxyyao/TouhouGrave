@@ -109,6 +109,10 @@ namespace TouhouSpring.Graphics
                 {
                     currentX += fontMetrics.m_spaceWidth;
                 }
+                else if (ch == '\x3000')
+                {
+                    currentX += fontMetrics.m_fullWidthSpaceWidth;
+                }
                 else if (ch == '\t')
                 {
                     currentX += fontMetrics.m_spaceWidth * formatOptions.TabSpaces;

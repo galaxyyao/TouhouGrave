@@ -67,21 +67,46 @@ namespace TouhouSpring.Style
 		public bool TryGetValue(string id, out string replacement)
 		{
 			var game = GameApp.Service<Services.GameManager>().Game;
+            var gameui = GameApp.Service<Services.GameUI>();
 			switch (id)
 			{
 				case "Game.AlignToScreenTransform":
-					replacement = GameApp.Service<Services.GameUI>().WorldCamera.AlignToNearPlaneMatrix.Serialize();
+					replacement = gameui.WorldCamera.AlignToNearPlaneMatrix.Serialize();
 					break;
                 case "Game.DetailText1":
-                    replacement = GameApp.Service<Services.GameUI>().ZoomedInCard != null
-                                  ? GameApp.Service<Services.GameUI>().ZoomedInCard.Card.Model.Name : "";
+                    replacement = gameui.ZoomedInCard != null
+                                  ? gameui.ZoomedInCard.Card.Model.Name : "";
                     break;
                 case "Game.DetailText2":
-                    replacement = GameApp.Service<Services.GameUI>().ZoomedInCard != null
-                                  ? GameApp.Service<Services.GameUI>().ZoomedInCard.Card.Model.Description : "";
+                    if (gameui.ZoomedInCard != null)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append("【#Card.SystemClass#】\n");
+                        if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.ManaCost_PrePlay>())
+                        {
+                            sb.Append("召唤消耗　【[color:Red]#Card.SummonCost#[/color]】 灵力\n");
+                        }
+                        if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.Hero>())
+                        {
+                            sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
+                            sb.Append("体力　　　【[color:Red]#Card.InitialDefense#[/color]】\n");
+                        }
+                        else if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.Warrior>())
+                        {
+                            sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
+                            sb.Append("防御力　　【[color:Red]#Card.InitialDefense#[/color]】\n");
+                        }
+                        sb.Append("\n");
+                        sb.Append(gameui.ZoomedInCard.Card.Model.Description);
+                        replacement = sb.ToString();
+                    }
+                    else
+                    {
+                        replacement = "";
+                    }
                     break;
 				case "Game.Phase":
-					replacement = GameApp.Service<Services.GameManager>().Game.CurrentPhase;
+					replacement = game.CurrentPhase;
 					break;
 				case "Game.Player0.Avatar":
 					replacement = "Textures/Yozora";
@@ -122,15 +147,19 @@ namespace TouhouSpring.Style
 					replacement = GameApp.Instance.GraphicsDevice.Viewport.Height.ToString();
 					break;
 				case "Game.UICamera.Transform":
-					replacement = GameApp.Service<Services.GameUI>().UICamera.WorldToProjectionMatrix.Serialize();
+					replacement = gameui.UICamera.WorldToProjectionMatrix.Serialize();
 					break;
 				case "Game.WorldCamera.Transform":
-					replacement = GameApp.Service<Services.GameUI>().WorldCamera.WorldToProjectionMatrix.Serialize();
+					replacement = gameui.WorldCamera.WorldToProjectionMatrix.Serialize();
 					break;
                 case "Conversation.CurrentText":
                     replacement = GameApp.Service<Services.ConversationUI>().CurrentText;
                     break;
 				default:
+                    if (id.StartsWith("Card.") && gameui.ZoomedInCard != null)
+                    {
+                        return gameui.ZoomedInCard.TryGetValue(id, out replacement);
+                    }
 					replacement = null;
 					return false;
 			}
