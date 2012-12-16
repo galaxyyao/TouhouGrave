@@ -26,8 +26,7 @@ namespace TouhouSpring.UI.CardControlAddins
 
 		public override void Update(float deltaTime)
 		{
-			var gameUI = GameApp.Service<Services.GameUI>();
-			var selected = gameUI.ZoomedInCard != Control && gameUI.IsCardSelected(Card);
+			bool selected = GameApp.Service<Services.GameUI>().IsCardSelected(Control);
 
 			if (selected != m_lastSelected)
 			{

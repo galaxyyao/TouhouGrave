@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+
+namespace TouhouSpring.Services.UIStates
+{
+    class TacticalPhase : IUIState
+    {
+        private UI.CardControl m_cardToPlay;
+        private UI.CardControl m_spellToCastCard;
+
+        private GameUI m_gameUI = GameApp.Service<GameUI>();
+        private Interactions.TacticalPhase m_io;
+
+        public Interactions.BaseInteraction InteractionObject
+        {
+            get { return m_io; }
+        }
+
+        public void OnEnter(Interactions.BaseInteraction io)
+        {
+            m_io = (Interactions.TacticalPhase)io;
+            m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
+            m_gameUI.AddPhaseButton(GameUI.PhaseButtonText.Draw);
+        }
+
+        public void OnLeave()
+        {
+        }
+
+        public void OnCardClicked(UI.CardControl cardControl)
+        {
+            var card = cardControl.Card;
+
+            if (m_io.SelectFromSet.Contains(card))
+            {
+                m_cardToPlay = (cardControl != m_cardToPlay) ? cardControl : null;
+                m_spellToCastCard = null;
+            }
+            else if (m_io.CastFromSet.Contains(card))
+            {
+                m_cardToPlay = null;
+                m_spellToCastCard = (cardControl != m_spellToCastCard) ? cardControl : null;
+            }
+            else
+            {
+                return;
+            }
+
+            m_gameUI.SetSinglePhaseButton(m_cardToPlay != null ? GameUI.PhaseButtonText.Done : GameUI.PhaseButtonText.Skip);
+            m_gameUI.AddPhaseButton(GameUI.PhaseButtonText.Draw);
+        }
+
+        public void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell)
+        {
+            GameApp.Service<ModalDialog>().Show(
+                String.Format(CultureInfo.CurrentCulture, "Cast {0}?", spell.Model.Name),
+                ModalDialog.Button.Yes | ModalDialog.Button.Cancel,
+                btn =>
+                {
+                    if (btn == ModalDialog.Button.Yes)
+                    {
+                        m_io.Respond(spell);
+                        m_gameUI.LeaveState();
+                    }
+                });
+        }
+
+        public void OnPhaseButton(GameUI.PhaseButtonText buttonText)
+        {
+            if (buttonText == GameUI.PhaseButtonText.Done)
+            {
+                m_io.Respond(m_cardToPlay.Card);
+            }
+            else if (buttonText == GameUI.PhaseButtonText.Skip)
+            {
+                m_io.Respond((BaseCard)null);
+            }
+            else if (buttonText == GameUI.PhaseButtonText.Draw)
+            {
+                if (m_io.Player.Mana < 1)
+                {
+                    GameApp.Service<ModalDialog>().Show("Insufficient mana.", ModalDialog.Button.OK, btn => { });
+                    return;
+                }
+                else
+                {
+                    m_io.RespondDraw();
+                }
+            }
+            m_gameUI.LeaveState();
+        }
+
+        public bool IsCardClickable(UI.CardControl cardControl)
+        {
+            var card = cardControl.Card;
+            return m_io.SelectFromSet.Contains(card) || m_io.CastFromSet.Contains(card);
+        }
+
+        public bool IsCardSelected(UI.CardControl cardControl)
+        {
+            return cardControl == m_cardToPlay;
+        }
+
+        public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
+        {
+            return cardControl == m_spellToCastCard;
+        }
+    }
+}

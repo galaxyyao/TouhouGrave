@@ -70,7 +70,7 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var gameui = GameApp.Service<Services.GameUI>();
-            bool needShow = gameui.TacticalPhase_CardToCastSpell == Card && gameui.ZoomedInCard != Control;
+            bool needShow = gameui.IsCardSelectedForCastSpell(Control);
 
             if (needShow)
             {

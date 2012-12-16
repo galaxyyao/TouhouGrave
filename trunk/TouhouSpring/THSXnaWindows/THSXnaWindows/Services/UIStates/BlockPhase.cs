@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using XnaColor = Microsoft.Xna.Framework.Color;
 
-namespace TouhouSpring.Services
+namespace TouhouSpring.Services.UIStates
 {
-    partial class GameUI
+    class BlockPhase : IUIState
     {
         private XnaColor[] m_markColors = new XnaColor[]
         {
@@ -26,27 +26,43 @@ namespace TouhouSpring.Services
         private UI.CardControl m_selectedBlocker;
         private UI.CardControl[][] m_declaredBlockers;
 
-        public void BlockPhase_Enter(Interactions.BlockPhase io)
-        {
-            m_declaredBlockers = new UI.CardControl[io.DeclaredAttackers.Count][];
-            io.DeclaredAttackers.Count.Repeat(i => m_declaredBlockers[i] = new UI.CardControl[1]);
+        private GameUI m_gameUI = GameApp.Service<GameUI>();
+        private Interactions.BlockPhase m_io;
 
-            SetSinglePhaseButton(PhaseButtonText.Skip);
+        public IIndexable<BaseCard> DeclaredAttackers
+        {
+            get { return m_io.DeclaredAttackers; }
         }
 
-        public void BlockerPhase_ClearSelected()
+        public UI.CardControl[][] DeclaredBlockers
         {
-            m_selectedCardToPlay = null;
+            get { return m_declaredBlockers; }
         }
 
-        private void BlockPhase_Leave()
+        public Player Player
         {
-            var io = InteractionObject as Interactions.BlockPhase;
+            get { return m_io.Player; }
+        }
 
-            foreach (var card in io.DeclaredAttackers)
+        public Interactions.BaseInteraction InteractionObject
+        {
+            get { return m_io; }
+        }
+
+        public void OnEnter(Interactions.BaseInteraction io)
+        {
+            m_io = (Interactions.BlockPhase)io;
+            m_declaredBlockers = new UI.CardControl[m_io.DeclaredAttackers.Count][];
+            m_io.DeclaredAttackers.Count.Repeat(i => m_declaredBlockers[i] = new UI.CardControl[1]);
+            m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
+        }
+
+        public void OnLeave()
+        {
+            foreach (var card in m_io.DeclaredAttackers)
             {
                 UI.CardControl cc;
-                TryGetCardControl(card, out cc);
+                m_gameUI.TryGetCardControl(card, out cc);
                 cc.GetAddin<UI.CardControlAddins.Glow>().GlowColor = XnaColor.Transparent;
             }
             foreach (var blockerArray in m_declaredBlockers)
@@ -59,28 +75,25 @@ namespace TouhouSpring.Services
                     }
                 }
             }
-
-            m_selectedBlocker = null;
-            m_declaredBlockers = null;
         }
 
-        private void BlockPhase_OnCardClicked(UI.CardControl control, Interactions.BlockPhase io)
+        public void OnCardClicked(UI.CardControl cardControl)
         {
-            var card = control.Card;
+            var card = cardControl.Card;
 
-            if (io.PlayableCandidates.Contains(card))
+            if (m_io.PlayableCandidates.Contains(card))
             {
-                m_selectedCardToPlay = m_selectedCardToPlay == control ? null : control;
+                m_selectedCardToPlay = m_selectedCardToPlay == cardControl ? null : cardControl;
                 m_selectedBlocker = null;
             }
-            else if (io.BlockerCandidates.Contains(card))
+            else if (m_io.BlockerCandidates.Contains(card))
             {
                 m_selectedCardToPlay = null;
-                m_selectedBlocker = m_selectedBlocker == control ? null : control;
+                m_selectedBlocker = m_selectedBlocker == cardControl ? null : cardControl;
             }
-            else if (io.BlockableAttackers.Contains(card) && m_selectedBlocker != null)
+            else if (m_io.BlockableAttackers.Contains(card) && m_selectedBlocker != null)
             {
-                var attackerIndex = io.DeclaredAttackers.IndexOf(control.Card);
+                var attackerIndex = m_io.DeclaredAttackers.IndexOf(card);
                 var nullIndex = Array.IndexOf(m_declaredBlockers[attackerIndex], null);
                 bool toggleBlockOff = false;
 
@@ -92,7 +105,7 @@ namespace TouhouSpring.Services
                         continue;
                     }
 
-                    toggleBlockOff = io.DeclaredAttackers[i] == control.Card;
+                    toggleBlockOff = m_io.DeclaredAttackers[i] == card;
 
                     // new blockers can be declared (not full) on this attacker
                     if (nullIndex != -1 || toggleBlockOff)
@@ -102,7 +115,7 @@ namespace TouhouSpring.Services
                         if (m_declaredBlockers[i].All(c => c == null))
                         {
                             UI.CardControl cc;
-                            TryGetCardControl(io.DeclaredAttackers[i], out cc);
+                            m_gameUI.TryGetCardControl(m_io.DeclaredAttackers[i], out cc);
                             cc.GetAddin<UI.CardControlAddins.Glow>().GlowColor = XnaColor.Transparent;
                         }
 
@@ -119,34 +132,50 @@ namespace TouhouSpring.Services
                 {
                     m_declaredBlockers[attackerIndex][nullIndex] = m_selectedBlocker;
                     m_selectedBlocker.GetAddin<UI.CardControlAddins.Glow>().GlowColor
-                        = control.GetAddin<UI.CardControlAddins.Glow>().GlowColor
+                        = cardControl.GetAddin<UI.CardControlAddins.Glow>().GlowColor
                         = m_markColors[attackerIndex];
                 }
 
-                SetSinglePhaseButton(m_declaredBlockers.Any(ba => ba.Any(b => b != null)) ? PhaseButtonText.Done : PhaseButtonText.Skip);
+                m_gameUI.SetSinglePhaseButton(m_declaredBlockers.Any(ba => ba.Any(b => b != null)) ? GameUI.PhaseButtonText.Done : GameUI.PhaseButtonText.Skip);
             }
         }
 
-        private bool BlockPhase_OnPhaseButton(Interactions.BlockPhase io, PhaseButtonText buttonText)
+        public void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell)
+        {
+            throw new InvalidOperationException("Impossible");
+        }
+
+        public void OnPhaseButton(GameUI.PhaseButtonText buttonText)
         {
             if (m_selectedCardToPlay != null)
             {
-                io.Respond(m_selectedCardToPlay.Card);
+                m_io.Respond(m_selectedCardToPlay.Card);
             }
             else
             {
-                var arr = new IIndexable<BaseCard>[io.DeclaredAttackers.Count];
+                var arr = new IIndexable<BaseCard>[m_io.DeclaredAttackers.Count];
                 arr.Length.Repeat(i => arr[i] = m_declaredBlockers[i].Where(cc => cc != null).Select(cc => cc.Card).ToArray().ToIndexable());
-                io.Respond(arr.ToIndexable());
+                m_io.Respond(arr.ToIndexable());
             }
-            BlockPhase_Leave();
-            return true;
+            m_gameUI.LeaveState();
         }
 
-        private bool BlockPhase_ShouldBeHighlighted(BaseCard card)
+        public bool IsCardClickable(UI.CardControl cardControl)
         {
-            return m_selectedBlocker != null && m_selectedBlocker.Card == card
-                   || m_selectedCardToPlay != null && m_selectedCardToPlay.Card == card;
+            var card = cardControl.Card;
+            return m_io.BlockerCandidates.Contains(card)
+                   || m_io.PlayableCandidates.Contains(card)
+                   || m_io.BlockableAttackers.Contains(card);
+        }
+
+        public bool IsCardSelected(UI.CardControl cardControl)
+        {
+            return cardControl == m_selectedBlocker || cardControl == m_selectedCardToPlay;
+        }
+
+        public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
+        {
+            return false;
         }
     }
 }

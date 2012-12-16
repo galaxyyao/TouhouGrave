@@ -29,40 +29,14 @@ namespace TouhouSpring
                         GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
                         break;
                     case "OnCardPlayCanceled":
-                        Action action = () =>
-                        {
-                            if (GameApp.Service<GameManager>().Game.CurrentPhase == "Tactical")
-                            {
-                                GameApp.Service<GameUI>().TacticalPhase_Leave();
-                            }
-                            else if (GameApp.Service<GameManager>().Game.CurrentPhase == "Combat/Block")
-                            {
-                                GameApp.Service<GameUI>().BlockerPhase_ClearSelected();
-                            }
-                            GameApp.Service<GameUI>().InteractionObject = null;
-                            interactionObj.Respond();
-                        };
-
-                        GameApp.Service<GameUI>().InteractionObject = interactionObj;
                         if (interactionObj.Message != string.Empty)
                         {
-                            GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, action);
+                            GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () => interactionObj.Respond());
+                            return true;
                         }
-                        else
-                        {
-                            action();
-                        }
-                        return true;
+                        break;
                     case "OnCardPlayed":
                         GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
-                        if (GameApp.Service<GameManager>().Game.CurrentPhase == "Tactical")
-                        {
-                            GameApp.Service<GameUI>().TacticalPhase_Leave();
-                        }
-                        else if (GameApp.Service<GameManager>().Game.CurrentPhase == "Combat/Block")
-                        {
-                            GameApp.Service<GameUI>().BlockerPhase_ClearSelected();
-                        }
                         break;
                     case "OnCardSummoned":
                         GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
@@ -114,16 +88,12 @@ namespace TouhouSpring
                 switch (interactionObj.Notification)
                 {
                     case "OnSpellCasted":
-                        GameApp.Service<GameUI>().TacticalPhase_Leave();
                         break;
                     case "OnSpellCastCanceled":
                         GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () =>
                         {
-                            GameApp.Service<GameUI>().TacticalPhase_Leave();
-                            GameApp.Service<GameUI>().InteractionObject = null;
                             interactionObj.Respond();
                         });
-                        GameApp.Service<GameUI>().InteractionObject = interactionObj;
                         return true;
                     default:
                         break;
@@ -137,32 +107,27 @@ namespace TouhouSpring
 		[Interactions.MessageMap.Handler(typeof(Interactions.TacticalPhase))]
 		private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
 		{
-			GameApp.Service<GameUI>().InteractionObject = interactionObj;
-			GameApp.Service<GameUI>().TacticalPhase_Enter(interactionObj);
+            GameApp.Service<GameUI>().EnterState(new Services.UIStates.TacticalPhase(), interactionObj);
 			return true;
 		}
 
         [Interactions.MessageMap.Handler(typeof(Interactions.SelectCards))]
         private bool OnSelectCards(Interactions.SelectCards interactionObj)
         {
-            GameApp.Service<GameUI>().InteractionObject = interactionObj;
-            GameApp.Service<GameUI>().SelectCards_Enter(interactionObj);
+            GameApp.Service<GameUI>().EnterState(new Services.UIStates.SelectCards(), interactionObj);
             return true;
         }
 
 		[Interactions.MessageMap.Handler(typeof(Interactions.BlockPhase))]
 		private bool OnDeclareBlockers(Interactions.BlockPhase interactionObj)
 		{
-			GameApp.Service<GameUI>().InteractionObject = interactionObj;
-			GameApp.Service<GameUI>().BlockPhase_Enter(interactionObj);
+            GameApp.Service<GameUI>().EnterState(new Services.UIStates.BlockPhase(), interactionObj);
 			return true;
 		}
 
 		[Interactions.MessageMap.Handler(typeof(Interactions.MessageBox))]
 		private bool OnMessageBox(Interactions.MessageBox interactionObj)
 		{
-			GameApp.Service<GameUI>().InteractionObject = interactionObj;
-
 			// translate from Interactions.MessageBox.Button to Services.ModalDialog.Button
 			Services.ModalDialog.Button buttons = 0;
 			if ((interactionObj.Buttons & Interactions.MessageBoxButtons.OK) != 0)
@@ -183,8 +148,6 @@ namespace TouhouSpring
 			}
 			GameApp.Service<Services.ModalDialog>().Show(interactionObj.Text, buttons, btn =>
 			{
-				GameApp.Service<GameUI>().InteractionObject = null;
-
 				// translate back...
 				Interactions.MessageBoxButtons ibtn;
 				switch (btn)

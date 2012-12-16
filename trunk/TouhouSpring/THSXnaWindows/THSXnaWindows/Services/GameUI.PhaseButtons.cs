@@ -67,27 +67,7 @@ namespace TouhouSpring.Services
 
         private void PhaseButtonClicked(PhaseButtonText buttonText)
         {
-            bool succeeded = true;
-
-            var io = InteractionObject;
-            if (io is Interactions.TacticalPhase)
-            {
-                succeeded = TacticalPhase_OnPhaseButton(io as Interactions.TacticalPhase, buttonText);
-            }
-            else if (io is Interactions.SelectCards)
-            {
-                succeeded = SelectCards_OnPhaseButton(io as Interactions.SelectCards, buttonText);
-            }
-            else if (io is Interactions.BlockPhase)
-            {
-                succeeded = BlockPhase_OnPhaseButton(io as Interactions.BlockPhase, buttonText);
-            }
-
-            if (succeeded)
-            {
-                RemoveAllPhaseButtons();
-                InteractionObject = null;
-            }
+            UIState.OnPhaseButton(buttonText);
         }
 
         private UI.Button CreatePhaseButton()

@@ -76,45 +76,25 @@ namespace TouhouSpring.Services
             return cardControl != null;
         }
 
-        public bool IsCardSelected(BaseCard card)
+        public bool IsCardClickable(UI.CardControl cardControl)
         {
-            if (card == null)
-            {
-                throw new ArgumentNullException("card");
-            }
-            return SelectCards_ShouldBeHighlighted(card)
-                   || TacticalPhase_ShouldBeHighlighted(card)
-                   || BlockPhase_ShouldBeHighlighted(card);
+            return ZoomedInCard != cardControl && UIState != null
+                   ? UIState.IsCardClickable(cardControl)
+                   : false;
         }
 
-        public bool IsSelectable(BaseCard card)
+        public bool IsCardSelected(UI.CardControl cardControl)
         {
-            if (card == null)
-            {
-                throw new ArgumentNullException("card");
-            }
+            return UIState != null
+                   ? UIState.IsCardSelected(cardControl)
+                   : false;
+        }
 
-            if (InteractionObject is Interactions.TacticalPhase)
-            {
-                var io = (Interactions.TacticalPhase)InteractionObject;
-                return io.SelectFromSet.Contains(card) || io.CastFromSet.Contains(card);
-            }
-            else if (InteractionObject is Interactions.BlockPhase)
-            {
-                var io = (Interactions.BlockPhase)InteractionObject;
-                return io.BlockerCandidates.Contains(card)
-                       || io.PlayableCandidates.Contains(card)
-                       || io.BlockableAttackers.Contains(card);
-            }
-            else if (InteractionObject is Interactions.SelectCards)
-            {
-                var io = (Interactions.SelectCards)InteractionObject;
-                return io.SelectFromSet.Contains(card);
-            }
-            else
-            {
-                return false;
-            }
+        public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
+        {
+            return ZoomedInCard != cardControl && UIState != null
+                   ? UIState.IsCardSelectedForCastSpell(cardControl)
+                   : false;
         }
 
         public int GetRenderIndex(UI.CardControl cardControl)
@@ -197,43 +177,18 @@ namespace TouhouSpring.Services
         internal void OnCardClicked(UI.CardControl control)
         {
             Debug.Assert(control != null && control.Card != null);
-            var card = control.Card;
-
-            var io = InteractionObject;
-            if (io is Interactions.TacticalPhase)
+            if (UIState != null)
             {
-                TacticalPhase_OnCardClicked(control, io as Interactions.TacticalPhase);
-            }
-            else if (io is Interactions.SelectCards)
-            {
-                SelectCards_OnCardClicked(control, io as Interactions.SelectCards);
-            }
-            else if (io is Interactions.BlockPhase)
-            {
-                BlockPhase_OnCardClicked(control, io as Interactions.BlockPhase);
+                UIState.OnCardClicked(control);
             }
         }
 
         internal void OnSpellClicked(UI.CardControl control, Behaviors.ICastableSpell spell)
         {
             Debug.Assert(control.Card == spell.Host);
-            var card = control.Card;
-
-            var io = InteractionObject;
-            if (io is Interactions.TacticalPhase
-                && (io as Interactions.TacticalPhase).Player.CardsOnBattlefield.Contains(card))
+            if (UIState != null)
             {
-                GameApp.Service<ModalDialog>().Show(
-                    String.Format("Cast {0}?", spell.Model.Name),
-                    ModalDialog.Button.Yes | ModalDialog.Button.Cancel,
-                    btn =>
-                    {
-                        if (btn == ModalDialog.Button.Yes)
-                        {
-                            InteractionObject = null;
-                            (io as Interactions.TacticalPhase).Respond(spell);
-                        }
-                    });
+                UIState.OnSpellClicked(control, spell);
             }
         }
 
@@ -278,26 +233,28 @@ namespace TouhouSpring.Services
 
                     cc.EnableDepth = true;
                 }
-                else if (m_interactionObject is Interactions.BlockPhase
-                    && (m_interactionObject as Interactions.BlockPhase).DeclaredAttackers.Contains(card))
+                else if (UIState is UIStates.BlockPhase
+                    && (UIState as UIStates.BlockPhase).DeclaredAttackers.Contains(card))
                 {
+                    var blockPhase = UIState as UIStates.BlockPhase;
                     locationAnimation.NextLocation = new LocationAnimation.LocationParameter
                     {
-                        m_zone = (m_interactionObject as Interactions.BlockPhase).Player == Game.Players[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo,
-                        m_numCards = (m_interactionObject as Interactions.BlockPhase).DeclaredAttackers.Count,
-                        m_thisIndex = (m_interactionObject as Interactions.BlockPhase).DeclaredAttackers.IndexOf(card),
+                        m_zone = blockPhase.Player == Game.Players[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo,
+                        m_numCards = blockPhase.DeclaredAttackers.Count,
+                        m_thisIndex = blockPhase.DeclaredAttackers.IndexOf(card),
                         m_focusIndex = -1
                     };
 
                     cc.EnableDepth = true;
                 }
-                else if (m_interactionObject is Interactions.BlockPhase 
-                    && m_declaredBlockers.Any(b => b.Contains(cc)))
+                else if (UIState is UIStates.BlockPhase 
+                    && (UIState as UIStates.BlockPhase).DeclaredBlockers.Any(b => b.Contains(cc)))
                 {
-                    var blockers = m_declaredBlockers.SelectMany(b => b.Where(c => c != null));
+                    var blockPhase = UIState as UIStates.BlockPhase;
+                    var blockers = blockPhase.DeclaredBlockers.SelectMany(b => b.Where(c => c != null));
                     locationAnimation.NextLocation = new LocationAnimation.LocationParameter
                     {
-                        m_zone = (m_interactionObject as Interactions.BlockPhase).Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo,
+                        m_zone = blockPhase.Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo,
 
                         m_numCards = blockers.Count(),
                         m_thisIndex = blockers.FindIndex(c => c == cc),

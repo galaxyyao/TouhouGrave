@@ -95,13 +95,11 @@
     <Compile Include="Services\ConversationUI.cs" />
     <Compile Include="Services\GameManager.cs" />
     <Compile Include="Services\GameService.cs" />
-    <Compile Include="Services\GameUI.BlockPhase.cs" />
     <Compile Include="Services\GameUI.CardControls.cs" />
     <Compile Include="Services\GameUI.cs" />
     <Compile Include="Services\GameUI.PhaseButtons.cs" />
-    <Compile Include="Services\GameUI.SelectCards.cs" />
-    <Compile Include="Services\GameUI.TacticalPhase.cs" />
     <Compile Include="Services\GameUI.ZoomInCard.cs" />
+    <Compile Include="Services\IUIState.cs" />
     <Compile Include="Services\MenuUI.cs" />
     <Compile Include="Services\MenuUI.Page.cs" />
     <Compile Include="Services\ModalDialog.cs" />
@@ -115,6 +113,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="ResourceContainer.cs" />
     <Compile Include="Services\UIManager.cs" />
+    <Compile Include="Services\UIStates\BlockPhase.cs" />
+    <Compile Include="Services\UIStates\SelectCards.cs" />
+    <Compile Include="Services\UIStates\TacticalPhase.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />
     <Compile Include="Style\CardControlStyle.cs" />
     <Compile Include="Style\Exceptions.cs" />

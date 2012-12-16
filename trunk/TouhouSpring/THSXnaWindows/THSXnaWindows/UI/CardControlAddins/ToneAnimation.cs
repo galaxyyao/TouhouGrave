@@ -43,7 +43,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_lastGrayscale = grayscale;
             }
 
-            bool darken = gameUI.ZoomedInCard != Control && !gameUI.IsSelectable(Card);
+            bool darken = gameUI.ZoomedInCard != Control && !gameUI.IsCardClickable(Control);
 
             if (darken != m_lastDarken)
             {
