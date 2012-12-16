@@ -45,8 +45,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummon+ModelType">
@@ -95,8 +95,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
@@ -124,8 +124,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
@@ -153,8 +153,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpWhileDefenseDown+ModelType">
@@ -181,8 +181,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_EnemySummonCostUp+ModelType">
@@ -209,8 +209,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpAndDefenseUp+ModelType">
@@ -238,8 +238,8 @@
         <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
           <Name>Support</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_ManaGainUpWhenAttackedByWarrior+ModelType">
@@ -404,8 +404,8 @@
           <Attack>0</Attack>
           <Defense>4</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -434,8 +434,8 @@
           <Attack>1</Attack>
           <Defense>2</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -465,8 +465,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>1</Attack>
           <Defense>2</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -496,8 +496,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>1</Attack>
           <Defense>1</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -526,8 +526,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -557,8 +557,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>2</Attack>
           <Defense>1</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -590,8 +590,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -619,8 +619,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>2</Attack>
           <Defense>2</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -647,8 +647,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>2</Attack>
           <Defense>1</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -677,8 +677,8 @@ X等于己方场上本卡的数量</Description>
           <Attack>1</Attack>
           <Defense>1</Defense>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -708,8 +708,8 @@ X等于己方场上本卡的数量</Description>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
@@ -730,8 +730,8 @@ X等于己方场上本卡的数量</Description>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
@@ -755,8 +755,8 @@ X等于己方场上本卡的数量</Description>
           <DefenseBoost>2</DefenseBoost>
           <Duration>1</Duration>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
@@ -784,8 +784,8 @@ X等于己方场上本卡的数量</Description>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
@@ -807,8 +807,8 @@ X等于己方场上本卡的数量</Description>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
@@ -849,8 +849,8 @@ X等于己方场上本卡的数量</Description>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
@@ -872,8 +872,8 @@ X等于己方场上本卡的数量</Description>
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>true</BlockPhase>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost_PrePlay+ModelType">
-          <Name>ManaCost_PrePlay</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">

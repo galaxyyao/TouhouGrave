@@ -82,7 +82,7 @@ namespace TouhouSpring.Style
                     {
                         StringBuilder sb = new StringBuilder();
                         sb.Append("【#Card.SystemClass#】\n");
-                        if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.ManaCost_PrePlay>())
+                        if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.ManaCost>())
                         {
                             sb.Append("召唤消耗　【[color:Red]#Card.SummonCost#[/color]】 灵力\n");
                         }

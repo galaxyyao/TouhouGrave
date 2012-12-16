@@ -60,13 +60,13 @@
     <None Include="Behaviors\Deprecated\Scapegoat.cs" />
     <None Include="Behaviors\Deprecated\CardTransfer.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
+    <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
     <Compile Include="Behaviors\Environment.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />
-    <Compile Include="Behaviors\ManaCost_PrePlay.cs" />
     <Compile Include="Behaviors\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
     <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
     <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />

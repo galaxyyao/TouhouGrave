@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class ManaCost_PrePlay : BaseBehavior<ManaCost_PrePlay.ModelType>,
+    public sealed class ManaCost : BaseBehavior<ManaCost.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
@@ -38,7 +38,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-		[BehaviorModel(typeof(ManaCost_PrePlay))]
+		[BehaviorModel(typeof(ManaCost))]
 		public class ModelType : BehaviorModel
 		{
             public int Cost { get; set; }
