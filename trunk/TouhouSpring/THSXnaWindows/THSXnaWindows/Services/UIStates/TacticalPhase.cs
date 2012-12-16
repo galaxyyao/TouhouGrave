@@ -8,7 +8,6 @@ namespace TouhouSpring.Services.UIStates
 {
     class TacticalPhase : IUIState
     {
-        private UI.CardControl m_cardToPlay;
         private UI.CardControl m_spellToCastCard;
 
         private GameUI m_gameUI = GameApp.Service<GameUI>();
@@ -36,21 +35,26 @@ namespace TouhouSpring.Services.UIStates
 
             if (m_io.SelectFromSet.Contains(card))
             {
-                m_cardToPlay = (cardControl != m_cardToPlay) ? cardControl : null;
-                m_spellToCastCard = null;
+                GameApp.Service<ModalDialog>().Show(
+                    String.Format(CultureInfo.CurrentCulture, "Play {0}?", card.Model.Name),
+                    ModalDialog.Button.Yes | ModalDialog.Button.Cancel,
+                    btn =>
+                    {
+                        if (btn == ModalDialog.Button.Yes)
+                        {
+                            m_io.Respond(card);
+                            m_gameUI.LeaveState();
+                        }
+                    });
             }
             else if (m_io.CastFromSet.Contains(card))
             {
-                m_cardToPlay = null;
                 m_spellToCastCard = (cardControl != m_spellToCastCard) ? cardControl : null;
             }
             else
             {
                 return;
             }
-
-            m_gameUI.SetSinglePhaseButton(m_cardToPlay != null ? GameUI.PhaseButtonText.Done : GameUI.PhaseButtonText.Skip);
-            m_gameUI.AddPhaseButton(GameUI.PhaseButtonText.Draw);
         }
 
         public void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell)
@@ -70,11 +74,7 @@ namespace TouhouSpring.Services.UIStates
 
         public void OnPhaseButton(GameUI.PhaseButtonText buttonText)
         {
-            if (buttonText == GameUI.PhaseButtonText.Done)
-            {
-                m_io.Respond(m_cardToPlay.Card);
-            }
-            else if (buttonText == GameUI.PhaseButtonText.Skip)
+            if (buttonText == GameUI.PhaseButtonText.Skip)
             {
                 m_io.Respond((BaseCard)null);
             }
@@ -90,6 +90,10 @@ namespace TouhouSpring.Services.UIStates
                     m_io.RespondDraw();
                 }
             }
+            else
+            {
+                throw new InvalidOperationException("Impossible");
+            }
             m_gameUI.LeaveState();
         }
 
@@ -101,7 +105,7 @@ namespace TouhouSpring.Services.UIStates
 
         public bool IsCardSelected(UI.CardControl cardControl)
         {
-            return cardControl == m_cardToPlay;
+            return false;
         }
 
         public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
