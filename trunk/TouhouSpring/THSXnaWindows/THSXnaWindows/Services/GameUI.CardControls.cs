@@ -97,7 +97,7 @@ namespace TouhouSpring.Services
             if (InteractionObject is Interactions.TacticalPhase)
             {
                 var io = (Interactions.TacticalPhase)InteractionObject;
-                return io.FromSet.Contains(card) || io.ComputeCastFromSet().Contains(card);
+                return io.SelectFromSet.Contains(card) || io.CastFromSet.Contains(card);
             }
             else if (InteractionObject is Interactions.BlockPhase)
             {
@@ -109,7 +109,7 @@ namespace TouhouSpring.Services
             else if (InteractionObject is Interactions.SelectCards)
             {
                 var io = (Interactions.SelectCards)InteractionObject;
-                return io.FromSet.Contains(card);
+                return io.SelectFromSet.Contains(card);
             }
             else
             {

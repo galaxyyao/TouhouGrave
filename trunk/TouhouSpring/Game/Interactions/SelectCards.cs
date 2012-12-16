@@ -23,7 +23,7 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public IIndexable<BaseCard> FromSet
+        public IIndexable<BaseCard> SelectFromSet
         {
             get; private set;
         }
@@ -50,7 +50,7 @@ namespace TouhouSpring.Interactions
             }
 
             Player = player;
-            FromSet = fromSet;
+            SelectFromSet = fromSet;
             Message = message ?? String.Empty;
             Mode = mode;
         }
@@ -82,7 +82,7 @@ namespace TouhouSpring.Interactions
             {
                 throw new InvalidDataException("The selected cards has duplicate.");
             }
-            else if (selectedCards.Any(card => !FromSet.Contains(card)))
+            else if (selectedCards.Any(card => !SelectFromSet.Contains(card)))
             {
                 throw new InvalidDataException("Some of the cards can't be selected.");
             }

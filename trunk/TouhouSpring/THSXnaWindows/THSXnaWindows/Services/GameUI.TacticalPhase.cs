@@ -33,7 +33,7 @@ namespace TouhouSpring.Services
         {
             var card = control.Card;
 
-            if (io.FromSet.Contains(card))
+            if (io.SelectFromSet.Contains(card))
             {
                 TacticalPhase_CardToPlay = (card != TacticalPhase_CardToPlay) ? card : null;
                 TacticalPhase_CardToCastSpell = null;
@@ -41,7 +41,7 @@ namespace TouhouSpring.Services
                 SetSinglePhaseButton(TacticalPhase_CardToPlay != null ? PhaseButtonText.Done : PhaseButtonText.Skip);
                 AddPhaseButton(PhaseButtonText.Draw);
             }
-            else if (io.ComputeCastFromSet().Contains(card))
+            else if (io.CastFromSet.Contains(card))
             {
                 TacticalPhase_CardToPlay = null;
                 TacticalPhase_CardToCastSpell = (card != TacticalPhase_CardToCastSpell) ? card : null;

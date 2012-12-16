@@ -28,7 +28,7 @@ namespace TouhouSpring.Services
         {
             var card = control.Card;
 
-            if (io.FromSet.Contains(card))
+            if (io.SelectFromSet.Contains(card))
             {
                 if (m_selectedCards.Contains(card))
                 {

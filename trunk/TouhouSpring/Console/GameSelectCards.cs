@@ -44,7 +44,7 @@ namespace TouhouSpring
             BaseCard[] cards = new BaseCard[args.Length];
             for (int i = 0; i < args.Length; ++i)
             {
-                cards[i] = selectCards.FromSet[int.Parse(args[i]) - 1];
+                cards[i] = selectCards.SelectFromSet[int.Parse(args[i]) - 1];
             }
 
             while (true)

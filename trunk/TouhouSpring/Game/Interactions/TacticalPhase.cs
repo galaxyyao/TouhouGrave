@@ -21,6 +21,11 @@ namespace TouhouSpring.Interactions
             public object Data;
         }
 
+        public IIndexable<BaseCard> CastFromSet
+        {
+            get; private set;
+        }
+
         public TacticalPhase(Player player)
             : base(player, ComputeFromSet(player).ToArray().ToIndexable(), SelectMode.Single,
                    "Select a card from hand to play onto the battlefield or cast a spell from a card on battlefield.")
@@ -33,6 +38,8 @@ namespace TouhouSpring.Interactions
             {
                 throw new InvalidOperationException("TacticalPhase can only be invoked on the acting player.");
             }
+
+            CastFromSet = player.CardsOnBattlefield.Where(card => card.Spells.Any()).ToArray().ToIndexable();
         }
 
         public new Result Run()
@@ -84,14 +91,6 @@ namespace TouhouSpring.Interactions
             RespondBack(Controller, new Result { ActionType = Action.DrawCard });
         }
 
-        public IIndexable<BaseCard> ComputeCastFromSet()
-        {
-            return Controller.Player.CardsOnBattlefield.Where(card =>
-                card.Behaviors.Has<Behaviors.Warrior>()
-                && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy
-                || card.Behaviors.Has<Behaviors.Support>()).ToArray().ToIndexable();
-        }
-
         protected void Validate(Result result)
         {
             switch (result.ActionType)
@@ -123,7 +122,7 @@ namespace TouhouSpring.Interactions
                     {
                         throw new InvalidDataException("Action PlayCard shall have an object of ICastableSpell as its data.");
                     }
-                    if (!ComputeCastFromSet().Contains(((Behaviors.ICastableSpell)result.Data).Host))
+                    if (!CastFromSet.Contains(((Behaviors.ICastableSpell)result.Data).Host))
                     {
                         throw new InvalidDataException("Selected spell doesn't come from a card from player's battlefield.");
                     }
