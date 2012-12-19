@@ -100,7 +100,7 @@
   <Card Id="Large" Width="210" Height="300">
     <Transform Matrix="#CardAnimator.LocationTransform#" />
     <Layout Id="Main">
-      <Transform Matrix="#CardAnimator.SelectedTransform#" />
+      <Transform Matrix="#CardAnimator.HighlightTransform#" />
       <Transform Scaling="0.0048,-0.0048" />
       <!--<Transform Matrix="#CardAnimator.Flip#" />-->
       <Layout Id="Body">

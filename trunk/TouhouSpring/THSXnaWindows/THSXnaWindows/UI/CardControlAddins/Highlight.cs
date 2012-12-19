@@ -7,29 +7,51 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouSpring.UI.CardControlAddins
 {
-	class Highlight : CardControl.Addin
+    class Highlight : CardControl.Addin, Style.IBindingProvider
 	{
 		private Graphics.TexturedQuad m_quadHighlight;
-        private Animation.Track m_animationTrack;
+        private Animation.Track m_borderBlinkTrack;
+        private Animation.Track m_enlargeTrack;
+        private bool m_lastMouseEntered;
 
 		public Highlight(CardControl control) : base(control)
 		{
+            Control.Style.RegisterBinding(this);
+
 			m_quadHighlight = new Graphics.TexturedQuad(GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/CardHighlight"));
             m_quadHighlight.BlendState = new BlendState { ColorSourceBlend = Blend.SourceAlpha, ColorDestinationBlend = Blend.One };
             m_quadHighlight.ColorToModulate = Color.Lime;
 
-            m_animationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardFloat"));
-            m_animationTrack.Elapsed += w =>
+            m_borderBlinkTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardFloat"));
+            m_borderBlinkTrack.Elapsed += w =>
             {
                 m_quadHighlight.ColorToModulate.A = (byte)(((Control.MouseTracked.MouseEntered ? 1.0f : w) / 2 + 0.5f) * 255);
             };
-            m_animationTrack.Loop = true;
-            m_animationTrack.Play();
+            m_borderBlinkTrack.Loop = true;
+            m_borderBlinkTrack.Play();
+
+            m_enlargeTrack = new Animation.LinearTrack(0.2f);
 		}
 
         public override void Update(float deltaTime)
         {
-            m_animationTrack.Elapse(deltaTime);
+            if (Control.MouseTracked.MouseEntered != m_lastMouseEntered)
+            {
+                m_enlargeTrack.TimeFactor = Control.MouseTracked.MouseEntered ? 1 : -1;
+                if (!m_enlargeTrack.IsPlaying)
+                {
+                    m_enlargeTrack.PlayFrom(m_enlargeTrack.Time);
+                }
+
+                m_lastMouseEntered = Control.MouseTracked.MouseEntered;
+            }
+
+            if (m_enlargeTrack.IsPlaying)
+            {
+                m_enlargeTrack.Elapse(deltaTime);
+            }
+
+            m_borderBlinkTrack.Elapse(deltaTime);
         }
 
 		public override void Dispose()
@@ -51,5 +73,24 @@ namespace TouhouSpring.UI.CardControlAddins
 				e.RenderManager.Draw(m_quadHighlight, region, transform);
 			}
 		}
+
+        public bool TryGetValue(string id, out string replacement)
+        {
+            switch (id)
+            {
+                case "CardAnimator.HighlightTransform":
+                    var halfWidth = Control.Region.Width * 0.5f;
+                    var halfHeight = Control.Region.Height * 0.5f;
+                    var scale = 1.0f + m_enlargeTrack.CurrentValue * 0.1f;
+                    replacement = (MatrixHelper.Translate(-halfWidth, -halfHeight)
+                                   * MatrixHelper.Scale(scale, scale)
+                                   * MatrixHelper.Translate(halfWidth, halfHeight)).Serialize();
+                    return true;
+
+                default:
+                    replacement = null;
+                    return false;
+            }
+        }
 	}
 }

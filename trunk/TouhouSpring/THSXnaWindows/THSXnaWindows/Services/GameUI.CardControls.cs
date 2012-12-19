@@ -41,7 +41,7 @@ namespace TouhouSpring.Services
             cardControl.Addins.Add(new UI.CardControlAddins.Glow(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl, Card_ResolveLocationTransform));
-            cardControl.Addins.Add(new UI.CardControlAddins.SelectedAnimation(cardControl));
+            //cardControl.Addins.Add(new UI.CardControlAddins.SelectedAnimation(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.SpellButtons(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));
             m_cardControls.Add(cardControl);
@@ -348,13 +348,7 @@ namespace TouhouSpring.Services
                             : 0f;
             }
 
-            var ret = MatrixHelper.Translate(zoneOffset + location.m_thisIndex * interval + xOffset, 0, zOffset);
-            if (location.m_thisIndex == location.m_focusIndex)
-            {
-                ret = MatrixHelper.Translate(-0.5f, 0.5f) * MatrixHelper.Scale(1.2f, 1.2f) * MatrixHelper.Translate(0.5f, -0.5f) * ret;
-            }
-
-            return ret;
+            return MatrixHelper.Translate(zoneOffset + location.m_thisIndex * interval + xOffset, 0, zOffset);
         }
     }
 }
