@@ -111,6 +111,13 @@ namespace TouhouSpring
 			return true;
 		}
 
+        [Interactions.MessageMap.Handler(typeof(Interactions.DeclareAttackers))]
+        private bool OnDeclareAttackers(Interactions.DeclareAttackers interactionObj)
+        {
+            GameApp.Service<GameUI>().EnterState(new Services.UIStates.DeclareAttackers(), interactionObj);
+            return true;
+        }
+
         [Interactions.MessageMap.Handler(typeof(Interactions.SelectCards))]
         private bool OnSelectCards(Interactions.SelectCards interactionObj)
         {

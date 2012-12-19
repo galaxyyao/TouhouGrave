@@ -70,13 +70,7 @@ namespace TouhouSpring
 
                 CurrentPhase = "Combat/Attack";
                 IssueCommandsAndFlush(new Commands.StartAttackPhase { });
-                var declaredAttackers = new Interactions.SelectCards(
-                    ActingPlayer,
-                    ActingPlayer.CardsOnBattlefield.Where(card =>
-                        card.Behaviors.Has<Behaviors.Warrior>()
-                        && card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.StandingBy).ToArray().ToIndexable(),
-                    Interactions.SelectCards.SelectMode.Multiple,
-                    "Select warriors in battlefield to make them attackers.").Run().Clone();
+                var declaredAttackers = new Interactions.DeclareAttackers(ActingPlayer).Run().Clone();
 
                 CurrentPhase = "Combat/Block";
                 IssueCommandsAndFlush(new Commands.StartBlockPhase { });

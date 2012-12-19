@@ -5,12 +5,12 @@ using System.Text;
 
 namespace TouhouSpring.Services.UIStates
 {
-    class SelectCards : IUIState
+    class DeclareAttackers : IUIState
     {
         private List<BaseCard> m_selectedCards = new List<BaseCard>();
 
         private GameUI m_gameUI = GameApp.Service<GameUI>();
-        private Interactions.SelectCards m_io;
+        private Interactions.DeclareAttackers m_io;
 
         public IIndexable<BaseCard> Selection
         {
@@ -29,7 +29,7 @@ namespace TouhouSpring.Services.UIStates
 
         public void OnEnter(Interactions.BaseInteraction io)
         {
-            m_io = (Interactions.SelectCards)io;
+            m_io = (Interactions.DeclareAttackers)io;
             GameApp.Service<ModalDialog>().Show(m_io.Message, () =>
             {
                 m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);

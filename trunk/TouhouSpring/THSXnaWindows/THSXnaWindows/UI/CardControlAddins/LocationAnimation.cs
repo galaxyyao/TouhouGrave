@@ -16,6 +16,8 @@ namespace TouhouSpring.UI.CardControlAddins
             public float m_width;
             public int[] m_intervalReductionLevel;
             public float[] m_intervalReductionAmount;
+            public int m_lastFocusIndex; // focus index will be locked during card location transition
+                                         // so that glitching in transition animation could be avoided
         }
 
         public struct LocationParameter
@@ -34,6 +36,11 @@ namespace TouhouSpring.UI.CardControlAddins
 		private Matrix m_locationTransform = MatrixHelper.Identity;
         private LocationTransformResolver m_locationTransformResolver;
         private LocationParameter m_lastLocation;
+
+        public bool InTransition
+        {
+            get { return m_locationTrack.IsPlaying; }
+        }
 
         public LocationAnimation(CardControl control, LocationTransformResolver locationResolver) : base(control)
 		{

@@ -115,7 +115,8 @@ namespace TouhouSpring.Services
                 m_container = InGameUIPage.Style.ChildIds["PlayerHand"].Target,
                 m_width = 8f,
                 m_intervalReductionLevel = new int[] { 0, 8, 12 },
-                m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f }
+                m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f },
+                m_lastFocusIndex = -1
             };
             m_opponentHandZoneInfo = new LocationAnimation.ZoneInfo
             {
@@ -203,33 +204,27 @@ namespace TouhouSpring.Services
 
                 if (cc == ZoomedInCard)
                 {
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_zoomedInZoneInfo,
-                        m_numCards = 1,
-                        m_thisIndex = -1,
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_zoomedInZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
                 }
                 else if (Game.Players[0].CardsOnHand.Contains(card))
                 {
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_playerHandZoneInfo,
-                        m_numCards = Game.Players[0].CardsOnHand.Count,
-                        m_thisIndex = Game.Players[0].CardsOnHand.IndexOf(card),
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_playerHandZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = Game.Players[0].CardsOnHand.IndexOf(card);
                 }
                 else if (Game.Players[1].CardsOnHand.Contains(card))
                 {
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_opponentHandZoneInfo,
-                        m_numCards = Game.Players[1].CardsOnHand.Count,
-                        m_thisIndex = Game.Players[1].CardsOnHand.IndexOf(card),
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_opponentHandZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = Game.Players[1].CardsOnHand.IndexOf(card);
+
+                    cc.EnableDepth = true;
+                }
+                else if (UIState is UIStates.DeclareAttackers
+                    && (UIState as UIStates.DeclareAttackers).Selection.Contains(card))
+                {
+                    var declareAttackers = UIState as UIStates.DeclareAttackers;
+                    locationAnimation.NextLocation.m_zone = declareAttackers.Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = declareAttackers.Selection.IndexOf(card);
 
                     cc.EnableDepth = true;
                 }
@@ -237,99 +232,85 @@ namespace TouhouSpring.Services
                     && (UIState as UIStates.BlockPhase).DeclaredAttackers.Contains(card))
                 {
                     var blockPhase = UIState as UIStates.BlockPhase;
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = blockPhase.Player == Game.Players[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo,
-                        m_numCards = blockPhase.DeclaredAttackers.Count,
-                        m_thisIndex = blockPhase.DeclaredAttackers.IndexOf(card),
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = blockPhase.Player == Game.Players[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = blockPhase.DeclaredAttackers.IndexOf(card);
 
                     cc.EnableDepth = true;
                 }
-                else if (UIState is UIStates.BlockPhase 
+                else if (UIState is UIStates.BlockPhase
                     && (UIState as UIStates.BlockPhase).DeclaredBlockers.Any(b => b.Contains(cc)))
                 {
                     var blockPhase = UIState as UIStates.BlockPhase;
                     var blockers = blockPhase.DeclaredBlockers.SelectMany(b => b.Where(c => c != null));
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = blockPhase.Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo,
-
-                        m_numCards = blockers.Count(),
-                        m_thisIndex = blockers.FindIndex(c => c == cc),
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = blockPhase.Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = blockers.FindIndex(c => c == cc);
 
                     cc.EnableDepth = true;
                 }
                 else if (Game.Players[0].Hero.Host == card)
                 {
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_playerHeroZoneInfo,
-                        m_numCards = 1,
-                        m_thisIndex = -1,
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_playerHeroZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
                 }
                 else if (Game.Players[1].Hero.Host == card)
                 {
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_opponentHeroZoneInfo,
-                        m_numCards = 1,
-                        m_thisIndex = -1,
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_opponentHeroZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
                 }
                 else if (Game.Players[0].CardsOnBattlefield.Contains(card))
                 {
                     Debug.Assert(Game.Players[0].CardsOnBattlefield.Count > 0);
                     Debug.Assert(Game.Players[0].CardsOnBattlefield[0].Behaviors.Has<Behaviors.Hero>());
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_playerBattlefieldZoneInfo,
-                        m_numCards = Game.Players[0].CardsOnBattlefield.Count - 1,
-                        m_thisIndex = Game.Players[0].CardsOnBattlefield.IndexOf(card) - 1,
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_playerBattlefieldZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = Game.Players[0].CardsOnBattlefield.IndexOf(card) - 1;
+
                     cc.EnableDepth = true;
                 }
                 else if (Game.Players[1].CardsOnBattlefield.Contains(card))
                 {
                     Debug.Assert(Game.Players[1].CardsOnBattlefield.Count > 0);
                     Debug.Assert(Game.Players[1].CardsOnBattlefield[0].Behaviors.Has<Behaviors.Hero>());
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_opponentBattlefieldZoneInfo,
-                        m_numCards = Game.Players[1].CardsOnBattlefield.Count - 1,
-                        m_thisIndex = Game.Players[1].CardsOnBattlefield.IndexOf(card) - 1,
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_opponentBattlefieldZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = Game.Players[1].CardsOnBattlefield.IndexOf(card) - 1;
+
                     cc.EnableDepth = true;
                 }
                 // TODO: graveyard
                 else
                 {
-                    locationAnimation.NextLocation = new LocationAnimation.LocationParameter
-                    {
-                        m_zone = m_offboardZoneInfo,
-                        m_numCards = 0,
-                        m_thisIndex = -1,
-                        m_focusIndex = -1
-                    };
+                    locationAnimation.NextLocation.m_zone = m_offboardZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
                 }
 
                 locationAnimation.OnLocationSet();
             }
 
-            RearrangeZone(InGameUIPage.Style.ChildIds["PlayerHand"].Target);
-            RearrangeZone(InGameUIPage.Style.ChildIds["PlayerBattlefield"].Target);
-            RearrangeZone(InGameUIPage.Style.ChildIds["PlayerFormation"].Target);
-            RearrangeZone(InGameUIPage.Style.ChildIds["OpponentHand"].Target);
-            RearrangeZone(InGameUIPage.Style.ChildIds["OpponentBattlefield"].Target);
-            RearrangeZone(InGameUIPage.Style.ChildIds["OpponentFormation"].Target);
+            RearrangeZone(m_playerHandZoneInfo);
+            RearrangeZone(m_playerBattlefieldZoneInfo);
+            RearrangeZone(m_playerFormationZoneInfo);
+            RearrangeZone(m_opponentHandZoneInfo);
+            RearrangeZone(m_opponentBattlefieldZoneInfo);
+            RearrangeZone(m_opponentFormationZoneInfo);
+        }
+
+        private void RearrangeZone(LocationAnimation.ZoneInfo zone)
+        {
+            var zoneContainer = zone.m_container;
+            Debug.Assert(zoneContainer.Listeners.All(l => l is UI.CardControl));
+            var locationAnims = zoneContainer.Listeners.Cast<UI.CardControl>().Select(cc => (cc.Addins.First(addin => addin is LocationAnimation) as LocationAnimation)).ToArray();
+            var sortedLocationAnims = locationAnims.OrderBy(la => la.NextLocation.m_thisIndex).ToArray();
+
+            bool inTransition = locationAnims.Any(la => la.InTransition);
+            zone.m_lastFocusIndex = inTransition ? zone.m_lastFocusIndex : sortedLocationAnims.FindIndex(la => la.Control.MouseTracked.MouseEntered);
+
+            zoneContainer.Listeners.Clear();
+            sortedLocationAnims.ForEach(la =>
+            {
+                la.NextLocation.m_thisIndex = zoneContainer.Listeners.Count;
+                la.NextLocation.m_focusIndex = zone.m_lastFocusIndex;
+                la.NextLocation.m_numCards = sortedLocationAnims.Length;
+                zoneContainer.Listeners.Add(la.Control);
+            });
         }
 
         private Matrix Card_ResolveLocationTransform(LocationAnimation.LocationParameter location, UI.CardControl control)
@@ -374,20 +355,6 @@ namespace TouhouSpring.Services
             }
 
             return ret;
-        }
-
-        private void RearrangeZone(UI.EventDispatcher zone)
-        {
-            Debug.Assert(zone.Listeners.All(l => l is UI.CardControl));
-            var cardControls = zone.Listeners.Cast<UI.CardControl>().ToArray();
-
-            zone.Listeners.Clear();
-            cardControls.OrderBy(
-                cc => (cc.Addins.First(addin => addin is LocationAnimation) as LocationAnimation).NextLocation.m_thisIndex)
-                .ForEach(cc => zone.Listeners.Add(cc));
-
-            var focusIndex = cardControls.FindIndex(cc => cc.MouseTracked.MouseEntered);
-            cardControls.ForEach(cc => (cc.Addins.First(addin => addin is LocationAnimation) as LocationAnimation).NextLocation.m_focusIndex = focusIndex);
         }
     }
 }
