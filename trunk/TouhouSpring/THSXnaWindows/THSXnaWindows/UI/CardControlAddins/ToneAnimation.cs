@@ -29,21 +29,9 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var gameUI = GameApp.Service<Services.GameUI>();
-            bool grayscale = gameUI.ZoomedInCard != Control
+            bool darken = gameUI.ZoomedInCard != Control
                              && Card.Behaviors.Has<Behaviors.Warrior>()
                              && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown;
-
-            if (grayscale != m_lastGrayscale)
-            {
-                m_saturateTrack.TimeFactor = grayscale ? -1 : 1;
-                if (!m_saturateTrack.IsPlaying)
-                {
-                    m_saturateTrack.PlayFrom(grayscale ? m_saturateTrack.Duration : 0f);
-                }
-                m_lastGrayscale = grayscale;
-            }
-
-            bool darken = gameUI.ZoomedInCard != Control && !gameUI.IsCardClickable(Control);
 
             if (darken != m_lastDarken)
             {
@@ -53,11 +41,6 @@ namespace TouhouSpring.UI.CardControlAddins
                     m_brightnessTrack.PlayFrom(darken ? m_brightnessTrack.Duration : 0f);
                 }
                 m_lastDarken = darken;
-            }
-
-            if (m_saturateTrack.IsPlaying)
-            {
-                m_saturateTrack.Elapse(deltaTime);
             }
 
             if (m_brightnessTrack.IsPlaying)

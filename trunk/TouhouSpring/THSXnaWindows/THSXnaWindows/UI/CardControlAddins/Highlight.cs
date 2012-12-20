@@ -35,7 +35,10 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
-            if (Control.MouseTracked.MouseEntered != m_lastMouseEntered)
+            var gameUI = GameApp.Service<Services.GameUI>();
+            if (Control.MouseTracked.MouseEntered != m_lastMouseEntered
+                && Control != gameUI.ZoomedInCard
+                && gameUI.IsCardClickable(Control))
             {
                 if (m_enlargeTrack.IsPlaying)
                 {
@@ -66,7 +69,8 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void RenderPostMain(Matrix transform, RenderEventArgs e)
         {
-            bool highlightable = Control.Brightness == 1f && Control.Saturate == 1f;
+            var gameUI = GameApp.Service<Services.GameUI>(); ;
+            bool highlightable = gameUI.ZoomedInCard != Control && gameUI.IsCardClickable(Control);
 
             if (highlightable
                 && GameApp.Service<Services.GameUI>().ZoomedInCard != Control)
