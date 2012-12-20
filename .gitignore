@@ -34,3 +34,4 @@
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/obj/*
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindowsContent/obj/*
 *.csproj.user
+*.contentproj.user
