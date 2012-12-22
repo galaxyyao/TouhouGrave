@@ -47,6 +47,7 @@
     <Compile Include="CustomTypeConverters.cs" />
     <Compile Include="Effect.cs" />
     <Compile Include="EffectList.cs" />
+    <Compile Include="ILocalFrameProvider.cs" />
     <Compile Include="IResourceLoader.cs" />
     <Compile Include="Modifier.cs" />
     <Compile Include="ModifierList.cs" />

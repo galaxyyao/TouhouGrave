@@ -5,11 +5,12 @@ using System.Text;
 
 namespace TouhouSpring.Particle
 {
-	public enum Alignment
-	{
-		Screen,
-		WorldXY,
-		WorldXZ,
-		WorldYZ
-	}
+    public enum Alignment
+    {
+        Screen,
+        WorldXY,
+        WorldXZ,
+        WorldYZ,
+        Local,
+    }
 }

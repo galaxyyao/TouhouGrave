@@ -1,5 +1,4 @@
 float2 Corners[4];
-float3x3 Alignments[4];
 
 float4x4 Transform;
 texture TheTexture;
@@ -14,11 +13,12 @@ sampler TheSampler = sampler_state
 
 struct VertexShaderInput
 {
-    float3 Position	: POSITION0;
-	float3 Indices	: POSITION1;
-	float4 UV		: TEXCOORD0;
-	float3 SizeAndRotation : TEXCOORD1;
-	float4 Color	: COLOR0;
+	float4 Position_Corner	: POSITION0;
+	float3 SizeAndRotation	: POSITION1;
+	float4 UV				: TEXCOORD0;
+	float3 XAxis			: TEXCOORD1;
+	float3 YAxis			: TEXCOORD2;
+	float4 Color			: COLOR0;
 };
 
 struct VertexShaderOutput
@@ -32,8 +32,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
     VertexShaderOutput output;
 
-	float2 corner = Corners[input.Indices.x];
-	float3x3 alignment = Alignments[input.Indices.y];
+	float2 corner = Corners[input.Position_Corner.w];
 
 	float sinTheta, cosTheta;
 	sincos(input.SizeAndRotation.z / 180 * 3.1415926f, sinTheta, cosTheta);
@@ -41,7 +40,8 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 							 dot(float2(-sinTheta, cosTheta), corner) };
 	float2 expand = rotatedCorner * input.SizeAndRotation.xy;
 
-	output.Position = mul(float4(input.Position + mul(float3(expand, 0), alignment), 1), Transform);
+	float3 offset = expand.x * input.XAxis + expand.y * input.YAxis;
+	output.Position = mul(float4(input.Position_Corner.xyz + offset, 1), Transform);
 
 	output.UV = corner * input.UV.xy + input.UV.zw;
 	output.Color = input.Color;

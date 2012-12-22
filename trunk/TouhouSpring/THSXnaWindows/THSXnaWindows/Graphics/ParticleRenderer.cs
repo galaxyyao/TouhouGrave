@@ -8,299 +8,365 @@ using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace TouhouSpring.Graphics
 {
-	[Services.LifetimeDependency(typeof(Services.ResourceManager))]
-	partial class ParticleRenderer : Services.GameService
-	{
-		private struct ParticleVertex : IVertexType
-		{
-			public Vector3 position;
-			public Byte corner;
-			public Byte alignment;
-#pragma warning disable 649 // Field '' is never assigned to, and will always have its default value 0
-			public UInt16 padding;
-#pragma warning restore 649
-			public Vector4 uvparams;
-			public Vector2 size;
-			public float rotation;
-			public Particle.Color color;
+    [Services.LifetimeDependency(typeof(Services.ResourceManager))]
+    partial class ParticleRenderer : Services.GameService
+    {
+        private struct ParticleVertex1 : IVertexType
+        {
+            public Vector3 position;
+            public float corner;
+            public Vector2 size;
+            public float rotation;
+            public Vector4 uvparams;
+            public Particle.Color color;
 
-			private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
-				new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
-				new VertexElement(12, VertexElementFormat.Byte4, VertexElementUsage.Position, 1),
-				new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
-				new VertexElement(32, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 1),
-				new VertexElement(44, VertexElementFormat.Color, VertexElementUsage.Color, 0)
-			);
-			public static int Size { get { return s_vertDecl.VertexStride; } }
+            private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
+                new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.Position, 0),
+                new VertexElement(16, VertexElementFormat.Vector3, VertexElementUsage.Position, 1),
+                new VertexElement(28, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
+                new VertexElement(44, VertexElementFormat.Color, VertexElementUsage.Color, 0)
+            );
 
-			VertexDeclaration IVertexType.VertexDeclaration { get { return s_vertDecl; } }
-		};
+            public static int Size { get { return s_vertDecl.VertexStride; } }
+            VertexDeclaration IVertexType.VertexDeclaration { get { return s_vertDecl; } }
+        };
 
-		private ParticleVertex[] m_shadowedVertices;
-		private UInt16[] m_shadowedIndices;
-		private Particle.ParticleSorter m_sorter = new Particle.ParticleSorter();
+        private struct ParticleVertex2 : IVertexType
+        {
+            public Vector3 xaxis;
+            public Vector3 yaxis;
 
-		private const int BufferCapacity = 500;
-		private int m_bufferWriteCursor = 0;
-		private DynamicVertexBuffer m_vertices;
-		private DynamicIndexBuffer m_indices;
+            private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
+                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 1),
+                new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 2)
+            );
 
-		private Effect m_effect;
-		private EffectParameter m_paramCorners;
-		private EffectParameter m_paramAlignments;
-		private EffectParameter m_paramTransform;
-		private EffectParameter m_paramTexture;
-		private Texture2D m_whiteTexture;
+            public static int Size { get { return s_vertDecl.VertexStride; } }
+            VertexDeclaration IVertexType.VertexDeclaration { get { return s_vertDecl; } }
+        };
 
-		private BlendState m_multiplyBlend;
-		private DepthStencilState m_depthDisabled;
+        private ParticleVertex1[] m_shadowedVertices1;
+        private ParticleVertex2[] m_shadowedVertices2;
+        private UInt16[] m_shadowedIndices;
+        private Particle.ParticleSorter m_sorter = new Particle.ParticleSorter();
 
-		public void Draw(Particle.ParticleSystem system, Matrix transform, float screenScale, float aspectRatio)
-		{
-			if (system == null)
-			{
-				throw new ArgumentNullException("system");
-			}
+        private const int BufferCapacity = 500;
+        private int m_bufferWriteCursor = 0;
+        private DynamicVertexBuffer m_vertices1;
+        private DynamicVertexBuffer m_vertices2;
+        private DynamicIndexBuffer m_indices;
 
-			var numParticles = system.TotalLiveParticles;
-			if (numParticles == 0)
-			{
-				return;
-			}
+        private Effect m_effect;
+        private EffectParameter m_paramCorners;
+        private EffectParameter m_paramTransform;
+        private EffectParameter m_paramTexture;
+        private Matrix m_alignToScreen;
+        private Texture2D m_whiteTexture;
 
-			m_sorter.Sort(system, Vector3.UnitZ);
+        private BlendState m_multiplyBlend;
+        private DepthStencilState m_depthDisabled;
 
-			FillShadowedVertices(system);
-			FillShadowedIndices();
+        public void Draw(Particle.ParticleSystem system, Matrix transform, float screenScale, float aspectRatio)
+        {
+            if (system == null)
+            {
+                throw new ArgumentNullException("system");
+            }
 
-			UpdateParameters(system, transform, screenScale, aspectRatio);
+            var numParticles = system.TotalLiveParticles;
+            if (numParticles == 0)
+            {
+                return;
+            }
 
-			var device = GameApp.Instance.GraphicsDevice;
+            m_sorter.Sort(system, Vector3.UnitZ);
 
-			var oldBlend = device.BlendState;
-			switch (system.BlendMode)
-			{
-				default:
-				case Particle.BlendMode.None:
-					device.BlendState = BlendState.Opaque;
-					break;
+            UpdateParameters(system, transform, screenScale, aspectRatio);
 
-				case Particle.BlendMode.Alpha:
-					device.BlendState = BlendState.AlphaBlend;
-					break;
+            FillShadowedVertices(system);
+            FillShadowedIndices();
 
-				case Particle.BlendMode.Additive:
-					device.BlendState = BlendState.Additive;
-					break;
+            var device = GameApp.Instance.GraphicsDevice;
 
-				case Particle.BlendMode.Multiply:
-					device.BlendState = m_multiplyBlend;
-					break;
-			}
+            var oldBlend = device.BlendState;
+            switch (system.BlendMode)
+            {
+                default:
+                case Particle.BlendMode.None:
+                    device.BlendState = BlendState.Opaque;
+                    break;
 
-			device.SetVertexBuffer(m_vertices);
-			device.Indices = m_indices;
+                case Particle.BlendMode.Alpha:
+                    device.BlendState = BlendState.AlphaBlend;
+                    break;
 
-			var oldDepth = device.DepthStencilState;
-			device.DepthStencilState = m_depthDisabled;
+                case Particle.BlendMode.Additive:
+                    device.BlendState = BlendState.Additive;
+                    break;
 
-			SetDataOptions hint = SetDataOptions.NoOverwrite;
-			if (m_bufferWriteCursor + numParticles > BufferCapacity)
-			{
-				hint = SetDataOptions.Discard;
-				m_bufferWriteCursor = 0;
-			}
+                case Particle.BlendMode.Multiply:
+                    device.BlendState = m_multiplyBlend;
+                    break;
+            }
 
-			var vertSize = ParticleVertex.Size;
-			m_vertices.SetData(m_bufferWriteCursor * 4 * vertSize, m_shadowedVertices, 0, numParticles * 4, vertSize, hint);
-			m_indices.SetData(m_bufferWriteCursor * 6 * 2, m_shadowedIndices, 0, numParticles * 6, hint);
+            device.SetVertexBuffers(new VertexBufferBinding(m_vertices1), new VertexBufferBinding(m_vertices2));
+            device.Indices = m_indices;
 
-			foreach (var pass in m_effect.CurrentTechnique.Passes)
-			{
-				pass.Apply();
-				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, m_bufferWriteCursor * 4, 0, numParticles * 4, m_bufferWriteCursor * 6, numParticles * 2);
-			}
+            var oldDepth = device.DepthStencilState;
+            device.DepthStencilState = m_depthDisabled;
 
-			m_bufferWriteCursor += numParticles;
+            SetDataOptions hint = SetDataOptions.NoOverwrite;
+            if (m_bufferWriteCursor + numParticles > BufferCapacity)
+            {
+                hint = SetDataOptions.Discard;
+                m_bufferWriteCursor = 0;
+            }
 
-			device.BlendState = oldBlend;
-			device.DepthStencilState = oldDepth;
-		}
+            var vertSize1 = ParticleVertex1.Size;
+            m_vertices1.SetData(m_bufferWriteCursor * 4 * vertSize1, m_shadowedVertices1, 0, numParticles * 4, vertSize1, hint);
+            var vertSize2 = ParticleVertex2.Size;
+            m_vertices2.SetData(m_bufferWriteCursor * 4 * vertSize2, m_shadowedVertices2, 0, numParticles * 4, vertSize2, hint);
+            m_indices.SetData(m_bufferWriteCursor * 6 * 2, m_shadowedIndices, 0, numParticles * 6, hint);
 
-		public override void Startup()
-		{
-			Particle.ResourceLoader.Instance = new ResourceLoader();
+            foreach (var pass in m_effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, m_bufferWriteCursor * 4, 0, numParticles * 4, m_bufferWriteCursor * 6, numParticles * 2);
+            }
 
-			CreateGeometry(BufferCapacity);
+            m_bufferWriteCursor += numParticles;
 
-			// located in ParticleContent
-			m_effect = GameApp.Service<Services.ResourceManager>().Acquire<Effect>("Effects/ParticleRenderer");
-			m_effect.CurrentTechnique = m_effect.Techniques[0];
+            device.BlendState = oldBlend;
+            device.DepthStencilState = oldDepth;
+        }
 
-			m_paramCorners = m_effect.Parameters["Corners"];
-			m_paramAlignments = m_effect.Parameters["Alignments"];
-			m_paramTransform = m_effect.Parameters["Transform"];
-			m_paramTexture = m_effect.Parameters["TheTexture"];
+        public override void Startup()
+        {
+            Particle.ResourceLoader.Instance = new ResourceLoader();
 
-			m_whiteTexture = GameApp.Service<Services.ResourceManager>().Acquire<Texture2D>("Textures/White");
+            CreateGeometry(BufferCapacity);
 
-			m_multiplyBlend = new BlendState
-			{
-				ColorSourceBlend = Blend.Zero,
-				AlphaSourceBlend = Blend.Zero,
-				ColorDestinationBlend = Blend.SourceColor,
-				AlphaDestinationBlend = Blend.SourceColor
-			};
+            // located in ParticleContent
+            m_effect = GameApp.Service<Services.ResourceManager>().Acquire<Effect>("Effects/ParticleRenderer");
+            m_effect.CurrentTechnique = m_effect.Techniques[0];
 
-			m_depthDisabled = new DepthStencilState
-			{
-				DepthBufferEnable = false
-			};
-		}
+            m_paramCorners = m_effect.Parameters["Corners"];
+            m_paramTransform = m_effect.Parameters["Transform"];
+            m_paramTexture = m_effect.Parameters["TheTexture"];
 
-		public override void Shutdown()
-		{
-			m_depthDisabled.Dispose();
-			m_multiplyBlend.Dispose();
-			GameApp.Service<Services.ResourceManager>().Release(m_whiteTexture);
-			GameApp.Service<Services.ResourceManager>().Release(m_effect);
+            m_whiteTexture = GameApp.Service<Services.ResourceManager>().Acquire<Texture2D>("Textures/White");
 
-			m_indices.Dispose();
-			m_vertices.Dispose();
-		}
+            m_multiplyBlend = new BlendState
+            {
+                ColorSourceBlend = Blend.Zero,
+                AlphaSourceBlend = Blend.Zero,
+                ColorDestinationBlend = Blend.SourceColor,
+                AlphaDestinationBlend = Blend.SourceColor
+            };
 
-		private void CreateGeometry(int capacity)
-		{
-			var device = GameApp.Instance.GraphicsDevice;
-			m_vertices = new DynamicVertexBuffer(device, typeof(ParticleVertex), capacity * 4, 0);
-			m_indices = new DynamicIndexBuffer(device, IndexElementSize.SixteenBits, capacity * 6, 0);
-		}
+            m_depthDisabled = new DepthStencilState
+            {
+                DepthBufferEnable = false
+            };
+        }
 
-		private void FillShadowedVertices(Particle.ParticleSystem system)
-		{
-			if (m_shadowedVertices == null || m_shadowedVertices.Length < m_sorter.SortedIndices.Length * 4)
-			{
-				m_shadowedVertices = new ParticleVertex[m_sorter.SortedIndices.Length * 4];
-				for (int i = 0; i < m_shadowedVertices.Length; ++i)
-				{
-					m_shadowedVertices[i].corner = (Byte)(i & 0x3);
-				}
-			}
+        public override void Shutdown()
+        {
+            m_depthDisabled.Dispose();
+            m_multiplyBlend.Dispose();
+            GameApp.Service<Services.ResourceManager>().Release(m_whiteTexture);
+            GameApp.Service<Services.ResourceManager>().Release(m_effect);
 
-			var texture = system.TextureObject ?? m_whiteTexture;
-			float invTexWidth = 1f / texture.Width;
-			float invTexHeight = 1f / texture.Height;
+            m_indices.Dispose();
+            m_vertices1.Dispose();
+            m_vertices2.Dispose();
+        }
 
-			int writePos = 0;
-			foreach (var effect in system.Effects)
-			{
-				XnaRect uvBounds = effect.UVBounds;
+        private void CreateGeometry(int capacity)
+        {
+            var device = GameApp.Instance.GraphicsDevice;
+            m_vertices1 = new DynamicVertexBuffer(device, typeof(ParticleVertex1), capacity * 4, 0);
+            m_vertices2 = new DynamicVertexBuffer(device, typeof(ParticleVertex2), capacity * 4, 0);
+            m_indices = new DynamicIndexBuffer(device, IndexElementSize.SixteenBits, capacity * 6, 0);
+        }
 
-				var uvParams = new Vector4();
-				uvParams.X = (float)uvBounds.Width * invTexWidth;
-				uvParams.Y = -(float)uvBounds.Height * invTexHeight;
-				uvParams.Z = 0.5f * uvParams.X + (uvBounds.X - 0.5f) * invTexWidth;
-				uvParams.W = -0.5f * uvParams.Y + (uvBounds.Y - 0.5f) * invTexHeight;
+        private void FillShadowedVertices(Particle.ParticleSystem system)
+        {
+            if (m_shadowedVertices1 == null || m_shadowedVertices1.Length < m_sorter.SortedIndices.Length * 4)
+            {
+                m_shadowedVertices1 = new ParticleVertex1[m_sorter.SortedIndices.Length * 4];
+                m_shadowedVertices2 = new ParticleVertex2[m_sorter.SortedIndices.Length * 4];
+                for (int i = 0; i < m_shadowedVertices1.Length; ++i)
+                {
+                    m_shadowedVertices1[i].corner = (Byte)(i & 0x3);
+                }
+            }
 
-				Byte alignment;
-				switch (effect.Alignment)
-				{
-					default:
-					case Particle.Alignment.Screen:
-						alignment = 0;
-						break;
-					case Particle.Alignment.WorldXY:
-						alignment = 1;
-						break;
-					case Particle.Alignment.WorldXZ:
-						alignment = 2;
-						break;
-					case Particle.Alignment.WorldYZ:
-						alignment = 3;
-						break;
-				}
+            var texture = system.TextureObject ?? m_whiteTexture;
+            float invTexWidth = 1f / texture.Width;
+            float invTexHeight = 1f / texture.Height;
 
-				effect.BatchProcess((particles, begin, end) =>
-				{
-					for (int i = begin; i < end; ++i)
-					{
-						var p = particles[i];
+            int writePos = 0;
+            foreach (var effect in system.Effects)
+            {
+                XnaRect uvBounds = effect.UVBounds;
 
-						m_shadowedVertices[writePos].position = p.m_position;
-						m_shadowedVertices[writePos].alignment = alignment;
-						m_shadowedVertices[writePos].uvparams = uvParams;
-						m_shadowedVertices[writePos].size = p.m_size;
-						m_shadowedVertices[writePos].rotation = p.m_rotation;
-						m_shadowedVertices[writePos].color = p.m_color;
-						++writePos;
+                var uvParams = new Vector4();
+                uvParams.X = (float)uvBounds.Width * invTexWidth;
+                uvParams.Y = -(float)uvBounds.Height * invTexHeight;
+                uvParams.Z = 0.5f * uvParams.X + (uvBounds.X - 0.5f) * invTexWidth;
+                uvParams.W = -0.5f * uvParams.Y + (uvBounds.Y - 0.5f) * invTexHeight;
 
-						m_shadowedVertices[writePos].position = p.m_position;
-						m_shadowedVertices[writePos].alignment = alignment;
-						m_shadowedVertices[writePos].uvparams = uvParams;
-						m_shadowedVertices[writePos].size = p.m_size;
-						m_shadowedVertices[writePos].rotation = p.m_rotation;
-						m_shadowedVertices[writePos].color = p.m_color;
-						++writePos;
+                var startWritePos = writePos;
 
-						m_shadowedVertices[writePos].position = p.m_position;
-						m_shadowedVertices[writePos].alignment = alignment;
-						m_shadowedVertices[writePos].uvparams = uvParams;
-						m_shadowedVertices[writePos].size = p.m_size;
-						m_shadowedVertices[writePos].rotation = p.m_rotation;
-						m_shadowedVertices[writePos].color = p.m_color;
-						++writePos;
+                effect.BatchProcess((particles, begin, end) =>
+                {
+                    for (int i = begin; i < end; ++i)
+                    {
+                        var p = particles[i];
 
-						m_shadowedVertices[writePos].position = p.m_position;
-						m_shadowedVertices[writePos].alignment = alignment;
-						m_shadowedVertices[writePos].uvparams = uvParams;
-						m_shadowedVertices[writePos].size = p.m_size;
-						m_shadowedVertices[writePos].rotation = p.m_rotation;
-						m_shadowedVertices[writePos].color = p.m_color;
-						++writePos;
-					}
-				});
-			}
-		}
+                        m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].size = p.m_size;
+                        m_shadowedVertices1[writePos].rotation = p.m_rotation;
+                        m_shadowedVertices1[writePos].uvparams = uvParams;
+                        m_shadowedVertices1[writePos].color = p.m_color;
+                        ++writePos;
 
-		private void FillShadowedIndices()
-		{
-			if (m_shadowedIndices == null || m_shadowedIndices.Length < m_sorter.SortedIndices.Length * 6)
-			{
-				m_shadowedIndices = new UInt16[m_sorter.SortedIndices.Length * 6];
-			}
+                        m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].size = p.m_size;
+                        m_shadowedVertices1[writePos].rotation = p.m_rotation;
+                        m_shadowedVertices1[writePos].uvparams = uvParams;
+                        m_shadowedVertices1[writePos].color = p.m_color;
+                        ++writePos;
 
-			var len = m_sorter.SortedIndices.Length * 6;
-			for (int i = 0; i < len; )
-			{
-				int i2 = m_sorter.SortedIndices[i / 6] * 4;
-				m_shadowedIndices[i++] = (UInt16)(i2 + 0);
-				m_shadowedIndices[i++] = (UInt16)(i2 + 1);
-				m_shadowedIndices[i++] = (UInt16)(i2 + 2);
-				m_shadowedIndices[i++] = (UInt16)(i2 + 2);
-				m_shadowedIndices[i++] = (UInt16)(i2 + 1);
-				m_shadowedIndices[i++] = (UInt16)(i2 + 3);
-			}
-		}
+                        m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].size = p.m_size;
+                        m_shadowedVertices1[writePos].rotation = p.m_rotation;
+                        m_shadowedVertices1[writePos].uvparams = uvParams;
+                        m_shadowedVertices1[writePos].color = p.m_color;
+                        ++writePos;
 
-		private void UpdateParameters(Particle.ParticleSystem system, Matrix transform, float aspectRatio, float screenScale)
-		{
-			m_paramCorners.SetValue(new Vector2[] {
-				new Vector2(-0.5f,  0.5f),
-				new Vector2( 0.5f,  0.5f),
-				new Vector2(-0.5f, -0.5f),
-				new Vector2( 0.5f, -0.5f),
-			});
+                        m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].size = p.m_size;
+                        m_shadowedVertices1[writePos].rotation = p.m_rotation;
+                        m_shadowedVertices1[writePos].uvparams = uvParams;
+                        m_shadowedVertices1[writePos].color = p.m_color;
+                        ++writePos;
+                    }
+                });
 
-			var device = GameApp.Instance.GraphicsDevice;
-			m_paramAlignments.SetValue(new Matrix[] {
-				Matrix.CreateScale(screenScale / aspectRatio, screenScale, 1) * Matrix.Invert(transform),
-				new Matrix { M11 = 1, M22 = 1 },
-				new Matrix { M11 = 1, M23 = 1 },
-				new Matrix { M12 = 1, M23 = 1 }
-			});
+                writePos = startWritePos;
 
-			m_paramTransform.SetValue(transform);
-			m_paramTexture.SetValue(system.TextureObject ?? m_whiteTexture);
-		}
-	}
+                effect.BatchProcess((particles, localFrames, begin, end) =>
+                {
+                    switch (effect.Alignment)
+                    {
+                        case Particle.Alignment.Screen:
+                            var row1 = new Vector3(m_alignToScreen.M11, m_alignToScreen.M12, m_alignToScreen.M13);
+                            var row2 = new Vector3(m_alignToScreen.M21, m_alignToScreen.M22, m_alignToScreen.M23);
+                            for (int i = begin; i < end; ++i)
+                            {
+                                m_shadowedVertices2[writePos].xaxis = row1;
+                                m_shadowedVertices2[writePos++].yaxis = row2;
+                                m_shadowedVertices2[writePos].xaxis = row1;
+                                m_shadowedVertices2[writePos++].yaxis = row2;
+                                m_shadowedVertices2[writePos].xaxis = row1;
+                                m_shadowedVertices2[writePos++].yaxis = row2;
+                                m_shadowedVertices2[writePos].xaxis = row1;
+                                m_shadowedVertices2[writePos++].yaxis = row2;
+                            }
+                            break;
+                        case Particle.Alignment.WorldXY:
+                            for (int i = begin; i < end; ++i)
+                            {
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
+                            }
+                            break;
+                        case Particle.Alignment.WorldXZ:
+                            for (int i = begin; i < end; ++i)
+                            {
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                            }
+                            break;
+                        case Particle.Alignment.WorldYZ:
+                            for (int i = begin; i < end; ++i)
+                            {
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
+                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
+                            }
+                            break;
+                        case Particle.Alignment.Local:
+                            for (int i = begin; i < end; ++i)
+                            {
+                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                            }
+                            break;
+                    }
+                });
+            }
+        }
+
+        private void FillShadowedIndices()
+        {
+            if (m_shadowedIndices == null || m_shadowedIndices.Length < m_sorter.SortedIndices.Length * 6)
+            {
+                m_shadowedIndices = new UInt16[m_sorter.SortedIndices.Length * 6];
+            }
+
+            var len = m_sorter.SortedIndices.Length * 6;
+            for (int i = 0; i < len; )
+            {
+                int i2 = m_sorter.SortedIndices[i / 6] * 4;
+                m_shadowedIndices[i++] = (UInt16)(i2 + 0);
+                m_shadowedIndices[i++] = (UInt16)(i2 + 1);
+                m_shadowedIndices[i++] = (UInt16)(i2 + 2);
+                m_shadowedIndices[i++] = (UInt16)(i2 + 2);
+                m_shadowedIndices[i++] = (UInt16)(i2 + 1);
+                m_shadowedIndices[i++] = (UInt16)(i2 + 3);
+            }
+        }
+
+        private void UpdateParameters(Particle.ParticleSystem system, Matrix transform, float aspectRatio, float screenScale)
+        {
+            m_paramCorners.SetValue(new Vector2[] {
+                new Vector2(-0.5f,  0.5f),
+                new Vector2( 0.5f,  0.5f),
+                new Vector2(-0.5f, -0.5f),
+                new Vector2( 0.5f, -0.5f),
+            });
+
+            var device = GameApp.Instance.GraphicsDevice;
+            m_alignToScreen = Matrix.CreateScale(screenScale / aspectRatio, screenScale, 1) * Matrix.Invert(transform);
+
+            m_paramTransform.SetValue(transform);
+            m_paramTexture.SetValue(system.TextureObject ?? m_whiteTexture);
+        }
+    }
 }

@@ -57,7 +57,7 @@
         <IsEmitting>true</IsEmitting>
         <EmissionRate>5</EmissionRate>
         <Alignment>Screen</Alignment>
-        <UVBoundsName>{Whole}</UVBoundsName>
+        <UVBoundsName>LensFlare</UVBoundsName>
         <ModifiersOnEmit>
           <Modifier Type="Modifiers:RandomPositionInBox">
             <Center>0 0 30</Center>
