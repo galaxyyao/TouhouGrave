@@ -259,75 +259,58 @@ namespace TouhouSpring.Graphics
 
                 effect.BatchProcess((particles, localFrames, begin, end) =>
                 {
-                    switch (effect.Alignment)
+                    if (effect.Alignment == Particle.Alignment.Local)
                     {
-                        case Particle.Alignment.Screen:
-                            var row1 = new Vector3(m_alignToScreen.M11, m_alignToScreen.M12, m_alignToScreen.M13);
-                            var row2 = new Vector3(m_alignToScreen.M21, m_alignToScreen.M22, m_alignToScreen.M23);
-                            for (int i = begin; i < end; ++i)
-                            {
-                                m_shadowedVertices2[writePos].xaxis = row1;
-                                m_shadowedVertices2[writePos++].yaxis = row2;
-                                m_shadowedVertices2[writePos].xaxis = row1;
-                                m_shadowedVertices2[writePos++].yaxis = row2;
-                                m_shadowedVertices2[writePos].xaxis = row1;
-                                m_shadowedVertices2[writePos++].yaxis = row2;
-                                m_shadowedVertices2[writePos].xaxis = row1;
-                                m_shadowedVertices2[writePos++].yaxis = row2;
-                            }
-                            break;
-                        case Particle.Alignment.WorldXY:
-                            for (int i = begin; i < end; ++i)
-                            {
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitY;
-                            }
-                            break;
-                        case Particle.Alignment.WorldXZ:
-                            for (int i = begin; i < end; ++i)
-                            {
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitX;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                            }
-                            break;
-                        case Particle.Alignment.WorldYZ:
-                            for (int i = begin; i < end; ++i)
-                            {
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                                m_shadowedVertices2[writePos].xaxis = Vector3.UnitY;
-                                m_shadowedVertices2[writePos++].yaxis = Vector3.UnitZ;
-                            }
-                            break;
-                        case Particle.Alignment.Local:
-                            for (int i = begin; i < end; ++i)
-                            {
-                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                                m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                                m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                            }
-                            break;
+                        for (int i = begin; i < end; ++i)
+                        {
+                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
+                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                        }
+                    }
+                    else
+                    {
+                        Vector3 unitX, unitY;
+                        switch (effect.Alignment)
+                        {
+                            case Particle.Alignment.Screen:
+                                unitX.X = m_alignToScreen.M11;
+                                unitX.Y = m_alignToScreen.M12;
+                                unitX.Z = m_alignToScreen.M13;
+                                unitY.X = m_alignToScreen.M21;
+                                unitY.Y = m_alignToScreen.M22;
+                                unitY.Z = m_alignToScreen.M23;
+                                break;
+                            default:
+                            case Particle.Alignment.WorldXY:
+                                unitX.X = unitY.Y = 1;
+                                unitX.Y = unitX.Z = unitY.X = unitY.Z = 0;
+                                break;
+                            case Particle.Alignment.WorldXZ:
+                                unitX.X = unitY.Z = 1;
+                                unitX.Y = unitX.Z = unitY.X = unitY.Y = 0;
+                                break;
+                            case Particle.Alignment.WorldYZ:
+                                unitX.Y = unitY.Z = 1;
+                                unitX.X = unitX.Z = unitY.X = unitY.Y = 0;
+                                break;
+                        }
+                        for (int i = begin; i < end; ++i)
+                        {
+                            m_shadowedVertices2[writePos].xaxis = unitX;
+                            m_shadowedVertices2[writePos++].yaxis = unitY;
+                            m_shadowedVertices2[writePos].xaxis = unitX;
+                            m_shadowedVertices2[writePos++].yaxis = unitY;
+                            m_shadowedVertices2[writePos].xaxis = unitX;
+                            m_shadowedVertices2[writePos++].yaxis = unitY;
+                            m_shadowedVertices2[writePos].xaxis = unitX;
+                            m_shadowedVertices2[writePos++].yaxis = unitY;
+                        }
                     }
                 });
             }
