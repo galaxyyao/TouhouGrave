@@ -46,6 +46,7 @@
     <Compile Include="Color.cs" />
     <Compile Include="CustomTypeConverters.cs" />
     <Compile Include="Effect.cs" />
+    <Compile Include="EffectInstance.cs" />
     <Compile Include="EffectList.cs" />
     <Compile Include="ILocalFrameProvider.cs" />
     <Compile Include="IResourceLoader.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleSorter.cs" />
     <Compile Include="ParticleSystem.cs" />
+    <Compile Include="ParticleSystemInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomNumber.cs" />
   </ItemGroup>

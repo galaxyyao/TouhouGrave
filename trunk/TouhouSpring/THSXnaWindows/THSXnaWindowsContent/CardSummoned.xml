@@ -13,7 +13,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>40C04080</DefaultParticleColor>
         <Capacity>150</Capacity>
-        <IsEmitting>true</IsEmitting>
+        <EmitOnStart>true</EmitOnStart>
         <EmissionRate>10</EmissionRate>
         <Alignment>Local</Alignment>
         <UVBoundsName>{Whole}</UVBoundsName>

@@ -143,6 +143,7 @@
     <None Include="Resources\Pause_16x16.png" />
     <None Include="Resources\Play_16x16.png" />
     <None Include="Resources\UpArrow_16x16.png" />
+    <None Include="Resources\Restart_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

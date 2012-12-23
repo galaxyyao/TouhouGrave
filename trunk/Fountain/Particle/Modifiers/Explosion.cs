@@ -17,7 +17,7 @@ namespace TouhouSpring.Particle.Modifiers
 			Strength = 1f;
 		}
 
-		protected override void Process(float deltaTime, Particle[] particles, int begin, int end)
+        protected override void Process(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end)
 		{
 			for (int i = begin; i < end; ++i)
 			{

@@ -111,7 +111,7 @@ namespace TouhouSpring.Particle
 
 		private void OnDocumentOpen()
 		{
-			canvas.System = m_particleSystem;
+			canvas.SystemInstance = new ParticleSystemInstance(m_particleSystem);
 
 			var rootNode = new TreeNode(m_fileName != null ? Path.GetFileNameWithoutExtension(m_fileName) : "Untitled");
 			rootNode.Tag = m_particleSystem;

@@ -66,30 +66,30 @@ namespace TouhouSpring.Graphics
         private BlendState m_multiplyBlend;
         private DepthStencilState m_depthDisabled;
 
-        public void Draw(Particle.ParticleSystem system, Matrix transform, float screenScale, float aspectRatio)
+        public void Draw(Particle.ParticleSystemInstance instance, Matrix transform, float screenScale, float aspectRatio)
         {
-            if (system == null)
+            if (instance == null)
             {
                 throw new ArgumentNullException("system");
             }
 
-            var numParticles = system.TotalLiveParticles;
+            var numParticles = instance.TotalLiveParticles;
             if (numParticles == 0)
             {
                 return;
             }
 
-            m_sorter.Sort(system, Vector3.UnitZ);
+            m_sorter.Sort(instance, Vector3.UnitZ);
 
-            UpdateParameters(system, transform, screenScale, aspectRatio);
+            UpdateParameters(instance, transform, screenScale, aspectRatio);
 
-            FillShadowedVertices(system);
+            FillShadowedVertices(instance);
             FillShadowedIndices();
 
             var device = GameApp.Instance.GraphicsDevice;
 
             var oldBlend = device.BlendState;
-            switch (system.BlendMode)
+            switch (instance.System.BlendMode)
             {
                 default:
                 case Particle.BlendMode.None:
@@ -190,7 +190,7 @@ namespace TouhouSpring.Graphics
             m_indices = new DynamicIndexBuffer(device, IndexElementSize.SixteenBits, capacity * 6, 0);
         }
 
-        private void FillShadowedVertices(Particle.ParticleSystem system)
+        private void FillShadowedVertices(Particle.ParticleSystemInstance instance)
         {
             if (m_shadowedVertices1 == null || m_shadowedVertices1.Length < m_sorter.SortedIndices.Length * 4)
             {
@@ -202,14 +202,14 @@ namespace TouhouSpring.Graphics
                 }
             }
 
-            var texture = system.TextureObject ?? m_whiteTexture;
+            var texture = instance.System.TextureObject ?? m_whiteTexture;
             float invTexWidth = 1f / texture.Width;
             float invTexHeight = 1f / texture.Height;
 
             int writePos = 0;
-            foreach (var effect in system.Effects)
+            foreach (var effect in instance.EffectInstances)
             {
-                XnaRect uvBounds = effect.UVBounds;
+                XnaRect uvBounds = effect.Effect.UVBounds;
 
                 var uvParams = new Vector4();
                 uvParams.X = (float)uvBounds.Width * invTexWidth;
@@ -259,7 +259,7 @@ namespace TouhouSpring.Graphics
 
                 effect.BatchProcess((particles, localFrames, begin, end) =>
                 {
-                    if (effect.Alignment == Particle.Alignment.Local)
+                    if (effect.Effect.Alignment == Particle.Alignment.Local)
                     {
                         for (int i = begin; i < end; ++i)
                         {
@@ -276,7 +276,7 @@ namespace TouhouSpring.Graphics
                     else
                     {
                         Vector3 unitX, unitY;
-                        switch (effect.Alignment)
+                        switch (effect.Effect.Alignment)
                         {
                             case Particle.Alignment.Screen:
                                 unitX.X = m_alignToScreen.M11;
@@ -336,7 +336,7 @@ namespace TouhouSpring.Graphics
             }
         }
 
-        private void UpdateParameters(Particle.ParticleSystem system, Matrix transform, float aspectRatio, float screenScale)
+        private void UpdateParameters(Particle.ParticleSystemInstance instance, Matrix transform, float aspectRatio, float screenScale)
         {
             m_paramCorners.SetValue(new Vector2[] {
                 new Vector2(-0.5f,  0.5f),
@@ -349,7 +349,7 @@ namespace TouhouSpring.Graphics
             m_alignToScreen = Matrix.CreateScale(screenScale / aspectRatio, screenScale, 1) * Matrix.Invert(transform);
 
             m_paramTransform.SetValue(transform);
-            m_paramTexture.SetValue(system.TextureObject ?? m_whiteTexture);
+            m_paramTexture.SetValue(instance.System.TextureObject ?? m_whiteTexture);
         }
     }
 }

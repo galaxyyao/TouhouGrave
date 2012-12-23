@@ -11,7 +11,7 @@ namespace TouhouSpring.Particle.Modifiers
 		public Vector3 Center { get; set; }
 		public Vector3 Dimensions { get; set; }
 
-		protected override void Process(float deltaTime, Particle[] particles, int begin, int end)
+        protected override void Process(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end)
 		{
 			Vector3 halfDim = Dimensions * 0.5f;
 

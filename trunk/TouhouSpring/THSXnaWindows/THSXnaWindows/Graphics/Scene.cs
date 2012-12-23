@@ -22,7 +22,7 @@ namespace TouhouSpring.Graphics
 
         private Graphics.TexturedQuad[] m_envImages = new TexturedQuad[2];
 
-        private Particle.ParticleSystem m_beamMeUp;
+        private Particle.ParticleSystemInstance m_beamMeUp;
         private Matrix m_transform;
         private Matrix m_toScreenSpace;
 
@@ -134,7 +134,7 @@ namespace TouhouSpring.Graphics
 
             var resourceMgr = GameApp.Service<Services.ResourceManager>();
             m_backgroundImage = new TexturedQuad(resourceMgr.Acquire<VirtualTexture>("Textures/Scene2"));
-            m_beamMeUp = resourceMgr.Acquire<Particle.ParticleSystem>("BeamMeUp");
+            m_beamMeUp = new Particle.ParticleSystemInstance(resourceMgr.Acquire<Particle.ParticleSystem>("BeamMeUp"));
             m_loaded = true;
 
             m_currentEnvImageIndex = 0;

@@ -91,7 +91,7 @@ namespace TouhouSpring.Particle.Modifiers
 			CurveBias = 0f;
 		}
 
-		protected override void Process(float deltaTime, Particle[] particles, int begin, int end)
+        protected override void Process(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end)
 		{
 			if (AnimationType == Modifiers.AnimationType.Constant
 				|| AnimationType == Modifiers.AnimationType.Curve && CurveObject == null)

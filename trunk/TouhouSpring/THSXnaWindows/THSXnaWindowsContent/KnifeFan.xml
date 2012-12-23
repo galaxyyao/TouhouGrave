@@ -13,7 +13,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>80FFFFFF</DefaultParticleColor>
         <Capacity>1000</Capacity>
-        <IsEmitting>false</IsEmitting>
+        <EmitOnStart>false</EmitOnStart>
         <EmissionRate>50</EmissionRate>
         <Alignment>WorldXY</Alignment>
         <UVBoundsName>Knife</UVBoundsName>
@@ -56,7 +56,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>FF000000</DefaultParticleColor>
         <Capacity>1000</Capacity>
-        <IsEmitting>true</IsEmitting>
+        <EmitOnStart>true</EmitOnStart>
         <EmissionRate>0.2</EmissionRate>
         <Alignment>Screen</Alignment>
         <UVBoundsName>{Whole}</UVBoundsName>

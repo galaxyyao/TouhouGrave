@@ -34,7 +34,7 @@ namespace TouhouSpring.Particle
 			get; private set;
 		}
 
-		private void Initialize_Camera()
+		public void Initialize_Camera()
 		{
 			m_cameraTarget = Vector3.Zero;
 			m_cameraDistance = 100.0f;
@@ -47,11 +47,6 @@ namespace TouhouSpring.Particle
 
 			UpdateViewMatrix();
 			UpdateProjectionMatrix();
-
-			MouseDown += (s, e) => OnMouseDown_Camera(s, e);
-			MouseUp += (s, e) => OnMouseUp_Camera(s, e);
-			MouseMove += (s, e) => OnMouseMove_Camera(s, e);
-			MouseWheel += (s, e) => OnMouseWheel_Camera(s, e);
 		}
 
 		private void UpdateViewMatrix()
@@ -89,6 +84,7 @@ namespace TouhouSpring.Particle
 				m_mouseDownLocation = e.Location;
 				m_rightMouseDown = true;
 			}
+            Focus();
 		}
 
 		private void OnMouseUp_Camera(object sender, MouseEventArgs e)

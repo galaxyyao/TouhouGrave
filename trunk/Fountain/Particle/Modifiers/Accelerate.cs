@@ -10,7 +10,7 @@ namespace TouhouSpring.Particle.Modifiers
 	{
 		public Vector3 Acceleration { get; set; }
 
-		protected override void Process(float deltaTime, Particle[] particles, int begin, int end)
+		protected override void Process(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end)
 		{
 			var v = Acceleration * deltaTime;
 			for (int i = begin; i < end; ++i)

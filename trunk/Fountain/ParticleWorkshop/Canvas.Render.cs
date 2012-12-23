@@ -137,7 +137,7 @@ namespace TouhouSpring.Particle
 
         public void Render()
         {
-            var numParticles = System.TotalLiveParticles;
+            var numParticles = SystemInstance.TotalLiveParticles;
             if (numParticles > m_bufferCapacity)
             {
                 CreateGeometry(numParticles);
@@ -158,7 +158,7 @@ namespace TouhouSpring.Particle
             GraphicsDevice.Indices = m_indices;
 
             var oldBlend = GraphicsDevice.BlendState;
-            switch (System.BlendMode)
+            switch (SystemInstance.System.BlendMode)
             {
                 default:
                 case BlendMode.None:
@@ -193,14 +193,14 @@ namespace TouhouSpring.Particle
 
         private void UpdateVertices()
         {
-            var texture = System.TextureObject ?? m_whiteTexture;
+            var texture = SystemInstance.System.TextureObject ?? m_whiteTexture;
             float invTexWidth = 1f / texture.Width;
             float invTexHeight = 1f / texture.Height;
 
             int writePos = 0;
-            foreach (var effect in System.Effects)
+            foreach (var effect in SystemInstance.EffectInstances)
             {
-                XnaRect uvBounds = effect.UVBounds;
+                XnaRect uvBounds = effect.Effect.UVBounds;
 
                 var uvParams = new Vector4();
                 uvParams.X = (float)uvBounds.Width * invTexWidth;
@@ -250,7 +250,7 @@ namespace TouhouSpring.Particle
 
                 effect.BatchProcess((particles, localFrames, begin, end) =>
                 {
-                    if (effect.Alignment == Alignment.Local)
+                    if (effect.Effect.Alignment == Alignment.Local)
                     {
                         for (int i = begin; i < end; ++i)
                         {
@@ -267,7 +267,7 @@ namespace TouhouSpring.Particle
                     else
                     {
                         Vector3 unitX, unitY;
-                        switch (effect.Alignment)
+                        switch (effect.Effect.Alignment)
                         {
                             case Alignment.Screen:
                                 var invViewProj = Matrix.Invert(m_viewProj);
@@ -316,7 +316,7 @@ namespace TouhouSpring.Particle
 
         private void UpdateIndices()
         {
-            var len = System.TotalLiveParticles * 6;
+            var len = SystemInstance.TotalLiveParticles * 6;
             for (int i = 0; i < len; )
             {
                 int i2 = m_sorter.SortedIndices[i / 6] * 4;
@@ -342,7 +342,7 @@ namespace TouhouSpring.Particle
             });
 
             m_paramTransform.SetValue(m_viewProj);
-            m_paramTexture.SetValue(System.TextureObject ?? m_whiteTexture);
+            m_paramTexture.SetValue(SystemInstance.System.TextureObject ?? m_whiteTexture);
         }
     }
 }

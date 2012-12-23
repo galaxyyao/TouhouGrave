@@ -16,7 +16,7 @@ namespace TouhouSpring.Particle.Modifiers
 
 		private float m_phase = 0;
 
-		protected override void Process(float deltaTime, Particle[] particles, int begin, int end)
+        protected override void Process(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end)
 		{
 			for (int i = begin; i < end; ++i)
 			{

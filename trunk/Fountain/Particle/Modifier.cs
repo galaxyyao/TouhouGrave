@@ -7,19 +7,11 @@ namespace TouhouSpring.Particle
 {
 	public class Modifier
 	{
-#if WINDOWS
-		[System.ComponentModel.Browsable(false)]
-#endif
-		public Effect Effect
+		internal void InternalProcess(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end)
 		{
-			get; internal set;
+			Process(deltaTime, instance, particles, begin, end);
 		}
 
-		internal void InternalProcess(float deltaTime, Particle[] particles, int begin, int end)
-		{
-			Process(deltaTime, particles, begin, end);
-		}
-
-		protected virtual void Process(float deltaTime, Particle[] particles, int begin, int end) { }
+        protected virtual void Process(float deltaTime, EffectInstance instance, Particle[] particles, int begin, int end) { }
 	}
 }

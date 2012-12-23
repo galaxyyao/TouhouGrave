@@ -37,7 +37,7 @@ namespace TouhouSpring.Particle
 
 		private void timerFps_Tick(object sender, EventArgs e)
 		{
-			toolStripStatusLabelNumParticles.Text = String.Format("Nb Particles: {0}", m_particleSystem != null ? m_particleSystem.TotalLiveParticles : 0);
+			toolStripStatusLabelNumParticles.Text = String.Format("Nb Particles: {0}", canvas.SystemInstance != null ? canvas.SystemInstance.TotalLiveParticles : 0);
 			toolStripStatusLabelFps.Text = String.Format("FPS: {0:.##}", m_framesDrawn * (1000f / timerFps.Interval));
 			m_framesDrawn = 0;
 		}
@@ -107,5 +107,11 @@ namespace TouhouSpring.Particle
 		{
 			e.Cancel = !CloseDocument();
 		}
+
+        private void toolStripButtonRestart_Click(object sender, EventArgs e)
+        {
+            canvas.SystemInstance = new ParticleSystemInstance(m_particleSystem);
+            canvas.Initialize_Camera();
+        }
 	}
 }

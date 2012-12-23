@@ -13,7 +13,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>80FF8000</DefaultParticleColor>
         <Capacity>1000</Capacity>
-        <IsEmitting>false</IsEmitting>
+        <EmitOnStart>false</EmitOnStart>
         <EmissionRate>30</EmissionRate>
         <Alignment>WorldXY</Alignment>
         <UVBoundsName>LensFlare</UVBoundsName>
@@ -54,7 +54,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>FFFF8000</DefaultParticleColor>
         <Capacity>1000</Capacity>
-        <IsEmitting>true</IsEmitting>
+        <EmitOnStart>true</EmitOnStart>
         <EmissionRate>5</EmissionRate>
         <Alignment>Screen</Alignment>
         <UVBoundsName>LensFlare</UVBoundsName>

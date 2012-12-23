@@ -19,10 +19,10 @@ namespace TouhouSpring.Particle
 			get; set;
 		}
 
-		public ParticleSystem System
-		{
-			get; set;
-		}
+        public ParticleSystemInstance SystemInstance
+        {
+            get; set;
+        }
 
 		public bool KeepUpdating
 		{
@@ -34,6 +34,11 @@ namespace TouhouSpring.Particle
 			Initialize_Render();
 			Initialize_Camera();
 			Initialize_Grid();
+
+            MouseDown += (s, e) => OnMouseDown_Camera(s, e);
+            MouseUp += (s, e) => OnMouseUp_Camera(s, e);
+            MouseMove += (s, e) => OnMouseMove_Camera(s, e);
+            MouseWheel += (s, e) => OnMouseWheel_Camera(s, e);
 
 			m_timer = new Stopwatch();
 			m_timer.Start();
@@ -59,13 +64,13 @@ namespace TouhouSpring.Particle
 
 			Render_Grid();
 
-			if (System != null)
+			if (SystemInstance != null)
 			{
 				if (KeepUpdating)
 				{
-					System.Update(deltaTime);
+					SystemInstance.Update(deltaTime);
 					// TODO: get the cam dir from view matrix
-					m_sorter.Sort(System, -Microsoft.Xna.Framework.Vector3.UnitZ);
+                    m_sorter.Sort(SystemInstance, -Microsoft.Xna.Framework.Vector3.UnitZ);
 				}
 				Render();
 			}

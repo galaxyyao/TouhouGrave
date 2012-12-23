@@ -13,7 +13,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>FF00C0C0</DefaultParticleColor>
         <Capacity>100</Capacity>
-        <IsEmitting>false</IsEmitting>
+        <EmitOnStart>false</EmitOnStart>
         <EmissionRate>30</EmissionRate>
         <Alignment>Screen</Alignment>
         <UVBoundsName>LensFlare</UVBoundsName>
@@ -65,7 +65,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>FF00FFFF</DefaultParticleColor>
         <Capacity>200</Capacity>
-        <IsEmitting>true</IsEmitting>
+        <EmitOnStart>true</EmitOnStart>
         <EmissionRate>60</EmissionRate>
         <Alignment>Screen</Alignment>
         <UVBoundsName>Beam</UVBoundsName>
@@ -100,7 +100,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>FF008080</DefaultParticleColor>
         <Capacity>150</Capacity>
-        <IsEmitting>true</IsEmitting>
+        <EmitOnStart>true</EmitOnStart>
         <EmissionRate>40</EmissionRate>
         <Alignment>Screen</Alignment>
         <UVBoundsName>BeamBlurred</UVBoundsName>
@@ -135,7 +135,7 @@
         <DefaultParticleRotation>0</DefaultParticleRotation>
         <DefaultParticleColor>FF000000</DefaultParticleColor>
         <Capacity>10</Capacity>
-        <IsEmitting>true</IsEmitting>
+        <EmitOnStart>true</EmitOnStart>
         <EmissionRate>0.8</EmissionRate>
         <Alignment>Screen</Alignment>
         <UVBoundsName>{Whole}</UVBoundsName>
