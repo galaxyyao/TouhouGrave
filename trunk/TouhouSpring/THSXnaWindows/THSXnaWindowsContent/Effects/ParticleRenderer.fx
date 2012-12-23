@@ -21,6 +21,7 @@ struct VertexShaderInput
 	float4 LocalFrameCol0	: TEXCOORD1;
 	float4 LocalFrameCol1	: TEXCOORD2;
 	float4 LocalFrameCol2	: TEXCOORD3;
+	float4 LocalFrameCol3	: TEXCOORD4;
 	float4 Color			: COLOR0;
 };
 
@@ -45,10 +46,11 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	float3 offset = mul(expand, ExpandMatrices[input.Corner_Expand.y]);
 
 	float4 hPos = float4(input.Position + offset, 1);
-	float3 tPos = { dot(hPos, input.LocalFrameCol0),
+	float4 tPos = { dot(hPos, input.LocalFrameCol0),
 					dot(hPos, input.LocalFrameCol1),
-					dot(hPos, input.LocalFrameCol2) };
-	output.Position = mul(float4(tPos, 1), Transform);
+					dot(hPos, input.LocalFrameCol2),
+					dot(hPos, input.LocalFrameCol3) };
+	output.Position = mul(tPos, Transform);
 
 	output.UV = corner * input.UV.xy + input.UV.zw;
 	output.Color = input.Color;

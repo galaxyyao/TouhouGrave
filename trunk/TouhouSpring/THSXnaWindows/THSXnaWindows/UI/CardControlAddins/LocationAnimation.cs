@@ -37,7 +37,7 @@ namespace TouhouSpring.UI.CardControlAddins
         private LocationTransformResolver m_locationTransformResolver;
         private LocationParameter m_lastLocation;
 
-        private bool m_zoneChanged;
+        private bool m_playToBattlefield;
         private Particle.ParticleSystemInstance m_cardSummoned;
         private Particle.LocalFrame m_localFrame;
 
@@ -79,7 +79,14 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_locationDstTransform = m_locationTransformResolver(NextLocation, Control);
                 m_locationTrack.Play();
 
-                m_zoneChanged = NextLocation.m_zone != m_lastLocation.m_zone;
+                var gameui = GameApp.Service<Services.GameUI>();
+                var playerHand = gameui.InGameUIPage.Style.ChildIds["PlayerHand"].Target;
+                var playerBattlefield = gameui.InGameUIPage.Style.ChildIds["PlayerBattlefield"].Target;
+                var opponentHand = gameui.InGameUIPage.Style.ChildIds["OpponentHand"].Target;
+                var opponentBattlefield = gameui.InGameUIPage.Style.ChildIds["OpponentBattlefield"].Target;
+
+                m_playToBattlefield = NextLocation.m_zone.m_container == playerBattlefield && m_lastLocation.m_zone.m_container == playerHand
+                                      || NextLocation.m_zone.m_container == opponentBattlefield && m_lastLocation.m_zone.m_container == opponentHand;
                 m_lastLocation = NextLocation;
             }
 
@@ -89,8 +96,9 @@ namespace TouhouSpring.UI.CardControlAddins
             m_localFrame.Col0 = new Vector4(transform.M11, transform.M21, transform.M31, transform.M41);
             m_localFrame.Col1 = new Vector4(transform.M12, transform.M22, transform.M32, transform.M42);
             m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);
+            m_localFrame.Col3 = new Vector4(transform.M14, transform.M24, transform.M34, transform.M44);
 
-            bool emit = m_zoneChanged && m_locationTrack.IsPlaying;
+            bool emit = m_playToBattlefield && m_locationTrack.IsPlaying;
             m_cardSummoned.EffectInstances.ForEach(fx => fx.IsEmitting = emit);
             m_cardSummoned.Update(deltaTime);
 

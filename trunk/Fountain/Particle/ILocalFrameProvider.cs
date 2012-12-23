@@ -11,6 +11,7 @@ namespace TouhouSpring.Particle
         public Vector4 Col0;
         public Vector4 Col1;
         public Vector4 Col2;
+        public Vector4 Col3;
     }
 
     public interface ILocalFrameProvider

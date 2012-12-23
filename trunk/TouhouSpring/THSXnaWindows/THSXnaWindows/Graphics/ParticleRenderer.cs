@@ -41,11 +41,13 @@ namespace TouhouSpring.Graphics
             public Vector4 col0;
             public Vector4 col1;
             public Vector4 col2;
+            public Vector4 col3;
 
             private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
                 new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1),
                 new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 2),
-                new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 3)
+                new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 3),
+                new VertexElement(48, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 4)
             );
 
             public static int Size { get { return s_vertDecl.VertexStride; } }
@@ -280,19 +282,24 @@ namespace TouhouSpring.Graphics
                             var col0 = localFrames[i].Col0;
                             var col1 = localFrames[i].Col1;
                             var col2 = localFrames[i].Col2;
+                            var col3 = localFrames[i].Col3;
 
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                         }
                     }
                     else
@@ -300,20 +307,25 @@ namespace TouhouSpring.Graphics
                         var col0 = Vector4.UnitX;
                         var col1 = Vector4.UnitY;
                         var col2 = Vector4.UnitZ;
+                        var col3 = Vector4.UnitW;
                         for (int i = begin; i < end; ++i)
                         {
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                             m_shadowedVertices2[writePos].col0 = col0;
                             m_shadowedVertices2[writePos].col1 = col1;
-                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col2 = col2;
+                            m_shadowedVertices2[writePos++].col3 = col3;
                         }
                     }
                 });
