@@ -8,9 +8,7 @@ namespace TouhouSpring.Particle
     public enum Alignment
     {
         Screen,
-        WorldXY,
-        WorldXZ,
-        WorldYZ,
+        World,
         Local,
     }
 }

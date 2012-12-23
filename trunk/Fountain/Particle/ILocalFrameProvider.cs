@@ -8,8 +8,9 @@ namespace TouhouSpring.Particle
 {
     public struct LocalFrame
     {
-        public Vector3 XAxis;
-        public Vector3 YAxis;
+        public Vector4 Col0;
+        public Vector4 Col1;
+        public Vector4 Col2;
     }
 
     public interface ILocalFrameProvider

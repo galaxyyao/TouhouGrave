@@ -14,19 +14,16 @@
         <DefaultParticleColor>40C04080</DefaultParticleColor>
         <Capacity>150</Capacity>
         <EmitOnStart>true</EmitOnStart>
-        <EmissionRate>10</EmissionRate>
+        <EmissionRate>30</EmissionRate>
         <Alignment>Local</Alignment>
         <UVBoundsName>{Whole}</UVBoundsName>
         <ModifiersOnEmit>
           <Modifier Type="Modifiers:RandomPositionInBox">
             <Center>0 0 0</Center>
-            <Dimensions>10 10 0</Dimensions>
+            <Dimensions>25 25 0</Dimensions>
           </Modifier>
         </ModifiersOnEmit>
         <ModifiersOnUpdate>
-          <Modifier Type="Modifiers:Accelerate">
-            <Acceleration>0 0 150</Acceleration>
-          </Modifier>
           <Modifier Type="Modifiers:ColorAnimation">
             <AnimationType>Curve</AnimationType>
             <CurveName>Curve1</CurveName>

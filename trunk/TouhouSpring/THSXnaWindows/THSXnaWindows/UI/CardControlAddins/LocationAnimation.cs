@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 
 namespace TouhouSpring.UI.CardControlAddins
 {
-	class LocationAnimation : CardControl.Addin, Style.IBindingProvider
-	{
+    class LocationAnimation : CardControl.Addin, Style.IBindingProvider, Particle.ILocalFrameProvider
+    {
         public delegate Matrix LocationTransformResolver(LocationParameter location, CardControl control);
 
         public class ZoneInfo
@@ -31,11 +31,15 @@ namespace TouhouSpring.UI.CardControlAddins
         public LocationParameter NextLocation;
 
         private Animation.Track m_locationTrack;
-		private Matrix m_locationSrcTransform;
-		private Matrix m_locationDstTransform;
-		private Matrix m_locationTransform = MatrixHelper.Identity;
+        private Matrix m_locationSrcTransform;
+        private Matrix m_locationDstTransform;
+        private Matrix m_locationTransform = MatrixHelper.Identity;
         private LocationTransformResolver m_locationTransformResolver;
         private LocationParameter m_lastLocation;
+
+        private bool m_zoneChanged;
+        private Particle.ParticleSystemInstance m_cardSummoned;
+        private Particle.LocalFrame m_localFrame;
 
         public bool InTransition
         {
@@ -43,21 +47,24 @@ namespace TouhouSpring.UI.CardControlAddins
         }
 
         public LocationAnimation(CardControl control, LocationTransformResolver locationResolver) : base(control)
-		{
-			Control.Style.RegisterBinding(this);
+        {
+            Control.Style.RegisterBinding(this);
 
-			m_locationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardMove"));
-			m_locationTrack.Elapsed += w =>
-			{
-				m_locationTransform = Matrix.Lerp(m_locationSrcTransform, m_locationDstTransform, w);
-			};
+            m_locationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardMove"));
+            m_locationTrack.Elapsed += w =>
+            {
+                m_locationTransform = Matrix.Lerp(m_locationSrcTransform, m_locationDstTransform, w);
+            };
 
             m_locationTransformResolver = locationResolver;
             NextLocation = m_lastLocation = new LocationParameter { m_zone = null, m_numCards = 0, m_thisIndex = -1, m_focusIndex = -1 };
-		}
 
-		public override void Update(float deltaTime)
-		{
+            m_cardSummoned = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("CardSummoned"));
+            m_cardSummoned.LocalFrameProvider = this;
+        }
+
+        public override void Update(float deltaTime)
+        {
             if (NextLocation.m_zone != m_lastLocation.m_zone
                 || NextLocation.m_numCards != m_lastLocation.m_numCards
                 || NextLocation.m_thisIndex != m_lastLocation.m_thisIndex
@@ -72,28 +79,45 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_locationDstTransform = m_locationTransformResolver(NextLocation, Control);
                 m_locationTrack.Play();
 
+                m_zoneChanged = NextLocation.m_zone != m_lastLocation.m_zone;
                 m_lastLocation = NextLocation;
             }
 
-			if (m_locationTrack.IsPlaying)
-			{
-				m_locationTrack.Elapse(deltaTime);
-			}
-		}
+            var transform = Matrix.CreateTranslation(Control.Region.Width * 0.5f, -Control.Region.Height * 0.5f, 0)
+                            * Matrix.CreateScale(1, -1, 1)
+                            * Control.Style.MainLayout.TransformToGlobal;
+            m_localFrame.Col0 = new Vector4(transform.M11, transform.M21, transform.M31, transform.M41);
+            m_localFrame.Col1 = new Vector4(transform.M12, transform.M22, transform.M32, transform.M42);
+            m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);
 
-		public bool TryGetValue(string id, out string replacement)
-		{
-			switch (id)
-			{
-				case "CardAnimator.LocationTransform":
-					replacement = m_locationTransform.Serialize();
-					return true;
+            bool emit = m_zoneChanged && m_locationTrack.IsPlaying;
+            m_cardSummoned.EffectInstances.ForEach(fx => fx.IsEmitting = emit);
+            m_cardSummoned.Update(deltaTime);
 
-				default:
-					replacement = null;
-					return false;
-			}
-		}
+            if (m_locationTrack.IsPlaying)
+            {
+                m_locationTrack.Elapse(deltaTime);
+            }
+        }
+
+        public override void RenderPostMain(Matrix transform, RenderEventArgs e)
+        {
+            GameApp.Service<Graphics.ParticleRenderer>().Draw(m_cardSummoned, Matrix.Identity, 1.0f, 1.3333f);
+        }
+
+        public bool TryGetValue(string id, out string replacement)
+        {
+            switch (id)
+            {
+                case "CardAnimator.LocationTransform":
+                    replacement = m_locationTransform.Serialize();
+                    return true;
+
+                default:
+                    replacement = null;
+                    return false;
+            }
+        }
 
         public void OnLocationSet()
         {
@@ -103,5 +127,10 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_locationTransform = Control.Transform;
             }
         }
-	}
+
+        public Particle.LocalFrame LocalFrame
+        {
+            get { return m_localFrame; }
+        }
+    }
 }

@@ -1,4 +1,5 @@
 float2 Corners[4];
+float2x3 ExpandMatrices[13];
 
 float4x4 Transform;
 texture TheTexture;
@@ -13,11 +14,13 @@ sampler TheSampler = sampler_state
 
 struct VertexShaderInput
 {
-	float4 Position_Corner	: POSITION0;
-	float3 SizeAndRotation	: POSITION1;
+	float3 Position			: POSITION0;
+	float2 Corner_Expand	: POSITION1;
+	float3 SizeAndRotation	: POSITION2;
 	float4 UV				: TEXCOORD0;
-	float3 XAxis			: TEXCOORD1;
-	float3 YAxis			: TEXCOORD2;
+	float4 LocalFrameCol0	: TEXCOORD1;
+	float4 LocalFrameCol1	: TEXCOORD2;
+	float4 LocalFrameCol2	: TEXCOORD3;
 	float4 Color			: COLOR0;
 };
 
@@ -32,16 +35,20 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
     VertexShaderOutput output;
 
-	float2 corner = Corners[input.Position_Corner.w];
+	float2 corner = Corners[input.Corner_Expand.x];
 
 	float sinTheta, cosTheta;
 	sincos(input.SizeAndRotation.z / 180 * 3.1415926f, sinTheta, cosTheta);
 	float2 rotatedCorner = { dot(float2(cosTheta, sinTheta), corner),
 							 dot(float2(-sinTheta, cosTheta), corner) };
 	float2 expand = rotatedCorner * input.SizeAndRotation.xy;
+	float3 offset = mul(expand, ExpandMatrices[input.Corner_Expand.y]);
 
-	float3 offset = expand.x * input.XAxis + expand.y * input.YAxis;
-	output.Position = mul(float4(input.Position_Corner.xyz + offset, 1), Transform);
+	float4 hPos = float4(input.Position + offset, 1);
+	float3 tPos = { dot(hPos, input.LocalFrameCol0),
+					dot(hPos, input.LocalFrameCol1),
+					dot(hPos, input.LocalFrameCol2) };
+	output.Position = mul(float4(tPos, 1), Transform);
 
 	output.UV = corner * input.UV.xy + input.UV.zw;
 	output.Color = input.Color;

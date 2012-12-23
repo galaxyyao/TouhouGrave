@@ -14,15 +14,20 @@ namespace TouhouSpring.Graphics
         private struct ParticleVertex1 : IVertexType
         {
             public Vector3 position;
-            public float corner;
+            public Byte corner;
+            public Byte expand;
+#pragma warning disable 649 // Field '' is never assigned to, and will always have its default value 0
+            public UInt16 padding;
+#pragma warning restore 649
             public Vector2 size;
             public float rotation;
             public Vector4 uvparams;
             public Particle.Color color;
 
             private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
-                new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.Position, 0),
-                new VertexElement(16, VertexElementFormat.Vector3, VertexElementUsage.Position, 1),
+                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+                new VertexElement(12, VertexElementFormat.Byte4, VertexElementUsage.Position, 1),
+                new VertexElement(16, VertexElementFormat.Vector3, VertexElementUsage.Position, 2),
                 new VertexElement(28, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
                 new VertexElement(44, VertexElementFormat.Color, VertexElementUsage.Color, 0)
             );
@@ -33,12 +38,14 @@ namespace TouhouSpring.Graphics
 
         private struct ParticleVertex2 : IVertexType
         {
-            public Vector3 xaxis;
-            public Vector3 yaxis;
+            public Vector4 col0;
+            public Vector4 col1;
+            public Vector4 col2;
 
             private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
-                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 1),
-                new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 2)
+                new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1),
+                new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 2),
+                new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 3)
             );
 
             public static int Size { get { return s_vertDecl.VertexStride; } }
@@ -58,9 +65,9 @@ namespace TouhouSpring.Graphics
 
         private Effect m_effect;
         private EffectParameter m_paramCorners;
+        private EffectParameter m_paramExpandMatrices;
         private EffectParameter m_paramTransform;
         private EffectParameter m_paramTexture;
-        private Matrix m_alignToScreen;
         private Texture2D m_whiteTexture;
 
         private BlendState m_multiplyBlend;
@@ -151,6 +158,7 @@ namespace TouhouSpring.Graphics
             m_effect.CurrentTechnique = m_effect.Techniques[0];
 
             m_paramCorners = m_effect.Parameters["Corners"];
+            m_paramExpandMatrices = m_effect.Parameters["ExpandMatrices"];
             m_paramTransform = m_effect.Parameters["Transform"];
             m_paramTexture = m_effect.Parameters["TheTexture"];
 
@@ -217,6 +225,8 @@ namespace TouhouSpring.Graphics
                 uvParams.Z = 0.5f * uvParams.X + (uvBounds.X - 0.5f) * invTexWidth;
                 uvParams.W = -0.5f * uvParams.Y + (uvBounds.Y - 0.5f) * invTexHeight;
 
+                var expand = (Byte)(effect.Effect.Alignment == Particle.Alignment.Screen ? 12 : 0);
+
                 var startWritePos = writePos;
 
                 effect.BatchProcess((particles, begin, end) =>
@@ -226,6 +236,7 @@ namespace TouhouSpring.Graphics
                         var p = particles[i];
 
                         m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].expand = expand;
                         m_shadowedVertices1[writePos].size = p.m_size;
                         m_shadowedVertices1[writePos].rotation = p.m_rotation;
                         m_shadowedVertices1[writePos].uvparams = uvParams;
@@ -233,6 +244,7 @@ namespace TouhouSpring.Graphics
                         ++writePos;
 
                         m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].expand = expand;
                         m_shadowedVertices1[writePos].size = p.m_size;
                         m_shadowedVertices1[writePos].rotation = p.m_rotation;
                         m_shadowedVertices1[writePos].uvparams = uvParams;
@@ -240,6 +252,7 @@ namespace TouhouSpring.Graphics
                         ++writePos;
 
                         m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].expand = expand;
                         m_shadowedVertices1[writePos].size = p.m_size;
                         m_shadowedVertices1[writePos].rotation = p.m_rotation;
                         m_shadowedVertices1[writePos].uvparams = uvParams;
@@ -247,6 +260,7 @@ namespace TouhouSpring.Graphics
                         ++writePos;
 
                         m_shadowedVertices1[writePos].position = p.m_position;
+                        m_shadowedVertices1[writePos].expand = expand;
                         m_shadowedVertices1[writePos].size = p.m_size;
                         m_shadowedVertices1[writePos].rotation = p.m_rotation;
                         m_shadowedVertices1[writePos].uvparams = uvParams;
@@ -263,53 +277,43 @@ namespace TouhouSpring.Graphics
                     {
                         for (int i = begin; i < end; ++i)
                         {
-                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
-                            m_shadowedVertices2[writePos].xaxis = localFrames[i].XAxis;
-                            m_shadowedVertices2[writePos++].yaxis = localFrames[i].YAxis;
+                            var col0 = localFrames[i].Col0;
+                            var col1 = localFrames[i].Col1;
+                            var col2 = localFrames[i].Col2;
+
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
                         }
                     }
                     else
                     {
-                        Vector3 unitX, unitY;
-                        switch (effect.Effect.Alignment)
-                        {
-                            case Particle.Alignment.Screen:
-                                unitX.X = m_alignToScreen.M11;
-                                unitX.Y = m_alignToScreen.M12;
-                                unitX.Z = m_alignToScreen.M13;
-                                unitY.X = m_alignToScreen.M21;
-                                unitY.Y = m_alignToScreen.M22;
-                                unitY.Z = m_alignToScreen.M23;
-                                break;
-                            default:
-                            case Particle.Alignment.WorldXY:
-                                unitX.X = unitY.Y = 1;
-                                unitX.Y = unitX.Z = unitY.X = unitY.Z = 0;
-                                break;
-                            case Particle.Alignment.WorldXZ:
-                                unitX.X = unitY.Z = 1;
-                                unitX.Y = unitX.Z = unitY.X = unitY.Y = 0;
-                                break;
-                            case Particle.Alignment.WorldYZ:
-                                unitX.Y = unitY.Z = 1;
-                                unitX.X = unitX.Z = unitY.X = unitY.Y = 0;
-                                break;
-                        }
+                        var col0 = Vector4.UnitX;
+                        var col1 = Vector4.UnitY;
+                        var col2 = Vector4.UnitZ;
                         for (int i = begin; i < end; ++i)
                         {
-                            m_shadowedVertices2[writePos].xaxis = unitX;
-                            m_shadowedVertices2[writePos++].yaxis = unitY;
-                            m_shadowedVertices2[writePos].xaxis = unitX;
-                            m_shadowedVertices2[writePos++].yaxis = unitY;
-                            m_shadowedVertices2[writePos].xaxis = unitX;
-                            m_shadowedVertices2[writePos++].yaxis = unitY;
-                            m_shadowedVertices2[writePos].xaxis = unitX;
-                            m_shadowedVertices2[writePos++].yaxis = unitY;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
+                            m_shadowedVertices2[writePos].col0 = col0;
+                            m_shadowedVertices2[writePos].col1 = col1;
+                            m_shadowedVertices2[writePos++].col2 = col2;
                         }
                     }
                 });
@@ -345,8 +349,23 @@ namespace TouhouSpring.Graphics
                 new Vector2( 0.5f, -0.5f),
             });
 
-            var device = GameApp.Instance.GraphicsDevice;
-            m_alignToScreen = Matrix.CreateScale(screenScale / aspectRatio, screenScale, 1) * Matrix.Invert(transform);
+            m_paramExpandMatrices.SetValue(new Matrix[] {
+                new Matrix { M11 =  1, M22 =  1 },  // +X+Y
+                new Matrix { M11 =  1, M22 = -1 },  // +X-Y
+                new Matrix { M11 = -1, M22 =  1 },  // -X+Y
+                new Matrix { M11 = -1, M22 = -1 },  // -X-Y
+                new Matrix { M11 =  1, M23 =  1 },  // +X+Z
+                new Matrix { M11 =  1, M23 = -1 },  // +X-Z
+                new Matrix { M11 = -1, M23 =  1 },  // -X+Z
+                new Matrix { M11 = -1, M23 = -1 },  // -X-Z
+                new Matrix { M12 =  1, M23 =  1 },  // +Y+Z
+                new Matrix { M12 =  1, M23 = -1 },  // +Y-Z
+                new Matrix { M12 = -1, M23 =  1 },  // -Y+Z
+                new Matrix { M12 = -1, M23 = -1 },  // -Y-Z
+                Matrix.CreateScale(screenScale / aspectRatio,
+                                   screenScale,
+                                   1) * Matrix.Invert(transform)
+            });
 
             m_paramTransform.SetValue(transform);
             m_paramTexture.SetValue(instance.System.TextureObject ?? m_whiteTexture);

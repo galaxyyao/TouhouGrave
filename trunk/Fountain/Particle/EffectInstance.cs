@@ -127,8 +127,9 @@ namespace TouhouSpring.Particle
                 }
                 else
                 {
-                    m_particleLocalFrames[m_newParticleEnd].XAxis = Vector3.UnitX;
-                    m_particleLocalFrames[m_newParticleEnd].YAxis = Vector3.UnitY;
+                    m_particleLocalFrames[m_newParticleEnd].Col0 = Vector4.UnitX;
+                    m_particleLocalFrames[m_newParticleEnd].Col1 = Vector4.UnitY;
+                    m_particleLocalFrames[m_newParticleEnd].Col2 = Vector4.UnitZ;
                 }
             }
             m_newParticleEnd = IncrementIndex(m_newParticleEnd);

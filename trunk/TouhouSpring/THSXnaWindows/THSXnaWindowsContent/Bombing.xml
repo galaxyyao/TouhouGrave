@@ -15,7 +15,7 @@
         <Capacity>1000</Capacity>
         <EmitOnStart>false</EmitOnStart>
         <EmissionRate>30</EmissionRate>
-        <Alignment>WorldXY</Alignment>
+        <Alignment>World</Alignment>
         <UVBoundsName>LensFlare</UVBoundsName>
         <ModifiersOnEmit />
         <ModifiersOnUpdate>
