@@ -33,7 +33,7 @@ namespace TouhouSpring
 			}
 
             var io = Program.ActiveInteraction as Interactions.TacticalPhase;
-            var cards = io.ComputeCastFromSet();
+            var cards = io.CastFromSet;
             Behaviors.ICastableSpell spellToCast = null;
 
             int counter = 0;

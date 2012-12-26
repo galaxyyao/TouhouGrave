@@ -43,7 +43,7 @@ namespace TouhouSpring
 					int blockerIndex = int.Parse(parms[0]) - 1;
 					int attackerIndex = int.Parse(parms[1]) - 1;
 
-					var blocker = Program.TouhouSpringGame.OpponentPlayer.CardsOnBattlefield.ElementAt(blockerIndex);
+					var blocker = Program.TouhouSpringGame.ActingPlayerEnemies.First().CardsOnBattlefield.ElementAt(blockerIndex);
 					if (!blocker.Behaviors.Has<Behaviors.Warrior>())
 					{
 						Console.WriteLine("ERROR: {0} is not a warrior.", blocker.Model.Name);

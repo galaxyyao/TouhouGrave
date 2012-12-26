@@ -35,6 +35,8 @@ namespace TouhouSpring
             get; set;
         }
 
+        IList<Behaviors.BehaviorModel> ICardModel.Behaviors { get { return Behaviors; } }
+
         public string Category
         {
             get; set;

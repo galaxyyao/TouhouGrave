@@ -129,9 +129,9 @@ namespace TouhouSpring
 
 			while (true)
 			{
-				foreach (var controller in TouhouSpringGame.Controllers)
+				foreach (var player in TouhouSpringGame.Players)
 				{
-					if (controller.ProcessMessage())
+					if (player.Controller.ProcessMessage())
 					{
 						return;
 					}
