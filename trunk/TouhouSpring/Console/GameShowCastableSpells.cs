@@ -22,16 +22,11 @@ namespace TouhouSpring
             }
 
             var io = Program.ActiveInteraction as Interactions.TacticalPhase;
-            var cards = io.CastFromSet;
+            var spells = io.CastFromSet;
 
-            int counter = 0;
-            for (int i = 0; i < cards.Count; ++i)
+            for (int i = 0; i < spells.Count; ++i)
             {
-                var card = cards[i];
-                foreach (var spell in card.Spells)
-                {
-                    Console.WriteLine("> [{0}] {1} on {2} ({3})", ++counter, spell.Model.Name, card.Model.Name, GetLocation(card));
-                }
+                Console.WriteLine("> [{0}] {1} on {2} ({3})", i, spells[i].Model.Name, spells[i].Host.Model.Name, GetLocation(spells[i].Host));
             }
         }
 

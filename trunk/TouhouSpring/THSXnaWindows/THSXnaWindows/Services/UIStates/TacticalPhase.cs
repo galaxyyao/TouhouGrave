@@ -12,6 +12,7 @@ namespace TouhouSpring.Services.UIStates
 
         private GameUI m_gameUI = GameApp.Service<GameUI>();
         private Interactions.TacticalPhase m_io;
+        private BaseCard[] m_castFromCards;
 
         public Interactions.BaseInteraction InteractionObject
         {
@@ -23,6 +24,7 @@ namespace TouhouSpring.Services.UIStates
             m_io = (Interactions.TacticalPhase)io;
             m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
             m_gameUI.AddPhaseButton(GameUI.PhaseButtonText.Draw);
+            m_castFromCards = m_io.CastFromSet.Select(spell => spell.Host).Distinct().ToArray();
         }
 
         public void OnLeave()
@@ -47,7 +49,7 @@ namespace TouhouSpring.Services.UIStates
                         }
                     });
             }
-            else if (m_io.CastFromSet.Contains(card))
+            else if (m_castFromCards.Contains(card))
             {
                 m_spellToCastCard = (cardControl != m_spellToCastCard) ? cardControl : null;
             }
@@ -100,7 +102,7 @@ namespace TouhouSpring.Services.UIStates
         public bool IsCardClickable(UI.CardControl cardControl)
         {
             var card = cardControl.Card;
-            return m_io.SelectFromSet.Contains(card) || m_io.CastFromSet.Contains(card);
+            return m_io.SelectFromSet.Contains(card) || m_castFromCards.Contains(card);
         }
 
         public bool IsCardSelected(UI.CardControl cardControl)

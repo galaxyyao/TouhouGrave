@@ -61,6 +61,17 @@ namespace TouhouSpring
             return ret;
         }
 
+        internal bool IsSpellCastable(Behaviors.ICastableSpell spell)
+        {
+            Debug.Assert(RunningCommand == null);
+            var cmd = new Commands.CastSpell(spell);
+            InitializeCommand(cmd);
+            RunningCommand = cmd;
+            bool ret = !RunPrerequisiteGeneric(cmd).Canceled;
+            RunningCommand = null;
+            return ret;
+        }
+
         private void IssueCommand(Commands.BaseCommand command)
         {
             if (command == null)

@@ -33,24 +33,8 @@ namespace TouhouSpring
 			}
 
             var io = Program.ActiveInteraction as Interactions.TacticalPhase;
-            var cards = io.CastFromSet;
-            Behaviors.ICastableSpell spellToCast = null;
 
-            int counter = 0;
-            for (int i = 0; i < cards.Count; ++i)
-            {
-                var card = cards[i];
-                foreach (var spell in card.Spells)
-                {
-                    if (++counter == spellNo)
-                    {
-                        spellToCast = spell;
-                        break;
-                    }
-                }
-            }
-
-            if (spellToCast == null)
+            if (spellNo >= io.CastFromSet.Count)
             {
                 Console.WriteLine("ERROR: Can't find spell.");
                 Console.WriteLine("Type Game.CastFrom to get the list of castable spells.");
@@ -60,11 +44,11 @@ namespace TouhouSpring
 
             while (true)
             {
-                Console.Write("?? Cast {0} (Y/N) ? ", spellToCast.Model.Name);
+                Console.Write("?? Cast {0} (Y/N) ? ", io.CastFromSet[spellNo].Model.Name);
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "y" || choice == "yes")
                 {
-                    ((Interactions.TacticalPhase)Program.ActiveInteraction).Respond(spellToCast);
+                    ((Interactions.TacticalPhase)Program.ActiveInteraction).Respond(io.CastFromSet[spellNo]);
                     Program.ActiveInteraction = null;
                     break;
                 }

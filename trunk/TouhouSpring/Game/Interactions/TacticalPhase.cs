@@ -21,7 +21,7 @@ namespace TouhouSpring.Interactions
             public object Data;
         }
 
-        public IIndexable<BaseCard> CastFromSet
+        public IIndexable<Behaviors.ICastableSpell> CastFromSet
         {
             get; private set;
         }
@@ -39,7 +39,8 @@ namespace TouhouSpring.Interactions
                 throw new InvalidOperationException("TacticalPhase can only be invoked on the acting player.");
             }
 
-            CastFromSet = player.CardsOnBattlefield.Where(card => card.Spells.Any()).ToArray().ToIndexable();
+            CastFromSet = player.CardsOnBattlefield.SelectMany(card => card.Spells)
+                                                   .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
         }
 
         public new Result Run()
@@ -122,7 +123,7 @@ namespace TouhouSpring.Interactions
                     {
                         throw new InvalidDataException("Action PlayCard shall have an object of ICastableSpell as its data.");
                     }
-                    if (!CastFromSet.Contains(((Behaviors.ICastableSpell)result.Data).Host))
+                    if (!CastFromSet.Contains((Behaviors.ICastableSpell)result.Data))
                     {
                         throw new InvalidDataException("Selected spell doesn't come from a card from player's battlefield.");
                     }
