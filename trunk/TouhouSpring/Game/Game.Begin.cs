@@ -18,7 +18,7 @@ namespace TouhouSpring
                 IssueCommand(new Commands.ShuffleLibrary(player));
 
                 // draw initial hands
-                5.Repeat(i => IssueCommand(new Commands.DrawCard(player)));
+                7.Repeat(i => IssueCommand(new Commands.DrawCard(player)));
             }
 
             FlushCommandQueue();

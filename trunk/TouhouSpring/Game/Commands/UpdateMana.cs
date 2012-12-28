@@ -50,7 +50,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Player.Mana = Math.Min(Player.Mana + DeltaAmount, Player.Hero.MaxMana);
+            Player.Mana = Math.Min(Player.Mana + DeltaAmount, Player.MaxMana);
         }
     }
 }

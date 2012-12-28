@@ -21,11 +21,6 @@ namespace TouhouSpring
 			get { return m_randomGenerator; }
 		}
 
-		public bool IsWarriorPlayedThisTurn
-		{
-			get; private set;
-		}
-
         public int Round
         {
             get;

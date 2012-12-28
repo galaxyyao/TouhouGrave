@@ -8,11 +8,6 @@ namespace TouhouSpring.Behaviors
     public sealed class Hero : BaseBehavior<Hero.ModelType>,
         IEpilogTrigger<Commands.StartAttackPhase>
     {
-        public int MaxMana
-        {
-            get { return Model.Mana; }
-        }
-
         public int InitialHealth
         {
             get { return Model.Health; }
@@ -33,7 +28,6 @@ namespace TouhouSpring.Behaviors
         public class ModelType : BehaviorModel
         {
             public int Health { get; set; }
-            public int Mana { get; set; }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Game.CurrentPhase != "PhaseA")
+            if (Game.CurrentPhase != "Upkeep")
             {
                 FailValidation("StartTurn can't be executed at the phase {0}.", Game.CurrentPhase);
             }
@@ -21,10 +21,6 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Game.ActingPlayer.m_battlefieldCards
-                .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
-                .ForEach(card => Game.IssueCommands(
-                    new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
         }
     }
 }

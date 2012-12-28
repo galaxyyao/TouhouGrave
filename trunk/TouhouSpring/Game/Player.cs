@@ -15,17 +15,22 @@ namespace TouhouSpring
         private Profile m_profile;
 
         internal List<BaseCard> m_handSet = new List<BaseCard>();
+        internal List<BaseCard> m_sacrifices = new List<BaseCard>();
         internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
         internal Pile m_library = new Pile();
         internal Pile m_graveyard = new Pile();
-        private const int m_initialManaDelta = 2;
 
         /// <summary>
         /// Return a collection of cards on hand.
         /// </summary>
         public IIndexable<BaseCard> CardsOnHand
         {
-            get { return m_handSet.ToIndexable(); }
+            get; private set;
+        }
+
+        public IIndexable<BaseCard> CardsSacrificed
+        {
+            get; private set;
         }
 
         /// <summary>
@@ -33,7 +38,7 @@ namespace TouhouSpring
         /// </summary>
         public IIndexable<BaseCard> CardsOnBattlefield
         {
-            get { return m_battlefieldCards.ToIndexable(); }
+            get; private set;
         }
 
         public string Name
@@ -61,6 +66,11 @@ namespace TouhouSpring
             get; internal set;
         }
 
+        public int MaxMana
+        {
+            get { return CardsSacrificed.Count; }
+        }
+
         public int ReservedMana
         {
             get; internal set;
@@ -69,11 +79,6 @@ namespace TouhouSpring
         public int FreeMana
         {
             get { return Mana - ReservedMana; }
-        }
-
-        public int ManaDelta
-        {
-            get; set;
         }
 
         public bool IsSkillCharged
@@ -114,6 +119,10 @@ namespace TouhouSpring
             {
                 throw new InvalidOperationException("The controller is bound to some player before.");
             }
+
+            CardsOnHand = m_handSet.ToIndexable();
+            CardsSacrificed = m_sacrifices.ToIndexable();
+            CardsOnBattlefield = m_battlefieldCards.ToIndexable();
 
             m_profile = profile;
             Game = game;
@@ -159,14 +168,7 @@ namespace TouhouSpring
             m_battlefieldCards.Add(hero);
 
             Health = heroBhv.InitialHealth;
-            Mana = 2;
             IsSkillCharged = false;
-            ResetManaDelta();
-        }
-
-        internal void ResetManaDelta()
-        {
-            ManaDelta = 2;
         }
     }
 }

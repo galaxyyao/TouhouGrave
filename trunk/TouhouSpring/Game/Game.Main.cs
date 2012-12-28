@@ -25,14 +25,21 @@ namespace TouhouSpring
             InPlayerPhases = true;
             Round = 0;
 
-            IssueCommandsAndFlush(new Commands.DrawCard(m_players[0]));
-
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 Round++;
-                IsWarriorPlayedThisTurn = false;
 
-                CurrentPhase = "PhaseA";
+                CurrentPhase = "Upkeep";
+                // skip drawing card for the starting player in the first round
+                if (Round > 1 || m_actingPlayer != 0)
+                {
+                    IssueCommands(new Commands.DrawCard(ActingPlayer));
+                }
+                IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, this));
+                ActingPlayer.CardsOnBattlefield
+                    .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
+                    .ForEach(card => IssueCommands(
+                        new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
                 IssueCommandsAndFlush(new Commands.StartTurn { });
 
                 CurrentPhase = "Tactical";
@@ -102,7 +109,6 @@ namespace TouhouSpring
                 CurrentPhase = "PhaseB";
                 IssueCommandsAndFlush(
                     new Commands.ResetAccumulatedDamage(),
-                    new Commands.UpdateMana(ActingPlayer, ActingPlayer.ManaDelta, this),
                     new Commands.EndTurn());
             };
 

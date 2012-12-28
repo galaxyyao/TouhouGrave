@@ -266,7 +266,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
           <Name>Hero</Name>
           <Health>30</Health>
-          <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
@@ -301,7 +300,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
           <Name>Hero</Name>
           <Health>30</Health>
-          <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
@@ -337,7 +335,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
           <Name>Hero</Name>
           <Health>30</Health>
-          <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
@@ -373,7 +370,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
           <Name>Hero</Name>
           <Health>30</Health>
-          <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
@@ -893,7 +889,6 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
           <Name>Hero</Name>
           <Health>30</Health>
-          <Mana>5</Mana>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
