@@ -1,3 +1,4 @@
+/trunk/_ReSharper.TouhouSpring/*
 /trunk/TouhouSpring/_ReSharper.TouhouSpring
 /trunk/Fountain/Common/bin/*
 /trunk/Fountain/Common/obj/*
@@ -35,4 +36,5 @@
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindowsContent/obj/*
 *.csproj.user
 *.contentproj.user
+*.DotSettings.user
 Thumbs.db

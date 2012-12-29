@@ -47,5 +47,10 @@ namespace TouhouSpring
         {
             get { return Owner != null ? Owner.CardsOnBattlefield.Contains(this) : false; }
         }
+
+        public bool IsHero
+        {
+            get { return Owner != null ? Owner.Hero == this : false; }
+        }
     }
 }

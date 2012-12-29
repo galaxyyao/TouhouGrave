@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (Host.IsOnBattlefield
                 && command.Cause is Warrior
-                && (command.Cause as Warrior).Host == Host.Owner.Hero.Host)
+                && (command.Cause as Warrior).Host == Host.Owner.Hero)
             {
                 var damagedWarrior = command.Target.Behaviors.Get<Warrior>();
                 int overflow = Math.Min(Math.Max(damagedWarrior.AccumulatedDamage - damagedWarrior.Defense, 0), command.DamageToDeal);

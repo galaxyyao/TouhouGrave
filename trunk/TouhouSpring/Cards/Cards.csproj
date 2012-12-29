@@ -59,6 +59,8 @@
     <None Include="Behaviors\Deprecated\MasterSpark.cs" />
     <None Include="Behaviors\Deprecated\Scapegoat.cs" />
     <None Include="Behaviors\Deprecated\CardTransfer.cs" />
+    <None Include="Behaviors\Deprecated\SkillCharge.cs" />
+    <None Include="Behaviors\Deprecated\SkillMustBeCharged.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
@@ -83,8 +85,6 @@
     <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
-    <Compile Include="Behaviors\SkillCharge.cs" />
-    <Compile Include="Behaviors\SkillMustBeCharged.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

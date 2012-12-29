@@ -79,7 +79,7 @@ namespace TouhouSpring.Commands
                 }
             }
 
-            if (Target != Target.Owner.Hero.Host)
+            if (!Target.IsHero)
             {
                 Target.Owner.m_graveyard.AddCardToTop(Target);
                 EnteredGraveyard = true;

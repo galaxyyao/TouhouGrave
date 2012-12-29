@@ -96,12 +96,12 @@ namespace TouhouSpring.Services
                 deck.Add(cardDb.GetModel("ripples"));
                 deck.Add(cardDb.GetModel("cautionaryborder"));
                 deck.Add(cardDb.GetModel("cautionaryborder"));
+                deck.Hero = cardDb.GetModel("marisa");
 
                 param[0] = new GameStartupParameters()
                 {
                     m_profile = new Profile() { Name = "夜空" },
                     m_deck = deck,
-                    m_hero = cardDb.GetModel("marisa"),
                     m_controller = new XnaUIController()
                 };
                 param[0].m_profile.Decks.Add(deck);
@@ -110,7 +110,6 @@ namespace TouhouSpring.Services
                 {
                     m_profile = new Profile() { Name = "星奈" },
                     m_deck = deck,
-                    m_hero = cardDb.GetModel("marisa"),
                     m_controller = new XnaUIController()
                 };
                 param[1].m_profile.Decks.Add(deck);

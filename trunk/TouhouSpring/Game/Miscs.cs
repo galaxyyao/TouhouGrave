@@ -9,7 +9,6 @@ namespace TouhouSpring
 	{
 		public Profile m_profile;
 		public Deck m_deck;
-        public ICardModel m_hero;
 		public BaseController m_controller;
 	}
 }

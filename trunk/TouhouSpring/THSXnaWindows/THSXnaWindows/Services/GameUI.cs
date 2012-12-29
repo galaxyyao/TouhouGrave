@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -129,7 +129,8 @@ namespace TouhouSpring.Services
 
             foreach (var player in Game.Players)
             {
-                player.CardsOnBattlefield.ForEach(card => RegisterCard(card));
+                player.Assists.ForEach(card => RegisterCard(card));
+                RegisterCard(player.Hero);
             }
         }
     }

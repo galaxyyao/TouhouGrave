@@ -54,7 +54,7 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("card");
             }
 
-            if (card.Owner.Hero.Host == card)
+            if (card.Owner.Hero == card)
             {
                 // skip unregistering hero card
                 return;
@@ -247,16 +247,6 @@ namespace TouhouSpring.Services
 
                     cc.EnableDepth = true;
                 }
-                else if (Game.Players[0].Hero.Host == card)
-                {
-                    locationAnimation.NextLocation.m_zone = m_playerHeroZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = 0;
-                }
-                else if (Game.Players[1].Hero.Host == card)
-                {
-                    locationAnimation.NextLocation.m_zone = m_opponentHeroZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = 0;
-                }
                 else if (Game.Players[0].CardsOnBattlefield.Contains(card))
                 {
                     Debug.Assert(Game.Players[0].CardsOnBattlefield.Count > 0);
@@ -274,6 +264,16 @@ namespace TouhouSpring.Services
                     locationAnimation.NextLocation.m_thisIndex = Game.Players[1].CardsOnBattlefield.IndexOf(card) - 1;
 
                     cc.EnableDepth = true;
+                }
+                else if (Game.Players[0].Hero == card)
+                {
+                    locationAnimation.NextLocation.m_zone = m_playerHeroZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
+                }
+                else if (Game.Players[1].Hero == card)
+                {
+                    locationAnimation.NextLocation.m_zone = m_opponentHeroZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
                 }
                 // TODO: graveyard
                 else

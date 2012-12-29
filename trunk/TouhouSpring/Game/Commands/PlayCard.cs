@@ -30,7 +30,14 @@ namespace TouhouSpring.Commands
         internal override void ValidateOnIssue()
         {
             Validate(CardToPlay);
-            if (!CardToPlay.Owner.CardsOnHand.Contains(CardToPlay))
+            if (CardToPlay.IsHero)
+            {
+                if (CardToPlay.Owner.CardsOnBattlefield.Contains(CardToPlay))
+                {
+                    FailValidation("The hero card is already on the battlefield.");
+                }
+            }
+            else if (!CardToPlay.Owner.CardsOnHand.Contains(CardToPlay))
             {
                 FailValidation("The card to play is not from player's hand.");
             }

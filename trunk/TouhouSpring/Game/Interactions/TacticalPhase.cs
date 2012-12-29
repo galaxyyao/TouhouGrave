@@ -146,10 +146,10 @@ namespace TouhouSpring.Interactions
                 yield return card;
             }
 
-            if (!player.CardsOnBattlefield.Contains(player.Hero.Host))
+            if (!player.CardsOnBattlefield.Contains(player.Hero))
             {
-                // hero card is on battlefield
-                yield return player.Hero.Host;
+                // hero card is not on battlefield
+                yield return player.Hero;
             }
         }
     }

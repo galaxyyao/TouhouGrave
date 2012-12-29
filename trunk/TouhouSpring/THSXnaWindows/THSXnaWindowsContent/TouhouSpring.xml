@@ -53,9 +53,6 @@
           <Name>人偶召唤</Name>
           <SummonType>#Resource2</SummonType>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
@@ -99,9 +96,6 @@
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_HealedWhenWarriorAttacks+ModelType">
           <Name>吸血鬼</Name>
         </Behavior>
@@ -127,9 +121,6 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_HeroAttackUpWithCardNumber+ModelType">
           <Name>未来永劫斩</Name>
@@ -160,9 +151,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpWhileDefenseDown+ModelType">
           <Name>御柱特攻</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
@@ -187,9 +175,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_EnemySummonCostUp+ModelType">
           <Name>The World</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
@@ -216,9 +201,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpAndDefenseUp+ModelType">
           <Name>秘药</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
           <TacticalPhase>true</TacticalPhase>
@@ -244,9 +226,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_ManaGainUpWhenAttackedByWarrior+ModelType">
           <Name>M子</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillCharge+ModelType">
-          <Name>补魔</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
@@ -283,10 +262,6 @@
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillMustBeCharged+ModelType">
-          <Name>SkillMustBeCharged</Name>
-          <Discharge>true</Discharge>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -318,10 +293,6 @@
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillMustBeCharged+ModelType">
-          <Name>SkillMustBeCharged</Name>
-          <Discharge>true</Discharge>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>
     </Resource>
@@ -352,10 +323,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Spell_DamageDirectToPlayer+ModelType">
           <Name>五道难题</Name>
           <Damage>5</Damage>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SkillMustBeCharged+ModelType">
-          <Name>SkillMustBeCharged</Name>
-          <Discharge>true</Discharge>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Heroes</Category>

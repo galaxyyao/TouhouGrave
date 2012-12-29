@@ -215,9 +215,9 @@ namespace TouhouSpring
                 {
                     yield return card;
                 }
-                if (!player.CardsOnBattlefield.Contains(player.Hero.Host))
+                foreach (var card in player.ActivatedAssists)
                 {
-                    yield return player.Hero.Host;
+                    yield return card;
                 }
             }
         }
