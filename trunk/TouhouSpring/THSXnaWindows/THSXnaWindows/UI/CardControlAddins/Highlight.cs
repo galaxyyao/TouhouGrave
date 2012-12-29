@@ -40,7 +40,8 @@ namespace TouhouSpring.UI.CardControlAddins
                 }
                 m_lastMouseEntered = false;
             }
-            else if (Control.MouseTracked.MouseEntered != m_lastMouseEntered && gameUI.IsCardClickable(Control))
+            else if (Control.MouseTracked.MouseEntered != m_lastMouseEntered
+                && gameUI.IsCardClickable(Control) && !gameUI.IsCardSelected(Control))
             {
                 if (m_enlargeTrack.IsPlaying)
                 {
