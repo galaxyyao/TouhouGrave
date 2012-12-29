@@ -8,11 +8,14 @@ namespace TouhouSpring.Services.UIStates
 {
     class TacticalPhase : IUIState
     {
-        private UI.CardControl m_spellToCastCard;
-
         private GameUI m_gameUI = GameApp.Service<GameUI>();
         private Interactions.TacticalPhase m_io;
         private BaseCard[] m_castFromCards;
+
+        public UI.CardControl SelectedCard
+        {
+            get; private set;
+        }
 
         public Interactions.BaseInteraction InteractionObject
         {
@@ -22,7 +25,8 @@ namespace TouhouSpring.Services.UIStates
         public void OnEnter(Interactions.BaseInteraction io)
         {
             m_io = (Interactions.TacticalPhase)io;
-            m_gameUI.SetContextButtons("Pass");
+            m_gameUI.RemoveAllContextButtons();
+            m_gameUI.AddContextButton("Pass", ContextButton_OnPass);
             m_castFromCards = m_io.CastSpellCandidates.Select(spell => spell.Host).Distinct().ToArray();
         }
 
@@ -32,58 +36,53 @@ namespace TouhouSpring.Services.UIStates
 
         public void OnCardClicked(UI.CardControl cardControl)
         {
-            var card = cardControl.Card;
+            SelectedCard = SelectedCard == cardControl ? null : cardControl;
+            var card = SelectedCard != null ? SelectedCard.Card : null;
+
+            m_gameUI.RemoveAllContextButtons();
+            if (card == null)
+            {
+                m_gameUI.AddContextButton("Pass", ContextButton_OnPass);
+            }
 
             if (m_io.PlayCardCandidates.Contains(card))
             {
-                GameApp.Service<ModalDialog>().Show(
-                    String.Format(CultureInfo.CurrentCulture, "Play {0}?", card.Model.Name),
-                    ModalDialog.Button.Yes | ModalDialog.Button.Cancel,
-                    btn =>
-                    {
-                        if (btn == ModalDialog.Button.Yes)
-                        {
-                            m_io.Respond(card);
-                            m_gameUI.LeaveState();
-                        }
-                    });
-            }
-            else if (m_castFromCards.Contains(card))
-            {
-                m_spellToCastCard = (cardControl != m_spellToCastCard) ? cardControl : null;
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        public void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell)
-        {
-            GameApp.Service<ModalDialog>().Show(
-                String.Format(CultureInfo.CurrentCulture, "Cast {0}?", spell.Model.Name),
-                ModalDialog.Button.Yes | ModalDialog.Button.Cancel,
-                btn =>
+                if (card.Behaviors.Has<Behaviors.Warrior>())
                 {
-                    if (btn == ModalDialog.Button.Yes)
+                    m_gameUI.AddContextButton("Deploy", ContextButton_OnPlay);
+                }
+                else if (card.Behaviors.Has<Behaviors.Assist>())
+                {
+                    m_gameUI.AddContextButton("Activate", ContextButton_OnPlay);
+                }
+                else if (card.Behaviors.Has<Behaviors.Instant>())
+                {
+                    m_gameUI.AddContextButton("Cast", ContextButton_OnPlay);
+                }
+                else
+                {
+                    m_gameUI.AddContextButton("Play", ContextButton_OnPlay);
+                }
+            }
+            if (m_castFromCards.Contains(card))
+            {
+                foreach (var spell in card.Spells.Intersect(m_io.CastSpellCandidates))
+                {
+                    m_gameUI.AddContextButton("Cast " + spell.Model.Name, text =>
                     {
                         m_io.Respond(spell);
                         m_gameUI.LeaveState();
-                    }
-                });
-        }
-
-        public void OnContextButton(string buttonText)
-        {
-            if (buttonText == "Pass")
-            {
-                m_io.Respond();
+                    });
+                }
             }
-            else
+            if (m_io.SacrificeCandidates.Contains(card))
             {
-                throw new InvalidOperationException("Impossible");
+                m_gameUI.AddContextButton("Sacrifice", ContextButton_OnPlay);
             }
-            m_gameUI.LeaveState();
+            if (m_io.RedeemCandidates.Contains(card))
+            {
+                m_gameUI.AddContextButton("Redeem", ContextButton_OnPlay);
+            }
         }
 
         public bool IsCardClickable(UI.CardControl cardControl)
@@ -97,12 +96,19 @@ namespace TouhouSpring.Services.UIStates
 
         public bool IsCardSelected(UI.CardControl cardControl)
         {
-            return false;
+            return cardControl == SelectedCard;
         }
 
-        public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
+        private void ContextButton_OnPass(string text)
         {
-            return cardControl == m_spellToCastCard;
+            m_io.Respond();
+            m_gameUI.LeaveState();
+        }
+
+        private void ContextButton_OnPlay(string text)
+        {
+            m_io.Respond(SelectedCard.Card);
+            m_gameUI.LeaveState();
         }
     }
 }

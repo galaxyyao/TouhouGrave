@@ -48,7 +48,6 @@
     <Compile Include="ConsoleController.cs" />
     <Compile Include="GameShowCastableSpells.cs" />
     <Compile Include="EditorCardModel.cs" />
-    <Compile Include="GameBlock.cs" />
     <Compile Include="GameCastSpell.cs" />
     <Compile Include="GameNext.cs" />
     <Compile Include="GameShowSelectableCards.cs" />

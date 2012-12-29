@@ -79,16 +79,6 @@ namespace TouhouSpring
 			return false;
 		}
 
-        [Interactions.MessageMap.Handler(typeof(Interactions.BlockPhase))]
-        private bool OnDeclareBlockers(Interactions.BlockPhase interactionObj)
-        {
-            GameBlock.s_blockers = new List<List<BaseCard>>();
-            interactionObj.DeclaredAttackers.Count.Repeat(i => GameBlock.s_blockers.Add(new List<BaseCard>()));
-            Debug.Assert(Program.ActiveInteraction == null);
-            Program.ActiveInteraction = interactionObj;
-            return true;
-        }
-
         [Interactions.MessageMap.Handler(typeof(Interactions.TacticalPhase))]
         private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
         {

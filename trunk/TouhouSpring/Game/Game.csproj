@@ -95,8 +95,6 @@
     <Compile Include="Game.Phase.cs" />
     <Compile Include="Game.Players.cs" />
     <Compile Include="Game.Threading.cs" />
-    <Compile Include="Interactions\BlockPhase.cs" />
-    <Compile Include="Interactions\DeclareAttackers.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\NotifyControllerEvent.cs" />
     <Compile Include="Interactions\NotifyGameEvent.cs" />

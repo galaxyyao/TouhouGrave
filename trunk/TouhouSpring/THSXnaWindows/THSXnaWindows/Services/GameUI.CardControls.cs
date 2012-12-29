@@ -44,7 +44,7 @@ namespace TouhouSpring.Services
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl, Card_ResolveLocationTransform));
             //cardControl.Addins.Add(new UI.CardControlAddins.SelectedAnimation(cardControl));
-            cardControl.Addins.Add(new UI.CardControlAddins.SpellButtons(cardControl));
+            //cardControl.Addins.Add(new UI.CardControlAddins.SpellButtons(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));
             m_cardControls.Add(cardControl);
         }
@@ -87,15 +87,8 @@ namespace TouhouSpring.Services
 
         public bool IsCardSelected(UI.CardControl cardControl)
         {
-            return UIState != null
-                   ? UIState.IsCardSelected(cardControl)
-                   : false;
-        }
-
-        public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
-        {
             return ZoomedInCard != cardControl && UIState != null
-                   ? UIState.IsCardSelectedForCastSpell(cardControl)
+                   ? UIState.IsCardSelected(cardControl)
                    : false;
         }
 
@@ -194,18 +187,9 @@ namespace TouhouSpring.Services
         internal void OnCardClicked(UI.CardControl control)
         {
             Debug.Assert(control != null && control.Card != null);
-            if (UIState != null)
+            if (IsCardClickable(control))
             {
                 UIState.OnCardClicked(control);
-            }
-        }
-
-        internal void OnSpellClicked(UI.CardControl control, Behaviors.ICastableSpell spell)
-        {
-            Debug.Assert(control.Card == spell.Host);
-            if (UIState != null)
-            {
-                UIState.OnSpellClicked(control, spell);
             }
         }
 
@@ -222,34 +206,6 @@ namespace TouhouSpring.Services
                 {
                     locationAnimation.NextLocation.m_zone = m_zoomedInZoneInfo;
                     locationAnimation.NextLocation.m_thisIndex = 0;
-                }
-                else if (UIState is UIStates.DeclareAttackers
-                    && (UIState as UIStates.DeclareAttackers).Selection.Contains(card))
-                {
-                    var declareAttackers = UIState as UIStates.DeclareAttackers;
-                    locationAnimation.NextLocation.m_zone = declareAttackers.Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = declareAttackers.Selection.IndexOf(card);
-
-                    cc.EnableDepth = true;
-                }
-                else if (UIState is UIStates.BlockPhase
-                    && (UIState as UIStates.BlockPhase).DeclaredAttackers.Contains(card))
-                {
-                    var blockPhase = UIState as UIStates.BlockPhase;
-                    locationAnimation.NextLocation.m_zone = blockPhase.Player == Game.Players[0] ? m_opponentFormationZoneInfo : m_playerFormationZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = blockPhase.DeclaredAttackers.IndexOf(card);
-
-                    cc.EnableDepth = true;
-                }
-                else if (UIState is UIStates.BlockPhase
-                    && (UIState as UIStates.BlockPhase).DeclaredBlockers.Any(b => b.Contains(cc)))
-                {
-                    var blockPhase = UIState as UIStates.BlockPhase;
-                    var blockers = blockPhase.DeclaredBlockers.SelectMany(b => b.Where(c => c != null));
-                    locationAnimation.NextLocation.m_zone = blockPhase.Player == Game.Players[0] ? m_playerFormationZoneInfo : m_opponentFormationZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = blockers.FindIndex(c => c == cc);
-
-                    cc.EnableDepth = true;
                 }
                 else if (Game.Players[0].CardsOnBattlefield.Contains(card))
                 {

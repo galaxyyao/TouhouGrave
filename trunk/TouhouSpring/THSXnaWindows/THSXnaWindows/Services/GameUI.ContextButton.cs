@@ -12,20 +12,23 @@ namespace TouhouSpring.Services
         private List<UI.Button> m_contextButtons = new List<UI.Button>();
 
         private Graphics.TexturedQuad m_buttonFace;
-        private Graphics.TextRenderer.IFormattedText[] m_buttonTexts;
         private Graphics.TextRenderer.FormatOptions m_buttonTextFormatOptions;
 
-        public void SetContextButtons(params string[] buttonTexts)
+        public void AddContextButton(string buttonText, Action<string> onClicked)
         {
-            RemoveAllContextButtons();
-            foreach (var text in buttonTexts)
+            var newButton = new UI.Button
             {
-                var newButton = CreateContextButton();
-                newButton.ButtonText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, m_buttonTextFormatOptions);
-                var leftTop = new Point(0, m_contextButtons.Count > 0 ? m_contextButtons.Last().Region.Bottom + 10 : 0);
-                newButton.Region = new Rectangle(leftTop, newButton.Region.Size);
-                m_contextButtons.Add(newButton);
-            }
+                NormalFace = m_buttonFace,
+                Dispatcher = InGameUIPage.Style.ChildIds["ContextButtons"].Target
+            };
+            newButton.ButtonText = GameApp.Service<Graphics.TextRenderer>().FormatText(buttonText, m_buttonTextFormatOptions);
+            newButton.MouseButton1Up += delegate(object sender, UI.MouseEventArgs e)
+            {
+                if (onClicked != null) { onClicked(((UI.Button)sender).ButtonText.Text); }
+            };
+            var leftTop = new Point(0, m_contextButtons.Count > 0 ? m_contextButtons.Last().Region.Bottom + 10 : 0);
+            newButton.Region = new Rectangle(leftTop, newButton.Region.Size);
+            m_contextButtons.Add(newButton);
         }
 
         public void RemoveAllContextButtons()
@@ -51,26 +54,5 @@ namespace TouhouSpring.Services
 		{
 			GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
 		}
-
-        private void ContextButtonClicked(string buttonText)
-        {
-            UIState.OnContextButton(buttonText);
-        }
-
-        private UI.Button CreateContextButton()
-        {
-            var btn = new UI.Button
-            {
-                NormalFace = m_buttonFace,
-                Dispatcher = InGameUIPage.Style.ChildIds["ContextButtons"].Target
-            };
-            btn.MouseButton1Up += ContextButton_MouseButton1Up;
-            return btn;
-        }
-
-        private void ContextButton_MouseButton1Up(object sender, UI.MouseEventArgs e)
-        {
-            ContextButtonClicked((sender as UI.Button).ButtonText.Text);
-        }
 	}
 }

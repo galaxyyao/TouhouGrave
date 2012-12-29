@@ -70,7 +70,8 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var gameui = GameApp.Service<Services.GameUI>();
-            bool needShow = gameui.IsCardSelectedForCastSpell(Control);
+            //bool needShow = gameui.IsCardSelectedForCastSpell(Control);
+            bool needShow = false;
 
             if (needShow)
             {
@@ -121,9 +122,9 @@ namespace TouhouSpring.UI.CardControlAddins
 
         private void SpellButton_MouseButton1Up(object sender, MouseEventArgs e)
         {
-            var index = m_spellButtons.IndexOf((Button)sender);
-            var spell = Card.Spells.Skip(index).First();
-            GameApp.Service<Services.GameUI>().OnSpellClicked(Control, spell);
+            //var index = m_spellButtons.IndexOf((Button)sender);
+            //var spell = Card.Spells.Skip(index).First();
+            //GameApp.Service<Services.GameUI>().OnSpellClicked(Control, spell);
         }
     }
 }

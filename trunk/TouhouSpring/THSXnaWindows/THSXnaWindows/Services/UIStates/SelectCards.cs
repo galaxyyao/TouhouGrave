@@ -30,10 +30,9 @@ namespace TouhouSpring.Services.UIStates
         public void OnEnter(Interactions.BaseInteraction io)
         {
             m_io = (Interactions.SelectCards)io;
-            GameApp.Service<ModalDialog>().Show(m_io.Message, () =>
-            {
-                m_gameUI.SetContextButtons("Skip");
-            });
+            m_gameUI.RemoveAllContextButtons();
+            m_gameUI.AddContextButton("Skip", ContextButton_OnSkip);
+            GameApp.Service<ModalDialog>().Show(m_io.Message, () => {});
         }
 
         public void OnLeave()
@@ -59,19 +58,9 @@ namespace TouhouSpring.Services.UIStates
                     m_selectedCards.Add(card);
                 }
 
-                m_gameUI.SetContextButtons(m_selectedCards.Count != 0 ? "Done" : "Skip");
+                m_gameUI.RemoveAllContextButtons();
+                m_gameUI.AddContextButton(m_selectedCards.Count != 0 ? "Done" : "Skip", ContextButton_OnSkip);
             }
-        }
-
-        public void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell)
-        {
-            throw new InvalidOperationException("Impossible");
-        }
-
-        public void OnContextButton(string buttonText)
-        {
-            m_io.Respond(m_selectedCards.ToIndexable().Clone());
-            m_gameUI.LeaveState();
         }
 
         public bool IsCardClickable(UI.CardControl cardControl)
@@ -84,9 +73,10 @@ namespace TouhouSpring.Services.UIStates
             return m_selectedCards.Contains(cardControl.Card);
         }
 
-        public bool IsCardSelectedForCastSpell(UI.CardControl cardControl)
+        private void ContextButton_OnSkip(string text)
         {
-            return false;
+            m_io.Respond(m_selectedCards.ToIndexable().Clone());
+            m_gameUI.LeaveState();
         }
     }
 }

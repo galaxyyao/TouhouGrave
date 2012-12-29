@@ -20,13 +20,8 @@ namespace TouhouSpring.UI.CardControlAddins
 
             m_quadHighlight = new Graphics.TexturedQuad(GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/CardHighlight"));
             m_quadHighlight.BlendState = new BlendState { ColorSourceBlend = Blend.SourceAlpha, ColorDestinationBlend = Blend.One };
-            m_quadHighlight.ColorToModulate = Color.Lime;
 
             m_borderBlinkTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardFloat"));
-            m_borderBlinkTrack.Elapsed += w =>
-            {
-                m_quadHighlight.ColorToModulate.A = (byte)(((Control.MouseTracked.MouseEntered ? 1.0f : w) / 2 + 0.5f) * 255);
-            };
             m_borderBlinkTrack.Loop = true;
             m_borderBlinkTrack.Play();
 
@@ -36,9 +31,16 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var gameUI = GameApp.Service<Services.GameUI>();
-            if (Control.MouseTracked.MouseEntered != m_lastMouseEntered
-                && Control != gameUI.ZoomedInCard
-                && gameUI.IsCardClickable(Control))
+            if (!Control.MouseTracked.MouseEntered)
+            {
+                m_enlargeTrack.Seek(gameUI.IsCardSelected(Control) ? m_enlargeTrack.Duration : 0);
+                if (m_enlargeTrack.IsPlaying)
+                {
+                    m_enlargeTrack.Stop();
+                }
+                m_lastMouseEntered = false;
+            }
+            else if (Control.MouseTracked.MouseEntered != m_lastMouseEntered && gameUI.IsCardClickable(Control))
             {
                 if (m_enlargeTrack.IsPlaying)
                 {
@@ -78,6 +80,12 @@ namespace TouhouSpring.UI.CardControlAddins
                 var xo = (m_quadHighlight.Texture.Width - Control.Region.Width) / 2;
                 var yo = (m_quadHighlight.Texture.Height - Control.Region.Height) / 2;
                 var region = new Rectangle(Control.Region.Left - xo, Control.Region.Top - yo, m_quadHighlight.Texture.Width, m_quadHighlight.Texture.Height);
+                var selected = gameUI.IsCardSelected(Control);
+                var color = selected ? Color.Red : Color.Lime;
+                m_quadHighlight.ColorToModulate.R = color.R;
+                m_quadHighlight.ColorToModulate.G = color.G;
+                m_quadHighlight.ColorToModulate.B = color.B;
+                m_quadHighlight.ColorToModulate.A = (byte)(selected || Control.MouseTracked.MouseEntered ? 255 : (m_borderBlinkTrack.CurrentValue / 2 + 0.5f) * 255);
 
                 e.RenderManager.Draw(m_quadHighlight, region, transform);
             }

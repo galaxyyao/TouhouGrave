@@ -15,11 +15,8 @@ namespace TouhouSpring.Services
         void OnEnter(Interactions.BaseInteraction io);
         void OnLeave();
         void OnCardClicked(UI.CardControl cardControl);
-        void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell);
-        void OnContextButton(string buttonText);
 
         bool IsCardClickable(UI.CardControl cardControl);
         bool IsCardSelected(UI.CardControl cardControl);
-        bool IsCardSelectedForCastSpell(UI.CardControl cardControl);
     }
 }

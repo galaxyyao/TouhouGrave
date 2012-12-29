@@ -111,26 +111,12 @@ namespace TouhouSpring
 			return true;
 		}
 
-        [Interactions.MessageMap.Handler(typeof(Interactions.DeclareAttackers))]
-        private bool OnDeclareAttackers(Interactions.DeclareAttackers interactionObj)
-        {
-            GameApp.Service<GameUI>().EnterState(new Services.UIStates.DeclareAttackers(), interactionObj);
-            return true;
-        }
-
         [Interactions.MessageMap.Handler(typeof(Interactions.SelectCards))]
         private bool OnSelectCards(Interactions.SelectCards interactionObj)
         {
             GameApp.Service<GameUI>().EnterState(new Services.UIStates.SelectCards(), interactionObj);
             return true;
         }
-
-		[Interactions.MessageMap.Handler(typeof(Interactions.BlockPhase))]
-		private bool OnDeclareBlockers(Interactions.BlockPhase interactionObj)
-		{
-            GameApp.Service<GameUI>().EnterState(new Services.UIStates.BlockPhase(), interactionObj);
-			return true;
-		}
 
 		[Interactions.MessageMap.Handler(typeof(Interactions.MessageBox))]
 		private bool OnMessageBox(Interactions.MessageBox interactionObj)
