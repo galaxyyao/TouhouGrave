@@ -57,9 +57,7 @@ namespace TouhouSpring
 
                 var deck = startUpParams[i].m_deck;
                 var validationResult = deck.Validate();
-                if (validationResult != Deck.ValidationResult.Okay
-                    // TODO: remove the next line when the card database is big enough
-                    && validationResult != Deck.ValidationResult.TooLessCards)
+                if (validationResult != Deck.ValidationResult.Okay)
                 {
                     throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
                         "The deck {0} is invalid: {1}", deck.Name, validationResult));

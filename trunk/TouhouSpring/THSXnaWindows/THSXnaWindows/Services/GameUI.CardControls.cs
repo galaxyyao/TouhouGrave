@@ -20,6 +20,8 @@ namespace TouhouSpring.Services
         private LocationAnimation.ZoneInfo m_opponentFormationZoneInfo;
         private LocationAnimation.ZoneInfo m_playerHeroZoneInfo;
         private LocationAnimation.ZoneInfo m_opponentHeroZoneInfo;
+        private LocationAnimation.ZoneInfo m_playerAssistsZoneInfo;
+        private LocationAnimation.ZoneInfo m_opponentAssistsZoneInfo;
         private LocationAnimation.ZoneInfo m_offboardZoneInfo;
 
         public void RegisterCard(BaseCard card)
@@ -155,6 +157,20 @@ namespace TouhouSpring.Services
             };
             m_playerHeroZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["PlayerHero"].Target };
             m_opponentHeroZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["OpponentHero"].Target };
+            m_playerAssistsZoneInfo = new LocationAnimation.ZoneInfo
+            {
+                m_container = InGameUIPage.Style.ChildIds["PlayerAssists"].Target,
+                m_width = 3f,
+                m_intervalReductionLevel = new int[] { 0 },
+                m_intervalReductionAmount = new float[] { 1.1f }
+            };
+            m_opponentAssistsZoneInfo = new LocationAnimation.ZoneInfo
+            {
+                m_container = InGameUIPage.Style.ChildIds["OpponentAssists"].Target,
+                m_width = 3f,
+                m_intervalReductionLevel = new int[] { 0 },
+                m_intervalReductionAmount = new float[] { 1.1f }
+            };
             m_offboardZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage };
         }
 
@@ -207,18 +223,6 @@ namespace TouhouSpring.Services
                     locationAnimation.NextLocation.m_zone = m_zoomedInZoneInfo;
                     locationAnimation.NextLocation.m_thisIndex = 0;
                 }
-                else if (Game.Players[0].CardsOnHand.Contains(card))
-                {
-                    locationAnimation.NextLocation.m_zone = m_playerHandZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = Game.Players[0].CardsOnHand.IndexOf(card);
-                }
-                else if (Game.Players[1].CardsOnHand.Contains(card))
-                {
-                    locationAnimation.NextLocation.m_zone = m_opponentHandZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = Game.Players[1].CardsOnHand.IndexOf(card);
-
-                    cc.EnableDepth = true;
-                }
                 else if (UIState is UIStates.DeclareAttackers
                     && (UIState as UIStates.DeclareAttackers).Selection.Contains(card))
                 {
@@ -249,31 +253,59 @@ namespace TouhouSpring.Services
                 }
                 else if (Game.Players[0].CardsOnBattlefield.Contains(card))
                 {
-                    Debug.Assert(Game.Players[0].CardsOnBattlefield.Count > 0);
-                    Debug.Assert(Game.Players[0].CardsOnBattlefield[0].Behaviors.Has<Behaviors.Hero>());
-                    locationAnimation.NextLocation.m_zone = m_playerBattlefieldZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = Game.Players[0].CardsOnBattlefield.IndexOf(card) - 1;
+                    if (card.IsHero)
+                    {
+                        locationAnimation.NextLocation.m_zone = m_playerHeroZoneInfo;
+                        locationAnimation.NextLocation.m_thisIndex = 0;
+                    }
+                    else
+                    {
+                        locationAnimation.NextLocation.m_zone = m_playerBattlefieldZoneInfo;
+                        locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnBattlefield.IndexOf(card);
+                    }
 
                     cc.EnableDepth = true;
                 }
                 else if (Game.Players[1].CardsOnBattlefield.Contains(card))
                 {
-                    Debug.Assert(Game.Players[1].CardsOnBattlefield.Count > 0);
-                    Debug.Assert(Game.Players[1].CardsOnBattlefield[0].Behaviors.Has<Behaviors.Hero>());
-                    locationAnimation.NextLocation.m_zone = m_opponentBattlefieldZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = Game.Players[1].CardsOnBattlefield.IndexOf(card) - 1;
+                    if (card.IsHero)
+                    {
+                        locationAnimation.NextLocation.m_zone = m_opponentHeroZoneInfo;
+                        locationAnimation.NextLocation.m_thisIndex = 0;
+                    }
+                    else
+                    {
+                        locationAnimation.NextLocation.m_zone = m_opponentBattlefieldZoneInfo;
+                        locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnBattlefield.IndexOf(card);
+                    }
 
                     cc.EnableDepth = true;
                 }
-                else if (Game.Players[0].Hero == card)
+                else if (Game.Players[0].CardsOnHand.Contains(card) || Game.Players[0].Hero == card)
                 {
-                    locationAnimation.NextLocation.m_zone = m_playerHeroZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = 0;
+                    locationAnimation.NextLocation.m_zone = m_playerHandZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1;
                 }
-                else if (Game.Players[1].Hero == card)
+                else if (Game.Players[1].CardsOnHand.Contains(card) || Game.Players[1].Hero == card)
                 {
-                    locationAnimation.NextLocation.m_zone = m_opponentHeroZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = 0;
+                    locationAnimation.NextLocation.m_zone = m_opponentHandZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1;
+
+                    cc.EnableDepth = true;
+                }
+                else if (Game.Players[0].Assists.Contains(card))
+                {
+                    locationAnimation.NextLocation.m_zone = m_playerAssistsZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.Assists.IndexOf(card) - 1;
+
+                    cc.EnableDepth = true;
+                }
+                else if (Game.Players[1].Assists.Contains(card))
+                {
+                    locationAnimation.NextLocation.m_zone = m_opponentAssistsZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.Assists.IndexOf(card) - 1;
+
+                    cc.EnableDepth = true;
                 }
                 // TODO: graveyard
                 else

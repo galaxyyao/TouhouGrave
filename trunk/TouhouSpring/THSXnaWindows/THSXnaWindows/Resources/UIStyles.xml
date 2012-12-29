@@ -32,19 +32,31 @@
       <!--This layer is for drawing the 3D elements of the game scene(e.g. board)-->
       <Transform Matrix="#Game.WorldCamera.Transform#" />
       <Layout Id="OpponentHand" Left="-1" Top="1">
-        <Transform Scaling="0.2,0.2,0.2" />
+        <Transform Scaling="0.2" />
+      </Layout>
+      <Layout Id="OpponentAssists" Left="-0.98" Top="0.6">
+        <Transform Scaling="0.1" />
+      </Layout>
+      <Layout Id="OpponentHero" Left="-0.9" Top="0.41">
+        <Transform Scaling="0.25" />
       </Layout>
       <Layout Id="OpponentBattlefield" Left="-1" Top="0.65">
-        <Transform Scaling="0.2,0.2,0.2" />
+        <Transform Scaling="0.2" />
       </Layout>
       <Layout Id="OpponentFormation" Left="-1" Top="0.3">
-        <Transform Scaling="0.2,0.2,0.2" />
+        <Transform Scaling="0.2" />
       </Layout>
       <Layout Id="PlayerFormation" Left="-1" Top="-0.1">
-        <Transform Scaling="0.2,0.2,0.2" />
+        <Transform Scaling="0.2" />
       </Layout>
       <Layout Id="PlayerBattlefield" Left="-1" Top="-0.45">
-        <Transform Scaling="0.2,0.2,0.2" />
+        <Transform Scaling="0.2" />
+      </Layout>
+      <Layout Id="PlayerHero" Left="-0.9" Top="-0.21">
+        <Transform Scaling="0.25" />
+      </Layout>
+      <Layout Id="PlayerAssists" Left="-0.98" Top="-0.6">
+        <Transform Scaling="0.1" />
       </Layout>
     </Layout>
     <Layout Id="World2D">
@@ -52,12 +64,6 @@
       <Transform Matrix="#Game.UICamera.Transform#" />
       <Layout Id="PlayerHand" Left="180" Top="630">
         <Transform Scaling="84,-84" />
-      </Layout>
-      <Layout Id="PlayerHero" Left="20" Top="250">
-        <Transform Scaling="125,-125" />
-      </Layout>
-      <Layout Id="OpponentHero" Left="860" Top="250">
-        <Transform Scaling="125,-125" />
       </Layout>
     </Layout>
     <Layout Id="UI">

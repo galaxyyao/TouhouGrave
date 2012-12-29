@@ -84,10 +84,11 @@ namespace TouhouSpring
             {
                 return ValidationResult.IdenticalAssists;
             }
-            else if (Count < 50)
-            {
-                return ValidationResult.TooLessCards;
-            }
+            // TODO: uncomment the next block when the card database is big enough
+            //else if (Count < 50)
+            //{
+            //    return ValidationResult.TooLessCards;
+            //}
             else if (m_cards.GroupBy(card => card).Any(grp => grp.Count() > 3))
             {
                 return ValidationResult.TooManyIdenticalCards;

@@ -79,12 +79,6 @@ namespace TouhouSpring.Services
                     var cardDb = GameApp.Service<CardDatabase>();
 
                     Deck deck1 = new Deck("MikoUnion");
-                    deck1.Add(cardDb.GetModel("alice"));
-                    deck1.Add(cardDb.GetModel("alice"));
-                    deck1.Add(cardDb.GetModel("alice"));
-                    deck1.Add(cardDb.GetModel("youmu"));
-                    deck1.Add(cardDb.GetModel("youmu"));
-                    deck1.Add(cardDb.GetModel("youmu"));
                     deck1.Add(cardDb.GetModel("chen"));
                     deck1.Add(cardDb.GetModel("chen"));
                     deck1.Add(cardDb.GetModel("chen"));
@@ -98,14 +92,11 @@ namespace TouhouSpring.Services
                     deck1.Add(cardDb.GetModel("sunny"));
                     deck1.Add(cardDb.GetModel("sunny"));
                     deck1.Hero = cardDb.GetModel("marisa");
+                    deck1.Assists.Add(cardDb.GetModel("alice"));
+                    deck1.Assists.Add(cardDb.GetModel("youmu"));
+                    deck1.Assists.Add(cardDb.GetModel("remilia"));
 
                     Deck deck2 = new Deck("MikoUnion");
-                    deck2.Add(cardDb.GetModel("sakuya"));
-                    deck2.Add(cardDb.GetModel("sakuya"));
-                    deck2.Add(cardDb.GetModel("sakuya"));
-                    deck2.Add(cardDb.GetModel("eirin"));
-                    deck2.Add(cardDb.GetModel("eirin"));
-                    deck2.Add(cardDb.GetModel("eirin"));
                     deck2.Add(cardDb.GetModel("aya"));
                     deck2.Add(cardDb.GetModel("aya"));
                     deck2.Add(cardDb.GetModel("aya"));
@@ -119,6 +110,9 @@ namespace TouhouSpring.Services
                     deck2.Add(cardDb.GetModel("lunar"));
                     deck2.Add(cardDb.GetModel("lunar"));
                     deck2.Hero = cardDb.GetModel("kaguya");
+                    deck2.Assists.Add(cardDb.GetModel("sakuya"));
+                    deck2.Assists.Add(cardDb.GetModel("eirin"));
+                    deck2.Assists.Add(cardDb.GetModel("kanako"));
 
                     param[0] = new GameStartupParameters()
                     {

@@ -14,7 +14,7 @@ namespace TouhouSpring.UI.CardControlAddins
         private bool m_lastDarken = false;
 
         public ToneAnimation(CardControl control) : base(control)
-		{
+        {
             m_saturateTrack = new Animation.LinearTrack(0.5f);
             m_saturateTrack.Elapsed += w => Control.Saturate = w;
             m_saturateTrack.PlayFrom(m_saturateTrack.Duration);
@@ -24,14 +24,14 @@ namespace TouhouSpring.UI.CardControlAddins
             m_brightnessTrack.Elapsed += w => Control.Brightness = w * 0.5f + 0.5f;
             m_brightnessTrack.PlayFrom(m_brightnessTrack.Duration);
             m_brightnessTrack.Stop();
-		}
+        }
 
         public override void Update(float deltaTime)
         {
             var gameUI = GameApp.Service<Services.GameUI>();
             bool darken = gameUI.ZoomedInCard != Control
-                             && Card.Behaviors.Has<Behaviors.Warrior>()
-                             && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown;
+                          && (Card.Behaviors.Has<Behaviors.Warrior>() && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown
+                              || Card.Owner.Assists.Contains(Card) && !Card.Owner.ActivatedAssists.Contains(Card));
 
             if (darken != m_lastDarken)
             {

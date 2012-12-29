@@ -82,11 +82,17 @@ namespace TouhouSpring.UI.CardControlAddins
                 var gameui = GameApp.Service<Services.GameUI>();
                 var playerHand = gameui.InGameUIPage.Style.ChildIds["PlayerHand"].Target;
                 var playerBattlefield = gameui.InGameUIPage.Style.ChildIds["PlayerBattlefield"].Target;
+                var playerHero = gameui.InGameUIPage.Style.ChildIds["PlayerHero"].Target;
                 var opponentHand = gameui.InGameUIPage.Style.ChildIds["OpponentHand"].Target;
                 var opponentBattlefield = gameui.InGameUIPage.Style.ChildIds["OpponentBattlefield"].Target;
+                var opponentHero = gameui.InGameUIPage.Style.ChildIds["OpponentHero"].Target;
 
-                m_playToBattlefield = NextLocation.m_zone.m_container == playerBattlefield && m_lastLocation.m_zone.m_container == playerHand
-                                      || NextLocation.m_zone.m_container == opponentBattlefield && m_lastLocation.m_zone.m_container == opponentHand;
+                m_playToBattlefield = (NextLocation.m_zone.m_container == playerBattlefield
+                                       || NextLocation.m_zone.m_container == playerHero)
+                                      && m_lastLocation.m_zone.m_container == playerHand
+                                      || (NextLocation.m_zone.m_container == opponentBattlefield
+                                          || NextLocation.m_zone.m_container == opponentHero)
+                                         && m_lastLocation.m_zone.m_container == opponentHand;
                 m_lastLocation = NextLocation;
             }
 

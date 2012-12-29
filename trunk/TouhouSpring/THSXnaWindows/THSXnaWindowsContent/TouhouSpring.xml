@@ -42,9 +42,6 @@
 战斗卡到场上。人偶无法阻挡</Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -58,8 +55,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource2" Type="TouhouSpring.EditorCardModel">
       <Id>alicedoll</Id>
@@ -89,9 +89,6 @@
 主角卡获得等量治疗</Description>
       <ArtworkUri>Textures/Characters/remilia_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -104,8 +101,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource4" Type="TouhouSpring.EditorCardModel">
       <Id>youmu</Id>
@@ -115,9 +115,6 @@
 增加值为己方场上的卡数</Description>
       <ArtworkUri>Textures/Characters/youmu_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -130,8 +127,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource5" Type="TouhouSpring.EditorCardModel">
       <Id>kanako</Id>
@@ -141,9 +141,6 @@
 防御力变为1</Description>
       <ArtworkUri>Textures/Characters/kanako_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -156,8 +153,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource6" Type="TouhouSpring.EditorCardModel">
       <Id>sakuya</Id>
@@ -166,9 +166,6 @@
 对手召唤所需消耗的灵力+1</Description>
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -181,8 +178,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource7" Type="TouhouSpring.EditorCardModel">
       <Id>eirin</Id>
@@ -191,9 +191,6 @@
 己方所有战斗卡的攻防+1</Description>
       <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -206,8 +203,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource8" Type="TouhouSpring.EditorCardModel">
       <Id>tenshi</Id>
@@ -217,9 +217,6 @@
 下一回合多回复1点灵力</Description>
       <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Support+ModelType">
-          <Name>Support</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
@@ -232,8 +229,11 @@
           <TacticalPhase>true</TacticalPhase>
           <BlockPhase>false</BlockPhase>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Supports</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource9" Type="TouhouSpring.EditorCardModel">
       <Id>reimu</Id>
