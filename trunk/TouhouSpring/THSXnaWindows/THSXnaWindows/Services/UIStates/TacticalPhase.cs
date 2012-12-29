@@ -22,8 +22,7 @@ namespace TouhouSpring.Services.UIStates
         public void OnEnter(Interactions.BaseInteraction io)
         {
             m_io = (Interactions.TacticalPhase)io;
-            m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
-            m_gameUI.AddPhaseButton(GameUI.PhaseButtonText.Draw);
+            m_gameUI.SetContextButtons("Pass");
             m_castFromCards = m_io.CastSpellCandidates.Select(spell => spell.Host).Distinct().ToArray();
         }
 
@@ -74,23 +73,11 @@ namespace TouhouSpring.Services.UIStates
                 });
         }
 
-        public void OnPhaseButton(GameUI.PhaseButtonText buttonText)
+        public void OnContextButton(string buttonText)
         {
-            if (buttonText == GameUI.PhaseButtonText.Skip)
+            if (buttonText == "Pass")
             {
                 m_io.Respond();
-            }
-            else if (buttonText == GameUI.PhaseButtonText.Draw)
-            {
-                //if (m_io.Player.Mana < 1)
-                //{
-                //    GameApp.Service<ModalDialog>().Show("Insufficient mana.", ModalDialog.Button.OK, btn => { });
-                //    return;
-                //}
-                //else
-                //{
-                //    m_io.RespondDraw();
-                //}
             }
             else
             {

@@ -16,7 +16,7 @@ namespace TouhouSpring.Services
         void OnLeave();
         void OnCardClicked(UI.CardControl cardControl);
         void OnSpellClicked(UI.CardControl cardControl, Behaviors.ICastableSpell spell);
-        void OnPhaseButton(GameUI.PhaseButtonText buttonText);
+        void OnContextButton(string buttonText);
 
         bool IsCardClickable(UI.CardControl cardControl);
         bool IsCardSelected(UI.CardControl cardControl);

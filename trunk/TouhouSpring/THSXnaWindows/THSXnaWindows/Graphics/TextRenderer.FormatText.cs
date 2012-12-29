@@ -91,12 +91,9 @@ namespace TouhouSpring.Graphics
             float currentY = 0;
 
             // ensures the last line
-            if (!text.EndsWith("\n"))
-            {
-                text += "\n";
-            }
+            string textCopy = text.EndsWith("\n") ? text : text + "\n";
 
-            var charArray = text.ToArray();
+            var charArray = textCopy.ToArray();
             var glyphs = new List<FormattedGlyph>();
             var lines = new List<FormattedText.FormattedLine>();
             var maxLineWidth = 0.0f;

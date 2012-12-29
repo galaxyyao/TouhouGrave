@@ -32,7 +32,7 @@ namespace TouhouSpring.Services.UIStates
             m_io = (Interactions.DeclareAttackers)io;
             GameApp.Service<ModalDialog>().Show(m_io.Message, () =>
             {
-                m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
+                m_gameUI.SetContextButtons("Skip");
             });
         }
 
@@ -59,7 +59,7 @@ namespace TouhouSpring.Services.UIStates
                     m_selectedCards.Add(card);
                 }
 
-                m_gameUI.SetSinglePhaseButton(m_selectedCards.Count != 0 ? GameUI.PhaseButtonText.Done : GameUI.PhaseButtonText.Skip);
+                m_gameUI.SetContextButtons(m_selectedCards.Count != 0 ? "Done" : "Skip");
             }
         }
 
@@ -68,7 +68,7 @@ namespace TouhouSpring.Services.UIStates
             throw new InvalidOperationException("Impossible");
         }
 
-        public void OnPhaseButton(GameUI.PhaseButtonText buttonText)
+        public void OnContextButton(string buttonText)
         {
             m_io.Respond(m_selectedCards.ToIndexable().Clone());
             m_gameUI.LeaveState();

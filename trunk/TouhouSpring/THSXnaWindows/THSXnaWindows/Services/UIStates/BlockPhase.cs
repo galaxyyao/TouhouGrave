@@ -54,7 +54,7 @@ namespace TouhouSpring.Services.UIStates
             m_io = (Interactions.BlockPhase)io;
             m_declaredBlockers = new UI.CardControl[m_io.DeclaredAttackers.Count][];
             m_io.DeclaredAttackers.Count.Repeat(i => m_declaredBlockers[i] = new UI.CardControl[1]);
-            m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
+            m_gameUI.SetContextButtons("Skip");
         }
 
         public void OnLeave()
@@ -136,7 +136,7 @@ namespace TouhouSpring.Services.UIStates
                         = m_markColors[attackerIndex];
                 }
 
-                m_gameUI.SetSinglePhaseButton(m_declaredBlockers.Any(ba => ba.Any(b => b != null)) ? GameUI.PhaseButtonText.Done : GameUI.PhaseButtonText.Skip);
+                m_gameUI.SetContextButtons(m_declaredBlockers.Any(ba => ba.Any(b => b != null)) ? "Done" : "Skip");
             }
         }
 
@@ -145,7 +145,7 @@ namespace TouhouSpring.Services.UIStates
             throw new InvalidOperationException("Impossible");
         }
 
-        public void OnPhaseButton(GameUI.PhaseButtonText buttonText)
+        public void OnContextButton(string buttonText)
         {
             if (m_selectedCardToPlay != null)
             {

@@ -68,7 +68,7 @@ namespace TouhouSpring.Services
             };
             UICamera.Dirty();
 
-            InitializePhaseButtons();
+            InitializeContextButton();
 
             var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle("InGame"));
             pageStyle.Initialize();
@@ -81,7 +81,7 @@ namespace TouhouSpring.Services
         {
             UnregisterAllCards();
             InGameUIPage.DisposeResources();
-            DestroyPhaseButtons();
+            DestroyContextButton();
         }
 
         public override void Update(float deltaTime)
@@ -118,7 +118,7 @@ namespace TouhouSpring.Services
             }
 
             UIState.OnLeave();
-            RemoveAllPhaseButtons();
+            RemoveAllContextButtons();
             UIState = null;
         }
 
