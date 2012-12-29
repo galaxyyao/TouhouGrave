@@ -38,7 +38,6 @@ namespace TouhouSpring.UI.CardControlAddins
                 {
                     m_enlargeTrack.Stop();
                 }
-                m_lastMouseEntered = false;
             }
             else if (Control.MouseTracked.MouseEntered != m_lastMouseEntered
                 && gameUI.IsCardClickable(Control) && !gameUI.IsCardSelected(Control))
@@ -53,9 +52,8 @@ namespace TouhouSpring.UI.CardControlAddins
                 {
                     m_enlargeTrack.Stop();
                 }
-
-                m_lastMouseEntered = Control.MouseTracked.MouseEntered;
             }
+            m_lastMouseEntered = Control.MouseTracked.MouseEntered;
 
             if (m_enlargeTrack.IsPlaying)
             {
@@ -82,7 +80,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 var yo = (m_quadHighlight.Texture.Height - Control.Region.Height) / 2;
                 var region = new Rectangle(Control.Region.Left - xo, Control.Region.Top - yo, m_quadHighlight.Texture.Width, m_quadHighlight.Texture.Height);
                 var selected = gameUI.IsCardSelected(Control);
-                var color = selected ? Color.Red : Color.Lime;
+                var color = selected ? Color.OrangeRed : Color.Lime;
                 m_quadHighlight.ColorToModulate.R = color.R;
                 m_quadHighlight.ColorToModulate.G = color.G;
                 m_quadHighlight.ColorToModulate.B = color.B;
