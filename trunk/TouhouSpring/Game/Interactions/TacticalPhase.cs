@@ -5,14 +5,15 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-    public class TacticalPhase : SelectCards
+    public class TacticalPhase : BaseInteraction
     {
         public enum Action
         {
-            DrawCard,
-            PlayCard,
-            CastSpell,
-            Skip
+            PlayCard,       // play a card (hero, assist, warrior or spell card)
+            CastSpell,      // cast a spell from a warrior on battlefield
+            Sacrifice,      // put one hand card to sacrifice zone
+            Redeem,         // return one card from sacrifice to hand
+            Pass
         }
 
         public struct Result
@@ -21,14 +22,37 @@ namespace TouhouSpring.Interactions
             public object Data;
         }
 
-        public IIndexable<Behaviors.ICastableSpell> CastFromSet
+        public Player Player
         {
             get; private set;
         }
 
+        public IIndexable<BaseCard> PlayCardCandidates
+        {
+            get; private set;
+        }
+
+        public IIndexable<Behaviors.ICastableSpell> CastSpellCandidates
+        {
+            get; private set;
+        }
+
+        public IIndexable<BaseCard> SacrificeCandidates
+        {
+            get; private set;
+        }
+
+        public IIndexable<BaseCard> RedeemCandidates
+        {
+            get; private set;
+        }
+
+        private BaseController Controller
+        {
+            get { return Player.Controller; }
+        }
+
         public TacticalPhase(Player player)
-            : base(player, ComputeFromSet(player).ToArray().ToIndexable(), SelectMode.Single,
-                   "Select a card from hand to play onto the battlefield or cast a spell from a card on battlefield.")
         {
             if (player == null)
             {
@@ -39,37 +63,51 @@ namespace TouhouSpring.Interactions
                 throw new InvalidOperationException("TacticalPhase can only be invoked on the acting player.");
             }
 
-            CastFromSet = player.CardsOnBattlefield.SelectMany(card => card.Spells)
-                                                   .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
+            Player = player;
+            PlayCardCandidates = EnumeratePlayCardCandidates()
+                                    .Where(card => player.Game.IsCardPlayable(card)).ToArray().ToIndexable();
+            CastSpellCandidates = EnumerateCastSpellCandidates()
+                                    .SelectMany(card => card.Spells)
+                                    .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
+            SacrificeCandidates = player.CardsOnHand.Clone();
+            RedeemCandidates = player.CardsSacrificed
+                                    // TODO: check the mana cost
+                                    //.Where(card => player.Game.IsCardPlayable(card))
+                                    .ToArray().ToIndexable();
         }
 
-        public new Result Run()
+        public Result Run()
         {
             var result = NotifyAndWait<Result>(Controller);
             Validate(result);
             return result;
         }
 
-        public override void Respond(IIndexable<BaseCard> selectedCards)
+        public void Respond()
         {
-            bool doSkip = selectedCards == null || selectedCards.Count == 0;
-            var result = new Result
-            {
-                ActionType = doSkip ? Action.Skip : Action.PlayCard,
-                Data = doSkip ? null : selectedCards[0]
-            };
-
-            Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(Controller, new Result { ActionType = Action.Pass });
         }
 
         public void Respond(BaseCard selectedCard)
         {
-            var result = new Result
+            if (selectedCard == null)
             {
-                ActionType = selectedCard == null ? Action.Skip : Action.PlayCard,
-                Data = selectedCard
-            };
+                throw new ArgumentNullException("selectedCard");
+            }
+
+            var result = new Result { Data = selectedCard };
+            if (PlayCardCandidates.Contains(selectedCard))
+            {
+                result.ActionType = Action.PlayCard;
+            }
+            else if (SacrificeCandidates.Contains(selectedCard))
+            {
+                result.ActionType = Action.Sacrifice;
+            }
+            else if (RedeemCandidates.Contains(selectedCard))
+            {
+                result.ActionType = Action.Redeem;
+            }
 
             Validate(result);
             RespondBack(Controller, result);
@@ -77,9 +115,14 @@ namespace TouhouSpring.Interactions
 
         public void Respond(Behaviors.ICastableSpell selectedSpell)
         {
+            if (selectedSpell == null)
+            {
+                throw new ArgumentNullException("selectedSpell");
+            }
+
             var result = new Result
             {
-                ActionType = selectedSpell == null ? Action.Skip : Action.CastSpell,
+                ActionType = Action.CastSpell,
                 Data = selectedSpell
             };
 
@@ -87,26 +130,14 @@ namespace TouhouSpring.Interactions
             RespondBack(Controller, result);
         }
 
-        public void RespondDraw()
-        {
-            RespondBack(Controller, new Result { ActionType = Action.DrawCard });
-        }
-
         protected void Validate(Result result)
         {
             switch (result.ActionType)
             {
-                case Action.Skip:
+                case Action.Pass:
                     if (result.Data != null)
                     {
-                        throw new InvalidDataException("Action Skip shall have null data.");
-                    }
-                    break;
-
-                case Action.DrawCard:
-                    if (result.Data != null)
-                    {
-                        throw new InvalidDataException("Action DrawCard shall have null data.");
+                        throw new InvalidDataException("Action Pass shall have null data.");
                     }
                     break;
 
@@ -115,17 +146,42 @@ namespace TouhouSpring.Interactions
                     {
                         throw new InvalidDataException("Action PlayCard shall have an object of BaseCard as its data.");
                     }
-                    base.Validate(new BaseCard[] { (BaseCard)result.Data }.ToIndexable());
+                    else if (!PlayCardCandidates.Contains(result.Data))
+                    {
+                        throw new InvalidDataException("Selected card can't be played.");
+                    }
                     break;
 
                 case Action.CastSpell:
                     if (!(result.Data is Behaviors.ICastableSpell))
                     {
-                        throw new InvalidDataException("Action PlayCard shall have an object of ICastableSpell as its data.");
+                        throw new InvalidDataException("Action CastSpell shall have an object of ICastableSpell as its data.");
                     }
-                    if (!CastFromSet.Contains((Behaviors.ICastableSpell)result.Data))
+                    if (!CastSpellCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected spell doesn't come from a card from player's battlefield.");
+                        throw new InvalidDataException("Selected spell can't be casted.");
+                    }
+                    break;
+
+                case Action.Sacrifice:
+                    if (!(result.Data is BaseCard))
+                    {
+                        throw new InvalidDataException("Action Sacrifice shall have an object of BaseCard as its data.");
+                    }
+                    else if (!SacrificeCandidates.Contains(result.Data))
+                    {
+                        throw new InvalidDataException("Selected card can't be sacrificed.");
+                    }
+                    break;
+
+                case Action.Redeem:
+                    if (!(result.Data is BaseCard))
+                    {
+                        throw new InvalidDataException("Action Redeem shall have an object of BaseCard as its data.");
+                    }
+                    else if (!RedeemCandidates.Contains(result.Data))
+                    {
+                        throw new InvalidDataException("Selected card can't be redeemed.");
                     }
                     break;
 
@@ -134,22 +190,34 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> ComputeFromSet(Player player)
+        private IEnumerable<BaseCard> EnumeratePlayCardCandidates()
         {
-            return GetFromSet(player).Where(card => player.Game.IsCardPlayable(card));
-        }
-
-        private static IEnumerable<BaseCard> GetFromSet(Player player)
-        {
-            foreach (var card in player.CardsOnHand)
+            if (!Player.CardsOnBattlefield.Contains(Player.Hero))
+            {
+                yield return Player.Hero;
+            }
+            foreach (var card in Player.Assists)
+            {
+                if (!Player.ActivatedAssists.Contains(card))
+                {
+                    yield return card;
+                }
+            }
+            foreach (var card in Player.CardsOnHand)
             {
                 yield return card;
             }
+        }
 
-            if (!player.CardsOnBattlefield.Contains(player.Hero))
+        private IEnumerable<BaseCard> EnumerateCastSpellCandidates()
+        {
+            foreach (var card in Player.ActivatedAssists)
             {
-                // hero card is not on battlefield
-                yield return player.Hero;
+                yield return card;
+            }
+            foreach (var card in Player.CardsOnBattlefield)
+            {
+                yield return card;
             }
         }
     }

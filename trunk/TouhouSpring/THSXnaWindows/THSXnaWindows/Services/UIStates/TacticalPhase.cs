@@ -24,7 +24,7 @@ namespace TouhouSpring.Services.UIStates
             m_io = (Interactions.TacticalPhase)io;
             m_gameUI.SetSinglePhaseButton(GameUI.PhaseButtonText.Skip);
             m_gameUI.AddPhaseButton(GameUI.PhaseButtonText.Draw);
-            m_castFromCards = m_io.CastFromSet.Select(spell => spell.Host).Distinct().ToArray();
+            m_castFromCards = m_io.CastSpellCandidates.Select(spell => spell.Host).Distinct().ToArray();
         }
 
         public void OnLeave()
@@ -35,7 +35,7 @@ namespace TouhouSpring.Services.UIStates
         {
             var card = cardControl.Card;
 
-            if (m_io.SelectFromSet.Contains(card))
+            if (m_io.PlayCardCandidates.Contains(card))
             {
                 GameApp.Service<ModalDialog>().Show(
                     String.Format(CultureInfo.CurrentCulture, "Play {0}?", card.Model.Name),
@@ -78,19 +78,19 @@ namespace TouhouSpring.Services.UIStates
         {
             if (buttonText == GameUI.PhaseButtonText.Skip)
             {
-                m_io.Respond((BaseCard)null);
+                m_io.Respond();
             }
             else if (buttonText == GameUI.PhaseButtonText.Draw)
             {
-                if (m_io.Player.Mana < 1)
-                {
-                    GameApp.Service<ModalDialog>().Show("Insufficient mana.", ModalDialog.Button.OK, btn => { });
-                    return;
-                }
-                else
-                {
-                    m_io.RespondDraw();
-                }
+                //if (m_io.Player.Mana < 1)
+                //{
+                //    GameApp.Service<ModalDialog>().Show("Insufficient mana.", ModalDialog.Button.OK, btn => { });
+                //    return;
+                //}
+                //else
+                //{
+                //    m_io.RespondDraw();
+                //}
             }
             else
             {
@@ -102,7 +102,10 @@ namespace TouhouSpring.Services.UIStates
         public bool IsCardClickable(UI.CardControl cardControl)
         {
             var card = cardControl.Card;
-            return m_io.SelectFromSet.Contains(card) || m_castFromCards.Contains(card);
+            return m_io.PlayCardCandidates.Contains(card)
+                   || m_castFromCards.Contains(card)
+                   || m_io.SacrificeCandidates.Contains(card)
+                   || m_io.RedeemCandidates.Contains(card);
         }
 
         public bool IsCardSelected(UI.CardControl cardControl)

@@ -59,13 +59,12 @@ namespace TouhouSpring
                         Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
                         IssueCommandsAndFlush(new Commands.CastSpell(spellToCast));
                     }
-                    else if (result.ActionType == TacticalPhase.Action.DrawCard)
+                    else if (result.ActionType == TacticalPhase.Action.Sacrifice
+                        || result.ActionType == TacticalPhase.Action.Redeem)
                     {
-                        IssueCommandsAndFlush(
-                            new Commands.UpdateMana(ActingPlayer, -1, this),
-                            new Commands.DrawCard(ActingPlayer));
+                        throw new NotImplementedException();
                     }
-                    else if (result.ActionType == TacticalPhase.Action.Skip)
+                    else if (result.ActionType == TacticalPhase.Action.Pass)
                     {
                         break;
                     }
@@ -74,37 +73,6 @@ namespace TouhouSpring
                         throw new InvalidDataException();
                     }
                 }
-
-                CurrentPhase = "Combat/Attack";
-                IssueCommandsAndFlush(new Commands.StartAttackPhase { });
-                var declaredAttackers = new Interactions.DeclareAttackers(ActingPlayer).Run().Clone();
-
-                CurrentPhase = "Combat/Block";
-                IssueCommandsAndFlush(new Commands.StartBlockPhase { });
-                IIndexable<IIndexable<BaseCard>> declaredBlockers;
-                while (true)
-                {
-                    var opponentPlayer = ActingPlayerEnemies.First(); // TODO: multiplayer game
-                    var result = new Interactions.BlockPhase(opponentPlayer, declaredAttackers).Run();
-                    if (result.ActionType == BlockPhase.Action.ConfirmBlock)
-                    {
-                        declaredBlockers = (result.Data as IIndexable<IIndexable<BaseCard>>).Clone(e => e.Clone());
-                        break;
-                    }
-                    else if (result.ActionType == BlockPhase.Action.PlayCard)
-                    {
-                        var cardToPlay = (BaseCard)result.Data;
-                        Debug.Assert(cardToPlay.Owner == opponentPlayer);
-                        IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
-                    }
-                    else
-                    {
-                        throw new InvalidDataException();
-                    }
-                }
-
-                CurrentPhase = "Combat/Resolve";
-                ResolveCombat(declaredAttackers, declaredBlockers);
 
                 CurrentPhase = "PhaseB";
                 IssueCommandsAndFlush(

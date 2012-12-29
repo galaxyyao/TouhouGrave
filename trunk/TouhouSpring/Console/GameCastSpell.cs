@@ -34,7 +34,7 @@ namespace TouhouSpring
 
             var io = Program.ActiveInteraction as Interactions.TacticalPhase;
 
-            if (spellNo >= io.CastFromSet.Count)
+            if (spellNo >= io.CastSpellCandidates.Count)
             {
                 Console.WriteLine("ERROR: Can't find spell.");
                 Console.WriteLine("Type Game.CastFrom to get the list of castable spells.");
@@ -44,11 +44,11 @@ namespace TouhouSpring
 
             while (true)
             {
-                Console.Write("?? Cast {0} (Y/N) ? ", io.CastFromSet[spellNo].Model.Name);
+                Console.Write("?? Cast {0} (Y/N) ? ", io.CastSpellCandidates[spellNo].Model.Name);
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "y" || choice == "yes")
                 {
-                    ((Interactions.TacticalPhase)Program.ActiveInteraction).Respond(io.CastFromSet[spellNo]);
+                    ((Interactions.TacticalPhase)Program.ActiveInteraction).Respond(io.CastSpellCandidates[spellNo]);
                     Program.ActiveInteraction = null;
                     break;
                 }

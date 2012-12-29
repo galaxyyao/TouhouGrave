@@ -92,7 +92,6 @@ namespace TouhouSpring
         [Interactions.MessageMap.Handler(typeof(Interactions.TacticalPhase))]
         private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
         {
-            Console.WriteLine(interactionObj.Message);
             Debug.Assert(Program.ActiveInteraction == null);
             Program.ActiveInteraction = interactionObj;
             return true;

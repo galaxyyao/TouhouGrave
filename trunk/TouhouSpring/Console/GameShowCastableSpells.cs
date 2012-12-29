@@ -22,7 +22,7 @@ namespace TouhouSpring
             }
 
             var io = Program.ActiveInteraction as Interactions.TacticalPhase;
-            var spells = io.CastFromSet;
+            var spells = io.CastSpellCandidates;
 
             for (int i = 0; i < spells.Count; ++i)
             {
