@@ -12,8 +12,7 @@ namespace TouhouSpring
     {
         public Player Winner
         {
-            get;
-            private set;
+            get; private set;
         }
 
         private void Main()
@@ -42,11 +41,12 @@ namespace TouhouSpring
                         new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
                 IssueCommandsAndFlush(new Commands.StartTurn { });
 
+                bool didSacrifice = false;
                 CurrentPhase = "Tactical";
 
                 while (true)
                 {
-                    var result = new Interactions.TacticalPhase(ActingPlayer).Run();
+                    var result = new Interactions.TacticalPhase(ActingPlayer, !didSacrifice).Run();
                     if (result.ActionType == TacticalPhase.Action.PlayCard)
                     {
                         var cardToPlay = (BaseCard)result.Data;
@@ -71,6 +71,7 @@ namespace TouhouSpring
                         IssueCommandsAndFlush(
                             new Commands.Sacrifice(cardToSacrifice),
                             new Commands.UpdateMana(ActingPlayer, 1, this));
+                        didSacrifice = true;
                     }
                     else if (result.ActionType == TacticalPhase.Action.Redeem)
                     {

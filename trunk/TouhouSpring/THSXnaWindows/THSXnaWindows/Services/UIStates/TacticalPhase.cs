@@ -57,7 +57,7 @@ namespace TouhouSpring.Services.UIStates
             {
                 if (card.Behaviors.Has<Behaviors.Warrior>())
                 {
-                    m_gameUI.AddContextButton("Deploy", ContextButton_OnPlay);
+                    m_gameUI.AddContextButton("Summon", ContextButton_OnPlay);
                 }
                 else if (card.Behaviors.Has<Behaviors.Instant>())
                 {

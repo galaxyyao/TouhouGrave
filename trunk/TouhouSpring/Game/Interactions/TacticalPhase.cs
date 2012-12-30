@@ -30,6 +30,11 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
+        public bool CanSacrifice
+        {
+            get; private set;
+        }
+
         public IIndexable<BaseCard> PlayCardCandidates
         {
             get; private set;
@@ -70,7 +75,7 @@ namespace TouhouSpring.Interactions
             get { return Player.Controller; }
         }
 
-        public TacticalPhase(Player player)
+        public TacticalPhase(Player player, bool canSacrifice)
         {
             if (player == null)
             {
@@ -82,13 +87,14 @@ namespace TouhouSpring.Interactions
             }
 
             Player = player;
+            CanSacrifice = canSacrifice;
             PlayCardCandidates = EnumeratePlayCardCandidates()
                                     .Where(card => player.Game.IsCardPlayable(card)).ToArray().ToIndexable();
             ActivateAssistCandidates = EnumerateActivateAssistCandidates()
                                     .Where(card => player.Game.IsCardActivatable(card)).ToArray().ToIndexable();
             CastSpellCandidates = EnumerateCastSpellCandidates().SelectMany(card => card.Spells)
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
-            SacrificeCandidates = player.CardsOnHand.Clone();
+            SacrificeCandidates = canSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
             RedeemCandidates = player.CardsSacrificed
                                     .Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable();
             AttackerCandidates = EnumerateAttackerCandidates().ToArray().ToIndexable();
