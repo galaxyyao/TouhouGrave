@@ -95,16 +95,20 @@ namespace TouhouSpring.UI.CardControlAddins
                 var gameui = GameApp.Service<Services.GameUI>();
                 var playerHand = gameui.InGameUIPage.Style.ChildIds["PlayerHand"].Target;
                 var playerBattlefield = gameui.InGameUIPage.Style.ChildIds["PlayerBattlefield"].Target;
+                var playerHero = gameui.InGameUIPage.Style.ChildIds["PlayerHero"].Target;
                 var playerSacrifice = gameui.InGameUIPage.Style.ChildIds["PlayerSacrifice"].Target;
                 var opponentHand = gameui.InGameUIPage.Style.ChildIds["OpponentHand"].Target;
                 var opponentBattlefield = gameui.InGameUIPage.Style.ChildIds["OpponentBattlefield"].Target;
+                var opponentHero = gameui.InGameUIPage.Style.ChildIds["OpponentHero"].Target;
                 var opponentSacrifice = gameui.InGameUIPage.Style.ChildIds["OpponentSacrifice"].Target;
 
                 m_playToBattlefield = (NextLocation.m_zone.m_container == playerBattlefield
-                                       || NextLocation.m_zone.m_container == playerSacrifice)
+                                       || NextLocation.m_zone.m_container == playerSacrifice
+                                       || NextLocation.m_zone.m_container == playerHero)
                                       && m_lastLocation.m_zone.m_container == playerHand
                                       || (NextLocation.m_zone.m_container == opponentBattlefield
-                                          || NextLocation.m_zone.m_container == opponentSacrifice)
+                                          || NextLocation.m_zone.m_container == opponentSacrifice
+                                          || NextLocation.m_zone.m_container == opponentHero)
                                          && m_lastLocation.m_zone.m_container == opponentHand;
                 m_lastLocation = NextLocation;
             }
@@ -117,8 +121,7 @@ namespace TouhouSpring.UI.CardControlAddins
             m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);
             m_localFrame.Col3 = new Vector4(transform.M14, transform.M24, transform.M34, transform.M44);
 
-            bool activated = Card.IsHero && Card.Owner.CardsOnBattlefield.Contains(Card)
-                             || Card.IsAssist && Card.Owner.ActivatedAssist == Card;
+            bool activated = Card.IsAssist && Card.Owner.ActivatedAssist == Card;
             if (activated != m_lastActivated)
             {
                 if (m_activateEffectTimer.IsPlaying)
