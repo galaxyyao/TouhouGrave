@@ -10,17 +10,15 @@ namespace TouhouSpring.Behaviors
         IPrologTrigger<Commands.RemoveBehavior>
     {
         private Warrior.ValueModifier m_attackModifier;
-        private Warrior.ValueModifier m_defenseModifier;
 
-        public Enhance(int attackMod, int defenseMod)
+        public Enhance(int attackMod)
         {
-            if (attackMod == 0 && defenseMod == 0)
+            if (attackMod == 0)
             {
-                throw new ArgumentException("Attack and defense must not both be zero.");
+                throw new ArgumentException("Attack must not be zero.");
             }
 
             m_attackModifier = attackMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, attackMod) : null;
-            m_defenseModifier = defenseMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, defenseMod) : null;
         }
 
         void IEpilogTrigger<Commands.AddBehavior>.Run(Commands.AddBehavior command)
@@ -36,18 +34,10 @@ namespace TouhouSpring.Behaviors
                             "AttackModifiers",
                             new object[] { "add", m_attackModifier }));
                     }
-                    if (m_defenseModifier != null)
-                    {
-                        Game.IssueCommands(new Commands.SendBehaviorMessage(
-                            command.Target.Behaviors.Get<Warrior>(),
-                            "DefenseModifiers",
-                            new object[] { "add", m_defenseModifier }));
-                    }
                 }
                 else
                 {
                     m_attackModifier = null;
-                    m_defenseModifier = null;
                 }
             }
         }
@@ -63,14 +53,6 @@ namespace TouhouSpring.Behaviors
                         "AttackModifiers",
                         new object[] { "remove", m_attackModifier }));
                     m_attackModifier = null;
-                }
-                if (m_defenseModifier != null)
-                {
-                    Game.IssueCommands(new Commands.SendBehaviorMessage(
-                        Host.Behaviors.Get<Warrior>(),
-                        "DefenseModifiers",
-                        new object[] { "remove", m_defenseModifier }));
-                    m_defenseModifier = null;
                 }
             }
         }

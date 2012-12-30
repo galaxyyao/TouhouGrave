@@ -73,7 +73,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Defense>1</Defense>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>
@@ -249,7 +249,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Defense>30</Defense>
+          <Life>30</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Spell_PreventAllDamageInOneRound+ModelType">
           <Name>梦想封印</Name>
@@ -279,7 +279,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Defense>30</Defense>
+          <Life>30</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
@@ -310,7 +310,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Defense>30</Defense>
+          <Life>30</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
@@ -341,7 +341,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Defense>30</Defense>
+          <Life>30</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
           <Name>PhaseSpecific</Name>
@@ -365,7 +365,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>0</Attack>
-          <Defense>4</Defense>
+          <Life>4</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -378,9 +378,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorDefenseDownWhenAttacked+ModelType">
-          <Name>日光折射</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -395,7 +392,7 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Defense>2</Defense>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -426,7 +423,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Defense>2</Defense>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -457,7 +454,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Defense>1</Defense>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -487,7 +484,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>2</Attack>
-          <Defense>2</Defense>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -518,7 +515,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>2</Attack>
-          <Defense>1</Defense>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -551,7 +548,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>2</Attack>
-          <Defense>2</Defense>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -580,7 +577,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>2</Attack>
-          <Defense>2</Defense>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -608,7 +605,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>2</Attack>
-          <Defense>1</Defense>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -621,9 +618,6 @@ X等于己方场上本卡的数量</Description>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAttackFirst+ModelType">
-          <Name>风神</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -638,7 +632,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Defense>1</Defense>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -715,7 +709,6 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Assault_SingleWarriorBoostForXRounds+ModelType">
           <Name>鬼神</Name>
           <AttackBoost>2</AttackBoost>
-          <DefenseBoost>2</DefenseBoost>
           <Duration>1</Duration>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
@@ -860,7 +853,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Defense>30</Defense>
+          <Life>30</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
           <Name>NonBlocker</Name>

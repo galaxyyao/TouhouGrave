@@ -60,7 +60,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Target.Behaviors.Get<Behaviors.Warrior>().AccumulatedDamage += DamageToDeal;
+            Target.Behaviors.Get<Behaviors.Warrior>().Life -= DamageToDeal;
         }
     }
 }

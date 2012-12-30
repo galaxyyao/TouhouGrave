@@ -28,10 +28,10 @@ namespace TouhouSpring.UI
                         replacement = "";
                     }
                     break;
-                case "Card.InitialDefense":
+                case "Card.InitialLife":
                     if (warrior != null)
                     {
-                        replacement = warrior.InitialDefense.ToString();
+                        replacement = warrior.InitialLife.ToString();
                     }
                     else
                     {
@@ -54,7 +54,7 @@ namespace TouhouSpring.UI
                     {
                         replacement = "战士";
                     }
-                    else if (Card.Behaviors.Has<Behaviors.Support>())
+                    else if (Card.Behaviors.Has<Behaviors.Assist>())
                     {
                         replacement = "支援";
                     }
@@ -72,18 +72,13 @@ namespace TouhouSpring.UI
                     {
                         var attackColor = warrior.Attack > warrior.InitialAttack
                                           ? "Green" : warrior.Attack < warrior.InitialAttack ? "Red" : "Black";
-                        var defenseColor = warrior.Defense > warrior.InitialDefense
-                                           ? "Green" : warrior.Defense < warrior.InitialDefense ? "Red" : "Black";
                         var sb = new StringBuilder();
                         sb.Append("[color:");
                         sb.Append(attackColor);
                         sb.Append("]");
                         sb.Append(warrior.Attack.ToString());
-                        sb.Append("[/color] [color:Black]|[/color] [color:");
-                        sb.Append(defenseColor);
-                        sb.Append("]");
-                        sb.Append(warrior.Defense.ToString());
-                        sb.Append("[/color]");
+                        sb.Append("[/color] [color:Black]| ");
+                        sb.Append(warrior.Life.ToString());
                         replacement = sb.ToString();
                     }
                     else

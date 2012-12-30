@@ -66,6 +66,5 @@ namespace TouhouSpring.Behaviors
         }
 
         private List<ValueModifier> m_attackModifers = new List<ValueModifier>();
-        private List<ValueModifier> m_defenseModifiers = new List<ValueModifier>();
     }
 }

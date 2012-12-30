@@ -110,9 +110,7 @@ namespace TouhouSpring
                 }
 
                 CurrentPhase = "PhaseB";
-                IssueCommandsAndFlush(
-                    new Commands.ResetAccumulatedDamage(),
-                    new Commands.EndTurn());
+                IssueCommandsAndFlush(new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;

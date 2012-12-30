@@ -26,9 +26,10 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
-        public int Defense
+        // set by DealDamageToCard
+        public int Life
         {
-            get; private set;
+            get; internal set;
         }
 
         public int InitialAttack
@@ -36,15 +37,9 @@ namespace TouhouSpring.Behaviors
             get { return Model.Attack; }
         }
 
-        public int InitialDefense
+        public int InitialLife
         {
-            get { return Model.Defense; }
-        }
-
-        // set by DealDamageToCard and ResetAccumulatedDamage command
-        public int AccumulatedDamage
-        {
-            get; internal set;
+            get { return Model.Life; }
         }
 
         public IList<BaseCard> Equipments
@@ -58,10 +53,8 @@ namespace TouhouSpring.Behaviors
             {
                 State = WarriorState.StandingBy;
                 m_attackModifers.Clear();
-                m_defenseModifiers.Clear();
                 Attack = Model.Attack;
-                Defense = Model.Defense;
-                AccumulatedDamage = 0;
+                Life = Model.Life;
                 Equipments.Clear();
             }
         }
@@ -70,7 +63,7 @@ namespace TouhouSpring.Behaviors
         {
             State = WarriorState.StandingBy;
             Attack = Model.Attack;
-            Defense = Model.Defense;
+            Life = Model.Life;
             Equipments = new List<BaseCard>();
         }
 
@@ -121,40 +114,13 @@ namespace TouhouSpring.Behaviors
                 }
                 Attack = m_attackModifers.Aggregate(InitialAttack, (i, v) => v.Process(i));
             }
-            else if (message == "DefenseModifiers")
-            {
-                if (args == null || args.Length != 2
-                    || args[0].GetType() != typeof(string) || args[1].GetType() != typeof(ValueModifier))
-                {
-                    throw new ArgumentException("Formation of args is not expected.");
-                }
-                if ((string)args[0] == "add")
-                {
-                    var mod = (ValueModifier)args[1];
-                    if (m_defenseModifiers.Contains(mod))
-                    {
-                        throw new ArgumentException("The modifier has already been added.");
-                    }
-                    m_defenseModifiers.Add(mod);
-                }
-                else if ((string)args[0] == "remove")
-                {
-                    var mod = (ValueModifier)args[1];
-                    if (!m_defenseModifiers.Contains(mod))
-                    {
-                        throw new ArgumentException("The modifier has not been added.");
-                    }
-                    m_defenseModifiers.Remove(mod);
-                }
-                Defense = m_defenseModifiers.Aggregate(InitialDefense, (i, v) => v.Process(i));
-            }
         }
 
         [BehaviorModel(typeof(Warrior), Category = "Core", Description = "The card is capable of being engaged into combats.")]
         public class ModelType : BehaviorModel
         {
             public int Attack { get; set; }
-            public int Defense { get; set; }
+            public int Life { get; set; }
         }
     }
 }

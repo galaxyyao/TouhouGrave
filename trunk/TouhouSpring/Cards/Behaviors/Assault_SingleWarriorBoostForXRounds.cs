@@ -34,7 +34,7 @@ namespace TouhouSpring.Behaviors
                     Host.Owner,
                     Host.Owner.CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
                     Interactions.SelectCards.SelectMode.Single,
-                    "Select a card to boost its attack and defense.").Run();
+                    "Select a card to boost its attack.").Run();
 
                 if (selectedCard.Count == 0)
                 {
@@ -56,10 +56,10 @@ namespace TouhouSpring.Behaviors
                     throw new InvalidOperationException("Internal error: no target is selected.");
                 }
 
-                if (Model.AttackBoost > 0 || Model.DefenseBoost > 0)
+                if (Model.AttackBoost > 0 )
                 {
                     var lasting = new LastingEffect(Model.Duration);
-                    var enhanceMod = new Enhance(Model.AttackBoost, Model.DefenseBoost);
+                    var enhanceMod = new Enhance(Model.AttackBoost);
                     lasting.CleanUps.Add(enhanceMod);
                     Game.IssueCommands(
                         new Commands.AddBehavior(m_castTarget, enhanceMod),
@@ -72,7 +72,6 @@ namespace TouhouSpring.Behaviors
         public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }
-            public int DefenseBoost { get; set; }
             public int Duration { get; set; }
         }
     }

@@ -22,7 +22,7 @@ namespace TouhouSpring.Commands
                             .Where(card => card.Behaviors.Has<Behaviors.Warrior>()))
             {
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                if (warrior.Defense <= warrior.AccumulatedDamage)
+                if (warrior.Life <= 0)
                 {
                     Game.IssueCommands(new Commands.Kill(card, null));
                 }

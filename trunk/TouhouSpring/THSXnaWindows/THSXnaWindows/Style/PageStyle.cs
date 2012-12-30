@@ -8,71 +8,71 @@ using TouhouSpring.UI;
 
 namespace TouhouSpring.Style
 {
-	class PageStyle : BaseStyleContainer, IBindingProvider
-	{
-		public Page TypedTarget
-		{
-			get { return (Page)Target; }
-		}
+    class PageStyle : BaseStyleContainer, IBindingProvider
+    {
+        public Page TypedTarget
+        {
+            get { return (Page)Target; }
+        }
 
-		public override IEnumerable<IBindingProvider> BindingProviders
-		{
-			get { yield return this; }
-		}
+        public override IEnumerable<IBindingProvider> BindingProviders
+        {
+            get { yield return this; }
+        }
 
-		public override Rectangle Bounds
-		{
-			get { return new Rectangle(0, 0, TypedTarget.Width, TypedTarget.Height); }
-			protected set { throw new NotSupportedException(); }
-		}
+        public override Rectangle Bounds
+        {
+            get { return new Rectangle(0, 0, TypedTarget.Width, TypedTarget.Height); }
+            protected set { throw new NotSupportedException(); }
+        }
 
-		public PageStyle(XElement definition)
-			: base(null, definition)
-		{ }
+        public PageStyle(XElement definition)
+            : base(null, definition)
+        { }
 
-		public override void Initialize()
-		{
-			PreInitialize(() => new Page(this));
+        public override void Initialize()
+        {
+            PreInitialize(() => new Page(this));
 
-			if (Definition == null)
-			{
-				return;
-			}
+            if (Definition == null)
+            {
+                return;
+            }
 
-			foreach (var childElement in Definition.Elements())
-			{
-				if (childElement.Name == "Image")
-				{
-					AddChildAndInitialize(new ImageStyle(this, childElement));
-				}
-				else if (childElement.Name == "Label")
-				{
-					AddChildAndInitialize(new LabelStyle(this, childElement));
-				}
-				else if (childElement.Name == "Layout")
-				{
-					AddChildAndInitialize(new LayoutGizmo(this, childElement));
-				}
-				else if (childElement.Name == "Menu")
-				{
-					AddChildAndInitialize(new MenuStyle(this, childElement));
-				}
+            foreach (var childElement in Definition.Elements())
+            {
+                if (childElement.Name == "Image")
+                {
+                    AddChildAndInitialize(new ImageStyle(this, childElement));
+                }
+                else if (childElement.Name == "Label")
+                {
+                    AddChildAndInitialize(new LabelStyle(this, childElement));
+                }
+                else if (childElement.Name == "Layout")
+                {
+                    AddChildAndInitialize(new LayoutGizmo(this, childElement));
+                }
+                else if (childElement.Name == "Menu")
+                {
+                    AddChildAndInitialize(new MenuStyle(this, childElement));
+                }
                 else if (childElement.Name == "Panel")
                 {
                     AddChildAndInitialize(new PanelStyle(this, childElement));
                 }
-			}
-		}
+            }
+        }
 
-		public bool TryGetValue(string id, out string replacement)
-		{
-			var game = GameApp.Service<Services.GameManager>().Game;
+        public bool TryGetValue(string id, out string replacement)
+        {
+            var game = GameApp.Service<Services.GameManager>().Game;
             var gameui = GameApp.Service<Services.GameUI>();
-			switch (id)
-			{
-				case "Game.AlignToScreenTransform":
-					replacement = gameui.WorldCamera.AlignToNearPlaneMatrix.Serialize();
-					break;
+            switch (id)
+            {
+                case "Game.AlignToScreenTransform":
+                    replacement = gameui.WorldCamera.AlignToNearPlaneMatrix.Serialize();
+                    break;
                 case "Game.DetailText1":
                     replacement = gameui.ZoomedInCard != null
                                   ? gameui.ZoomedInCard.Card.Model.Name : "";
@@ -86,15 +86,10 @@ namespace TouhouSpring.Style
                         {
                             sb.Append("召唤消耗　【[color:Red]#Card.SummonCost#[/color]】 灵力\n");
                         }
-                        if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.Hero>())
+                        if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.Warrior>())
                         {
                             sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
-                            sb.Append("体力　　　【[color:Red]#Card.InitialDefense#[/color]】\n");
-                        }
-                        else if (gameui.ZoomedInCard.Card.Behaviors.Has<Behaviors.Warrior>())
-                        {
-                            sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
-                            sb.Append("防御力　　【[color:Red]#Card.InitialDefense#[/color]】\n");
+                            sb.Append("体力　　　【[color:Red]#Card.InitialLife#[/color]】\n");
                         }
                         sb.Append("\n");
                         sb.Append(gameui.ZoomedInCard.Card.Model.Description);
@@ -105,23 +100,23 @@ namespace TouhouSpring.Style
                         replacement = "";
                     }
                     break;
-				case "Game.Phase":
-					replacement = game.CurrentPhase;
-					break;
-				case "Game.Player0.Avatar":
-					replacement = "Textures/Yozora";
-					break;
-				case "Game.Player0.AvatarBorder":
-					replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[0]
-								  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
-					break;
-				case "Game.Player0.Name":
-					replacement = game.InPlayerPhases ? game.Players[0].Name : "...";
-					break;
-				case "Game.Player0.Health":
-					replacement = game.InPlayerPhases ? game.Players[0].Health.ToString() : "...";
-					break;
-				case "Game.Player0.ManaPoolText":
+                case "Game.Phase":
+                    replacement = game.CurrentPhase;
+                    break;
+                case "Game.Player0.Avatar":
+                    replacement = "Textures/Yozora";
+                    break;
+                case "Game.Player0.AvatarBorder":
+                    replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[0]
+                                  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
+                    break;
+                case "Game.Player0.Name":
+                    replacement = game.InPlayerPhases ? game.Players[0].Name : "...";
+                    break;
+                case "Game.Player0.Health":
+                    replacement = game.InPlayerPhases ? game.Players[0].Health.ToString() : "...";
+                    break;
+                case "Game.Player0.ManaPoolText":
                     if (game.InPlayerPhases)
                     {
                         if (game.Players[0].Mana == 0 && game.Players[0].MaxMana == 0)
@@ -138,20 +133,20 @@ namespace TouhouSpring.Style
                         replacement = "...";
                     }
                     break;
-				case "Game.Player1.Avatar":
-					replacement = "Textures/Sena";
-					break;
-				case "Game.Player1.AvatarBorder":
-					replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[1]
-								  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
-					break;
-				case "Game.Player1.Name":
-					replacement = game.InPlayerPhases ? game.Players[1].Name : "...";
-					break;
-				case "Game.Player1.Health":
-					replacement = game.InPlayerPhases ? game.Players[1].Health.ToString() : "...";
-					break;
-				case "Game.Player1.ManaPoolText":
+                case "Game.Player1.Avatar":
+                    replacement = "Textures/Sena";
+                    break;
+                case "Game.Player1.AvatarBorder":
+                    replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[1]
+                                  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
+                    break;
+                case "Game.Player1.Name":
+                    replacement = game.InPlayerPhases ? game.Players[1].Name : "...";
+                    break;
+                case "Game.Player1.Health":
+                    replacement = game.InPlayerPhases ? game.Players[1].Health.ToString() : "...";
+                    break;
+                case "Game.Player1.ManaPoolText":
                     if (game.InPlayerPhases)
                     {
                         if (game.Players[1].Mana == 0 && game.Players[1].MaxMana == 0)
@@ -168,31 +163,31 @@ namespace TouhouSpring.Style
                         replacement = "...";
                     }
                     break;
-				case "Game.ResolutionWidth":
-					replacement = GameApp.Instance.GraphicsDevice.Viewport.Width.ToString();
-					break;
-				case "Game.ResolutionHeight":
-					replacement = GameApp.Instance.GraphicsDevice.Viewport.Height.ToString();
-					break;
-				case "Game.UICamera.Transform":
-					replacement = gameui.UICamera.WorldToProjectionMatrix.Serialize();
-					break;
-				case "Game.WorldCamera.Transform":
-					replacement = gameui.WorldCamera.WorldToProjectionMatrix.Serialize();
-					break;
+                case "Game.ResolutionWidth":
+                    replacement = GameApp.Instance.GraphicsDevice.Viewport.Width.ToString();
+                    break;
+                case "Game.ResolutionHeight":
+                    replacement = GameApp.Instance.GraphicsDevice.Viewport.Height.ToString();
+                    break;
+                case "Game.UICamera.Transform":
+                    replacement = gameui.UICamera.WorldToProjectionMatrix.Serialize();
+                    break;
+                case "Game.WorldCamera.Transform":
+                    replacement = gameui.WorldCamera.WorldToProjectionMatrix.Serialize();
+                    break;
                 case "Conversation.CurrentText":
                     replacement = GameApp.Service<Services.ConversationUI>().CurrentText;
                     break;
-				default:
+                default:
                     if (id.StartsWith("Card.") && gameui.ZoomedInCard != null)
                     {
                         return gameui.ZoomedInCard.TryGetValue(id, out replacement);
                     }
-					replacement = null;
-					return false;
-			}
+                    replacement = null;
+                    return false;
+            }
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 }

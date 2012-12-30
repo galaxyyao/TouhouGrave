@@ -61,6 +61,8 @@
     <None Include="Behaviors\Deprecated\CardTransfer.cs" />
     <None Include="Behaviors\Deprecated\SkillCharge.cs" />
     <None Include="Behaviors\Deprecated\SkillMustBeCharged.cs" />
+    <None Include="Behaviors\Deprecated\Passive_WarriorAttackFirst.cs" />
+    <None Include="Behaviors\Deprecated\Passive_WarriorDefenseDownWhenAttacked.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\PhaseSpecific.cs" />
@@ -79,8 +81,6 @@
     <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
     <Compile Include="Behaviors\Passive_WarriorAlwaysStandBy.cs" />
     <Compile Include="Behaviors\Passive_WarriorAttackAndDefenseUpWhenAttackedHero.cs" />
-    <Compile Include="Behaviors\Passive_WarriorAttackFirst.cs" />
-    <Compile Include="Behaviors\Passive_WarriorDefenseDownWhenAttacked.cs" />
     <Compile Include="Behaviors\Passive_HeroPenetrate.cs" />
     <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />

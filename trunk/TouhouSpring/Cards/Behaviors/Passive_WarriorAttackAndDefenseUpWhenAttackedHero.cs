@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.Cause == Host)
             {
-                Game.IssueCommands(new Commands.AddBehavior(Host, new Enhance(1, 1)));
+                Game.IssueCommands(new Commands.AddBehavior(Host, new Enhance(1)));
             }
         }
 

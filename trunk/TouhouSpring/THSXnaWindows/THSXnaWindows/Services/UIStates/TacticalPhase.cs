@@ -51,10 +51,7 @@ namespace TouhouSpring.Services.UIStates
             var card = SelectedCard != null ? SelectedCard.Card : null;
 
             m_gameUI.RemoveAllContextButtons();
-            if (card == null)
-            {
-                m_gameUI.AddContextButton("Pass", ContextButton_OnPass);
-            }
+            m_gameUI.AddContextButton("Pass", ContextButton_OnPass);
 
             if (m_io.PlayCardCandidates.Contains(card))
             {
