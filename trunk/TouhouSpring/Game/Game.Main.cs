@@ -74,7 +74,8 @@ namespace TouhouSpring
                     }
                     else if (result.ActionType == TacticalPhase.Action.Redeem)
                     {
-                        throw new NotImplementedException();
+                        var cardToRedeem = (BaseCard)result.Data;
+                        IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
                     }
                     else if (result.ActionType == TacticalPhase.Action.Pass)
                     {

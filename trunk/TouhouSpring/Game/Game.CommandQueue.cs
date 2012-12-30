@@ -60,6 +60,11 @@ namespace TouhouSpring
             return IsCommandRunnable(new Commands.ActivateAssist(card));
         }
 
+        internal bool IsCardRedeemable(BaseCard card)
+        {
+            return IsCommandRunnable(new Commands.Redeem(card));
+        }
+
         internal bool IsSpellCastable(Behaviors.ICastableSpell spell)
         {
             return IsCommandRunnable(new Commands.CastSpell(spell));
@@ -209,6 +214,14 @@ namespace TouhouSpring
                 if (cardToActivate != null)
                 {
                     yield return cardToActivate;
+                }
+            }
+            else if (command is Commands.Redeem)
+            {
+                var cardToRedeem = (command as Commands.Redeem).Target;
+                if (cardToRedeem != null)
+                {
+                    yield return cardToRedeem;
                 }
             }
             else if (command is Commands.Kill && command.ExecutionPhase == Commands.CommandPhase.Epilog)

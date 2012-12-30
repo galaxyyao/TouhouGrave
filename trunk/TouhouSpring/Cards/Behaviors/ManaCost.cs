@@ -10,7 +10,9 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>,
         IPrerequisiteTrigger<Commands.ActivateAssist>,
-        IEpilogTrigger<Commands.ActivateAssist>
+        IEpilogTrigger<Commands.ActivateAssist>,
+        IPrerequisiteTrigger<Commands.Redeem>,
+        IEpilogTrigger<Commands.Redeem>
     {
         public int Cost
         {
@@ -58,6 +60,29 @@ namespace TouhouSpring.Behaviors
         void IEpilogTrigger<Commands.ActivateAssist>.Run(Commands.ActivateAssist command)
         {
             if (command.CardToActivate == Host)
+            {
+                Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -Model.Cost, this));
+            }
+        }
+
+        CommandResult IPrerequisiteTrigger<Commands.Redeem>.Run(Commands.Redeem command)
+        {
+            if (command.Target == Host)
+            {
+                if (Host.Owner.FreeMana < Model.Cost)
+                {
+                    return CommandResult.Cancel("Insufficient mana.");
+                }
+
+                Game.ReserveMana(Host.Owner, Model.Cost);
+            }
+
+            return CommandResult.Pass;
+        }
+
+        void IEpilogTrigger<Commands.Redeem>.Run(Commands.Redeem command)
+        {
+            if (command.Target == Host)
             {
                 Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -Model.Cost, this));
             }

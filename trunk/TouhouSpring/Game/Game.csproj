@@ -71,6 +71,7 @@
     <Compile Include="Commands\HealPlayer.cs" />
     <Compile Include="Commands\DealDamageToCard.cs" />
     <Compile Include="Commands\Kill.cs" />
+    <Compile Include="Commands\Redeem.cs" />
     <Compile Include="Commands\RemoveBehavior.cs" />
     <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\ResetAccumulatedDamage.cs" />

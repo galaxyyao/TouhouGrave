@@ -78,9 +78,7 @@ namespace TouhouSpring.Interactions
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
             SacrificeCandidates = player.CardsOnHand.Clone();
             RedeemCandidates = player.CardsSacrificed
-                                    // TODO: check the mana cost
-                                    //.Where(card => player.Game.IsCardPlayable(card))
-                                    .ToArray().ToIndexable();
+                                    .Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable();
         }
 
         public Result Run()
