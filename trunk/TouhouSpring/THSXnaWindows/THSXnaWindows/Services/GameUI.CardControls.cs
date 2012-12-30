@@ -207,33 +207,24 @@ namespace TouhouSpring.Services
                     locationAnimation.NextLocation.m_zone = m_zoomedInZoneInfo;
                     locationAnimation.NextLocation.m_thisIndex = 0;
                 }
+                else if (card.IsHero)
+                {
+                    locationAnimation.NextLocation.m_zone = card.Owner == Game.Players[0] ? m_playerHeroZoneInfo : m_opponentHeroZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = 0;
+
+                    cc.EnableDepth = true;
+                }
                 else if (Game.Players[0].CardsOnBattlefield.Contains(card))
                 {
-                    if (card.IsHero)
-                    {
-                        locationAnimation.NextLocation.m_zone = m_playerHeroZoneInfo;
-                        locationAnimation.NextLocation.m_thisIndex = 0;
-                    }
-                    else
-                    {
-                        locationAnimation.NextLocation.m_zone = m_playerBattlefieldZoneInfo;
-                        locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnBattlefield.IndexOf(card);
-                    }
+                    locationAnimation.NextLocation.m_zone = m_playerBattlefieldZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnBattlefield.IndexOf(card);
 
                     cc.EnableDepth = true;
                 }
                 else if (Game.Players[1].CardsOnBattlefield.Contains(card))
                 {
-                    if (card.IsHero)
-                    {
-                        locationAnimation.NextLocation.m_zone = m_opponentHeroZoneInfo;
-                        locationAnimation.NextLocation.m_thisIndex = 0;
-                    }
-                    else
-                    {
-                        locationAnimation.NextLocation.m_zone = m_opponentBattlefieldZoneInfo;
-                        locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnBattlefield.IndexOf(card);
-                    }
+                    locationAnimation.NextLocation.m_zone = m_opponentBattlefieldZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnBattlefield.IndexOf(card);
 
                     cc.EnableDepth = true;
                 }
@@ -251,15 +242,15 @@ namespace TouhouSpring.Services
 
                     cc.EnableDepth = true;
                 }
-                else if (Game.Players[0].CardsOnHand.Contains(card) || Game.Players[0].Hero == card)
+                else if (Game.Players[0].CardsOnHand.Contains(card))
                 {
                     locationAnimation.NextLocation.m_zone = m_playerHandZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnHand.IndexOf(card);
                 }
-                else if (Game.Players[1].CardsOnHand.Contains(card) || Game.Players[1].Hero == card)
+                else if (Game.Players[1].CardsOnHand.Contains(card))
                 {
                     locationAnimation.NextLocation.m_zone = m_opponentHandZoneInfo;
-                    locationAnimation.NextLocation.m_thisIndex = card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsOnHand.IndexOf(card);
 
                     cc.EnableDepth = true;
                 }

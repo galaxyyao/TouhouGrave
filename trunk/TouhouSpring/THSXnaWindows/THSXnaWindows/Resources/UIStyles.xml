@@ -119,7 +119,7 @@
     <Transform Matrix="#CardAnimator.LocationTransform#" />
     <Layout Id="Main">
       <Transform Matrix="#CardAnimator.HighlightTransform#" />
-      <Transform Scaling="0.0048,-0.0048" />
+      <Transform Scaling="0.0048,-0.0048,0.0048" />
       <!--<Transform Matrix="#CardAnimator.Flip#" />-->
       <Layout Id="Body">
         <!-- card's artwork -->

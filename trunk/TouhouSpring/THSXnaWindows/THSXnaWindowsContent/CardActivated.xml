@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Particle="TouhouSpring.Particle" xmlns:Modifiers="TouhouSpring.Particle.Modifiers">
+  <Asset Type="Particle:ParticleSystem">
+    <TextureName>Textures/CardHighlight</TextureName>
+    <BlendMode>Additive</BlendMode>
+    <Effects>
+      <Effect>
+        <Name>main</Name>
+        <DefaultParticleLifetime>1</DefaultParticleLifetime>
+        <DefaultParticlePosition>0 0 0</DefaultParticlePosition>
+        <DefaultParticleVelocity>0 0 20</DefaultParticleVelocity>
+        <DefaultParticleSize>234 324</DefaultParticleSize>
+        <DefaultParticleRotation>0</DefaultParticleRotation>
+        <DefaultParticleColor>40C04080</DefaultParticleColor>
+        <Capacity>150</Capacity>
+        <EmitOnStart>true</EmitOnStart>
+        <EmissionRate>10</EmissionRate>
+        <Alignment>Local</Alignment>
+        <UVBoundsName>{Whole}</UVBoundsName>
+        <ModifiersOnEmit />
+        <ModifiersOnUpdate>
+          <Modifier Type="Modifiers:ColorAnimation">
+            <AnimationType>Curve</AnimationType>
+            <CurveName>Curve2</CurveName>
+            <NormalizeCurveTime>true</NormalizeCurveTime>
+            <CurveScale>1</CurveScale>
+            <CurveBias>0</CurveBias>
+            <StartValue>1</StartValue>
+            <FinishValue>0</FinishValue>
+            <AffectRed>false</AffectRed>
+            <AffectGreen>false</AffectGreen>
+            <AffectBlue>false</AffectBlue>
+            <AffectAlpha>true</AffectAlpha>
+          </Modifier>
+          <Modifier Type="Modifiers:Accelerate">
+            <Acceleration>0 0 100</Acceleration>
+          </Modifier>
+        </ModifiersOnUpdate>
+      </Effect>
+    </Effects>
+  </Asset>
+</XnaContent>

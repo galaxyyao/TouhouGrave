@@ -38,7 +38,10 @@ namespace TouhouSpring.UI.CardControlAddins
         private LocationParameter m_lastLocation;
 
         private bool m_playToBattlefield;
+        private bool m_lastActivated;
         private Particle.ParticleSystemInstance m_cardSummoned;
+        private Particle.ParticleSystemInstance m_cardActivated;
+        private Animation.Track m_activateEffectTimer;
         private Particle.LocalFrame m_localFrame;
 
         public bool InTransition
@@ -54,6 +57,7 @@ namespace TouhouSpring.UI.CardControlAddins
             m_locationTrack.Elapsed += w =>
             {
                 m_locationTransform = Matrix.Lerp(m_locationSrcTransform, m_locationDstTransform, w);
+                m_cardSummoned.EffectInstances.ForEach(fx => fx.IsEmitting = m_playToBattlefield && w != 1.0f);
             };
 
             m_locationTransformResolver = locationResolver;
@@ -61,6 +65,15 @@ namespace TouhouSpring.UI.CardControlAddins
 
             m_cardSummoned = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("CardSummoned"));
             m_cardSummoned.LocalFrameProvider = this;
+
+            m_cardActivated = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("CardActivated"));
+            m_cardActivated.LocalFrameProvider = this;
+            m_activateEffectTimer = new Animation.LinearTrack(0.4f);
+            m_activateEffectTimer.Elapsed += w =>
+            {
+                m_cardActivated.EffectInstances.ForEach(fx => fx.IsEmitting = m_lastActivated && w != 1.0f);
+            };
+            m_activateEffectTimer.Play();
         }
 
         public override void Update(float deltaTime)
@@ -82,16 +95,16 @@ namespace TouhouSpring.UI.CardControlAddins
                 var gameui = GameApp.Service<Services.GameUI>();
                 var playerHand = gameui.InGameUIPage.Style.ChildIds["PlayerHand"].Target;
                 var playerBattlefield = gameui.InGameUIPage.Style.ChildIds["PlayerBattlefield"].Target;
-                var playerHero = gameui.InGameUIPage.Style.ChildIds["PlayerHero"].Target;
+                var playerSacrifice = gameui.InGameUIPage.Style.ChildIds["PlayerSacrifice"].Target;
                 var opponentHand = gameui.InGameUIPage.Style.ChildIds["OpponentHand"].Target;
                 var opponentBattlefield = gameui.InGameUIPage.Style.ChildIds["OpponentBattlefield"].Target;
-                var opponentHero = gameui.InGameUIPage.Style.ChildIds["OpponentHero"].Target;
+                var opponentSacrifice = gameui.InGameUIPage.Style.ChildIds["OpponentSacrifice"].Target;
 
                 m_playToBattlefield = (NextLocation.m_zone.m_container == playerBattlefield
-                                       || NextLocation.m_zone.m_container == playerHero)
+                                       || NextLocation.m_zone.m_container == playerSacrifice)
                                       && m_lastLocation.m_zone.m_container == playerHand
                                       || (NextLocation.m_zone.m_container == opponentBattlefield
-                                          || NextLocation.m_zone.m_container == opponentHero)
+                                          || NextLocation.m_zone.m_container == opponentSacrifice)
                                          && m_lastLocation.m_zone.m_container == opponentHand;
                 m_lastLocation = NextLocation;
             }
@@ -104,19 +117,45 @@ namespace TouhouSpring.UI.CardControlAddins
             m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);
             m_localFrame.Col3 = new Vector4(transform.M14, transform.M24, transform.M34, transform.M44);
 
-            bool emit = m_playToBattlefield && m_locationTrack.IsPlaying;
-            m_cardSummoned.EffectInstances.ForEach(fx => fx.IsEmitting = emit);
-            m_cardSummoned.Update(deltaTime);
+            bool activated = Card.IsHero && Card.Owner.CardsOnBattlefield.Contains(Card);
+            if (activated != m_lastActivated)
+            {
+                if (m_activateEffectTimer.IsPlaying)
+                {
+                    m_activateEffectTimer.Stop();
+                    m_cardActivated.EffectInstances.ForEach(fx => fx.IsEmitting = false);
+                }
+
+                if (activated)
+                {
+                    m_activateEffectTimer.Play();
+                    m_cardActivated.EffectInstances.ForEach(fx => fx.IsEmitting = true);
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        m_cardActivated.Update(1f);
+                    }
+                }
+
+                m_lastActivated = activated;
+            }
 
             if (m_locationTrack.IsPlaying)
             {
                 m_locationTrack.Elapse(deltaTime);
             }
+            if (m_activateEffectTimer.IsPlaying)
+            {
+                m_activateEffectTimer.Elapse(deltaTime);
+            }
+
+            m_cardSummoned.Update(deltaTime);
+            m_cardActivated.Update(deltaTime);
         }
 
         public override void RenderPostMain(Matrix transform, RenderEventArgs e)
         {
             GameApp.Service<Graphics.ParticleRenderer>().Draw(m_cardSummoned, Matrix.Identity, 1.0f, 1.3333f);
+            GameApp.Service<Graphics.ParticleRenderer>().Draw(m_cardActivated, Matrix.Identity, 1.0f, 1.3333f);
         }
 
         public bool TryGetValue(string id, out string replacement)

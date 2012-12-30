@@ -470,7 +470,14 @@
     <Compile Include="CardSummoned.xml">
       <Name>CardSummoned</Name>
       <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
+      <Processor>ParticleSystemTextureAtlasResolve</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CardActivated.xml">
+      <Name>CardActivated</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ParticleSystemTextureAtlasResolve</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
