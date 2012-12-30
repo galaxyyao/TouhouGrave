@@ -48,7 +48,7 @@ namespace TouhouSpring
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "y" || choice == "yes")
                 {
-                    ((Interactions.TacticalPhase)Program.ActiveInteraction).Respond(io.CastSpellCandidates[spellNo]);
+                    ((Interactions.TacticalPhase)Program.ActiveInteraction).RespondCast(io.CastSpellCandidates[spellNo]);
                     Program.ActiveInteraction = null;
                     break;
                 }

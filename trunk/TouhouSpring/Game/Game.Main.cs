@@ -59,8 +59,14 @@ namespace TouhouSpring
                         Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
                         IssueCommandsAndFlush(new Commands.CastSpell(spellToCast));
                     }
-                    else if (result.ActionType == TacticalPhase.Action.Sacrifice
-                        || result.ActionType == TacticalPhase.Action.Redeem)
+                    else if (result.ActionType == TacticalPhase.Action.Sacrifice)
+                    {
+                        var cardToSacrifice = (BaseCard)result.Data;
+                        IssueCommandsAndFlush(
+                            new Commands.Sacrifice(cardToSacrifice),
+                            new Commands.UpdateMana(ActingPlayer, 1, this));
+                    }
+                    else if (result.ActionType == TacticalPhase.Action.Redeem)
                     {
                         throw new NotImplementedException();
                     }

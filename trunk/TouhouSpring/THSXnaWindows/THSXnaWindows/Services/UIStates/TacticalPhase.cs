@@ -70,18 +70,18 @@ namespace TouhouSpring.Services.UIStates
                 {
                     m_gameUI.AddContextButton("Cast " + spell.Model.Name, text =>
                     {
-                        m_io.Respond(spell);
+                        m_io.RespondCast(spell);
                         m_gameUI.LeaveState();
                     });
                 }
             }
             if (m_io.SacrificeCandidates.Contains(card))
             {
-                m_gameUI.AddContextButton("Sacrifice", ContextButton_OnPlay);
+                m_gameUI.AddContextButton("Sacrifice", ContextButton_OnSacrifice);
             }
             if (m_io.RedeemCandidates.Contains(card))
             {
-                m_gameUI.AddContextButton("Redeem", ContextButton_OnPlay);
+                m_gameUI.AddContextButton("Redeem", ContextButton_OnRedeem);
             }
         }
 
@@ -107,7 +107,19 @@ namespace TouhouSpring.Services.UIStates
 
         private void ContextButton_OnPlay(string text)
         {
-            m_io.Respond(SelectedCard.Card);
+            m_io.RespondPlay(SelectedCard.Card);
+            m_gameUI.LeaveState();
+        }
+
+        private void ContextButton_OnSacrifice(string text)
+        {
+            m_io.RespondSacrifice(SelectedCard.Card);
+            m_gameUI.LeaveState();
+        }
+
+        private void ContextButton_OnRedeem(string text)
+        {
+            m_io.RespondRedeem(SelectedCard.Card);
             m_gameUI.LeaveState();
         }
     }

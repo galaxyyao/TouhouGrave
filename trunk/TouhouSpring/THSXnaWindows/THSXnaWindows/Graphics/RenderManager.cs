@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -29,5 +30,11 @@ namespace TouhouSpring.Graphics
 		{
 			DestroyQuadRenderer();
 		}
+
+        [DllImport("d3d9.dll", EntryPoint = "D3DPERF_BeginEvent", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern int BeginPixEvent(uint col, string wszName);
+
+        [DllImport("d3d9.dll", EntryPoint = "D3DPERF_EndEvent", CallingConvention = CallingConvention.Winapi)]
+        public static extern int EndEvent();
 	}
 }

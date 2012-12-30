@@ -121,8 +121,22 @@ namespace TouhouSpring.Style
 				case "Game.Player0.Health":
 					replacement = game.InPlayerPhases ? game.Players[0].Health.ToString() : "...";
 					break;
-				case "Game.Player0.Mana":
-                    replacement = game.InPlayerPhases ? game.Players[0].Mana.ToString() : "...";
+				case "Game.Player0.ManaPoolText":
+                    if (game.InPlayerPhases)
+                    {
+                        if (game.Players[0].Mana == 0 && game.Players[0].MaxMana == 0)
+                        {
+                            replacement = "0";
+                        }
+                        else
+                        {
+                            replacement = game.Players[0].Mana.ToString() + "/" + game.Players[0].MaxMana.ToString();
+                        }
+                    }
+                    else
+                    {
+                        replacement = "...";
+                    }
                     break;
 				case "Game.Player1.Avatar":
 					replacement = "Textures/Sena";
@@ -137,8 +151,22 @@ namespace TouhouSpring.Style
 				case "Game.Player1.Health":
 					replacement = game.InPlayerPhases ? game.Players[1].Health.ToString() : "...";
 					break;
-				case "Game.Player1.Mana":
-                    replacement = game.InPlayerPhases ? game.Players[1].Mana.ToString() : "...";
+				case "Game.Player1.ManaPoolText":
+                    if (game.InPlayerPhases)
+                    {
+                        if (game.Players[1].Mana == 0 && game.Players[1].MaxMana == 0)
+                        {
+                            replacement = "0";
+                        }
+                        else
+                        {
+                            replacement = game.Players[1].Mana.ToString() + "/" + game.Players[1].MaxMana.ToString();
+                        }
+                    }
+                    else
+                    {
+                        replacement = "...";
+                    }
                     break;
 				case "Game.ResolutionWidth":
 					replacement = GameApp.Instance.GraphicsDevice.Viewport.Width.ToString();

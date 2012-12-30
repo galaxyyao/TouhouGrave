@@ -14,10 +14,10 @@ namespace TouhouSpring.Services
         private LocationAnimation.ZoneInfo m_zoomedInZoneInfo;
         private LocationAnimation.ZoneInfo m_playerHandZoneInfo;
         private LocationAnimation.ZoneInfo m_opponentHandZoneInfo;
+        private LocationAnimation.ZoneInfo m_playerSacrificeZoneInfo;
+        private LocationAnimation.ZoneInfo m_opponentSacrificeZoneInfo;
         private LocationAnimation.ZoneInfo m_playerBattlefieldZoneInfo;
         private LocationAnimation.ZoneInfo m_opponentBattlefieldZoneInfo;
-        private LocationAnimation.ZoneInfo m_playerFormationZoneInfo;
-        private LocationAnimation.ZoneInfo m_opponentFormationZoneInfo;
         private LocationAnimation.ZoneInfo m_playerHeroZoneInfo;
         private LocationAnimation.ZoneInfo m_opponentHeroZoneInfo;
         private LocationAnimation.ZoneInfo m_playerAssistsZoneInfo;
@@ -120,19 +120,19 @@ namespace TouhouSpring.Services
                 m_intervalReductionLevel = new int[] { 0, 8, 12 },
                 m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f }
             };
-            m_playerFormationZoneInfo = new LocationAnimation.ZoneInfo
+            m_playerSacrificeZoneInfo = new LocationAnimation.ZoneInfo
             {
-                m_container = InGameUIPage.Style.ChildIds["PlayerFormation"].Target,
-                m_width = 10f,
+                m_container = InGameUIPage.Style.ChildIds["PlayerSacrifice"].Target,
                 m_intervalReductionLevel = new int[] { 0, 8, 12 },
-                m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f }
+                m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f },
+                m_lastFocusIndex = -1
             };
-            m_opponentFormationZoneInfo = new LocationAnimation.ZoneInfo
+            m_opponentSacrificeZoneInfo = new LocationAnimation.ZoneInfo
             {
-                m_container = InGameUIPage.Style.ChildIds["OpponentFormation"].Target,
-                m_width = 10f,
+                m_container = InGameUIPage.Style.ChildIds["OpponentSacrifice"].Target,
                 m_intervalReductionLevel = new int[] { 0, 8, 12 },
-                m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f }
+                m_intervalReductionAmount = new float[] { 1.1f, 0.7f, 0.5f },
+                m_lastFocusIndex = -1
             };
             m_playerBattlefieldZoneInfo = new LocationAnimation.ZoneInfo
             {
@@ -237,6 +237,20 @@ namespace TouhouSpring.Services
 
                     cc.EnableDepth = true;
                 }
+                else if (Game.Players[0].CardsSacrificed.Contains(card))
+                {
+                    locationAnimation.NextLocation.m_zone = m_playerSacrificeZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsSacrificed.IndexOf(card);
+
+                    cc.EnableDepth = true;
+                }
+                else if (Game.Players[1].CardsSacrificed.Contains(card))
+                {
+                    locationAnimation.NextLocation.m_zone = m_opponentSacrificeZoneInfo;
+                    locationAnimation.NextLocation.m_thisIndex = card.Owner.CardsSacrificed.IndexOf(card);
+
+                    cc.EnableDepth = true;
+                }
                 else if (Game.Players[0].CardsOnHand.Contains(card) || Game.Players[0].Hero == card)
                 {
                     locationAnimation.NextLocation.m_zone = m_playerHandZoneInfo;
@@ -275,10 +289,10 @@ namespace TouhouSpring.Services
 
             RearrangeZone(m_playerHandZoneInfo);
             RearrangeZone(m_playerBattlefieldZoneInfo);
-            RearrangeZone(m_playerFormationZoneInfo);
+            RearrangeZone(m_playerSacrificeZoneInfo);
             RearrangeZone(m_opponentHandZoneInfo);
             RearrangeZone(m_opponentBattlefieldZoneInfo);
-            RearrangeZone(m_opponentFormationZoneInfo);
+            RearrangeZone(m_opponentSacrificeZoneInfo);
         }
 
         private void RearrangeZone(LocationAnimation.ZoneInfo zone)
@@ -303,7 +317,7 @@ namespace TouhouSpring.Services
 
         private Matrix Card_ResolveLocationTransform(LocationAnimation.LocationParameter location, UI.CardControl control)
         {
-            if (location.m_zone.m_width == 0)
+            if (location.m_zone.m_intervalReductionLevel == null)
             {
                 return Matrix.Identity;
             }
@@ -318,7 +332,8 @@ namespace TouhouSpring.Services
             }
             var interval = location.m_zone.m_intervalReductionAmount[irIndex];
 
-            var zoneOffset = (location.m_zone.m_width - location.m_numCards * interval) / 2;
+            var zoneOffset = location.m_zone.m_width == 0f
+                ? 0f : (location.m_zone.m_width - location.m_numCards * interval) / 2;
 
             var zOffset = 0f;
             if (control.EnableDepth && irIndex > 0)

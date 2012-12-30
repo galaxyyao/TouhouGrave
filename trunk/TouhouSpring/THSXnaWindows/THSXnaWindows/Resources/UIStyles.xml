@@ -37,22 +37,34 @@
       <Layout Id="OpponentAssists" Left="-0.98" Top="0.6">
         <Transform Scaling="0.1" />
       </Layout>
-      <Layout Id="OpponentHero" Left="-0.9" Top="0.41">
+      <Layout Id="OpponentHero" Left="-0.9" Top="0.4">
         <Transform Scaling="0.25" />
       </Layout>
-      <Layout Id="OpponentBattlefield" Left="-1" Top="0.65">
+      <Layout Left="-0.5" Top="0.65">
+        <Transform Scaling="0.12" />
+        <Layout Id="OpponentSacrifice" />
+        <Layout>
+          <Transform Scaling="0.02,-0.02" />
+          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player1.ManaPoolText#" Color="Black" Left="1" Top="1" />
+          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player1.ManaPoolText#" Color="White" />
+        </Layout>
+      </Layout>
+      <Layout Id="OpponentBattlefield" Left="-1" Top="0.4">
         <Transform Scaling="0.2" />
       </Layout>
-      <Layout Id="OpponentFormation" Left="-1" Top="0.3">
+      <Layout Id="PlayerBattlefield" Left="-1" Top="-0.2">
         <Transform Scaling="0.2" />
       </Layout>
-      <Layout Id="PlayerFormation" Left="-1" Top="-0.1">
-        <Transform Scaling="0.2" />
+      <Layout Left="-0.5" Top="-0.65">
+        <Transform Scaling="0.12" />
+        <Layout Id="PlayerSacrifice" />
+        <Layout>
+          <Transform Scaling="0.02,-0.02" />
+          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="Black" Left="1" Top="1" />
+          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="White" />
+        </Layout>
       </Layout>
-      <Layout Id="PlayerBattlefield" Left="-1" Top="-0.45">
-        <Transform Scaling="0.2" />
-      </Layout>
-      <Layout Id="PlayerHero" Left="-0.9" Top="-0.21">
+      <Layout Id="PlayerHero" Left="-0.9" Top="-0.2">
         <Transform Scaling="0.25" />
       </Layout>
       <Layout Id="PlayerAssists" Left="-0.98" Top="-0.6">
@@ -76,8 +88,8 @@
         <Image Uri="#Game.Player0.Avatar#" Left="20" Top="19" />
         <Image Uri="#Game.Player0.AvatarBorder#" />
       </Layout>
-      <Label Font="Segoe UI, 16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="550" />
-      <Label Font="Segoe UI, 16" Text="HP: #Game.Player0.Health#&#10;MP:#Game.Player0.Mana#" Color="White" Left="95" Top="550" />
+      <Label Font="Segoe UI, 16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="570" />
+      <Label Font="Segoe UI, 16" Text="HP: #Game.Player0.Health#" Color="White" Left="95" Top="570" />
       <!-- 2P -->
       <Layout Right="20" Top="20" Width="135" Height="135">
         <Transform Scaling="0.5,0.5" />
@@ -85,7 +97,7 @@
         <Image Uri="#Game.Player1.AvatarBorder#" />
       </Layout>
       <Label Font="Segoe UI, 16" Text="#Game.Player1.Name#" Color="White" Left="860" Top="160" />
-      <Label Font="Segoe UI, 16" Text="HP: #Game.Player1.Health#&#10;MP:#Game.Player1.Mana#" Color="White" Left="940" Top="160" />
+      <Label Font="Segoe UI, 16" Text="HP: #Game.Player1.Health#" Color="White" Left="940" Top="160" />
       <Layout Id="ContextButtons" Left="860" Top="450" />
       <Layout Id="ZoomedIn">
         <Transform Scaling="420,-420" />

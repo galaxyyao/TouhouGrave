@@ -68,6 +68,8 @@ namespace TouhouSpring.Graphics
 				throw new ArgumentNullException("quad");
 			}
 
+            RenderManager.BeginPixEvent(0, "DrawQuad");
+
 			Device.SetVertexBuffer(m_vertexBuffer);
 			Device.Indices = null;
 			Device.BlendState = quad.BlendState;
@@ -104,6 +106,8 @@ namespace TouhouSpring.Graphics
 				pass.Apply();
 				Device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
 			}
+
+            RenderManager.EndEvent();
 		}
 
 		private void CreateQuadRenderer()

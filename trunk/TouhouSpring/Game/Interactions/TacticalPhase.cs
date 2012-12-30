@@ -88,32 +88,58 @@ namespace TouhouSpring.Interactions
             RespondBack(Controller, new Result { ActionType = Action.Pass });
         }
 
-        public void Respond(BaseCard selectedCard)
+        public void RespondPlay(BaseCard selectedCard)
         {
             if (selectedCard == null)
             {
                 throw new ArgumentNullException("selectedCard");
             }
 
-            var result = new Result { Data = selectedCard };
-            if (PlayCardCandidates.Contains(selectedCard))
+            var result = new Result
             {
-                result.ActionType = Action.PlayCard;
-            }
-            else if (SacrificeCandidates.Contains(selectedCard))
-            {
-                result.ActionType = Action.Sacrifice;
-            }
-            else if (RedeemCandidates.Contains(selectedCard))
-            {
-                result.ActionType = Action.Redeem;
-            }
+                ActionType = Action.PlayCard,
+                Data = selectedCard
+            };
 
             Validate(result);
             RespondBack(Controller, result);
         }
 
-        public void Respond(Behaviors.ICastableSpell selectedSpell)
+        public void RespondSacrifice(BaseCard selectedCard)
+        {
+            if (selectedCard == null)
+            {
+                throw new ArgumentNullException("selectedCard");
+            }
+
+            var result = new Result
+            {
+                ActionType = Action.Sacrifice,
+                Data = selectedCard
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
+        }
+
+        public void RespondRedeem(BaseCard selectedCard)
+        {
+            if (selectedCard == null)
+            {
+                throw new ArgumentNullException("selectedCard");
+            }
+
+            var result = new Result
+            {
+                ActionType = Action.Redeem,
+                Data = selectedCard
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
+        }
+
+        public void RespondCast(Behaviors.ICastableSpell selectedSpell)
         {
             if (selectedSpell == null)
             {

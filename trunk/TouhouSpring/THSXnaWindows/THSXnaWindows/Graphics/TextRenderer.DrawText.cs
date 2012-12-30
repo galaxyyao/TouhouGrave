@@ -84,6 +84,8 @@ namespace TouhouSpring.Graphics
                 throw new ArgumentException("Argument formattedText is not an object returned by FormatText() method.");
             }
 
+            RenderManager.BeginPixEvent(0, "DrawText: " + formattedText.Text);
+
             var typedFormattedText = (FormattedText)formattedText;
             var glyphDatas = typedFormattedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormattedText.FormatOptions.Font)).ToArray();
             int totalPages = glyphDatas.Sum(glyph => glyph.m_pageIndices.Length);
@@ -193,6 +195,8 @@ namespace TouhouSpring.Graphics
                     device.DrawPrimitives(PrimitiveType.TriangleList, 0, counter / 3);
                 }
             }
+
+            RenderManager.EndEvent();
         }
 
         private int CopyInstanceVertices(VertexDataDraw[] vertices, int startIndex, int numElements)

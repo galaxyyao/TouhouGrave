@@ -74,6 +74,7 @@
     <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\ResetAccumulatedDamage.cs" />
     <Compile Include="Commands\Resolve.cs" />
+    <Compile Include="Commands\Sacrifice.cs" />
     <Compile Include="Commands\StartBlockPhase.cs" />
     <Compile Include="Commands\DrawCard.cs" />
     <Compile Include="Commands\EndTurn.cs" />
