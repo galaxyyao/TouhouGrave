@@ -34,10 +34,10 @@
       <Layout Id="OpponentHand" Left="-1" Top="1">
         <Transform Scaling="0.2" />
       </Layout>
-      <Layout Id="OpponentAssists" Left="-0.98" Top="0.6">
+      <Layout Id="OpponentAssists" Left="-1.08" Top="0.6">
         <Transform Scaling="0.1" />
       </Layout>
-      <Layout Id="OpponentHero" Left="-0.9" Top="0.4">
+      <Layout Id="OpponentHero" Left="-1" Top="0.4">
         <Transform Scaling="0.25" />
       </Layout>
       <Layout Left="-0.5" Top="0.65">
@@ -64,10 +64,10 @@
           <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="White" />
         </Layout>
       </Layout>
-      <Layout Id="PlayerHero" Left="-0.9" Top="-0.2">
+      <Layout Id="PlayerHero" Left="-1" Top="-0.2">
         <Transform Scaling="0.25" />
       </Layout>
-      <Layout Id="PlayerAssists" Left="-0.98" Top="-0.6">
+      <Layout Id="PlayerAssists" Left="-1.08" Top="-0.6">
         <Transform Scaling="0.1" />
       </Layout>
     </Layout>

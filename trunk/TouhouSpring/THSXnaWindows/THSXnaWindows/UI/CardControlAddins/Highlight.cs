@@ -73,14 +73,27 @@ namespace TouhouSpring.UI.CardControlAddins
             var gameUI = GameApp.Service<Services.GameUI>(); ;
             bool highlightable = gameUI.ZoomedInCard != Control && gameUI.IsCardClickable(Control);
 
-            if (highlightable
-                && GameApp.Service<Services.GameUI>().ZoomedInCard != Control)
+            if (highlightable)
             {
                 var xo = (m_quadHighlight.Texture.Width - Control.Region.Width) / 2;
                 var yo = (m_quadHighlight.Texture.Height - Control.Region.Height) / 2;
                 var region = new Rectangle(Control.Region.Left - xo, Control.Region.Top - yo, m_quadHighlight.Texture.Width, m_quadHighlight.Texture.Height);
-                var selected = gameUI.IsCardSelected(Control);
-                var color = selected ? Color.OrangeRed : Color.Lime;
+                bool selected = gameUI.IsCardSelected(Control);
+                Color color;
+                if (selected)
+                {
+                    color = Color.Orange;
+                }
+                else if (gameUI.ZoomedInCard != Control
+                    && gameUI.UIState is Services.UIStates.TacticalPhase
+                    && (gameUI.UIState.InteractionObject as Interactions.TacticalPhase).DefenderCandidates.Contains(Card))
+                {
+                    color = Color.Red;
+                }
+                else
+                {
+                    color = Color.Lime;
+                }
                 m_quadHighlight.ColorToModulate.R = color.R;
                 m_quadHighlight.ColorToModulate.G = color.G;
                 m_quadHighlight.ColorToModulate.B = color.B;

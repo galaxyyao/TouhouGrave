@@ -14,6 +14,7 @@ namespace TouhouSpring.Interactions
             CastSpell,      // cast a spell from a warrior on battlefield
             Sacrifice,      // put one hand card to sacrifice zone
             Redeem,         // return one card from sacrifice to hand
+            Attack,         // card attacks a opponent card
             Pass
         }
 
@@ -53,6 +54,16 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
+        public IIndexable<BaseCard> AttackerCandidates
+        {
+            get; private set;
+        }
+
+        public IIndexable<BaseCard> DefenderCandidates
+        {
+            get; private set;
+        }
+
         private BaseController Controller
         {
             get { return Player.Controller; }
@@ -79,6 +90,16 @@ namespace TouhouSpring.Interactions
             SacrificeCandidates = player.CardsOnHand.Clone();
             RedeemCandidates = player.CardsSacrificed
                                     .Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable();
+            AttackerCandidates = EnumerateAttackerCandidates().ToArray().ToIndexable();
+            if (AttackerCandidates.Count != 0)
+            {
+                DefenderCandidates = Player.Game.Players.Where(p => p != Player).SelectMany(p => p.CardsOnBattlefield)
+                    .Where(card => card.Behaviors.Has<Behaviors.Warrior>()).ToArray().ToIndexable();
+            }
+            else
+            {
+                DefenderCandidates = Indexable.Empty<BaseCard>();
+            }
         }
 
         public Result Run()
@@ -127,6 +148,23 @@ namespace TouhouSpring.Interactions
             RespondBack(Controller, result);
         }
 
+        public void RespondCast(Behaviors.ICastableSpell selectedSpell)
+        {
+            if (selectedSpell == null)
+            {
+                throw new ArgumentNullException("selectedSpell");
+            }
+
+            var result = new Result
+            {
+                ActionType = Action.CastSpell,
+                Data = selectedSpell
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
+        }
+
         public void RespondSacrifice(BaseCard selectedCard)
         {
             if (selectedCard == null)
@@ -161,17 +199,21 @@ namespace TouhouSpring.Interactions
             RespondBack(Controller, result);
         }
 
-        public void RespondCast(Behaviors.ICastableSpell selectedSpell)
+        public void RespondAttack(BaseCard attacker, BaseCard defender)
         {
-            if (selectedSpell == null)
+            if (attacker == null)
             {
-                throw new ArgumentNullException("selectedSpell");
+                throw new ArgumentNullException("attacker");
+            }
+            else if (defender == null)
+            {
+                throw new ArgumentNullException("defender");
             }
 
             var result = new Result
             {
-                ActionType = Action.CastSpell,
-                Data = selectedSpell
+                ActionType = Action.Attack,
+                Data = new BaseCard[] { attacker, defender }
             };
 
             Validate(result);
@@ -244,6 +286,22 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
+                case Action.Attack:
+                    var pair = result.Data as BaseCard[];
+                    if (pair == null || pair.Length != 2)
+                    {
+                        throw new InvalidDataException("Action Attack shall have a pair of BaseCards as its data.");
+                    }
+                    else if (!AttackerCandidates.Contains(pair[0]))
+                    {
+                        throw new InvalidDataException("Attacking card can't attack.");
+                    }
+                    else if (!DefenderCandidates.Contains(pair[1]))
+                    {
+                        throw new InvalidDataException("Defending card can't defend.");
+                    }
+                    break;
+
                 default:
                     throw new InvalidDataException("Invalid action performed.");
             }
@@ -281,6 +339,18 @@ namespace TouhouSpring.Interactions
             foreach (var card in Player.CardsOnBattlefield)
             {
                 yield return card;
+            }
+        }
+
+        private IEnumerable<BaseCard> EnumerateAttackerCandidates()
+        {
+            foreach (var card in Player.CardsOnBattlefield)
+            {
+                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
+                if (warrior != null && warrior.State == Behaviors.WarriorState.StandingBy)
+                {
+                    yield return card;
+                }
             }
         }
     }

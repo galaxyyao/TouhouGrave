@@ -17,6 +17,11 @@ namespace TouhouSpring.Services.UIStates
             get; private set;
         }
 
+        public bool AttackerSelected
+        {
+            get; private set;
+        }
+
         public Interactions.BaseInteraction InteractionObject
         {
             get { return m_io; }
@@ -36,6 +41,12 @@ namespace TouhouSpring.Services.UIStates
 
         public void OnCardClicked(UI.CardControl cardControl)
         {
+            if (AttackerSelected && m_io.DefenderCandidates.Contains(cardControl.Card))
+            {
+                m_io.RespondAttack(SelectedCard.Card, cardControl.Card);
+                m_gameUI.LeaveState();
+            }
+
             SelectedCard = SelectedCard == cardControl ? null : cardControl;
             var card = SelectedCard != null ? SelectedCard.Card : null;
 
@@ -83,6 +94,7 @@ namespace TouhouSpring.Services.UIStates
             {
                 m_gameUI.AddContextButton("Redeem", ContextButton_OnRedeem);
             }
+            AttackerSelected = m_io.AttackerCandidates.Contains(card);
         }
 
         public bool IsCardClickable(UI.CardControl cardControl)
@@ -92,7 +104,9 @@ namespace TouhouSpring.Services.UIStates
                    || m_io.ActivateAssistCandidates.Contains(card)
                    || m_castFromCards.Contains(card)
                    || m_io.SacrificeCandidates.Contains(card)
-                   || m_io.RedeemCandidates.Contains(card);
+                   || m_io.RedeemCandidates.Contains(card)
+                   || m_io.AttackerCandidates.Contains(card)
+                   || AttackerSelected && m_io.DefenderCandidates.Contains(card);
         }
 
         public bool IsCardSelected(UI.CardControl cardControl)
