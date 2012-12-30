@@ -43,7 +43,7 @@ namespace TouhouSpring.Services.UIStates
         {
             if (AttackerSelected && m_io.DefenderCandidates.Contains(cardControl.Card))
             {
-                m_io.RespondAttack(SelectedCard.Card, cardControl.Card);
+                m_io.RespondAttackCard(SelectedCard.Card, cardControl.Card);
                 m_gameUI.LeaveState();
             }
 
@@ -95,6 +95,10 @@ namespace TouhouSpring.Services.UIStates
                 m_gameUI.AddContextButton("Redeem", ContextButton_OnRedeem);
             }
             AttackerSelected = m_io.AttackerCandidates.Contains(card);
+            if (AttackerSelected && m_io.DefenderCandidates.Count == 0)
+            {
+                m_gameUI.AddContextButton("Attack Player", ContextButton_OnAttackPlayer);
+            }
         }
 
         public bool IsCardClickable(UI.CardControl cardControl)
@@ -141,6 +145,13 @@ namespace TouhouSpring.Services.UIStates
         private void ContextButton_OnRedeem(string text)
         {
             m_io.RespondRedeem(SelectedCard.Card);
+            m_gameUI.LeaveState();
+        }
+
+        private void ContextButton_OnAttackPlayer(string text)
+        {
+            // TODO: select player to attack
+            m_io.RespondAttackPlayer(SelectedCard.Card, m_io.Player.Game.ActingPlayerEnemies.First());
             m_gameUI.LeaveState();
         }
     }

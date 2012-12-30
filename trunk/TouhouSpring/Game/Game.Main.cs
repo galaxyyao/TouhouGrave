@@ -77,13 +77,24 @@ namespace TouhouSpring
                         var cardToRedeem = (BaseCard)result.Data;
                         IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
                     }
-                    else if (result.ActionType == TacticalPhase.Action.Attack)
+                    else if (result.ActionType == TacticalPhase.Action.AttackCard)
                     {
                         var pair = (BaseCard[])result.Data;
                         var attackerWarrior = pair[0].Behaviors.Get<Behaviors.Warrior>();
                         IssueCommandsAndFlush(
                             new Commands.DealDamageToCard(
                                 pair[1], attackerWarrior.Attack, attackerWarrior),
+                            new Commands.SendBehaviorMessage(
+                                attackerWarrior, "GoCoolingDown", null)
+                            );
+                    }
+                    else if (result.ActionType == TacticalPhase.Action.AttackPlayer)
+                    {
+                        var pair = (object[])result.Data;
+                        var attackerWarrior = (pair[0] as BaseCard).Behaviors.Get<Behaviors.Warrior>();
+                        IssueCommandsAndFlush(
+                            new Commands.DealDamageToPlayer(
+                                pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
                             new Commands.SendBehaviorMessage(
                                 attackerWarrior, "GoCoolingDown", null)
                             );

@@ -14,7 +14,8 @@ namespace TouhouSpring.Interactions
             CastSpell,      // cast a spell from a warrior on battlefield
             Sacrifice,      // put one hand card to sacrifice zone
             Redeem,         // return one card from sacrifice to hand
-            Attack,         // card attacks a opponent card
+            AttackCard,     // card attacks a opponent card
+            AttackPlayer,   // card attacks the opponent player
             Pass
         }
 
@@ -199,7 +200,7 @@ namespace TouhouSpring.Interactions
             RespondBack(Controller, result);
         }
 
-        public void RespondAttack(BaseCard attacker, BaseCard defender)
+        public void RespondAttackCard(BaseCard attacker, BaseCard defender)
         {
             if (attacker == null)
             {
@@ -212,8 +213,29 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.Attack,
+                ActionType = Action.AttackCard,
                 Data = new BaseCard[] { attacker, defender }
+            };
+
+            Validate(result);
+            RespondBack(Controller, result);
+        }
+
+        public void RespondAttackPlayer(BaseCard attacker, Player player)
+        {
+            if (attacker == null)
+            {
+                throw new ArgumentNullException("attacker");
+            }
+            else if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            var result = new Result
+            {
+                ActionType = Action.AttackPlayer,
+                Data = new object[] { attacker, player }
             };
 
             Validate(result);
@@ -286,19 +308,39 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.Attack:
-                    var pair = result.Data as BaseCard[];
-                    if (pair == null || pair.Length != 2)
+                case Action.AttackCard:
                     {
-                        throw new InvalidDataException("Action Attack shall have a pair of BaseCards as its data.");
+                        var pair = result.Data as BaseCard[];
+                        if (pair == null || pair.Length != 2)
+                        {
+                            throw new InvalidDataException("Action AttackCard shall have a pair of BaseCards as its data.");
+                        }
+                        else if (!AttackerCandidates.Contains(pair[0]))
+                        {
+                            throw new InvalidDataException("Attacking card can't attack.");
+                        }
+                        else if (!DefenderCandidates.Contains(pair[1]))
+                        {
+                            throw new InvalidDataException("Defending card can't defend.");
+                        }
                     }
-                    else if (!AttackerCandidates.Contains(pair[0]))
+                    break;
+
+                case Action.AttackPlayer:
                     {
-                        throw new InvalidDataException("Attacking card can't attack.");
-                    }
-                    else if (!DefenderCandidates.Contains(pair[1]))
-                    {
-                        throw new InvalidDataException("Defending card can't defend.");
+                        var pair = result.Data as object[];
+                        if (pair == null || pair.Length != 2 || !(pair[0] is BaseCard) || !(pair[1] is Player))
+                        {
+                            throw new InvalidDataException("Action AttackPlayer shall have a pair of BaseCard and Player as its data.");
+                        }
+                        else if (!AttackerCandidates.Contains(pair[0]))
+                        {
+                            throw new InvalidDataException("Attacking card can't attack.");
+                        }
+                        else if (pair[1] == Player)
+                        {
+                            throw new InvalidDataException("Player can't be attacked.");
+                        }
                     }
                     break;
 
