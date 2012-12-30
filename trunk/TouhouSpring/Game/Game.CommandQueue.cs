@@ -52,24 +52,17 @@ namespace TouhouSpring
 
         internal bool IsCardPlayable(BaseCard card)
         {
-            Debug.Assert(RunningCommand == null);
-            var cmd = new Commands.PlayCard(card);
-            InitializeCommand(cmd);
-            RunningCommand = cmd;
-            bool ret = !RunPrerequisiteGeneric(cmd).Canceled;
-            RunningCommand = null;
-            return ret;
+            return IsCommandRunnable(new Commands.PlayCard(card));
+        }
+
+        internal bool IsCardActivatable(BaseCard card)
+        {
+            return IsCommandRunnable(new Commands.ActivateAssist(card));
         }
 
         internal bool IsSpellCastable(Behaviors.ICastableSpell spell)
         {
-            Debug.Assert(RunningCommand == null);
-            var cmd = new Commands.CastSpell(spell);
-            InitializeCommand(cmd);
-            RunningCommand = cmd;
-            bool ret = !RunPrerequisiteGeneric(cmd).Canceled;
-            RunningCommand = null;
-            return ret;
+            return IsCommandRunnable(new Commands.CastSpell(spell));
         }
 
         private void IssueCommand(Commands.BaseCommand command)
@@ -102,6 +95,16 @@ namespace TouhouSpring
             command.ExecutionPhase = Commands.CommandPhase.Pending;
             command.Game = this;
             command.Previous = RunningCommand;
+        }
+
+        private bool IsCommandRunnable(Commands.BaseCommand command)
+        {
+            Debug.Assert(RunningCommand == null);
+            InitializeCommand(command);
+            RunningCommand = command;
+            bool ret = !RunPrerequisiteGeneric(command).Canceled;
+            RunningCommand = null;
+            return ret;
         }
 
         private void RunCommandGeneric(Commands.BaseCommand command)
@@ -200,6 +203,14 @@ namespace TouhouSpring
                     yield return cardToPlay;
                 }
             }
+            else if (command is Commands.ActivateAssist && command.ExecutionPhase < Commands.CommandPhase.Epilog)
+            {
+                var cardToActivate = (command as Commands.ActivateAssist).CardToActivate;
+                if (cardToActivate != null)
+                {
+                    yield return cardToActivate;
+                }
+            }
             else if (command is Commands.Kill && command.ExecutionPhase == Commands.CommandPhase.Epilog)
             {
                 var cardKilled = (command as Commands.Kill).Target;
@@ -215,9 +226,9 @@ namespace TouhouSpring
                 {
                     yield return card;
                 }
-                foreach (var card in player.ActivatedAssists)
+                if (player.ActivatedAssist != null)
                 {
-                    yield return card;
+                    yield return player.ActivatedAssist;
                 }
             }
         }

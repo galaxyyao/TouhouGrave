@@ -53,6 +53,12 @@ namespace TouhouSpring
                         Debug.Assert(cardToPlay.Owner == ActingPlayer);
                         IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
                     }
+                    else if (result.ActionType == TacticalPhase.Action.ActivateAssist)
+                    {
+                        var cardToActivate = (BaseCard)result.Data;
+                        Debug.Assert(cardToActivate.Owner == ActingPlayer);
+                        IssueCommandsAndFlush(new Commands.ActivateAssist(cardToActivate));
+                    }
                     else if (result.ActionType == TacticalPhase.Action.CastSpell)
                     {
                         var spellToCast = (Behaviors.ICastableSpell)result.Data;

@@ -53,9 +53,9 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public IIndexable<BaseCard> ActivatedAssists
+        public BaseCard ActivatedAssist
         {
-            get; private set;
+            get; internal set;
         }
 
         public string Name
@@ -131,7 +131,6 @@ namespace TouhouSpring
             CardsSacrificed = m_sacrifices.ToIndexable();
             CardsOnBattlefield = m_battlefieldCards.ToIndexable();
             Assists = m_assists.ToIndexable();
-            ActivatedAssists = Indexable.Empty<BaseCard>();
 
             m_profile = profile;
             Game = game;

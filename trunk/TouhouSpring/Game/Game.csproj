@@ -63,6 +63,7 @@
     <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
+    <Compile Include="Commands\ActivateAssist.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\BaseCommand.Validation.cs" />

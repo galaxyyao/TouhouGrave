@@ -51,10 +51,6 @@ namespace TouhouSpring.Services.UIStates
                 {
                     m_gameUI.AddContextButton("Deploy", ContextButton_OnPlay);
                 }
-                else if (card.Behaviors.Has<Behaviors.Assist>())
-                {
-                    m_gameUI.AddContextButton("Activate", ContextButton_OnPlay);
-                }
                 else if (card.Behaviors.Has<Behaviors.Instant>())
                 {
                     m_gameUI.AddContextButton("Cast", ContextButton_OnPlay);
@@ -63,6 +59,10 @@ namespace TouhouSpring.Services.UIStates
                 {
                     m_gameUI.AddContextButton("Play", ContextButton_OnPlay);
                 }
+            }
+            if (m_io.ActivateAssistCandidates.Contains(card))
+            {
+                m_gameUI.AddContextButton("Activate", ContextButton_OnActivate);
             }
             if (m_castFromCards.Contains(card))
             {
@@ -89,6 +89,7 @@ namespace TouhouSpring.Services.UIStates
         {
             var card = cardControl.Card;
             return m_io.PlayCardCandidates.Contains(card)
+                   || m_io.ActivateAssistCandidates.Contains(card)
                    || m_castFromCards.Contains(card)
                    || m_io.SacrificeCandidates.Contains(card)
                    || m_io.RedeemCandidates.Contains(card);
@@ -108,6 +109,12 @@ namespace TouhouSpring.Services.UIStates
         private void ContextButton_OnPlay(string text)
         {
             m_io.RespondPlay(SelectedCard.Card);
+            m_gameUI.LeaveState();
+        }
+
+        private void ContextButton_OnActivate(string text)
+        {
+            m_io.RespondActivate(SelectedCard.Card);
             m_gameUI.LeaveState();
         }
 

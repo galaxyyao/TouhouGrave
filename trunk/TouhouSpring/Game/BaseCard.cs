@@ -52,5 +52,10 @@ namespace TouhouSpring
         {
             get { return Owner != null ? Owner.Hero == this : false; }
         }
+
+        public bool IsAssist
+        {
+            get { return Owner != null ? Owner.Assists.Contains(this) : false; }
+        }
     }
 }

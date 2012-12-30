@@ -117,7 +117,8 @@ namespace TouhouSpring.UI.CardControlAddins
             m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);
             m_localFrame.Col3 = new Vector4(transform.M14, transform.M24, transform.M34, transform.M44);
 
-            bool activated = Card.IsHero && Card.Owner.CardsOnBattlefield.Contains(Card);
+            bool activated = Card.IsHero && Card.Owner.CardsOnBattlefield.Contains(Card)
+                             || Card.IsAssist && Card.Owner.ActivatedAssist == Card;
             if (activated != m_lastActivated)
             {
                 if (m_activateEffectTimer.IsPlaying)
