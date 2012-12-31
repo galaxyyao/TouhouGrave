@@ -25,6 +25,7 @@ namespace TouhouSpring.Services
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
                 m_playerLibraryPile = ccStyle.TypedTarget;
+                m_playerLibraryPile.EnableDepth = true;
                 m_playerLibraryPile.Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPile, Game.Players[0].Library));
                 m_playerLibraryPile.Dispatcher = m_playerLibraryZoneInfo.m_container;
             }
@@ -33,9 +34,25 @@ namespace TouhouSpring.Services
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
                 m_opponentLibraryPile = ccStyle.TypedTarget;
-                m_opponentLibraryPile.Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPile, Game.Players[0].Library));
-                //m_opponentLibraryPile.Dispatcher = m_opponentLibraryZoneInfo.m_container;
+                m_opponentLibraryPile.EnableDepth = true;
+                m_opponentLibraryPile.Addins.Add(new UI.CardControlAddins.Pile(m_opponentLibraryPile, Game.Players[1].Library));
+                m_opponentLibraryPile.Dispatcher = m_opponentLibraryZoneInfo.m_container;
             }
+        }
+
+        private void InitializeToLibrary(UI.CardControl cardControl)
+        {
+            cardControl.Style.Apply(); // to solve the default TransformToGlobal matrix
+            var fromPile = cardControl.Card.Owner == Game.Players[0] ? m_playerLibraryPile : m_opponentLibraryPile;
+            var pileTop = fromPile.Style.ChildIds["Body"].Target;
+            var transform = (cardControl.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
+
+            cardControl.GetAddin<UI.CardControlAddins.Flip>().DoFlip = false;
+            cardControl.GetAddin<UI.CardControlAddins.Flip>().StartFlip();
+            cardControl.Style.Apply(); // to apply initial flipped matrix
+
+            cardControl.Dispatcher = pileTop;
+            cardControl.Transform = transform;
         }
 
         private void UpdatePiles(float deltaTime)

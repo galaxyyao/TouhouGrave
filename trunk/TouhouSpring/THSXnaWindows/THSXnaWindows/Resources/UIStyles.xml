@@ -34,6 +34,9 @@
       <Layout Id="OpponentHand" Left="-1" Top="1">
         <Transform Scaling="0.2" />
       </Layout>
+      <Layout Id="OpponentLibrary" Left="0.8" Top="0.4">
+        <Transform Scaling="0.20" />
+      </Layout>
       <Layout Id="OpponentAssists" Left="-1.08" Top="0.6">
         <Transform Scaling="0.1" />
       </Layout>

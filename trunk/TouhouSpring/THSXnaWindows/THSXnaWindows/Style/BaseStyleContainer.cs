@@ -49,7 +49,7 @@ namespace TouhouSpring.Style
 
 		public virtual void Apply()
 		{
-			m_children.Count.Repeat(i => m_children[i].Apply());
+			m_children.ForEach(children => children.Apply());
 		}
 
 		private List<IStyleElement> m_children = new List<IStyleElement>();

@@ -50,14 +50,7 @@ namespace TouhouSpring.Services
 
             if (card.Owner.CardsOnHand.Contains(card))
             {
-                ccStyle.Apply();
-                var fromPile = m_playerLibraryPile;
-                var tilePile = fromPile.Style.ChildIds["Body"].Target;
-                var transform = (ccStyle.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
-                cardControl.Dispatcher = tilePile;
-                cardControl.Transform = transform;
-                cardControl.GetAddin<UI.CardControlAddins.Flip>().DoFlip = false;
-                cardControl.GetAddin<UI.CardControlAddins.Flip>().StartFlip();
+                InitializeToLibrary(cardControl);
             }
         }
 
@@ -118,6 +111,7 @@ namespace TouhouSpring.Services
         {
             m_zoomedInZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["ZoomedIn"].Target };
             m_playerLibraryZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["PlayerLibrary"].Target };
+            m_opponentLibraryZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["OpponentLibrary"].Target };
             m_playerHandZoneInfo = new LocationAnimation.ZoneInfo
             {
                 m_container = InGameUIPage.Style.ChildIds["PlayerHand"].Target,
