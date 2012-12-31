@@ -16,7 +16,7 @@ namespace TouhouSpring.UI.CardControlAddins
 		{
 			Control.Style.RegisterBinding(this);
 
-			m_rotationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardSelected"));
+			m_rotationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardSelected"));
 			m_rotationTrack.Elapsed += w =>
 			{
 				w = m_lastRotated ? w : 1 - w;

@@ -29,7 +29,7 @@
         <ModifiersOnUpdate>
           <Modifier Type="Modifiers:ScalingAnimation">
             <AnimationType>Curve</AnimationType>
-            <CurveName>Curve1</CurveName>
+            <CurveName>Curves/Curve1</CurveName>
             <NormalizeCurveTime>true</NormalizeCurveTime>
             <CurveScale>2</CurveScale>
             <CurveBias>2</CurveBias>
@@ -43,7 +43,7 @@
           </Modifier>
           <Modifier Type="Modifiers:ColorAnimation">
             <AnimationType>Curve</AnimationType>
-            <CurveName>Curve1</CurveName>
+            <CurveName>Curves/Curve1</CurveName>
             <NormalizeCurveTime>true</NormalizeCurveTime>
             <CurveScale>1</CurveScale>
             <CurveBias>0</CurveBias>
@@ -78,7 +78,7 @@
         <ModifiersOnUpdate>
           <Modifier Type="Modifiers:ColorAnimation">
             <AnimationType>Curve</AnimationType>
-            <CurveName>Curve1</CurveName>
+            <CurveName>Curves/Curve1</CurveName>
             <NormalizeCurveTime>true</NormalizeCurveTime>
             <CurveScale>0.1</CurveScale>
             <CurveBias>0</CurveBias>
@@ -113,7 +113,7 @@
         <ModifiersOnUpdate>
           <Modifier Type="Modifiers:ColorAnimation">
             <AnimationType>Curve</AnimationType>
-            <CurveName>Curve1</CurveName>
+            <CurveName>Curves/Curve1</CurveName>
             <NormalizeCurveTime>true</NormalizeCurveTime>
             <CurveScale>0.15</CurveScale>
             <CurveBias>0</CurveBias>

@@ -136,27 +136,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Curve_CardMove.xml">
-      <Name>Curve_CardMove</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Curve_CardSelected.xml">
-      <Name>Curve_CardSelected</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Curve_CardFloat.xml">
-      <Name>Curve_CardFloat</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\TitleMenu\TitleMenuItems.png">
       <Name>TitleMenuItems</Name>
       <Importer>TextureImporter</Importer>
@@ -187,23 +166,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeamMeUp.xml">
-      <Name>BeamMeUp</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>ParticleSystemTextureAtlasResolve</Processor>
-    </Compile>
-    <Compile Include="Bombing.xml">
-      <Name>Bombing</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>ParticleSystemTextureAtlasResolve</Processor>
-    </Compile>
-    <Compile Include="Curve1.xml">
-      <Name>Curve1</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Effects\GridShader.fx">
       <Name>GridShader</Name>
       <Importer>EffectImporter</Importer>
@@ -213,18 +175,6 @@
       <Name>ParticleRenderer</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Curve2.xml">
-      <Name>Curve2</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-    <Compile Include="KnifeFan.xml">
-      <Name>KnifeFan</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -460,24 +410,64 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Curve_CardEnlarge.xml">
-      <Name>Curve_CardEnlarge</Name>
+    <Compile Include="Curves\Curve1.xml">
+      <Name>Curve1</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Curves\Curve2.xml">
+      <Name>Curve2</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardSummoned.xml">
+    <Compile Include="Particles\BeamMeUp.xml">
+      <Name>BeamMeUp</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ParticleSystemTextureAtlasResolve</Processor>
+    </Compile>
+    <Compile Include="Particles\Bombing.xml">
+      <Name>Bombing</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ParticleSystemTextureAtlasResolve</Processor>
+    </Compile>
+    <Compile Include="Particles\CardActivated.xml">
+      <Name>CardActivated</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ParticleSystemTextureAtlasResolve</Processor>
+    </Compile>
+    <Compile Include="Particles\CardSummoned.xml">
       <Name>CardSummoned</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>ParticleSystemTextureAtlasResolve</Processor>
+    </Compile>
+    <Compile Include="Particles\KnifeFan.xml">
+      <Name>KnifeFan</Name>
       <Importer>XmlImporter</Importer>
       <Processor>ParticleSystemTextureAtlasResolve</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardActivated.xml">
-      <Name>CardActivated</Name>
+    <Compile Include="Curves\CardEnlarge.xml">
+      <Name>CardEnlarge</Name>
       <Importer>XmlImporter</Importer>
-      <Processor>ParticleSystemTextureAtlasResolve</Processor>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Curves\CardFloat.xml">
+      <Name>CardFloat</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Curves\CardMove.xml">
+      <Name>CardMove</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Curves\CardSelected.xml">
+      <Name>CardSelected</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

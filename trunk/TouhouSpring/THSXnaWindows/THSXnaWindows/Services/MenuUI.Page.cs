@@ -48,7 +48,7 @@ namespace TouhouSpring.Services
 					}
 				}
 
-				var curve = GameApp.Service<ResourceManager>().Acquire<XnaCurve>("Curve_CardMove");
+				var curve = GameApp.Service<ResourceManager>().Acquire<XnaCurve>("Curves/CardMove");
 
 				m_enterAnimation = new Animation.CurveTrack(curve);
 				m_enterAnimation.Elapsed += weight =>

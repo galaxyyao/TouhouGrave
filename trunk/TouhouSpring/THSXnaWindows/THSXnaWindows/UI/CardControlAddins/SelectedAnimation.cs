@@ -16,7 +16,7 @@ namespace TouhouSpring.UI.CardControlAddins
 		{
 			Control.Style.RegisterBinding(this);
 
-			m_selectedTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardSelected"));
+			m_selectedTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardSelected"));
 			m_selectedTrack.Elapsed += w =>
 			{
 				w = m_lastSelected ? w : 1 - w;

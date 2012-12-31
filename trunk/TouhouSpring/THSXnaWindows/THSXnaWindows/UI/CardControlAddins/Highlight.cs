@@ -21,11 +21,11 @@ namespace TouhouSpring.UI.CardControlAddins
             m_quadHighlight = new Graphics.TexturedQuad(GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/CardHighlight"));
             m_quadHighlight.BlendState = new BlendState { ColorSourceBlend = Blend.SourceAlpha, ColorDestinationBlend = Blend.One };
 
-            m_borderBlinkTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardFloat"));
+            m_borderBlinkTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardFloat"));
             m_borderBlinkTrack.Loop = true;
             m_borderBlinkTrack.Play();
 
-            m_enlargeTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardEnlarge"));
+            m_enlargeTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardEnlarge"));
         }
 
         public override void Update(float deltaTime)

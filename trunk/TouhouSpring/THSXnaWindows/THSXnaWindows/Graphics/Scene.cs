@@ -134,7 +134,7 @@ namespace TouhouSpring.Graphics
 
             var resourceMgr = GameApp.Service<Services.ResourceManager>();
             m_backgroundImage = new TexturedQuad(resourceMgr.Acquire<VirtualTexture>("Textures/Scene2"));
-            m_beamMeUp = new Particle.ParticleSystemInstance(resourceMgr.Acquire<Particle.ParticleSystem>("BeamMeUp"));
+            m_beamMeUp = new Particle.ParticleSystemInstance(resourceMgr.Acquire<Particle.ParticleSystem>("Particles/BeamMeUp"));
             m_loaded = true;
 
             m_currentEnvImageIndex = 0;

@@ -21,7 +21,7 @@
         <ModifiersOnUpdate>
           <Modifier Type="Modifiers:ColorAnimation">
             <AnimationType>Linear</AnimationType>
-            <CurveName>Curve1</CurveName>
+            <CurveName Null="true" />
             <NormalizeCurveTime>true</NormalizeCurveTime>
             <CurveScale>1</CurveScale>
             <CurveBias>0</CurveBias>
@@ -34,7 +34,7 @@
           </Modifier>
           <Modifier Type="Modifiers:ScalingAnimation">
             <AnimationType>Linear</AnimationType>
-            <CurveName>Curve1</CurveName>
+            <CurveName Null="true" />
             <NormalizeCurveTime>true</NormalizeCurveTime>
             <CurveScale>1</CurveScale>
             <CurveBias>0</CurveBias>

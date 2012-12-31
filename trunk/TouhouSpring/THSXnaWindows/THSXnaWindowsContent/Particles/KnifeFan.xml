@@ -29,7 +29,7 @@
         <ModifiersOnUpdate>
           <Modifier Type="Modifiers:ColorAnimation">
             <AnimationType>Curve</AnimationType>
-            <CurveName>Curve2</CurveName>
+            <CurveName>Curves/Curve2</CurveName>
             <NormalizeCurveTime>false</NormalizeCurveTime>
             <CurveScale>1</CurveScale>
             <CurveBias>0</CurveBias>

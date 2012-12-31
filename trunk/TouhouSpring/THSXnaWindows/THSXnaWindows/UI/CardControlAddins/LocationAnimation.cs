@@ -53,7 +53,7 @@ namespace TouhouSpring.UI.CardControlAddins
         {
             Control.Style.RegisterBinding(this);
 
-            m_locationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curve_CardMove"));
+            m_locationTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardMove"));
             m_locationTrack.Elapsed += w =>
             {
                 m_locationTransform = Matrix.Lerp(m_locationSrcTransform, m_locationDstTransform, w);
@@ -63,10 +63,10 @@ namespace TouhouSpring.UI.CardControlAddins
             m_locationTransformResolver = locationResolver;
             NextLocation = m_lastLocation = new LocationParameter { m_zone = null, m_numCards = 0, m_thisIndex = -1, m_focusIndex = -1 };
 
-            m_cardSummoned = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("CardSummoned"));
+            m_cardSummoned = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("Particles/CardSummoned"));
             m_cardSummoned.LocalFrameProvider = this;
 
-            m_cardActivated = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("CardActivated"));
+            m_cardActivated = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("Particles/CardActivated"));
             m_cardActivated.LocalFrameProvider = this;
             m_activateEffectTimer = new Animation.LinearTrack(0.4f);
             m_activateEffectTimer.Elapsed += w =>
