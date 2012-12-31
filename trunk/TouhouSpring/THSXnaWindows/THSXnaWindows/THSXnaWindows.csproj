@@ -73,12 +73,14 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\ReverseLinearTrack.cs" />
     <Compile Include="Animation\CurveTrack.cs" />
     <Compile Include="Animation\LinearTrack.cs" />
     <Compile Include="Animation\Track.cs" />
     <Compile Include="Animation\TrackUpdater.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="ConversationManager.cs" />
+    <Compile Include="Graphics\FloatingText.cs" />
     <Compile Include="Graphics\ParticleRenderer.cs" />
     <Compile Include="Graphics\ParticleRenderer.ResourceLoader.cs" />
     <Compile Include="Graphics\RenderManager.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="UI\CardControl.Binding.cs" />
     <Compile Include="UI\CardControl.cs" />
     <Compile Include="UI\CardControl.Render.cs" />
+    <Compile Include="UI\CardControlAddins\DamageIndicator.cs" />
     <Compile Include="UI\CardControlAddins\Flip.cs" />
     <Compile Include="UI\CardControlAddins\Glow.cs" />
     <Compile Include="UI\CardControlAddins\Highlight.cs" />

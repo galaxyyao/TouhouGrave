@@ -39,12 +39,9 @@ namespace TouhouSpring.Services
             ccStyle.Initialize();
 
             var cardControl = ccStyle.TypedTarget;
-            //cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
-            cardControl.Addins.Add(new UI.CardControlAddins.Glow(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
+            cardControl.Addins.Add(new UI.CardControlAddins.DamageIndicator(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl, Card_ResolveLocationTransform));
-            //cardControl.Addins.Add(new UI.CardControlAddins.SelectedAnimation(cardControl));
-            //cardControl.Addins.Add(new UI.CardControlAddins.SpellButtons(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));
             m_cardControls.Add(cardControl);
         }
