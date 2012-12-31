@@ -12,6 +12,8 @@ namespace TouhouSpring.Services
     {
         private List<UI.CardControl> m_cardControls = new List<UI.CardControl>();
         private LocationAnimation.ZoneInfo m_zoomedInZoneInfo;
+        private LocationAnimation.ZoneInfo m_playerLibraryZoneInfo;
+        private LocationAnimation.ZoneInfo m_opponentLibraryZoneInfo;
         private LocationAnimation.ZoneInfo m_playerHandZoneInfo;
         private LocationAnimation.ZoneInfo m_opponentHandZoneInfo;
         private LocationAnimation.ZoneInfo m_playerSacrificeZoneInfo;
@@ -41,9 +43,22 @@ namespace TouhouSpring.Services
             var cardControl = ccStyle.TypedTarget;
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.DamageIndicator(cardControl));
+            cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl, Card_ResolveLocationTransform));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));
             m_cardControls.Add(cardControl);
+
+            if (card.Owner.CardsOnHand.Contains(card))
+            {
+                ccStyle.Apply();
+                var fromPile = m_playerLibraryPile;
+                var tilePile = fromPile.Style.ChildIds["Body"].Target;
+                var transform = (ccStyle.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
+                cardControl.Dispatcher = tilePile;
+                cardControl.Transform = transform;
+                cardControl.GetAddin<UI.CardControlAddins.Flip>().DoFlip = false;
+                cardControl.GetAddin<UI.CardControlAddins.Flip>().StartFlip();
+            }
         }
 
         public void UnregisterCard(BaseCard card)
@@ -102,6 +117,7 @@ namespace TouhouSpring.Services
         private void InitializeZoneInfos()
         {
             m_zoomedInZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["ZoomedIn"].Target };
+            m_playerLibraryZoneInfo = new LocationAnimation.ZoneInfo { m_container = InGameUIPage.Style.ChildIds["PlayerLibrary"].Target };
             m_playerHandZoneInfo = new LocationAnimation.ZoneInfo
             {
                 m_container = InGameUIPage.Style.ChildIds["PlayerHand"].Target,
@@ -195,7 +211,7 @@ namespace TouhouSpring.Services
             foreach (var cc in m_cardControls)
             {
                 var card = cc.Card;
-                var locationAnimation = cc.Addins.First(addin => addin is LocationAnimation) as LocationAnimation;
+                var locationAnimation = cc.GetAddin<LocationAnimation>();
 
                 cc.EnableDepth = false;
 
@@ -296,7 +312,7 @@ namespace TouhouSpring.Services
         {
             var zoneContainer = zone.m_container;
             Debug.Assert(zoneContainer.Listeners.All(l => l is UI.CardControl));
-            var locationAnims = zoneContainer.Listeners.Cast<UI.CardControl>().Select(cc => (cc.Addins.First(addin => addin is LocationAnimation) as LocationAnimation)).ToArray();
+            var locationAnims = zoneContainer.Listeners.Cast<UI.CardControl>().Select(cc => cc.GetAddin<LocationAnimation>()).ToArray();
             var sortedLocationAnims = locationAnims.OrderBy(la => la.NextLocation.m_thisIndex).ToArray();
 
             bool inTransition = locationAnims.Any(la => la.InTransition);

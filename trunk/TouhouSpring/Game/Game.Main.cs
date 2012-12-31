@@ -130,7 +130,7 @@ namespace TouhouSpring
                 Winner = ActingPlayerEnemies.First();
                 return true;
             }
-            if (Players.Any(player => player.m_library.Count() <= 0))
+            if (Players.Any(player => player.Library.Count <= 0))
             {
                 Winner = ActingPlayerEnemies.First();
                 return true;

@@ -196,7 +196,7 @@ namespace TouhouSpring.Graphics
                 }
             }
 
-            RenderManager.EndEvent();
+            RenderManager.EndPixEvent();
         }
 
         private int CopyInstanceVertices(VertexDataDraw[] vertices, int startIndex, int numElements)

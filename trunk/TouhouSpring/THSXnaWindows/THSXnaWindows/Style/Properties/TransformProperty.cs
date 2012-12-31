@@ -72,7 +72,7 @@ namespace TouhouSpring.Style.Properties
                 {
                     if (srt.m_scaling != null)
                     {
-                        string[] tokens = srt.m_scaling.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] tokens = BindValuesFor(srt.m_scaling).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         float sx, sy, sz;
                         if (tokens.Length == 1)
                         {
@@ -100,21 +100,22 @@ namespace TouhouSpring.Style.Properties
 
                     if (srt.m_rotation != null)
                     {
-                        float degree = float.Parse(srt.m_rotation);
+                        float degree = float.Parse(BindValuesFor(srt.m_rotation));
                         transform *= MatrixHelper.RotateZ(degree * MathUtils.PI / 180.0f);
                     }
 
                     if (srt.m_translation != null)
                     {
-                        string[] tokens = srt.m_translation.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                        float tx = tokens.Length > 0 ? float.Parse(tokens[0]) : 1.0f;
-                        float ty = tokens.Length > 1 ? float.Parse(tokens[1]) : 1.0f;
-                        if (tokens.Length > 2)
+                        string[] tokens = BindValuesFor(srt.m_translation).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        float tx = tokens.Length > 0 ? float.Parse(tokens[0]) : 0.0f;
+                        float ty = tokens.Length > 1 ? float.Parse(tokens[1]) : 0.0f;
+                        float tz = tokens.Length > 2 ? float.Parse(tokens[2]) : 0.0f;
+                        if (tokens.Length > 3)
                         {
-                            throw new StyleException("Attribute 'Translation' can only have two components.");
+                            throw new StyleException("Attribute 'Translation' can only have three components.");
                         }
 
-                        transform *= MatrixHelper.Translate(tx, ty);
+                        transform *= MatrixHelper.Translate(tx, ty, tz);
                     }
                 }
             }

@@ -70,6 +70,9 @@
       <Layout Id="PlayerAssists" Left="-1.08" Top="-0.6">
         <Transform Scaling="0.1" />
       </Layout>
+      <Layout Id="PlayerLibrary" Left="0.8" Top="-0.2">
+        <Transform Scaling="0.20" />
+      </Layout>
     </Layout>
     <Layout Id="World2D">
       <!--This layer is for drawing the 2D elements of the game (e.g. spell buttons)-->
@@ -120,8 +123,9 @@
     <Layout Id="Main">
       <Transform Matrix="#CardAnimator.HighlightTransform#" />
       <Transform Scaling="0.0048,-0.0048,0.0048" />
-      <!--<Transform Matrix="#CardAnimator.Flip#" />-->
+      <Transform Matrix="#CardAnimator.Flip#" />
       <Layout Id="Body">
+        <Transform Trasnlation="0,0,#PileBackOffset#" />
         <!-- card's artwork -->
         <Layout Width="192" HorizontalAlignment="Center">
           <Image Uri="#Card.ImageUri#" Blend="Opaque">
@@ -130,8 +134,8 @@
           </Image>
         </Layout>
         <!-- frame -->
-        <Image Uri="Textures/CardFrame" />
-        <Image Uri="Textures/CardBack">
+        <Image Id="CardFrame" Uri="Textures/CardFrame" />
+        <Image Id="CardBack" Uri="Textures/CardBack">
           <Transform Translation="-105" />
           <Transform Scaling="-1,1" />
           <Transform Translation="105" />
@@ -148,27 +152,13 @@
       </Layout>
     </Layout>
   </Card>
-  <Card Id="Hero" Width="343" Height="479">
-    <Transform Matrix="#CardAnimator.LocationTransform#" />
+  <Card Id="PileBack" Width="210" Height="300">
     <Layout Id="Main">
-      <Layout Id="SpellButtons" />
+      <Transform Scaling="0.0048,-0.0048,0.0048" />
       <Layout Id="Body">
-        <!-- card's artwork -->
-        <Layout Width="288" HorizontalAlignment="Center">
-          <Image Uri="#Card.ImageUri#" Blend="Opaque">
-            <Content Stretch="UniformToFill" VerticalAlignment="Top" />
-            <Bounds Top="55" Width="100%" Height="212" />
-          </Image>
-        </Layout>
+        <Transform Translation="0,0,#PileBackOffset#" />
         <!-- frame -->
-        <Image Uri="Textures/HeroCardFrame" />
-        <!-- name -->
-        <Label Font="Segoe UI, 16" Text="#Card.Name#" Color="Black">
-          <Bounds Top="20" HorizontalAlignment="Center" />
-        </Label>
-        <Label Font="Segoe UI, 20" Text="#Card.Attack#/#Card.Defense#" Color="Black">
-          <Bounds Top="350" HorizontalAlignment="Center" />
-        </Label>
+        <Image Id="CardBack" Uri="Textures/CardBack" />
       </Layout>
     </Layout>
   </Card>

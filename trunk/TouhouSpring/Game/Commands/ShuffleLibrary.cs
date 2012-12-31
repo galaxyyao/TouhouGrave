@@ -36,7 +36,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Player.m_library.Shuffle(Game.Random);
+            Player.Library.Shuffle(Game.Random);
         }
     }
 }

@@ -12,26 +12,29 @@ namespace TouhouSpring.UI.CardControlAddins
         private Matrix m_transform = Matrix.Identity;
         private bool m_lastFlipped = false;
 
+        public bool DoFlip
+        {
+            get; set;
+        }
+
+        public void StartFlip()
+        {
+            m_lastFlipped = DoFlip;
+            OnTrackElapse(0);
+            m_lastFlipped = !DoFlip;
+        }
+
         public Flip(CardControl control) : base(control)
         {
             Control.Style.RegisterBinding(this);
 
             m_track = new Animation.LinearTrack(0.3f);
-            m_track.Elapsed += w =>
-            {
-                w = m_lastFlipped ? w : 1 - w;
-                var halfWidth = 0.5f;
-                m_transform = MatrixHelper.Translate(-halfWidth, 0)
-                              * MatrixHelper.Rotate(Vector3.UnitY, MathUtils.PI * w)
-                              * MatrixHelper.Translate(halfWidth, 0);
-            };
+            m_track.Elapsed += OnTrackElapse;
         }
 
         public override void Update(float deltaTime)
         {
-            var needFlip = GameApp.Service<Services.GameUI>().ZoomedInCard != Control
-                           && Card.Behaviors.Has<Behaviors.Warrior>()
-                           && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown;
+            var needFlip = GameApp.Service<Services.GameUI>().ZoomedInCard != Control && DoFlip;
 
             if (needFlip != m_lastFlipped)
             {
@@ -62,6 +65,15 @@ namespace TouhouSpring.UI.CardControlAddins
                     replacement = null;
                     return false;
             }
+        }
+
+        private void OnTrackElapse(float w)
+        {
+            w = m_lastFlipped ? w : 1 - w;
+            var halfWidth = 0.5f;
+            m_transform = MatrixHelper.Translate(-halfWidth, 0)
+                            * MatrixHelper.Rotate(Vector3.UnitY, MathUtils.PI * w)
+                            * MatrixHelper.Translate(halfWidth, 0);
         }
     }
 }

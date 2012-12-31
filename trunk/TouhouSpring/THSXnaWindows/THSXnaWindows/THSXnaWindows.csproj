@@ -83,6 +83,7 @@
     <Compile Include="Graphics\FloatingText.cs" />
     <Compile Include="Graphics\ParticleRenderer.cs" />
     <Compile Include="Graphics\ParticleRenderer.ResourceLoader.cs" />
+    <Compile Include="Graphics\PileRenderer.cs" />
     <Compile Include="Graphics\RenderManager.cs" />
     <Compile Include="Graphics\RenderManager.QuadRenderer.cs" />
     <Compile Include="Graphics\TextRenderer.Atlas.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Services\GameUI.CardControls.cs" />
     <Compile Include="Services\GameUI.ContextButton.cs" />
     <Compile Include="Services\GameUI.cs" />
+    <Compile Include="Services\GameUI.Piles.cs" />
     <Compile Include="Services\GameUI.ZoomInCard.cs" />
     <Compile Include="Services\IUIState.cs" />
     <Compile Include="Services\MenuUI.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="UI\CardControlAddins\Glow.cs" />
     <Compile Include="UI\CardControlAddins\Highlight.cs" />
     <Compile Include="UI\CardControlAddins\LocationAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\Pile.cs" />
     <Compile Include="UI\CardControlAddins\RotationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\ToneAnimation.cs" />
     <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />

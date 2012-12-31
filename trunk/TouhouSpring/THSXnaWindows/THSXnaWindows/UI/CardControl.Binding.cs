@@ -16,7 +16,7 @@ namespace TouhouSpring.UI
                     replacement = Card.Model.Description;
                     break;
                 case "Card.ImageUri":
-                    replacement = Card.Model.ArtworkUri != string.Empty ? Card.Model.ArtworkUri : "Textures/DefaultArtwork";
+                    replacement = String.IsNullOrEmpty(Card.Model.ArtworkUri) ? "Textures/DefaultArtwork" : Card.Model.ArtworkUri;
                     break;
                 case "Card.InitialAttack":
                     if (warrior != null)
@@ -85,6 +85,9 @@ namespace TouhouSpring.UI
                     {
                         replacement = "";
                     }
+                    break;
+                case "PileBackOffset":
+                    replacement = "0";
                     break;
                 default:
                     replacement = null;

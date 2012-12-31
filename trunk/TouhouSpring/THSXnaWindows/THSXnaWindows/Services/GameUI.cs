@@ -92,6 +92,7 @@ namespace TouhouSpring.Services
             }
 
             UpdateCardControls(deltaTime);
+            UpdatePiles(deltaTime);
             UpdateZoomInCard(deltaTime);
         }
 
@@ -126,6 +127,8 @@ namespace TouhouSpring.Services
         {
             InGameUIPage.Dispatcher = GameApp.Service<UIManager>().Root;
             InGameUIPage.Style.Apply();
+
+            RegisterPiles();
 
             foreach (var player in Game.Players)
             {

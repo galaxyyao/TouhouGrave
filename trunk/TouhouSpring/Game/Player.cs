@@ -18,7 +18,6 @@ namespace TouhouSpring
         internal List<BaseCard> m_sacrifices = new List<BaseCard>();
         internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
         internal List<BaseCard> m_assists = new List<BaseCard>();
-        internal Pile m_library = new Pile();
         internal Pile m_graveyard = new Pile();
 
         /// <summary>
@@ -56,6 +55,11 @@ namespace TouhouSpring
         public BaseCard ActivatedAssist
         {
             get; internal set;
+        }
+
+        public Pile Library
+        {
+            get; private set;
         }
 
         public string Name
@@ -131,6 +135,7 @@ namespace TouhouSpring
             CardsSacrificed = m_sacrifices.ToIndexable();
             CardsOnBattlefield = m_battlefieldCards.ToIndexable();
             Assists = m_assists.ToIndexable();
+            Library = new Pile();
 
             m_profile = profile;
             Game = game;
@@ -156,7 +161,7 @@ namespace TouhouSpring
             // initialize player's library
             foreach (var cardModel in deck)
             {
-                m_library.AddCardToTop(new BaseCard(cardModel, this));
+                Library.AddCardToTop(new BaseCard(cardModel, this));
             }
 
             // initialize player's hero

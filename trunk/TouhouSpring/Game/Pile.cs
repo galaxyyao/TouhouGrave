@@ -13,6 +13,15 @@ namespace TouhouSpring
 		// list start from bottom to top
 		private List<BaseCard> m_orderedCards = new List<BaseCard>();
 
+        /// <summary>
+        /// Get the number of cards in Pile
+        /// </summary>
+        /// <returns>Number of cards in Pile</returns>
+        public int Count
+        {
+            get { return m_orderedCards.Count; }
+        }
+
 		/// <summary>
 		/// Get the card at the bottom of the pile.
 		/// </summary>
@@ -111,14 +120,5 @@ namespace TouhouSpring
         {
             return (from card in m_orderedCards where predicate(card) select card).ToArray();
         }
-
-		/// <summary>
-		/// Get the number of cards in Pile
-		/// </summary>
-		/// <returns>Number of cards in Pile</returns>
-		public int Count()
-		{
-			return m_orderedCards.Count;
-		}
     }
 }

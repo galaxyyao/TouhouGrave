@@ -35,6 +35,6 @@ namespace TouhouSpring.Graphics
         public static extern int BeginPixEvent(uint col, string wszName);
 
         [DllImport("d3d9.dll", EntryPoint = "D3DPERF_EndEvent", CallingConvention = CallingConvention.Winapi)]
-        public static extern int EndEvent();
+        public static extern int EndPixEvent();
 	}
 }

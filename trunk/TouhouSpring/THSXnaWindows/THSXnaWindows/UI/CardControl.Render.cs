@@ -73,7 +73,7 @@ namespace TouhouSpring.UI
 
             Addins.ForEach(addin => addin.RenderPostMain(transform, e));
 
-            Graphics.RenderManager.EndEvent();
+            Graphics.RenderManager.EndPixEvent();
         }
 
         private void Initialize_Render()

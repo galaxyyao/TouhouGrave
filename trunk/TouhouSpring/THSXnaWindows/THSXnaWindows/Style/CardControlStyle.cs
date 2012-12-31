@@ -62,7 +62,7 @@ namespace TouhouSpring.Style
 				throw new ArgumentException("BindingProvider has already been registered.");
 			}
 
-			m_bindingProviders.Add(bindingProvider);
+			m_bindingProviders.Insert(0, bindingProvider);
 		}
 
 		public override void Initialize()

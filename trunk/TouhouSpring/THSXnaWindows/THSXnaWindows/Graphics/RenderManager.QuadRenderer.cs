@@ -107,7 +107,7 @@ namespace TouhouSpring.Graphics
 				Device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
 			}
 
-            RenderManager.EndEvent();
+            RenderManager.EndPixEvent();
 		}
 
 		private void CreateQuadRenderer()

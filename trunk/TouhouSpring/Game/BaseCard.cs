@@ -27,10 +27,6 @@ namespace TouhouSpring
             {
                 throw new ArgumentNullException("model");
             }
-            else if (owner == null)
-            {
-                throw new ArgumentNullException("owner");
-            }
 
             Model = model;
             Owner = owner;
