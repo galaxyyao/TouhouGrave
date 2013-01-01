@@ -151,7 +151,7 @@
       <Transform Scaling="0.0048,-0.0048,0.0048" />
       <Transform Matrix="#CardAnimator.Flip#" />
       <Layout Id="Body">
-        <Transform Trasnlation="0,0,#PileBackOffset#" />
+        <Transform Translation="0,0,#PileBackOffset#" />
         <!-- card's artwork -->
         <Layout Width="192" HorizontalAlignment="Center">
           <Image Uri="#Card.ImageUri#" Blend="Opaque">

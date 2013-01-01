@@ -9,9 +9,16 @@ namespace TouhouSpring.Services
 {
     partial class GameUI
     {
+        private struct GraveyardCounters
+        {
+            public int nextCounter;
+            public int currentCounter;
+        }
+
         private UI.CardControl[] m_playerLibraryPiles;
         private UI.CardControl[] m_playerGraveyardPiles;
         private List<UI.CardControl> m_cardEnteringGraveyard = new List<UI.CardControl>();
+        private GraveyardCounters[] m_graveyardCounters;
 
         private void InitializePiles()
         {
@@ -29,13 +36,15 @@ namespace TouhouSpring.Services
                 ccStyle.Initialize();
                 m_playerLibraryPiles[i] = ccStyle.TypedTarget;
                 m_playerLibraryPiles[i].EnableDepth = true;
-                m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], Game.Players[i].Library));
+                var pile = Game.Players[i].Library;
+                m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], () => pile.Count));
                 m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].m_library.Container;
             }
 
             // graveyard piles are created only when there are more than 1 cards in the graveyard
             // the last card entering graveyard will be displayed on the top
             m_playerGraveyardPiles = new UI.CardControl[Game.Players.Count];
+            m_graveyardCounters = new GraveyardCounters[Game.Players.Count];
         }
 
         private void PutToLibrary(UI.CardControl cardControl)
@@ -60,7 +69,7 @@ namespace TouhouSpring.Services
         {
             var pid = Game.Players.IndexOf(cardControl.Card.Owner);
             var locationAnim = cardControl.GetAddin<UI.CardControlAddins.LocationAnimation>();
-            locationAnim.SetNextLocation(m_playerZones[pid].m_graveyard, 0);
+            locationAnim.SetNextLocation(m_playerZones[pid].m_graveyard, m_graveyardCounters[pid].nextCounter++);
             locationAnim.Update(0); // make sure InTransition returns true
             m_cardEnteringGraveyard.Add(cardControl);
         }
@@ -76,6 +85,13 @@ namespace TouhouSpring.Services
             cardControl.MouseTracked.MouseButton1Up -= CardControl_MouseButton1Up;
             cardControl.MouseTracked.MouseButton2Down -= CardControl_MouseButton2Down;
             cardControl.Saturate = 0;
+
+            var graveyardPileHeight = ++m_graveyardCounters[pid].currentCounter;
+            if (graveyardPileHeight > 1)
+            {
+                cardControl.Addins.Add(new UI.CardControlAddins.Pile(cardControl, () => graveyardPileHeight));
+            }
+
             m_playerGraveyardPiles[pid] = cardControl;
         }
 

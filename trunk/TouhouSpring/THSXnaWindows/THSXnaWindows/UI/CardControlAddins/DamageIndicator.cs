@@ -48,7 +48,7 @@ namespace TouhouSpring.UI.CardControlAddins
         {
             var warrior = Card.Behaviors.Get<Behaviors.Warrior>();
             var life = warrior == null || Card.Owner.Graveyard.Contains(Card) ? 0 : warrior.Life;
-            if (warrior != null && m_lastLife > warrior.Life)
+            if (warrior != null && m_lastLife > life)
             {
                 // get the center position of the card in screen space
                 var pt = new Vector3(Control.Region.Width / 2, Control.Region.Height / 2, 0);
@@ -58,13 +58,13 @@ namespace TouhouSpring.UI.CardControlAddins
                 var screenPt = new Vector2(pt.X * halfVpWidth + halfVpWidth, halfVpHeight - pt.Y * halfVpHeight);
 
                 var resources = GameApp.Service<Resources>();
-                var text = GameApp.Service<Graphics.TextRenderer>().FormatText("[color:Red]-" + (m_lastLife - warrior.Life).ToString() + "[/color]", resources.FormatOptions);
+                var text = GameApp.Service<Graphics.TextRenderer>().FormatText("[color:Red]-" + (m_lastLife - life).ToString() + "[/color]", resources.FormatOptions);
                 GameApp.Service<Graphics.FloatingText>().Register(text, resources.DrawOptions,
                     screenPt, screenPt + m_offset,
                     new Animation.CurveTrack(resources.MoveCurve), new Animation.ReverseLinearTrack(resources.MoveCurve.Keys.LastOrDefault().Position));
             }
 
-            m_lastLife = warrior != null ? warrior.Life : -1;
+            m_lastLife = warrior != null ? life : -1;
         }
     }
 }

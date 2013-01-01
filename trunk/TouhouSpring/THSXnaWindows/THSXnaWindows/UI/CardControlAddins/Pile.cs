@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using GamePile = TouhouSpring.Pile;
 
 namespace TouhouSpring.UI.CardControlAddins
 {
@@ -11,14 +10,14 @@ namespace TouhouSpring.UI.CardControlAddins
     {
         private const int CardThickness = 10;
 
-        private GamePile m_pile;
+        private Func<int> m_pileHeight;
         private Graphics.VirtualTexture m_pileBackTexture;
 
-        public Pile(CardControl control, GamePile pile)
+        public Pile(CardControl control, Func<int> pileHeight)
             : base(control)
         {
             Control.Style.RegisterBinding(this);
-            m_pile = pile;
+            m_pileHeight = pileHeight;
         }
 
         public override void RenderPostMain(Matrix transform, RenderEventArgs e)
@@ -28,7 +27,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 return;
             }
 
-            var pileSize = new Vector3(Control.Region.Width, Control.Region.Height, m_pile.Count * CardThickness);
+            var pileSize = new Vector3(Control.Region.Width, Control.Region.Height, m_pileHeight() * CardThickness);
             var transform1 = (Control.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal;
             GameApp.Service<Graphics.PileRenderer>().Draw(m_pileBackTexture, pileSize, Matrix.CreateTranslation(0, 0, -pileSize.Z) * transform1);
         }
@@ -57,7 +56,7 @@ namespace TouhouSpring.UI.CardControlAddins
                     replacement = Matrix.Identity.Serialize();
                     break;
                 case "PileBackOffset":
-                    replacement = (m_pile.Count * CardThickness).ToString();
+                    replacement = (m_pileHeight() * CardThickness).ToString();
                     break;
                 default:
                     replacement = null;
