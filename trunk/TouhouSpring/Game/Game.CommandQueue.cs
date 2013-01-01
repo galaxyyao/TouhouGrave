@@ -34,18 +34,17 @@ namespace TouhouSpring
 
             while (m_pendingCommands.Count != 0)
             {
-                var cmd = m_pendingCommands.Dequeue();
-                RunningCommand = cmd;
-                RunCommandGeneric(cmd);
-                RunningCommand = null;
-            }
+                while (m_pendingCommands.Count != 0)
+                {
+                    var cmd = m_pendingCommands.Dequeue();
+                    RunningCommand = cmd;
+                    RunCommandGeneric(cmd);
+                    RunningCommand = null;
+                }
 
-            IssueCommand(new Commands.Resolve());
-            while (m_pendingCommands.Count != 0)
-            {
-                var cmd = m_pendingCommands.Dequeue();
-                RunningCommand = cmd;
-                RunCommandGeneric(cmd);
+                IssueCommand(new Commands.Resolve());
+                RunningCommand = m_pendingCommands.Dequeue();
+                RunCommandGeneric(RunningCommand);
                 RunningCommand = null;
             }
         }

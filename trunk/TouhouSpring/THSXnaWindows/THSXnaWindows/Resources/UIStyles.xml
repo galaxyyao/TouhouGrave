@@ -35,6 +35,10 @@
         <Transform Scaling="0.2" />
         <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
       </Layout>
+      <Layout Id="Game.Player1.Graveyard" Left="0.85" Top="0.8">
+        <Transform Scaling="0.20" />
+        <Zone />
+      </Layout>
       <Layout Id="Game.Player1.Library" Left="0.85" Top="0.4">
         <Transform Scaling="0.20" />
         <Zone />
@@ -86,6 +90,10 @@
         <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
       </Layout>
       <Layout Id="Game.Player0.Library" Left="0.85" Top="-0.2">
+        <Transform Scaling="0.20" />
+        <Zone />
+      </Layout>
+      <Layout Id="Game.Player0.Graveyard" Left="0.85" Top="-0.6">
         <Transform Scaling="0.20" />
         <Zone />
       </Layout>

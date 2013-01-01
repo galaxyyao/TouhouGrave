@@ -22,6 +22,11 @@ namespace TouhouSpring
             get { return m_orderedCards.Count; }
         }
 
+        public bool Contains(BaseCard card)
+        {
+            return m_orderedCards.Contains(card);
+        }
+
 		/// <summary>
 		/// Get the card at the bottom of the pile.
 		/// </summary>

@@ -44,9 +44,24 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_lastDarken = darken;
             }
 
+            var grayscale = gameUI.ZoomedInCard != Control && Card.Owner.Graveyard.Contains(Card);
+            if (grayscale != m_lastGrayscale)
+            {
+                m_saturateTrack.TimeFactor = grayscale ? -1 : 1;
+                if (!m_saturateTrack.IsPlaying)
+                {
+                    m_saturateTrack.PlayFrom(grayscale ? m_saturateTrack.Duration : 0f);
+                }
+                m_lastGrayscale = grayscale;
+            }
+
             if (m_brightnessTrack.IsPlaying)
             {
                 m_brightnessTrack.Elapse(deltaTime);
+            }
+            if (m_saturateTrack.IsPlaying)
+            {
+                m_saturateTrack.Elapse(deltaTime);
             }
         }
     }

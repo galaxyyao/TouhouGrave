@@ -35,9 +35,6 @@ namespace TouhouSpring
                             return true;
                         }
                         break;
-                    case "OnCardPlayed":
-                        GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
-                        break;
                     case "OnCardSummoned":
                         GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
                         break;

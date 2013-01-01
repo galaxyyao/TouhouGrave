@@ -126,7 +126,7 @@ namespace TouhouSpring.Services
             InGameUIPage.Style.Apply();
 
             InitializeCardZones();
-            RegisterPiles();
+            InitializePiles();
 
             foreach (var player in Game.Players)
             {

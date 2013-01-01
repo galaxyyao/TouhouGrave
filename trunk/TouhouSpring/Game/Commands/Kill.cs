@@ -81,7 +81,7 @@ namespace TouhouSpring.Commands
 
             if (!Target.IsHero)
             {
-                Target.Owner.m_graveyard.AddCardToTop(Target);
+                Target.Owner.Graveyard.AddCardToTop(Target);
                 EnteredGraveyard = true;
             }
         }

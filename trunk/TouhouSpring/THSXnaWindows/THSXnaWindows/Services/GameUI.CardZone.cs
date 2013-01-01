@@ -153,6 +153,7 @@ namespace TouhouSpring.Services
             public CardZone m_battlefield;
             public CardZone m_hero;
             public CardZone m_assists;
+            public CardZone m_graveyard;
         }
 
         private PlayerZones[] m_playerZones;
@@ -170,6 +171,7 @@ namespace TouhouSpring.Services
                 m_playerZones[i].m_battlefield = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Battlefield"]);
                 m_playerZones[i].m_hero = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Hero"]);
                 m_playerZones[i].m_assists = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Assists"]);
+                m_playerZones[i].m_graveyard = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Graveyard"]);
             }
 
             m_zoomedInZone = new CardZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
@@ -210,13 +212,6 @@ namespace TouhouSpring.Services
                 else if (card.Owner.Assists.Contains(card))
                 {
                     locationAnim.SetNextLocation(m_playerZones[pid].m_assists, card.Owner.Assists.IndexOf(card));
-                }
-                // TODO: graveyard
-                else
-                {
-                    throw new InvalidOperationException();
-                    //locationAnimation.NextLocation.m_zone = m_offboardZoneInfo;
-                    //locationAnimation.NextLocation.m_thisIndex = 0;
                 }
             }
 

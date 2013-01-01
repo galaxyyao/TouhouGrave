@@ -38,9 +38,9 @@ namespace TouhouSpring.UI
 			get; private set;
 		}
 
-		private IMouseTracked EventTarget
+		public IMouseTracked EventTarget
 		{
-			get; set;
+			get; private set;
 		}
 
 		public event EventHandler<MouseEventArgs> MouseMove;

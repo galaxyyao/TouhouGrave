@@ -19,15 +19,15 @@ namespace TouhouSpring.Services
             }
             else if (m_cardControls.Any(cc => cc.Card == card))
             {
-                return;
+                throw new ArgumentException("The card is already registered.", "card");
             }
 
             var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("Large"), card);
             ccStyle.Initialize();
 
             var cardControl = ccStyle.TypedTarget;
-            cardControl.MouseTracked.MouseButton1Up += (s, e) => OnCardClicked(cardControl);
-            cardControl.MouseTracked.MouseButton2Down += (s, e) => ZoomInCard(cardControl);
+            cardControl.MouseTracked.MouseButton1Up += CardControl_MouseButton1Up;
+            cardControl.MouseTracked.MouseButton2Down += CardControl_MouseButton2Down;
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.DamageIndicator(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
@@ -37,7 +37,7 @@ namespace TouhouSpring.Services
 
             if (card.Owner.CardsOnHand.Contains(card))
             {
-                InitializeToLibrary(cardControl);
+                PutToLibrary(cardControl);
             }
         }
 
@@ -48,15 +48,10 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("card");
             }
 
-            if (card.Owner.Hero == card)
-            {
-                // skip unregistering hero card
-                return;
-            }
-
             var index = m_cardControls.FindIndex(cc => cc.Card == card);
-            m_cardControls[index].Dispose();
+            var cardControl = m_cardControls[index];
             m_cardControls.RemoveAt(index);
+            PutToGraveyard(cardControl);
         }
 
         public bool TryGetCardControl(BaseCard card, out UI.CardControl cardControl)
@@ -111,13 +106,20 @@ namespace TouhouSpring.Services
             m_cardControls.ForEach(cc => cc.Update(deltaTime));
         }
 
-        internal void OnCardClicked(UI.CardControl control)
+        private void CardControl_MouseButton1Up(object sender, UI.MouseEventArgs e)
         {
+            var control = (sender as UI.MouseTracked).EventTarget as UI.CardControl;
             Debug.Assert(control != null && control.Card != null);
             if (IsCardClickable(control))
             {
                 UIState.OnCardClicked(control);
             }
+        }
+
+        private void CardControl_MouseButton2Down(object sender, UI.MouseEventArgs e)
+        {
+            var control = (sender as UI.MouseTracked).EventTarget as UI.CardControl;
+            ZoomInCard(control);
         }
     }
 }

@@ -10,8 +10,10 @@ namespace TouhouSpring.Services
     partial class GameUI
     {
         private UI.CardControl[] m_playerLibraryPiles;
+        private UI.CardControl[] m_playerGraveyardPiles;
+        private List<UI.CardControl> m_cardEnteringGraveyard = new List<UI.CardControl>();
 
-        private void RegisterPiles()
+        private void InitializePiles()
         {
             var dummyModel = new CardModel
             {
@@ -30,28 +32,78 @@ namespace TouhouSpring.Services
                 m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], Game.Players[i].Library));
                 m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].m_library.Container;
             }
+
+            // graveyard piles are created only when there are more than 1 cards in the graveyard
+            // the last card entering graveyard will be displayed on the top
+            m_playerGraveyardPiles = new UI.CardControl[Game.Players.Count];
         }
 
-        private void InitializeToLibrary(UI.CardControl cardControl)
+        private void PutToLibrary(UI.CardControl cardControl)
         {
             cardControl.Style.Apply(); // to solve the default TransformToGlobal matrix
-            var fromPile = m_playerLibraryPiles[Game.Players.IndexOf(cardControl.Card.Owner)];
-            var pileTop = fromPile.Style.ChildIds["Body"].Target;
             var transform = (cardControl.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
 
             cardControl.GetAddin<UI.CardControlAddins.Flip>().DoFlip = false;
             cardControl.GetAddin<UI.CardControlAddins.Flip>().StartFlip();
             cardControl.Style.Apply(); // to apply initial flipped matrix
 
-            cardControl.Dispatcher = pileTop;
+            var pid = Game.Players.IndexOf(cardControl.Card.Owner);
+            var fromZone = m_playerZones[pid].m_library.Container;
+            var pileTop = m_playerLibraryPiles[pid].Style.ChildIds["Body"].Target;
+            transform *= UI.TransformNode.GetTransformBetween(pileTop, fromZone);
+
+            cardControl.Dispatcher = fromZone;
             cardControl.Transform = transform;
+        }
+
+        private void PutToGraveyard(UI.CardControl cardControl)
+        {
+            var pid = Game.Players.IndexOf(cardControl.Card.Owner);
+            var locationAnim = cardControl.GetAddin<UI.CardControlAddins.LocationAnimation>();
+            locationAnim.SetNextLocation(m_playerZones[pid].m_graveyard, 0);
+            locationAnim.Update(0); // make sure InTransition returns true
+            m_cardEnteringGraveyard.Add(cardControl);
+        }
+
+        private void EnteredGraveyard(UI.CardControl cardControl)
+        {
+            var pid = Game.Players.IndexOf(cardControl.Card.Owner);
+            if (m_playerGraveyardPiles[pid] != null)
+            {
+                m_playerGraveyardPiles[pid].Dispose();
+            }
+            cardControl.Addins.Clear();
+            cardControl.MouseTracked.MouseButton1Up -= CardControl_MouseButton1Up;
+            cardControl.MouseTracked.MouseButton2Down -= CardControl_MouseButton2Down;
+            cardControl.Saturate = 0;
+            m_playerGraveyardPiles[pid] = cardControl;
         }
 
         private void UpdatePiles(float deltaTime)
         {
+            for (int i = 0; i < m_cardEnteringGraveyard.Count; ++i)
+            {
+                var cc = m_cardEnteringGraveyard[i];
+                if (!cc.GetAddin<UI.CardControlAddins.LocationAnimation>().InTransition)
+                {
+                    EnteredGraveyard(cc);
+                    m_cardEnteringGraveyard.RemoveAt(i);
+                    --i;
+                    continue;
+                }
+                cc.Update(deltaTime);
+            }
+
             foreach (var pile in m_playerLibraryPiles)
             {
                 pile.Update(deltaTime);
+            }
+            foreach (var pile in m_playerGraveyardPiles)
+            {
+                if (pile != null)
+                {
+                    pile.Update(deltaTime);
+                }
             }
         }
     }
