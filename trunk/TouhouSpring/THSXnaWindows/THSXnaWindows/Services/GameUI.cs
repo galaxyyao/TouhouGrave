@@ -73,8 +73,6 @@ namespace TouhouSpring.Services
             var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle("InGame"));
             pageStyle.Initialize();
             InGameUIPage = pageStyle.TypedTarget;
-
-            InitializeZoneInfos();
         }
 
         public override void Shutdown()
@@ -89,11 +87,10 @@ namespace TouhouSpring.Services
             if (GameApp.Service<GameManager>().Game != null)
             {
                 InGameUIPage.Style.Apply();
+                UpdateCardControls(deltaTime);
+                UpdatePiles(deltaTime);
+                UpdateZoomInCard(deltaTime);
             }
-
-            UpdateCardControls(deltaTime);
-            UpdatePiles(deltaTime);
-            UpdateZoomInCard(deltaTime);
         }
 
         public void EnterState(IUIState uiState, Interactions.BaseInteraction io)
@@ -128,6 +125,7 @@ namespace TouhouSpring.Services
             InGameUIPage.Dispatcher = GameApp.Service<UIManager>().Root;
             InGameUIPage.Style.Apply();
 
+            InitializeCardZones();
             RegisterPiles();
 
             foreach (var player in Game.Players)

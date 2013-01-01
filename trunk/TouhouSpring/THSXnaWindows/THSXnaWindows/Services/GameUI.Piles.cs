@@ -9,8 +9,7 @@ namespace TouhouSpring.Services
 {
     partial class GameUI
     {
-        private UI.CardControl m_playerLibraryPile;
-        private UI.CardControl m_opponentLibraryPile;
+        private UI.CardControl[] m_playerLibraryPiles;
 
         private void RegisterPiles()
         {
@@ -21,29 +20,22 @@ namespace TouhouSpring.Services
             };
             var dummyCard = new BaseCard(dummyModel, null);
 
+            m_playerLibraryPiles = new UI.CardControl[Game.Players.Count];
+            for (int i = 0; i < Game.Players.Count; ++i)
             {
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
-                m_playerLibraryPile = ccStyle.TypedTarget;
-                m_playerLibraryPile.EnableDepth = true;
-                m_playerLibraryPile.Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPile, Game.Players[0].Library));
-                m_playerLibraryPile.Dispatcher = m_playerLibraryZoneInfo.m_container;
-            }
-
-            {
-                var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
-                ccStyle.Initialize();
-                m_opponentLibraryPile = ccStyle.TypedTarget;
-                m_opponentLibraryPile.EnableDepth = true;
-                m_opponentLibraryPile.Addins.Add(new UI.CardControlAddins.Pile(m_opponentLibraryPile, Game.Players[1].Library));
-                m_opponentLibraryPile.Dispatcher = m_opponentLibraryZoneInfo.m_container;
+                m_playerLibraryPiles[i] = ccStyle.TypedTarget;
+                m_playerLibraryPiles[i].EnableDepth = true;
+                m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], Game.Players[i].Library));
+                m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].m_library.Container;
             }
         }
 
         private void InitializeToLibrary(UI.CardControl cardControl)
         {
             cardControl.Style.Apply(); // to solve the default TransformToGlobal matrix
-            var fromPile = cardControl.Card.Owner == Game.Players[0] ? m_playerLibraryPile : m_opponentLibraryPile;
+            var fromPile = m_playerLibraryPiles[Game.Players.IndexOf(cardControl.Card.Owner)];
             var pileTop = fromPile.Style.ChildIds["Body"].Target;
             var transform = (cardControl.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
 
@@ -57,10 +49,9 @@ namespace TouhouSpring.Services
 
         private void UpdatePiles(float deltaTime)
         {
-            if (m_playerLibraryPile != null)
+            foreach (var pile in m_playerLibraryPiles)
             {
-                m_playerLibraryPile.Update(deltaTime);
-                m_opponentLibraryPile.Update(deltaTime);
+                pile.Update(deltaTime);
             }
         }
     }

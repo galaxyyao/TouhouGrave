@@ -8,21 +8,9 @@ namespace TouhouSpring.UI.CardControlAddins
 {
     class LocationAnimation : CardControl.Addin, Style.IBindingProvider, Particle.ILocalFrameProvider
     {
-        public delegate Matrix LocationTransformResolver(LocationParameter location, CardControl control);
-
-        public class ZoneInfo
-        {
-            public UI.EventDispatcher m_container;
-            public float m_width;
-            public int[] m_intervalReductionLevel;
-            public float[] m_intervalReductionAmount;
-            public int m_lastFocusIndex; // focus index will be locked during card location transition
-                                         // so that glitching in transition animation could be avoided
-        }
-
         public struct LocationParameter
         {
-            public ZoneInfo m_zone;
+            public Services.GameUI.CardZone m_zone;
             public int m_numCards;
             public int m_thisIndex;
             public int m_focusIndex;
@@ -34,7 +22,6 @@ namespace TouhouSpring.UI.CardControlAddins
         private Matrix m_locationSrcTransform;
         private Matrix m_locationDstTransform;
         private Matrix m_locationTransform = MatrixHelper.Identity;
-        private LocationTransformResolver m_locationTransformResolver;
         private LocationParameter m_lastLocation;
 
         private bool m_playToBattlefield;
@@ -49,7 +36,7 @@ namespace TouhouSpring.UI.CardControlAddins
             get { return m_locationTrack.IsPlaying; }
         }
 
-        public LocationAnimation(CardControl control, LocationTransformResolver locationResolver) : base(control)
+        public LocationAnimation(CardControl control) : base(control)
         {
             Control.Style.RegisterBinding(this);
 
@@ -60,7 +47,6 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_cardSummoned.EffectInstances.ForEach(fx => fx.IsEmitting = m_playToBattlefield && w != 1.0f);
             };
 
-            m_locationTransformResolver = locationResolver;
             NextLocation = m_lastLocation = new LocationParameter { m_zone = null, m_numCards = 0, m_thisIndex = -1, m_focusIndex = -1 };
 
             m_cardSummoned = new Particle.ParticleSystemInstance(GameApp.Service<Services.ResourceManager>().Acquire<Particle.ParticleSystem>("Particles/CardSummoned"));
@@ -89,27 +75,13 @@ namespace TouhouSpring.UI.CardControlAddins
                 }
 
                 m_locationSrcTransform = Control.Transform;
-                m_locationDstTransform = m_locationTransformResolver(NextLocation, Control);
+                m_locationDstTransform = NextLocation.m_zone.ResolveLocationTransform(Control);
                 m_locationTrack.Play();
 
-                var gameui = GameApp.Service<Services.GameUI>();
-                var playerHand = gameui.InGameUIPage.Style.ChildIds["PlayerHand"].Target;
-                var playerBattlefield = gameui.InGameUIPage.Style.ChildIds["PlayerBattlefield"].Target;
-                var playerHero = gameui.InGameUIPage.Style.ChildIds["PlayerHero"].Target;
-                var playerSacrifice = gameui.InGameUIPage.Style.ChildIds["PlayerSacrifice"].Target;
-                var opponentHand = gameui.InGameUIPage.Style.ChildIds["OpponentHand"].Target;
-                var opponentBattlefield = gameui.InGameUIPage.Style.ChildIds["OpponentBattlefield"].Target;
-                var opponentHero = gameui.InGameUIPage.Style.ChildIds["OpponentHero"].Target;
-                var opponentSacrifice = gameui.InGameUIPage.Style.ChildIds["OpponentSacrifice"].Target;
-
-                m_playToBattlefield = (NextLocation.m_zone.m_container == playerBattlefield
-                                       || NextLocation.m_zone.m_container == playerSacrifice
-                                       || NextLocation.m_zone.m_container == playerHero)
-                                      && m_lastLocation.m_zone.m_container == playerHand
-                                      || (NextLocation.m_zone.m_container == opponentBattlefield
-                                          || NextLocation.m_zone.m_container == opponentSacrifice
-                                          || NextLocation.m_zone.m_container == opponentHero)
-                                         && m_lastLocation.m_zone.m_container == opponentHand;
+                m_playToBattlefield = (NextLocation.m_zone.ZoneId == "Battlefield"
+                                       || NextLocation.m_zone.ZoneId == "Sacrifice"
+                                       || NextLocation.m_zone.ZoneId == "Hero")
+                                      && m_lastLocation.m_zone.ZoneId == "Hand";
                 m_lastLocation = NextLocation;
             }
 
@@ -176,11 +148,15 @@ namespace TouhouSpring.UI.CardControlAddins
             }
         }
 
-        public void OnLocationSet()
+        public void SetNextLocation(Services.GameUI.CardZone nextZone, int sortIndex)
         {
-            if (Control.Dispatcher != NextLocation.m_zone.m_container)
+            NextLocation.m_zone = nextZone;
+            NextLocation.m_thisIndex = sortIndex;
+            Control.EnableDepth = nextZone.EnableDepth;
+
+            if (Control.Dispatcher != nextZone.Container)
             {
-                Control.SetParentAndKeepPosition(NextLocation.m_zone.m_container);
+                Control.SetParentAndKeepPosition(nextZone.Container);
                 m_locationTransform = Control.Transform;
             }
         }

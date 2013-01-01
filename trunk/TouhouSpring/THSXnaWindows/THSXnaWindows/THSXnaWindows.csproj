@@ -99,6 +99,7 @@
     <Compile Include="Services\GameManager.cs" />
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Services\GameUI.CardControls.cs" />
+    <Compile Include="Services\GameUI.CardZone.cs" />
     <Compile Include="Services\GameUI.ContextButton.cs" />
     <Compile Include="Services\GameUI.cs" />
     <Compile Include="Services\GameUI.Piles.cs" />

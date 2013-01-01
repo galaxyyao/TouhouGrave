@@ -31,57 +31,71 @@
     <Layout Id="World3D">
       <!--This layer is for drawing the 3D elements of the game scene(e.g. board)-->
       <Transform Matrix="#Game.WorldCamera.Transform#" />
-      <Layout Id="OpponentHand" Left="-1" Top="1">
+      <Layout Id="Game.Player1.Hand" Left="-1" Top="1">
         <Transform Scaling="0.2" />
+        <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
       </Layout>
-      <Layout Id="OpponentLibrary" Left="0.8" Top="0.4">
+      <Layout Id="Game.Player1.Library" Left="0.85" Top="0.4">
         <Transform Scaling="0.20" />
+        <Zone />
       </Layout>
-      <Layout Id="OpponentAssists" Left="-1.08" Top="0.6">
+      <Layout Id="Game.Player1.Assists" Left="-1.08" Top="0.6">
         <Transform Scaling="0.1" />
+        <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
       </Layout>
-      <Layout Id="OpponentHero" Left="-1" Top="0.4">
+      <Layout Id="Game.Player1.Hero" Left="-1.05" Top="0.4">
         <Transform Scaling="0.25" />
+        <Zone />
       </Layout>
       <Layout Left="-0.5" Top="0.65">
         <Transform Scaling="0.12" />
-        <Layout Id="OpponentSacrifice" />
+        <Layout Id="Game.Player1.Sacrifice">
+          <Zone Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+        </Layout>
         <Layout>
           <Transform Scaling="0.02,-0.02" />
           <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player1.ManaPoolText#" Color="Black" Left="1" Top="1" />
           <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player1.ManaPoolText#" Color="White" />
         </Layout>
       </Layout>
-      <Layout Id="OpponentBattlefield" Left="-1" Top="0.4">
+      <Layout Id="Game.Player1.Battlefield" Left="-1" Top="0.4">
         <Transform Scaling="0.2" />
+        <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
       </Layout>
-      <Layout Id="PlayerBattlefield" Left="-1" Top="-0.2">
+      <Layout Id="Game.Player0.Battlefield" Left="-1" Top="-0.2">
         <Transform Scaling="0.2" />
+        <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
       </Layout>
       <Layout Left="-0.5" Top="-0.65">
         <Transform Scaling="0.12" />
-        <Layout Id="PlayerSacrifice" />
+        <Layout Id="Game.Player0.Sacrifice">
+          <Zone Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+        </Layout>
         <Layout>
           <Transform Scaling="0.02,-0.02" />
           <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="Black" Left="1" Top="1" />
           <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="White" />
         </Layout>
       </Layout>
-      <Layout Id="PlayerHero" Left="-1" Top="-0.2">
+      <Layout Id="Game.Player0.Hero" Left="-1.05" Top="-0.2">
         <Transform Scaling="0.25" />
+        <Zone />
       </Layout>
-      <Layout Id="PlayerAssists" Left="-1.08" Top="-0.6">
+      <Layout Id="Game.Player0.Assists" Left="-1.08" Top="-0.6">
         <Transform Scaling="0.1" />
+        <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
       </Layout>
-      <Layout Id="PlayerLibrary" Left="0.8" Top="-0.2">
+      <Layout Id="Game.Player0.Library" Left="0.85" Top="-0.2">
         <Transform Scaling="0.20" />
+        <Zone />
       </Layout>
     </Layout>
     <Layout Id="World2D">
       <!--This layer is for drawing the 2D elements of the game (e.g. spell buttons)-->
       <Transform Matrix="#Game.UICamera.Transform#" />
-      <Layout Id="PlayerHand" Left="180" Top="630">
+      <Layout Id="Game.Player0.Hand" Left="180" Top="630">
         <Transform Scaling="84,-84" />
+        <Zone Span="8" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,8,12" />
       </Layout>
     </Layout>
     <Layout Id="UI">
@@ -108,6 +122,7 @@
       <Layout Id="ZoomedIn">
         <Transform Scaling="420,-420" />
         <Bounds Width="420" Height="600" Left="550" VerticalAlignment="Center"/>
+        <Zone />
       </Layout>
       <Label Font="Microsoft YaHei, 24, Bold" Text="#Game.DetailText1#" Color="White" Left="30" Top="50" />
       <Label Font="Microsoft YaHei, 18" Text="#Game.DetailText2#" Color="White" Left="60" Top="100" />
