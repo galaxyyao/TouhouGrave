@@ -47,6 +47,7 @@ namespace TouhouSpring.UI.CardControlAddins
         public override void Update(float deltaTime)
         {
             var warrior = Card.Behaviors.Get<Behaviors.Warrior>();
+            var life = warrior == null || Card.Owner.Graveyard.Contains(Card) ? 0 : warrior.Life;
             if (warrior != null && m_lastLife > warrior.Life)
             {
                 // get the center position of the card in screen space
