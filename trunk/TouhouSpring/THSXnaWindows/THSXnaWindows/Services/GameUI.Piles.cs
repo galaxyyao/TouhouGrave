@@ -89,7 +89,7 @@ namespace TouhouSpring.Services
             var graveyardPileHeight = ++m_graveyardCounters[pid].currentCounter;
             if (graveyardPileHeight > 1)
             {
-                cardControl.Addins.Add(new UI.CardControlAddins.Pile(cardControl, () => graveyardPileHeight));
+                cardControl.Addins.Add(new UI.CardControlAddins.Pile(cardControl, () => graveyardPileHeight - 1));
             }
 
             m_playerGraveyardPiles[pid] = cardControl;

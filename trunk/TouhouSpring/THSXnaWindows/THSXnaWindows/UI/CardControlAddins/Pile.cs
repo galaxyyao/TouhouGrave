@@ -8,7 +8,7 @@ namespace TouhouSpring.UI.CardControlAddins
 {
     class Pile : CardControl.Addin, Style.IBindingProvider
     {
-        private const int CardThickness = 10;
+        public const int CardThickness = 10;
 
         private Func<int> m_pileHeight;
         private Graphics.VirtualTexture m_pileBackTexture;

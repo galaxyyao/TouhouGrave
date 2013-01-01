@@ -104,7 +104,7 @@ namespace TouhouSpring.Services
                 });
             }
 
-            public Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
+            public virtual Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
             {
                 if (m_intervalReductionLevels == null)
                 {
@@ -145,6 +145,22 @@ namespace TouhouSpring.Services
             }
         }
 
+        public class GraveyardZone : CardZone
+        {
+            public GraveyardZone(Style.IStyleContainer style)
+                : base(style)
+            { }
+
+            public override Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
+            {
+                // thisIndex is the height of the pile (nextCounter) (see PutToGraveyard())
+                Matrix mat = base.ResolveLocationTransform(control, thisIndex)
+                    // TODO: no hard coding...
+                    * Matrix.CreateTranslation(0, 0, 0.0048f * UI.CardControlAddins.Pile.CardThickness * thisIndex);
+                return mat;
+            }
+        }
+
         private struct PlayerZones
         {
             public CardZone m_library;
@@ -171,7 +187,7 @@ namespace TouhouSpring.Services
                 m_playerZones[i].m_battlefield = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Battlefield"]);
                 m_playerZones[i].m_hero = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Hero"]);
                 m_playerZones[i].m_assists = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Assists"]);
-                m_playerZones[i].m_graveyard = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Graveyard"]);
+                m_playerZones[i].m_graveyard = new GraveyardZone(InGameUIPage.Style.ChildIds[pid + ".Graveyard"]);
             }
 
             m_zoomedInZone = new CardZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
