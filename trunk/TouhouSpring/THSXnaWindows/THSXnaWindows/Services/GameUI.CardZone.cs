@@ -104,18 +104,13 @@ namespace TouhouSpring.Services
                 });
             }
 
-            public Matrix ResolveLocationTransform(UI.CardControl control)
+            public Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
             {
                 if (m_intervalReductionLevels == null)
                 {
                     return Matrix.Identity;
                 }
 
-                int thisIndex = Container.Listeners.IndexOf(control);
-                if (thisIndex == -1)
-                {
-                    throw new ArgumentException("The control is not in this zone.");
-                }
                 int numCards = Container.Listeners.Count;
 
                 int irIndex;
@@ -214,7 +209,7 @@ namespace TouhouSpring.Services
                 }
                 else if (card.Owner.Assists.Contains(card))
                 {
-                    locationAnim.SetNextLocation(m_playerZones[pid].m_assists, card.Owner.Assists.IndexOf(card) - 1);
+                    locationAnim.SetNextLocation(m_playerZones[pid].m_assists, card.Owner.Assists.IndexOf(card));
                 }
                 // TODO: graveyard
                 else

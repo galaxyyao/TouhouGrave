@@ -98,8 +98,8 @@ namespace TouhouSpring.UI
 		void IMouseTracked.OnMouseLeave(MouseEventArgs e) { }
 		void IMouseTracked.OnMouseMove(MouseEventArgs e) { }
 		void IMouseTracked.OnMouseButton1Down(MouseEventArgs e) { }
-		void IMouseTracked.OnMouseButton1Up(MouseEventArgs e) { GameApp.Service<Services.GameUI>().OnCardClicked(this); }
-		void IMouseTracked.OnMouseButton2Down(MouseEventArgs e) { GameApp.Service<Services.GameUI>().ZoomInCard(this); }
+		void IMouseTracked.OnMouseButton1Up(MouseEventArgs e) { }
+		void IMouseTracked.OnMouseButton2Down(MouseEventArgs e) { }
 		void IMouseTracked.OnMouseButton2Up(MouseEventArgs e) { }
 
 		#endregion

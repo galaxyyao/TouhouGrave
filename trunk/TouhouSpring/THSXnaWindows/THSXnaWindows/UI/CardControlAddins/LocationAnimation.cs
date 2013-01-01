@@ -75,7 +75,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 }
 
                 m_locationSrcTransform = Control.Transform;
-                m_locationDstTransform = NextLocation.m_zone.ResolveLocationTransform(Control);
+                m_locationDstTransform = NextLocation.m_zone.ResolveLocationTransform(Control, NextLocation.m_thisIndex);
                 m_locationTrack.Play();
 
                 m_playToBattlefield = (NextLocation.m_zone.ZoneId == "Battlefield"

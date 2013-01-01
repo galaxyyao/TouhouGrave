@@ -34,6 +34,11 @@ namespace TouhouSpring.Services
 
         public override void Update(float deltaTime)
         {
+            if (!GameApp.Instance.IsActive)
+            {
+                return;
+            }
+
             var xnaMouseState = Mouse.GetState();
             bool btn1Pressed = xnaMouseState.LeftButton == ButtonState.Pressed;
             bool btn2Pressed = xnaMouseState.RightButton == ButtonState.Pressed;

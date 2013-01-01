@@ -26,6 +26,8 @@ namespace TouhouSpring.Services
             ccStyle.Initialize();
 
             var cardControl = ccStyle.TypedTarget;
+            cardControl.MouseTracked.MouseButton1Up += (s, e) => OnCardClicked(cardControl);
+            cardControl.MouseTracked.MouseButton2Down += (s, e) => ZoomInCard(cardControl);
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.DamageIndicator(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
