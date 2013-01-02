@@ -181,5 +181,60 @@ namespace TouhouSpring
             Health = 20;
             Mana = 0;
         }
+
+        private class HandSorter : IComparer<BaseCard>
+        {
+            public int Compare(BaseCard card1, BaseCard card2)
+            {
+                // Warrior, Spell
+                var isWarrior1 = card1.Behaviors.Has<Behaviors.Warrior>();
+                var isWarrior2 = card2.Behaviors.Has<Behaviors.Warrior>();
+                if (isWarrior1 != isWarrior2)
+                {
+                    return isWarrior1 ? -1 : 1;
+                }
+
+                var isSpell1 = card1.Behaviors.Has<Behaviors.Instant>();
+                var isSpell2 = card2.Behaviors.Has<Behaviors.Instant>();
+                if (isSpell1 != isSpell2)
+                {
+                    return isSpell1 ? -1 : 1;
+                }
+
+                return card1.Model.Name.CompareTo(card2.Model.Name);
+            }
+        }
+
+        internal void AddToHandSorted(BaseCard card)
+        {
+            AddToListSorted(m_handSet, card);
+        }
+
+        internal void AddToSacrificeSorted(BaseCard card)
+        {
+            AddToListSorted(m_sacrifices, card);
+        }
+
+        private static void AddToListSorted(List<BaseCard> list, BaseCard card)
+        {
+            var comparer = new HandSorter();
+            var index = list.BinarySearch(card, comparer);
+            if (index >= 0)
+            {
+                for (int i = index + 1; i < list.Count; ++i)
+                {
+                    if (comparer.Compare(list[i], card) == 1)
+                    {
+                        list.Insert(i, card);
+                        return;
+                    }
+                }
+                list.Add(card);
+            }
+            else
+            {
+                list.Insert(~index, card);
+            }
+        }
     }
 }

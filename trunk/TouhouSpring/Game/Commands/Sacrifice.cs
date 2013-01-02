@@ -39,7 +39,7 @@ namespace TouhouSpring.Commands
         internal override void RunMain()
         {
             Target.Owner.m_handSet.Remove(Target);
-            Target.Owner.m_sacrifices.Add(Target);
+            Target.Owner.AddToSacrificeSorted(Target);
         }
     }
 }
