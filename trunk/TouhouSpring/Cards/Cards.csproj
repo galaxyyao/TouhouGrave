@@ -63,9 +63,9 @@
     <None Include="Behaviors\Deprecated\SkillMustBeCharged.cs" />
     <None Include="Behaviors\Deprecated\Passive_WarriorAttackFirst.cs" />
     <None Include="Behaviors\Deprecated\Passive_WarriorDefenseDownWhenAttacked.cs" />
+    <None Include="Behaviors\Deprecated\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
-    <Compile Include="Behaviors\PhaseSpecific.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
     <Compile Include="Behaviors\Environment.cs" />

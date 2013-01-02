@@ -55,9 +55,7 @@
     <Compile Include="Behaviors\BehaviorModel.cs" />
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
-    <Compile Include="Behaviors\NonBlocker.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
-    <Compile Include="Behaviors\Unblockable.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
@@ -88,8 +86,6 @@
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Game.Resource.cs" />
     <Compile Include="Deck.cs" />
-    <Compile Include="Game.End.cs" />
-    <Compile Include="Game.Begin.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Messaging.cs" />

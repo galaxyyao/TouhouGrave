@@ -18,8 +18,20 @@ namespace TouhouSpring
         private void Main()
         {
             CurrentPhase = "Begin";
-            Begin();
-            //WaitForMessage("Start");
+
+            foreach (var player in Players)
+            {
+                // shuffle player's library
+                IssueCommand(new Commands.ShuffleLibrary(player));
+
+                // draw initial hands
+                7.Repeat(i => IssueCommand(new Commands.DrawCard(player)));
+            }
+
+            FlushCommandQueue();
+
+            // TODO: Non-trivial determination of the acting player for the first turn
+            m_actingPlayer = 0;
 
             InPlayerPhases = true;
             Round = 0;
@@ -118,7 +130,6 @@ namespace TouhouSpring
 
             new Interactions.NotifyOnly(ActingPlayer.Controller, String.Format(CultureInfo.CurrentCulture, "{0} 获得了胜利", Winner.Name));
             CurrentPhase = "End";
-            End();
 
             CurrentPhase = "PostEnd";
         }
