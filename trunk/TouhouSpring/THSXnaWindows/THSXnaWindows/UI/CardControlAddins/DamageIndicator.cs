@@ -26,6 +26,11 @@ namespace TouhouSpring.UI.CardControlAddins
                 get; private set;
             }
 
+            public Curve FadeCurve
+            {
+                get; private set;
+            }
+
             public override void Startup()
             {
                 var font = new Graphics.TextRenderer.FontDescriptor("Georgia", 20, System.Drawing.FontStyle.Bold);
@@ -34,11 +39,12 @@ namespace TouhouSpring.UI.CardControlAddins
                 drawOptions.ColorScaling = Vector4.One;
                 DrawOptions = drawOptions;
                 MoveCurve = GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/DamageIndicatorFloat");
+                FadeCurve = GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/DamageIndicatorFade");
             }
         }
 
         private int m_lastLife = -1;
-        private Vector2 m_offset = new Vector2(0, -80);
+        private Vector2 m_offset = new Vector2(20, -80);
 
         public DamageIndicator(CardControl control) : base(control)
         {
@@ -61,7 +67,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 var text = GameApp.Service<Graphics.TextRenderer>().FormatText("[color:Red]-" + (m_lastLife - life).ToString() + "[/color]", resources.FormatOptions);
                 GameApp.Service<Graphics.FloatingText>().Register(text, resources.DrawOptions,
                     screenPt, screenPt + m_offset,
-                    new Animation.CurveTrack(resources.MoveCurve), new Animation.ReverseLinearTrack(resources.MoveCurve.Keys.LastOrDefault().Position));
+                    new Animation.CurveTrack(resources.MoveCurve), new Animation.CurveTrack(resources.FadeCurve));
             }
 
             m_lastLife = warrior != null ? life : -1;
