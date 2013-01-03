@@ -21,6 +21,14 @@ namespace TouhouSpring
             get { return m_randomGenerator; }
         }
 
+        /// <summary>
+        /// Tell the current game phase.
+        /// </summary>
+        public string CurrentPhase
+        {
+            get; internal set;
+        }
+
         public int Round
         {
             get; private set;
@@ -69,6 +77,8 @@ namespace TouhouSpring
                 m_players[i] = new Player(m_profiles[i], this, m_controllers[i]);
                 m_players[i].Initialize(deck);
             }
+
+            CurrentPhase = "";
 
             InitializeLetterBoxes();
             StartGameFlowThread();

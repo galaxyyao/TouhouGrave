@@ -6,12 +6,13 @@ using System.Xml.Linq;
 
 namespace TouhouSpring.Style
 {
-	interface IStyleContainer : IStyleElement
-	{
-		string Id { get; }
-		Dictionary<string, IStyleContainer> ChildIds { get; }
-		Rectangle Bounds { get; }
-		XElement Definition { get; }
-		UI.EventDispatcher Target { get; }
-	}
+    interface IStyleContainer : IStyleElement
+    {
+        string Id { get; }
+        bool IsIdRoot { get; }
+        Dictionary<string, IStyleContainer> ChildIds { get; }
+        Rectangle Bounds { get; }
+        XElement Definition { get; }
+        UI.EventDispatcher Target { get; }
+    }
 }

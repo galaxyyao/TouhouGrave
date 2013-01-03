@@ -13,10 +13,6 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Game.CurrentPhase != "Upkeep")
-            {
-                FailValidation("StartTurn can't be executed at the phase {0}.", Game.CurrentPhase);
-            }
         }
 
         internal override void RunMain()

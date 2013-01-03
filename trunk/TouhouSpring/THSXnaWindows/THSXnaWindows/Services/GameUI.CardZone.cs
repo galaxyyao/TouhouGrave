@@ -161,36 +161,56 @@ namespace TouhouSpring.Services
             }
         }
 
-        private struct PlayerZones
+        public class ZoomedInZone : CardZone
         {
-            public CardZone m_library;
-            public CardZone m_hand;
-            public CardZone m_sacrifice;
-            public CardZone m_battlefield;
-            public CardZone m_hero;
-            public CardZone m_assists;
-            public CardZone m_graveyard;
+            public ZoomedInZone(Style.IStyleContainer style)
+                : base(style)
+            { }
+
+            public override Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
+            {
+                Matrix mat = base.ResolveLocationTransform(control, thisIndex);
+                if (control.Card.Owner != control.Card.Owner.Game.ActingPlayer)
+                {
+                    mat = Matrix.CreateTranslation(-0.5f, control.Region.Height / control.Region.Width * 0.5f, 0)
+                          * Matrix.CreateRotationZ(MathHelper.Pi)
+                          * Matrix.CreateTranslation(0.5f, -control.Region.Height / control.Region.Width * 0.5f, 0)
+                          * mat;
+                }
+                return mat;
+            }
         }
 
         private PlayerZones[] m_playerZones;
+        private CardZone m_actingPlayerHandZone;
         private CardZone m_zoomedInZone;
 
         private void InitializeCardZones()
         {
+            var world3D = InGameUIPage.Style.ChildIds["World3D"];
+
             m_playerZones = new PlayerZones[Game.Players.Count];
             for (int i = 0; i < Game.Players.Count; ++i)
             {
-                var pid = "Game.Player" + i.ToString();
-                m_playerZones[i].m_library = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Library"]);
-                m_playerZones[i].m_hand = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Hand"]);
-                m_playerZones[i].m_sacrifice = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Sacrifice"]);
-                m_playerZones[i].m_battlefield = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Battlefield"]);
-                m_playerZones[i].m_hero = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Hero"]);
-                m_playerZones[i].m_assists = new CardZone(InGameUIPage.Style.ChildIds[pid + ".Assists"]);
-                m_playerZones[i].m_graveyard = new GraveyardZone(InGameUIPage.Style.ChildIds[pid + ".Graveyard"]);
+                m_playerZones[i] = new PlayerZones(Game.Players[i], world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
             }
 
-            m_zoomedInZone = new CardZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
+            m_actingPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingPlayer.Hand"]);
+            m_zoomedInZone = new ZoomedInZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
+        }
+
+        private void UpdateCardZones()
+        {
+            foreach (var pz in m_playerZones)
+            {
+                pz.UIStyle.Apply();
+            }
+
+            for (int i = 0; i < m_playerZones.Length; ++i)
+            {
+                var pzTransform = m_playerZones[i].UIRoot as UI.ITransformNode;
+                pzTransform.Transform = Game.ActingPlayer == Game.Players[i] ? Matrix.Identity : Matrix.CreateRotationZ(MathHelper.Pi);
+            }
         }
 
         private void UpdateCardLocations()
@@ -210,33 +230,41 @@ namespace TouhouSpring.Services
                 {
                     if (card.IsHero)
                     {
-                        locationAnim.SetNextLocation(m_playerZones[pid].m_hero, 0);
+                        locationAnim.SetNextLocation(m_playerZones[pid].Hero, 0);
                     }
                     else
                     {
-                        locationAnim.SetNextLocation(m_playerZones[pid].m_battlefield, card.Owner.CardsOnBattlefield.IndexOf(card));
+                        locationAnim.SetNextLocation(m_playerZones[pid].Battlefield, card.Owner.CardsOnBattlefield.IndexOf(card));
                     }
                 }
                 else if (card.Owner.CardsSacrificed.Contains(card))
                 {
-                    locationAnim.SetNextLocation(m_playerZones[pid].m_sacrifice, card.Owner.CardsSacrificed.IndexOf(card));
+                    locationAnim.SetNextLocation(m_playerZones[pid].Sacrifice, card.Owner.CardsSacrificed.IndexOf(card));
                 }
                 else if (card.Owner.CardsOnHand.Contains(card) || card.Owner.Hero == card)
                 {
-                    locationAnim.SetNextLocation(m_playerZones[pid].m_hand, card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1);
+                    if (Game.ActingPlayer == card.Owner)
+                    {
+                        locationAnim.SetNextLocation(m_actingPlayerHandZone, card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1);
+                    }
+                    else
+                    {
+                        locationAnim.SetNextLocation(m_playerZones[pid].Hand, card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1);
+                    }
                 }
                 else if (card.Owner.Assists.Contains(card))
                 {
-                    locationAnim.SetNextLocation(m_playerZones[pid].m_assists, card.Owner.Assists.IndexOf(card));
+                    locationAnim.SetNextLocation(m_playerZones[pid].Assists, card.Owner.Assists.IndexOf(card));
                 }
             }
 
-            foreach (var pzi in m_playerZones)
+            foreach (var pz in m_playerZones)
             {
-                pzi.m_hand.Rearrange();
-                pzi.m_battlefield.Rearrange();
-                pzi.m_sacrifice.Rearrange();
+                pz.Hand.Rearrange();
+                pz.Battlefield.Rearrange();
+                pz.Sacrifice.Rearrange();
             }
+            m_actingPlayerHandZone.Rearrange();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
         , IEpilogTrigger<Commands.PlayCard>
-        , IEpilogTrigger<Commands.EndTurn>
+        , IEpilogTrigger<Commands.StartPhase>
     {
         class Effect : SimpleBehavior<Effect>
         { }
@@ -23,10 +23,11 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
+        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
         {
-            if (Host.IsOnBattlefield
+            if (command.PhaseName == "Cleanup"
                 && Game.ActingPlayer == Host.Owner
+                && Host.IsOnBattlefield
                 && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {

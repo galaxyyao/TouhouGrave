@@ -107,61 +107,27 @@ namespace TouhouSpring.Style
                     replacement = "Textures/Yozora";
                     break;
                 case "Game.Player0.AvatarBorder":
-                    replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[0]
+                    replacement = game.ActingPlayer == game.Players[0]
                                   ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
                     break;
                 case "Game.Player0.Name":
-                    replacement = game.InPlayerPhases ? game.Players[0].Name : "...";
+                    replacement = game.Players[0].Name;
                     break;
                 case "Game.Player0.Health":
-                    replacement = game.InPlayerPhases ? game.Players[0].Health.ToString() : "...";
-                    break;
-                case "Game.Player0.ManaPoolText":
-                    if (game.InPlayerPhases)
-                    {
-                        if (game.Players[0].Mana == 0 && game.Players[0].MaxMana == 0)
-                        {
-                            replacement = "0";
-                        }
-                        else
-                        {
-                            replacement = game.Players[0].Mana.ToString() + "/" + game.Players[0].MaxMana.ToString();
-                        }
-                    }
-                    else
-                    {
-                        replacement = "...";
-                    }
+                    replacement = game.Players[0].Health.ToString();
                     break;
                 case "Game.Player1.Avatar":
                     replacement = "Textures/Sena";
                     break;
                 case "Game.Player1.AvatarBorder":
-                    replacement = game.InPlayerPhases && game.ActingPlayer == game.Players[1]
+                    replacement = game.ActingPlayer == game.Players[1]
                                   ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
                     break;
                 case "Game.Player1.Name":
-                    replacement = game.InPlayerPhases ? game.Players[1].Name : "...";
+                    replacement = game.Players[1].Name;
                     break;
                 case "Game.Player1.Health":
-                    replacement = game.InPlayerPhases ? game.Players[1].Health.ToString() : "...";
-                    break;
-                case "Game.Player1.ManaPoolText":
-                    if (game.InPlayerPhases)
-                    {
-                        if (game.Players[1].Mana == 0 && game.Players[1].MaxMana == 0)
-                        {
-                            replacement = "0";
-                        }
-                        else
-                        {
-                            replacement = game.Players[1].Mana.ToString() + "/" + game.Players[1].MaxMana.ToString();
-                        }
-                    }
-                    else
-                    {
-                        replacement = "...";
-                    }
+                    replacement = game.Players[1].Health.ToString();
                     break;
                 case "Game.ResolutionWidth":
                     replacement = GameApp.Instance.GraphicsDevice.Viewport.Width.ToString();

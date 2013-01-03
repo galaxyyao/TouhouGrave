@@ -6,7 +6,7 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class LastingEffect : SimpleBehavior<LastingEffect>,
-        IEpilogTrigger<Commands.StartTurn>
+        IEpilogTrigger<Commands.StartPhase>
     {
         public int Duration
         {
@@ -31,9 +31,12 @@ namespace TouhouSpring.Behaviors
             CleanUps = new List<IBehavior>();
         }
 
-        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
+        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
         {
-            if (Host.IsOnBattlefield && Game.ActingPlayer == Host.Owner && --Duration == 0)
+            if (command.PhaseName == "Upkeep"
+                && Game.ActingPlayer == Host.Owner 
+                && Host.IsOnBattlefield
+                && --Duration == 0)
             {
                 CleanUps.ForEach(bhv => Game.IssueCommands(new Commands.RemoveBehavior(Host, bhv)));
             }

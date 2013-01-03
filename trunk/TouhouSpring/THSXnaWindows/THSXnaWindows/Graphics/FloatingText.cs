@@ -78,7 +78,7 @@ namespace TouhouSpring.Graphics
             {
                 var entry = m_entries[i];
                 entry.m_positionTrack.Elapse(deltaTime);
-                if (entry.m_alphaTrack != null)
+                if (entry.m_alphaTrack != null && entry.m_alphaTrack.IsPlaying)
                 {
                     entry.m_alphaTrack.Elapse(deltaTime);
                 }

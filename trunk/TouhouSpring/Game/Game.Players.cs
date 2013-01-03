@@ -20,11 +20,7 @@ namespace TouhouSpring
         {
             get
             {
-                if (!InPlayerPhases)
-                {
-                    throw new InvalidOperationException("ActingPlayer can only be evaluated in one of the five player phases.");
-                }
-                return m_players[m_actingPlayer];
+                return m_actingPlayer != -1 ? m_players[m_actingPlayer] : null;
             }
         }
 
@@ -32,11 +28,9 @@ namespace TouhouSpring
         {
             get
             {
-                if (!InPlayerPhases)
-                {
-                    throw new InvalidOperationException("ActingPlayerEnemies can only be evaluated in one of the five player phases.");
-                }
-                return m_players.Where(player => player != m_players[m_actingPlayer]);
+                return m_actingPlayer != -1
+                       ? m_players.Where(player => player != m_players[m_actingPlayer])
+                       : Enumerable.Empty<Player>();
             }
         }
 

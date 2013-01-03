@@ -17,18 +17,30 @@ namespace TouhouSpring
 
         private void Main()
         {
-            CurrentPhase = "Begin";
-            Begin();
-            //WaitForMessage("Start");
+            IssueCommand(new Commands.StartPhase("Begin"));
 
-            InPlayerPhases = true;
+            foreach (var player in Players)
+            {
+                // shuffle player's library
+                IssueCommand(new Commands.ShuffleLibrary(player));
+
+                // draw initial hands
+                7.Repeat(i => IssueCommand(new Commands.DrawCard(player)));
+            }
+
+            IssueCommandsAndFlush(new Commands.EndPhase());
+
+            // TODO: Non-trivial determination of the acting player for the first turn
+            m_actingPlayer = 0;
             Round = 0;
 
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 Round++;
 
-                CurrentPhase = "Upkeep";
+                IssueCommandsAndFlush(new Commands.StartTurn { });
+
+                IssueCommand(new Commands.StartPhase("Upkeep"));
                 // skip drawing card for the starting player in the first round
                 if (Round > 1 || m_actingPlayer != 0)
                 {
@@ -39,10 +51,10 @@ namespace TouhouSpring
                     .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                     .ForEach(card => IssueCommands(
                         new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
-                IssueCommandsAndFlush(new Commands.StartTurn { });
+                IssueCommandsAndFlush(new Commands.EndPhase());
 
                 bool didSacrifice = false;
-                CurrentPhase = "Tactical";
+                IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
                 while (true)
                 {
@@ -110,17 +122,16 @@ namespace TouhouSpring
                     }
                 }
 
-                CurrentPhase = "PhaseB";
-                IssueCommandsAndFlush(new Commands.EndTurn());
+                IssueCommandsAndFlush(
+                    new Commands.EndPhase(),
+                    new Commands.StartPhase("Cleanup"),
+                    new Commands.EndPhase(),
+                    new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;
 
             new Interactions.NotifyOnly(ActingPlayer.Controller, String.Format(CultureInfo.CurrentCulture, "{0} 获得了胜利", Winner.Name));
-            CurrentPhase = "End";
-            End();
-
-            CurrentPhase = "PostEnd";
         }
 
         private bool AreWinnersDecided()

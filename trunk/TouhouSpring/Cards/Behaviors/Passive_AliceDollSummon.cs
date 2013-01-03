@@ -6,11 +6,13 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
-        IEpilogTrigger<Commands.StartTurn>
+        IEpilogTrigger<Commands.StartPhase>
     {
-        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
+        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
         {
-            if (Game.InPlayerPhases && Host.IsOnBattlefield && Game.ActingPlayer == Host.Owner)
+            if (command.PhaseName == "Main"
+                && Game.ActingPlayer == Host.Owner 
+                && (Host.IsOnBattlefield || Host.Owner.ActivatedAssist == Host))
             {
                 1.Repeat(i =>
                 {

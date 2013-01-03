@@ -50,11 +50,6 @@
           <Name>人偶召唤</Name>
           <SummonType>#Resource2</SummonType>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
         </Behavior>
@@ -74,9 +69,6 @@
           <Name>Warrior</Name>
           <Attack>1</Attack>
           <Life>1</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
-          <Name>NonBlocker</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
@@ -346,11 +338,6 @@ X等于己方场上本卡的数量</Description>
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
@@ -452,11 +439,6 @@ X等于己方场上本卡的数量</Description>
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
@@ -495,11 +477,6 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -594,11 +571,6 @@ X等于己方场上本卡的数量</Description>
 直到行动结束</Description>
       <ArtworkUri>Textures/Characters/ran_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>

@@ -44,7 +44,7 @@ namespace TouhouSpring.Commands
         {
             var card = Player.Library.RemoveCardFromTop();
             Debug.Assert(card != null && card.Owner == Player);
-            Player.m_handSet.Add(card);
+            Player.AddToHandSorted(card);
             CardDrawn = card;
         }
     }

@@ -30,6 +30,7 @@ namespace TouhouSpring.Services
             cardControl.MouseTracked.MouseButton2Down += CardControl_MouseButton2Down;
             cardControl.Addins.Add(new UI.CardControlAddins.Highlight(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.DamageIndicator(cardControl));
+            cardControl.Addins.Add(new UI.CardControlAddins.InstantRotation(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));

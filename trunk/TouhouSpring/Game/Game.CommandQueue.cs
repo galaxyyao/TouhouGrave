@@ -125,6 +125,8 @@ namespace TouhouSpring
 
         private void RunCommand<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
         {
+            command.ValidateOnRun();
+
             ////////////////////////////////////////////
 
             command.ExecutionPhase = Commands.CommandPhase.Prerequisite;

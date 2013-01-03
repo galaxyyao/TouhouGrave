@@ -7,11 +7,12 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_WarriorAlwaysStandBy :
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
-        IEpilogTrigger<Commands.EndTurn>
+        IEpilogTrigger<Commands.StartPhase>
     {
-        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
+        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
         {
-            if (Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())
+            if (command.PhaseName == "Cleanup"
+                && Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())
             {
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }

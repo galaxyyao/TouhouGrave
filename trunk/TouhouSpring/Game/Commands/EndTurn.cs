@@ -13,10 +13,6 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Game.CurrentPhase != "Combat/Resolve")
-            {
-                FailValidation("EndTurn can't be executed at the phase {0}.", Game.CurrentPhase);
-            }
         }
 
         internal override void RunMain()

@@ -52,6 +52,7 @@ namespace TouhouSpring.Services
             {
                 Position = new Vector3(0, -1.2f, 2.2f),
                 LookAt = new Vector3(0, -0.2f, 0.0f),
+                Up = Vector3.UnitZ,
                 IsPerspective = true,
                 ViewportWidth = nearPlaneHeight * 1.3333f,
                 ViewportHeight = nearPlaneHeight
@@ -87,6 +88,7 @@ namespace TouhouSpring.Services
             if (GameApp.Service<GameManager>().Game != null)
             {
                 InGameUIPage.Style.Apply();
+                UpdateCardZones();
                 UpdateCardControls(deltaTime);
                 UpdatePiles(deltaTime);
                 UpdateZoomInCard(deltaTime);
