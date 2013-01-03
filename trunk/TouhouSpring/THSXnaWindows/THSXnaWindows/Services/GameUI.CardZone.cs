@@ -192,7 +192,7 @@ namespace TouhouSpring.Services
             m_playerZones = new PlayerZones[Game.Players.Count];
             for (int i = 0; i < Game.Players.Count; ++i)
             {
-                m_playerZones[i] = new PlayerZones(world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
+                m_playerZones[i] = new PlayerZones(Game.Players[i], world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
             }
 
             m_actingPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingPlayer.Hand"]);

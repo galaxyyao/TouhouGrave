@@ -8,7 +8,7 @@ namespace TouhouSpring.Services
 {
     partial class GameUI
     {
-        private class PlayerZones
+        private class PlayerZones : Style.IBindingProvider
         {
             public Style.IStyleContainer UIStyle
             {
@@ -18,6 +18,11 @@ namespace TouhouSpring.Services
             public UI.EventDispatcher UIRoot
             {
                 get { return UIStyle.Target; }
+            }
+
+            public Player Player
+            {
+                get; private set;
             }
 
             public CardZone Library
@@ -55,11 +60,14 @@ namespace TouhouSpring.Services
                 get; private set;
             }
 
-            public PlayerZones(Style.IStyleContainer parent, XElement styleDefinition)
+            public PlayerZones(Player player, Style.IStyleContainer parent, XElement styleDefinition)
             {
-                UIStyle = new Style.LayoutGizmo(parent, styleDefinition);
-                UIStyle.Initialize();
-                UIStyle.Target.Dispatcher = parent.Target;
+                var layout = new Style.LayoutGizmo(parent, styleDefinition);
+                layout.Initialize();
+                layout.Target.Dispatcher = parent.Target;
+                layout.BindingProvider = this;
+                UIStyle = layout;
+                Player = player;
 
                 Library = new CardZone(UIStyle.ChildIds["Library"]);
                 Hand = new CardZone(UIStyle.ChildIds["Hand"]);
@@ -68,6 +76,29 @@ namespace TouhouSpring.Services
                 Hero = new CardZone(UIStyle.ChildIds["Hero"]);
                 Assists = new CardZone(UIStyle.ChildIds["Assists"]);
                 Graveyard = new CardZone(UIStyle.ChildIds["Graveyard"]);
+            }
+
+            public bool TryGetValue(string id, out string replacement)
+            {
+                switch (id)
+                {
+                    case "Player.ManaPoolText":
+                        if (Player.Mana == 0 && Player.MaxMana == 0)
+                        {
+                            replacement = "0";
+                        }
+                        else
+                        {
+                            replacement = Player.Mana.ToString() + "/" + Player.MaxMana.ToString();
+                        }
+                        break;
+
+                    default:
+                        replacement = null;
+                        return false;
+                }
+
+                return true;
             }
         }
     }

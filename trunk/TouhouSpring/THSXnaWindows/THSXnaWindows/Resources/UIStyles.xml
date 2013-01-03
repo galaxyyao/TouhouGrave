@@ -90,8 +90,8 @@
       </Layout>
       <Layout>
         <Transform Scaling="0.02,-0.02" />
-        <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="Black" Left="1" Top="1" />
-        <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="White" />
+        <Label Font="Microsoft YaHei, 20" Text="灵力 #Player.ManaPoolText#" Color="Black" Left="1" Top="1" />
+        <Label Font="Microsoft YaHei, 20" Text="灵力 #Player.ManaPoolText#" Color="White" />
       </Layout>
     </Layout>
     <Layout Id="Hero" Left="-1.05" Top="-0.2">

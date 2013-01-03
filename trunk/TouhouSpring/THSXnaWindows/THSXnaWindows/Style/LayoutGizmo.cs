@@ -11,6 +11,21 @@ namespace TouhouSpring.Style
 {
 	class LayoutGizmo : BaseStyleContainer, BoundsProperty.IHost
 	{
+        public IBindingProvider BindingProvider
+        {
+            get; set;
+        }
+
+        public override IEnumerable<IBindingProvider> BindingProviders
+        {
+            get
+            {
+                return BindingProvider != null
+                       ? Enumerable.Repeat(BindingProvider, 1)
+                       : base.BindingProviders;
+            }
+        }
+
 		protected TransformNode TypedTarget
 		{
 			get { return (TransformNode)Target; }
