@@ -10,10 +10,11 @@
 		<Image Uri="atlas:TitleMenuItems/FreeMode_Highlight" Left="200" />-->
   </Page>
   <Page Id="FreeMode">
-    <Menu Id="vsai" Font="Segoe UI, 24" Text="VS AI" Left="600" Top="250" />
+    <Menu Id="vsai" Font="Segoe UI, 24" Text="VS AI" Left="600" Top="250" Color="Gray" />
     <Menu Id="vsnetwork" Font="Segoe UI, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
-    <Menu Id="replay" Font="Segoe UI, 24" Text="Replay" Left="600" Top="350" Color="Gray" />
-    <Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="450" />
+    <Menu Id="hotseat" Font="Segoe UI, 24" Text="Hot Seat" Left="600" Top="350" />
+    <Menu Id="replay" Font="Segoe UI, 24" Text="Replay" Left="600" Top="400" Color="Gray" />
+    <Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="500" />
   </Page>
   <Page Id="Quit">
     <Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="300" />

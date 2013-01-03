@@ -69,7 +69,7 @@ namespace TouhouSpring.Services
 
             m_pages["FreeMode"].MenuClicked += (id, item) =>
             {
-                if (id == "vsai")
+                if (id == "hotseat")
                 {
                     CurrentPage = null;
                     // detach menu ui
