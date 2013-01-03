@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 
 namespace TouhouSpring.Services
@@ -162,66 +161,23 @@ namespace TouhouSpring.Services
             }
         }
 
-        private class PlayerZones
+        public class ZoomedInZone : CardZone
         {
-            public Style.IStyleContainer UIStyle
-            {
-                get; private set;
-            }
+            public ZoomedInZone(Style.IStyleContainer style)
+                : base(style)
+            { }
 
-            public UI.EventDispatcher UIRoot
+            public override Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
             {
-                get { return UIStyle.Target; }
-            }
-
-            public CardZone Library
-            {
-                get; private set;
-            }
-
-            public CardZone Hand
-            {
-                get; private set;
-            }
-
-            public CardZone Sacrifice
-            {
-                get; private set;
-            }
-
-            public CardZone Battlefield
-            {
-                get; private set;
-            }
-
-            public CardZone Hero
-            {
-                get; private set;
-            }
-
-            public CardZone Assists
-            {
-                get; private set;
-            }
-
-            public CardZone Graveyard
-            {
-                get; private set;
-            }
-
-            public PlayerZones(Style.IStyleContainer parent, XElement styleDefinition)
-            {
-                UIStyle = new Style.LayoutGizmo(parent, styleDefinition);
-                UIStyle.Initialize();
-                UIStyle.Target.Dispatcher = parent.Target;
-
-                Library = new CardZone(UIStyle.ChildIds["Library"]);
-                Hand = new CardZone(UIStyle.ChildIds["Hand"]);
-                Sacrifice = new CardZone(UIStyle.ChildIds["Sacrifice"]);
-                Battlefield = new CardZone(UIStyle.ChildIds["Battlefield"]);
-                Hero = new CardZone(UIStyle.ChildIds["Hero"]);
-                Assists = new CardZone(UIStyle.ChildIds["Assists"]);
-                Graveyard = new CardZone(UIStyle.ChildIds["Graveyard"]);
+                Matrix mat = base.ResolveLocationTransform(control, thisIndex);
+                if (control.Card.Owner != control.Card.Owner.Game.ActingPlayer)
+                {
+                    mat = Matrix.CreateTranslation(-0.5f, control.Region.Height / control.Region.Width * 0.5f, 0)
+                          * Matrix.CreateRotationZ(MathHelper.Pi)
+                          * Matrix.CreateTranslation(0.5f, -control.Region.Height / control.Region.Width * 0.5f, 0)
+                          * mat;
+                }
+                return mat;
             }
         }
 
@@ -240,7 +196,7 @@ namespace TouhouSpring.Services
             }
 
             m_actingPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingPlayer.Hand"]);
-            m_zoomedInZone = new CardZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
+            m_zoomedInZone = new ZoomedInZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
         }
 
         private void UpdateCardZones()

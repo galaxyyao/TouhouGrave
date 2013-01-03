@@ -103,6 +103,7 @@
     <Compile Include="Services\GameUI.ContextButton.cs" />
     <Compile Include="Services\GameUI.cs" />
     <Compile Include="Services\GameUI.Piles.cs" />
+    <Compile Include="Services\GameUI.PlayerZones.cs" />
     <Compile Include="Services\GameUI.ZoomInCard.cs" />
     <Compile Include="Services\IUIState.cs" />
     <Compile Include="Services\MenuUI.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="UI\CardControl.Binding.cs" />
     <Compile Include="UI\CardControl.cs" />
     <Compile Include="UI\CardControl.Render.cs" />
+    <Compile Include="UI\CardControlAddins\InstantRotation.cs" />
     <Compile Include="UI\CardControlAddins\DamageIndicator.cs" />
     <Compile Include="UI\CardControlAddins\Flip.cs" />
     <Compile Include="UI\CardControlAddins\Glow.cs" />
