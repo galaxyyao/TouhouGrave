@@ -87,6 +87,12 @@ namespace TouhouSpring.Services
 				throw new ArgumentNullException("cardControl");
 			}
 
+            if (cardControl.GetAddin<UI.CardControlAddins.Flip>().Flipped)
+            {
+                // flipped card can't be viewed
+                return;
+            }
+
 			if (ZoomedInCard != cardControl)
 			{
 				m_zoomFadeTrack.TimeFactor = 1.0f;

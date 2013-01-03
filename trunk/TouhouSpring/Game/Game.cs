@@ -21,6 +21,14 @@ namespace TouhouSpring
             get { return m_randomGenerator; }
         }
 
+        /// <summary>
+        /// Tell the current game phase.
+        /// </summary>
+        public string CurrentPhase
+        {
+            get; private set;
+        }
+
         public int Round
         {
             get; private set;

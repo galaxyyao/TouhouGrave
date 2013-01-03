@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
     {
         void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
         {
-            if (Game.InPlayerPhases && Host.IsOnBattlefield && Game.ActingPlayer == Host.Owner)
+            if (Host.IsOnBattlefield && Game.ActingPlayer == Host.Owner)
             {
                 1.Repeat(i =>
                 {

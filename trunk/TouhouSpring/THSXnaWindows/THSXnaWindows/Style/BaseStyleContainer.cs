@@ -23,6 +23,11 @@ namespace TouhouSpring.Style
 			get; private set;
 		}
 
+        public bool IsIdRoot
+        {
+            get; private set;
+        }
+
 		public Dictionary<string, IStyleContainer> ChildIds
 		{
 			get; private set;
@@ -67,16 +72,24 @@ namespace TouhouSpring.Style
 				var idAttr = Definition.Attribute("Id");
 				if (idAttr != null)
 				{
-					Id = idAttr.Value;
+                    IsIdRoot = idAttr.Value == "/";
+					Id = IsIdRoot ? null : idAttr.Value;
 					ChildIds = new Dictionary<string, IStyleContainer>();
 
-					for (IStyleContainer i = Parent; i != null; i = i.Parent)
-					{
-						if (i.Id != null)
-						{
-							i.ChildIds.Add(Id, this);
-						}
-					}
+                    if (!IsIdRoot)
+                    {
+                        for (IStyleContainer i = Parent; i != null; i = i.Parent)
+                        {
+                            if (i.ChildIds != null)
+                            {
+                                i.ChildIds.Add(Id, this);
+                            }
+                            if (i.IsIdRoot)
+                            {
+                                break;
+                            }
+                        }
+                    }
 				}
 			}
 

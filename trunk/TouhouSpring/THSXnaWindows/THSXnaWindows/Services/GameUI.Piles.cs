@@ -38,7 +38,7 @@ namespace TouhouSpring.Services
                 m_playerLibraryPiles[i].EnableDepth = true;
                 var pile = Game.Players[i].Library;
                 m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], () => pile.Count));
-                m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].m_library.Container;
+                m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].Library.Container;
             }
 
             // graveyard piles are created only when there are more than 1 cards in the graveyard
@@ -52,12 +52,11 @@ namespace TouhouSpring.Services
             cardControl.Style.Apply(); // to solve the default TransformToGlobal matrix
             var transform = (cardControl.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
 
-            cardControl.GetAddin<UI.CardControlAddins.Flip>().DoFlip = false;
-            cardControl.GetAddin<UI.CardControlAddins.Flip>().StartFlip();
+            cardControl.GetAddin<UI.CardControlAddins.Flip>().SetFliped();
             cardControl.Style.Apply(); // to apply initial flipped matrix
 
             var pid = Game.Players.IndexOf(cardControl.Card.Owner);
-            var fromZone = m_playerZones[pid].m_library.Container;
+            var fromZone = m_playerZones[pid].Library.Container;
             var pileTop = m_playerLibraryPiles[pid].Style.ChildIds["Body"].Target;
             transform *= UI.TransformNode.GetTransformBetween(pileTop, fromZone);
 
@@ -69,7 +68,7 @@ namespace TouhouSpring.Services
         {
             var pid = Game.Players.IndexOf(cardControl.Card.Owner);
             var locationAnim = cardControl.GetAddin<UI.CardControlAddins.LocationAnimation>();
-            locationAnim.SetNextLocation(m_playerZones[pid].m_graveyard, m_graveyardCounters[pid].nextCounter++);
+            locationAnim.SetNextLocation(m_playerZones[pid].Graveyard, m_graveyardCounters[pid].nextCounter++);
             locationAnim.Update(0); // make sure InTransition returns true
             m_cardEnteringGraveyard.Add(cardControl);
         }

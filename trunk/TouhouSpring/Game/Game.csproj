@@ -43,7 +43,6 @@
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseCard.Behaviors.cs" />
     <Compile Include="BaseCard.cs" />
-    <Compile Include="BaseController.Callbacks.cs" />
     <Compile Include="BaseController.CommandTriggers.cs" />
     <Compile Include="BaseController.cs" />
     <Compile Include="BaseController.Messaging.cs" />
@@ -73,13 +72,11 @@
     <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\Resolve.cs" />
     <Compile Include="Commands\Sacrifice.cs" />
-    <Compile Include="Commands\StartBlockPhase.cs" />
     <Compile Include="Commands\DrawCard.cs" />
     <Compile Include="Commands\EndTurn.cs" />
     <Compile Include="Commands\PlayCard.cs" />
     <Compile Include="Commands\SendBehaviorMessage.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
-    <Compile Include="Commands\StartAttackPhase.cs" />
     <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
     <Compile Include="Commands\UpdateMana.cs" />
@@ -89,7 +86,6 @@
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Messaging.cs" />
-    <Compile Include="Game.Phase.cs" />
     <Compile Include="Game.Players.cs" />
     <Compile Include="Game.Threading.cs" />
     <Compile Include="Interactions\MessageBox.cs" />

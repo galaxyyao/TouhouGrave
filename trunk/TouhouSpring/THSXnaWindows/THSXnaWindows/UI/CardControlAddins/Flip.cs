@@ -10,18 +10,17 @@ namespace TouhouSpring.UI.CardControlAddins
     {
         private Animation.Track m_track;
         private Matrix m_transform = Matrix.Identity;
-        private bool m_lastFlipped = false;
 
-        public bool DoFlip
+        public bool Flipped
         {
-            get; set;
+            get; private set;
         }
 
-        public void StartFlip()
+        public void SetFliped()
         {
-            m_lastFlipped = DoFlip;
+            Flipped = false;
             OnTrackElapse(0);
-            m_lastFlipped = !DoFlip;
+            Flipped = true;
         }
 
         public Flip(CardControl control) : base(control)
@@ -34,9 +33,10 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
-            var needFlip = GameApp.Service<Services.GameUI>().ZoomedInCard != Control && DoFlip;
+            var needFlip = GameApp.Service<Services.GameUI>().ZoomedInCard != Control
+                           && Card.Owner != Card.Owner.Game.ActingPlayer && Card.Owner.CardsOnHand.Contains(Card);
 
-            if (needFlip != m_lastFlipped)
+            if (needFlip != Flipped)
             {
                 if (m_track.IsPlaying)
                 {
@@ -44,7 +44,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 }
 
                 m_track.Play();
-                m_lastFlipped = needFlip;
+                Flipped = needFlip;
             }
 
             if (m_track.IsPlaying)
@@ -69,7 +69,7 @@ namespace TouhouSpring.UI.CardControlAddins
 
         private void OnTrackElapse(float w)
         {
-            w = m_lastFlipped ? w : 1 - w;
+            w = Flipped ? w : 1 - w;
             var halfWidth = 0.5f;
             m_transform = MatrixHelper.Translate(-halfWidth, 0)
                             * MatrixHelper.Rotate(Vector3.UnitY, MathUtils.PI * w)

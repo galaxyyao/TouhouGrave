@@ -32,8 +32,6 @@ namespace TouhouSpring
 
             // TODO: Non-trivial determination of the acting player for the first turn
             m_actingPlayer = 0;
-
-            InPlayerPhases = true;
             Round = 0;
 
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
@@ -54,7 +52,7 @@ namespace TouhouSpring
                 IssueCommandsAndFlush(new Commands.StartTurn { });
 
                 bool didSacrifice = false;
-                CurrentPhase = "Tactical";
+                CurrentPhase = "Main";
 
                 while (true)
                 {
@@ -122,16 +120,13 @@ namespace TouhouSpring
                     }
                 }
 
-                CurrentPhase = "PhaseB";
+                CurrentPhase = "Cleanup";
                 IssueCommandsAndFlush(new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;
 
             new Interactions.NotifyOnly(ActingPlayer.Controller, String.Format(CultureInfo.CurrentCulture, "{0} 获得了胜利", Winner.Name));
-            CurrentPhase = "End";
-
-            CurrentPhase = "PostEnd";
         }
 
         private bool AreWinnersDecided()

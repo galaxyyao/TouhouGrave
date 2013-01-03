@@ -32,6 +32,11 @@ namespace TouhouSpring.Services
 			return m_document.Root.Elements("Page").First(elem => elem.Attribute("Id").Value == pageId);
 		}
 
+        public XElement GetPlayerZonesStyle()
+        {
+            return m_document.Root.Elements("PlayerZones").First();
+        }
+
 		public override void Startup()
 		{
 			m_document = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("TouhouSpring.Resources.UIStyles.xml"));

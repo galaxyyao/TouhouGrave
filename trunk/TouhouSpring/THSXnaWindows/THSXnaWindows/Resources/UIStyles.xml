@@ -31,77 +31,11 @@
     <Layout Id="World3D">
       <!--This layer is for drawing the 3D elements of the game scene(e.g. board)-->
       <Transform Matrix="#Game.WorldCamera.Transform#" />
-      <Layout Id="Game.Player1.Hand" Left="-1" Top="1">
-        <Transform Scaling="0.2" />
-        <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
-      </Layout>
-      <Layout Id="Game.Player1.Graveyard" Left="0.85" Top="0.8">
-        <Transform Scaling="0.20" />
-        <Zone />
-      </Layout>
-      <Layout Id="Game.Player1.Library" Left="0.85" Top="0.4">
-        <Transform Scaling="0.20" />
-        <Zone />
-      </Layout>
-      <Layout Id="Game.Player1.Assists" Left="-1.08" Top="0.6">
-        <Transform Scaling="0.1" />
-        <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
-      </Layout>
-      <Layout Id="Game.Player1.Hero" Left="-1.05" Top="0.4">
-        <Transform Scaling="0.25" />
-        <Zone />
-      </Layout>
-      <Layout Left="-0.5" Top="0.65">
-        <Transform Scaling="0.12" />
-        <Layout Id="Game.Player1.Sacrifice">
-          <Zone Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
-        </Layout>
-        <Layout>
-          <Transform Scaling="0.02,-0.02" />
-          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player1.ManaPoolText#" Color="Black" Left="1" Top="1" />
-          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player1.ManaPoolText#" Color="White" />
-        </Layout>
-      </Layout>
-      <Layout Id="Game.Player1.Battlefield" Left="-1" Top="0.4">
-        <Transform Scaling="0.2" />
-        <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
-      </Layout>
-      <Layout Id="Game.Player0.Battlefield" Left="-1" Top="-0.2">
-        <Transform Scaling="0.2" />
-        <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
-      </Layout>
-      <Layout Left="-0.5" Top="-0.65">
-        <Transform Scaling="0.12" />
-        <Layout Id="Game.Player0.Sacrifice">
-          <Zone Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
-        </Layout>
-        <Layout>
-          <Transform Scaling="0.02,-0.02" />
-          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="Black" Left="1" Top="1" />
-          <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="White" />
-        </Layout>
-      </Layout>
-      <Layout Id="Game.Player0.Hero" Left="-1.05" Top="-0.2">
-        <Transform Scaling="0.25" />
-        <Zone />
-      </Layout>
-      <Layout Id="Game.Player0.Assists" Left="-1.08" Top="-0.6">
-        <Transform Scaling="0.1" />
-        <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
-      </Layout>
-      <Layout Id="Game.Player0.Library" Left="0.85" Top="-0.2">
-        <Transform Scaling="0.20" />
-        <Zone />
-      </Layout>
-      <Layout Id="Game.Player0.Graveyard" Left="0.85" Top="-0.6">
-        <Transform Scaling="0.20" />
-        <Zone />
-      </Layout>
     </Layout>
     <Layout Id="World2D">
       <!--This layer is for drawing the 2D elements of the game (e.g. spell buttons)-->
       <Transform Matrix="#Game.UICamera.Transform#" />
-      <Layout Id="Game.Player0.Hand" Left="180" Top="630">
+      <Layout Id="Game.ActingPlayer.Hand" Left="180" Top="630">
         <Transform Scaling="84,-84" />
         <Zone Span="8" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,8,12" />
       </Layout>
@@ -144,6 +78,43 @@
     <Panel Id="ConversationPanel" Left="0" Top="540" Width="1024" Height="270"></Panel>
     <Label Font="Segoe UI, 16" Text="#Conversation.CurrentText#" Color="Black" Left="20" Top="570" />
   </Page>
+  <PlayerZones Id="/">
+    <Layout Id="Battlefield" Left="-1" Top="-0.2">
+      <Transform Scaling="0.2" />
+      <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+    </Layout>
+    <Layout Left="-0.5" Top="-0.55">
+      <Transform Scaling="0.12" />
+      <Layout Id="Sacrifice">
+        <Zone Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+      </Layout>
+      <Layout>
+        <Transform Scaling="0.02,-0.02" />
+        <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="Black" Left="1" Top="1" />
+        <Label Font="Microsoft YaHei, 20" Text="灵力 #Game.Player0.ManaPoolText#" Color="White" />
+      </Layout>
+    </Layout>
+    <Layout Id="Hero" Left="-1.05" Top="-0.2">
+      <Transform Scaling="0.25" />
+      <Zone />
+    </Layout>
+    <Layout Id="Assists" Left="-1.08" Top="-0.6">
+      <Transform Scaling="0.1" />
+      <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
+    </Layout>
+    <Layout Id="Library" Left="0.85" Top="-0.2">
+      <Transform Scaling="0.20" />
+      <Zone />
+    </Layout>
+    <Layout Id="Graveyard" Left="0.85" Top="-0.6">
+      <Transform Scaling="0.20" />
+      <Zone />
+    </Layout>
+    <Layout Id="Hand" Left="-1" Top="-0.8">
+      <Transform Scaling="0.20" />
+      <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+    </Layout>
+  </PlayerZones>
   <Card Id="Large" Width="210" Height="300">
     <Transform Matrix="#CardAnimator.LocationTransform#" />
     <Layout Id="Main">
