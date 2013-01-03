@@ -84,124 +84,98 @@
     <Resource ID="#Resource3" Type="TouhouSpring.EditorCardModel">
       <Id>remilia</Id>
       <Name>蕾米莉亚·斯卡雷特</Name>
-      <Description>吸血鬼【被动】
-己方战斗卡造成攻击伤害时，
-主角卡获得等量治疗</Description>
+      <Description>【吸血2】：
+每次攻击回复2点体力</Description>
       <ArtworkUri>Textures/Characters/remilia_stand</ArtworkUri>
       <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>2</Attack>
+          <Life>4</Life>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_HealedWhenWarriorAttacks+ModelType">
-          <Name>吸血鬼</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
-          <Name>Assist</Name>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Assists</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource4" Type="TouhouSpring.EditorCardModel">
       <Id>youmu</Id>
       <Name>魂魄妖梦</Name>
-      <Description>未来永劫斩【被动】
-己方主角卡攻击力增加，
-增加值为己方场上的卡数</Description>
+      <Description>指定1张卡，造成4点伤害</Description>
       <ArtworkUri>Textures/Characters/youmu_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_HeroAttackUpWithCardNumber+ModelType">
-          <Name>未来永劫斩</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
-          <Name>Assist</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Assists</Category>
+      <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
     <Resource ID="#Resource5" Type="TouhouSpring.EditorCardModel">
       <Id>kanako</Id>
       <Name>八坂神奈子</Name>
-      <Description>御柱特攻【被动】
-己方场上所有战斗卡攻击力+2，
-防御力变为1</Description>
+      <Description>己方行动阶段开始时，
+该卡的体力恢复至上限</Description>
       <ArtworkUri>Textures/Characters/kanako_stand</ArtworkUri>
       <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>5</Attack>
+          <Life>6</Life>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
+          <Cost>6</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpWhileDefenseDown+ModelType">
-          <Name>御柱特攻</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
-          <Name>Assist</Name>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Assists</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource6" Type="TouhouSpring.EditorCardModel">
       <Id>sakuya</Id>
       <Name>十六夜咲夜</Name>
-      <Description>The World【被动】
-对手召唤所需消耗的灵力+1</Description>
+      <Description>【先攻】：被攻击时，
+优先对对方造成伤害并判定一次</Description>
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>3</Attack>
+          <Life>2</Life>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
+          <Cost>4</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_EnemySummonCostUp+ModelType">
-          <Name>The World</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
-          <Name>Assist</Name>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Assists</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource7" Type="TouhouSpring.EditorCardModel">
       <Id>eirin</Id>
       <Name>八意永琳</Name>
-      <Description>秘药【被动】
-己方所有战斗卡的攻防+1</Description>
+      <Description>对方玩家在行动阶段开始后
+受到1点伤害。
+玩家行动阶段开始后，
+指定场上1张角色卡，
+造成1点伤害</Description>
       <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFriendWarriorAttackUpAndDefenseUp+ModelType">
-          <Name>秘药</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
@@ -212,22 +186,13 @@
     <Resource ID="#Resource8" Type="TouhouSpring.EditorCardModel">
       <Id>tenshi</Id>
       <Name>比那名居天子</Name>
-      <Description>秘药【被动】
-主角卡受到对手战斗卡伤害的
-下一回合多回复1点灵力</Description>
+      <Description>己方场上角色卡受到攻击伤害时，
+伤害-1</Description>
       <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_ManaGainUpWhenAttackedByWarrior+ModelType">
-          <Name>M子</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
@@ -238,121 +203,87 @@
     <Resource ID="#Resource9" Type="TouhouSpring.EditorCardModel">
       <Id>reimu</Id>
       <Name>博丽灵梦</Name>
-      <Description>梦想封印
-己方所有卡本回合不受到伤害</Description>
+      <Description>该卡不能攻击玩家</Description>
       <ArtworkUri>Textures/Characters/reimu_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
-          <Name>Hero</Name>
-          <Health>30</Health>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
-          <Attack>3</Attack>
-          <Life>30</Life>
+          <Attack>5</Attack>
+          <Life>5</Life>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_PreventAllDamageInOneRound+ModelType">
-          <Name>梦想封印</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
-          <Name>NonBlocker</Name>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Heroes</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource10" Type="TouhouSpring.EditorCardModel">
       <Id>marisa</Id>
       <Name>雾雨魔理沙</Name>
-      <Description>Master Spark
-对对手场上所有战斗卡造成2点伤害</Description>
+      <Description>指定1张角色卡，
+消耗灵力池里所有灵力，
+对该卡造成等量的伤害</Description>
       <ArtworkUri>Textures/Characters/marisa_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
-          <Name>Hero</Name>
-          <Health>30</Health>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
-          <Attack>3</Attack>
-          <Life>30</Life>
+          <Attack>2</Attack>
+          <Life>1</Life>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_MassDamageToWarriorOnEnemyBattlefield+ModelType">
-          <Name>Master Spark</Name>
-          <Damage>2</Damage>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
-          <Name>NonBlocker</Name>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Heroes</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource11" Type="TouhouSpring.EditorCardModel">
       <Id>kaguya</Id>
       <Name>蓬莱山辉夜</Name>
-      <Description>五道难题
-使对手受到5点伤害</Description>
+      <Description>该行动阶段结束前，
+发动攻击的卡，
+在行动阶段结束后回复1点体力</Description>
       <ArtworkUri>Textures/Characters/kaguya_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
-          <Name>Hero</Name>
-          <Health>30</Health>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>Warrior</Name>
-          <Attack>3</Attack>
-          <Life>30</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
-          <Name>NonBlocker</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_DamageDirectToPlayer+ModelType">
-          <Name>五道难题</Name>
-          <Damage>5</Damage>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Heroes</Category>
+      <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
     <Resource ID="#Resource12" Type="TouhouSpring.EditorCardModel">
       <Id>sanae</Id>
       <Name>东风谷早苗</Name>
-      <Description>奇迹
-使对手场上所有卡回到手牌</Description>
+      <Description>【灵压】：
+对方场上所有3灵力以下的角色卡
+攻击力降低1点（主角卡除外）</Description>
       <ArtworkUri>Textures/Characters/sanae_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
-          <Name>Hero</Name>
-          <Health>30</Health>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Life>30</Life>
+          <Life>5</Life>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
-          <Name>NonBlocker</Name>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Heroes</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource13" Type="TouhouSpring.EditorCardModel">
       <Id>sunny</Id>
@@ -364,17 +295,12 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
-          <Attack>0</Attack>
-          <Life>4</Life>
+          <Attack>1</Attack>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+          <Cost>1</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -385,29 +311,20 @@
     <Resource ID="#Resource14" Type="TouhouSpring.EditorCardModel">
       <Id>lunar</Id>
       <Name>露娜</Name>
-      <Description>月光【被动】
-攻击不会被阻挡</Description>
+      <Description>上场时抽1张卡</Description>
       <ArtworkUri>Textures/Characters/lunar_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
-          <Attack>1</Attack>
+          <Attack>2</Attack>
           <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Unblockable+ModelType">
-          <Name>Unblockable</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -446,30 +363,21 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource16" Type="TouhouSpring.EditorCardModel">
       <Id>flandre</Id>
       <Name>芙兰朵露·斯卡雷特</Name>
-      <Description>午后红茶【被动】
-当该卡对对手主角卡造成伤害时，
-攻防+1/+1</Description>
+      <Description>当此卡造成攻击伤害时，
+攻击力+1</Description>
       <ArtworkUri>Textures/Characters/flandre_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Life>1</Life>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAttackAndDefenseUpWhenAttackedHero+ModelType">
-          <Name>午后红茶</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -477,9 +385,35 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource17" Type="TouhouSpring.EditorCardModel">
       <Id>meirin</Id>
       <Name>红美铃</Name>
-      <Description>门卫【被动】
-攻击后不会进入蓄力状态</Description>
+      <Description>【护卫】：
+如果场上有护卫，
+对手无法攻击护卫以外的目标
+【反击2】：
+被攻击后造成2点反击伤害
+      </Description>
       <ArtworkUri>Textures/Characters/meirin_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>0</Attack>
+          <Life>8</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
+      <Id>mokou</Id>
+      <Name>藤原妹红</Name>
+      <Description>当被破坏时，
+对破坏者造成3点伤害</Description>
+      <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
@@ -488,50 +422,14 @@ X等于己方场上本卡的数量</Description>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+          <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorAlwaysStandBy+ModelType">
-          <Name>Passive_WarriorAlwaysStandBy</Name>
-        </Behavior>
-      </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
-    </Resource>
-    <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
-      <Id>mokou</Id>
-      <Name>藤原妹红</Name>
-      <Description>凤凰【被动】
-进入冥界时，
-对双方场上每张战斗卡造成1点伤害</Description>
-      <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
-      <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>Warrior</Name>
-          <Attack>2</Attack>
-          <Life>1</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
-          <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
-          <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AllFieldDealDamageWhenWarriorDestroyed+ModelType">
-          <Name>凤凰</Name>
-          <Damage>1</Damage>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_DamageWhenWarriorDestroyed+ModelType">
+          <Name>凤凰烈焰</Name>
+          <Damage>3</Damage>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -568,31 +466,18 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource20" Type="TouhouSpring.EditorCardModel">
       <Id>nightbug</Id>
       <Name>莉格露·奈特巴格</Name>
-      <Description>Bug【被动】
-如果己方场上有其他卡成为突袭卡的目标，
-代替其成为目标
-如果本卡也在该突袭卡的目标范围则无效</Description>
+      <Description>抽2张卡</Description>
       <ArtworkUri>Textures/Characters/nightbug_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>Warrior</Name>
-          <Attack>2</Attack>
-          <Life>2</Life>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
-          <Name>SummonWeakness</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
+      <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
     <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
       <Id>aya</Id>
@@ -625,23 +510,19 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource22" Type="TouhouSpring.EditorCardModel">
       <Id>komachi</Id>
       <Name>小野冢小町</Name>
-      <Description>日光反射【被动】
-每次受到攻击后防御力-1，可累加</Description>
+      <Description>【死神】：
+受到该卡伤害的角色卡
+会在行动阶段结束被送往冥界</Description>
       <ArtworkUri>Textures/Characters/komachi_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>1</Attack>
-          <Life>1</Life>
+          <Life>3</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+          <Cost>4</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -655,16 +536,10 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource23" Type="TouhouSpring.EditorCardModel">
       <Id>cirno</Id>
       <Name>琪露诺</Name>
-      <Description>冰冻【突袭】
-指定1张战斗卡，
-1回合内无法行动</Description>
+      <Description>对方玩家
+在下一个行动阶段无法发动攻击</Description>
       <ArtworkUri>Textures/Characters/cirno_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
@@ -678,47 +553,31 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource24" Type="TouhouSpring.EditorCardModel">
       <Id>patchouli</Id>
       <Name>帕秋莉·诺蕾姬</Name>
-      <Description>贤者之石【突袭】
-将灵力补满</Description>
+      <Description>己方场上角色卡
+攻击力+1</Description>
       <ArtworkUri>Textures/Characters/patchouli_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
-          <Name>Instant</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Spells</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource25" Type="TouhouSpring.EditorCardModel">
       <Id>suika</Id>
       <Name>伊吹萃香</Name>
-      <Description>鬼神【突袭】
-指定己方场上1张卡，
-攻防+2/+2，
+      <Description>指定己方场上1张卡，
+攻击力+2，
 直到行动结束</Description>
       <ArtworkUri>Textures/Characters/suika_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Assault_SingleWarriorBoostForXRounds+ModelType">
-          <Name>鬼神</Name>
-          <AttackBoost>2</AttackBoost>
-          <Duration>1</Duration>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
@@ -753,16 +612,10 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource27" Type="TouhouSpring.EditorCardModel">
       <Id>keine</Id>
       <Name>上白泽慧音</Name>
-      <Description>吞噬历史【突袭】
-指定1张卡，
-去除该卡上的所有附加效果</Description>
+      <Description>灵力池上限增加1点，
+不受本回合是否已献祭影响</Description>
       <ArtworkUri>Textures/Characters/keine_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
@@ -776,95 +629,77 @@ X等于己方场上本卡的数量</Description>
     <Resource ID="#Resource28" Type="TouhouSpring.EditorCardModel">
       <Id>koakuma</Id>
       <Name>小恶魔</Name>
-      <Description>整理【突袭】
-将手牌洗入牌库，抽双倍于之前手牌数量的卡</Description>
+      <Description></Description>
       <ArtworkUri>Textures/Characters/koakuma_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>3</Attack>
+          <Life>1</Life>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
-          <Name>Instant</Name>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Spells</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource29" Type="TouhouSpring.EditorCardModel">
       <Id>hatate</Id>
       <Name>姬海棠极</Name>
-      <Description>天狗【突袭】
-己方场上所有战斗卡带有【高速】效果
-（比不带【高速】效果的卡提前造成伤害），
-直到行动结束</Description>
+      <Description>【敏捷】：
+上场的那个回合就可以进攻</Description>
       <ArtworkUri>Textures/Characters/hatate_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Attack>1</Attack>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
-          <Name>Instant</Name>
+          <Cost>1</Cost>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Spells</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource30" Type="TouhouSpring.EditorCardModel">
       <Id>yakumo</Id>
       <Name>八云紫</Name>
-      <Description>隙间【突袭】
-选择丢弃1张手牌，
-破坏对方场上任意1张战斗卡或支援卡</Description>
+      <Description>从灵力池赎回卡牌时
+不减少灵力上限</Description>
       <ArtworkUri>Textures/Characters/yakumo_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>true</BlockPhase>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
-          <Name>Instant</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Spells</Category>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource31" Type="TouhouSpring.EditorCardModel">
       <Id>yuyuko</Id>
-      <Name>幽幽子</Name>
-      <Description>反魂蝶
-将己方最近1张进入
-冥界的战斗卡放回场上</Description>
+      <Name>西行寺幽幽子</Name>
+      <Description>此卡受到所有伤害-1</Description>
       <ArtworkUri>Textures/Characters/yuyuko_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Hero+ModelType">
-          <Name>Hero</Name>
-          <Health>30</Health>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>3</Attack>
-          <Life>30</Life>
+          <Life>4</Life>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.NonBlocker+ModelType">
-          <Name>NonBlocker</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.PhaseSpecific+ModelType">
-          <Name>PhaseSpecific</Name>
-          <TacticalPhase>true</TacticalPhase>
-          <BlockPhase>false</BlockPhase>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Heroes</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
   </Resources>
 </XnaContent>

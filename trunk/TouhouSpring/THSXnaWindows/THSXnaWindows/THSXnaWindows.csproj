@@ -211,6 +211,10 @@
       <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
       <Name>Game</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\THSv0.5\THSv0.5.csproj">
+      <Project>{8772ADE0-B78C-47B5-8C24-E43C1C685732}</Project>
+      <Name>THSv0.5</Name>
+    </ProjectReference>
     <ProjectReference Include="..\THSXnaWindowsContent\THSXnaWindowsContent.contentproj">
       <Name>THSXnaWindowsContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>

@@ -220,6 +220,10 @@
       <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
       <Name>Cards</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\THSv0.5\THSv0.5.csproj">
+      <Project>{8772ADE0-B78C-47B5-8C24-E43C1C685732}</Project>
+      <Name>THSv0.5</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Particles\Particles.xml">
