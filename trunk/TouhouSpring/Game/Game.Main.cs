@@ -17,7 +17,7 @@ namespace TouhouSpring
 
         private void Main()
         {
-            CurrentPhase = "Begin";
+            IssueCommand(new Commands.StartPhase("Begin"));
 
             foreach (var player in Players)
             {
@@ -28,7 +28,7 @@ namespace TouhouSpring
                 7.Repeat(i => IssueCommand(new Commands.DrawCard(player)));
             }
 
-            FlushCommandQueue();
+            IssueCommandsAndFlush(new Commands.EndPhase());
 
             // TODO: Non-trivial determination of the acting player for the first turn
             m_actingPlayer = 0;
@@ -38,7 +38,9 @@ namespace TouhouSpring
             {
                 Round++;
 
-                CurrentPhase = "Upkeep";
+                IssueCommandsAndFlush(new Commands.StartTurn { });
+
+                IssueCommand(new Commands.StartPhase("Upkeep"));
                 // skip drawing card for the starting player in the first round
                 if (Round > 1 || m_actingPlayer != 0)
                 {
@@ -49,10 +51,10 @@ namespace TouhouSpring
                     .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                     .ForEach(card => IssueCommands(
                         new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
-                IssueCommandsAndFlush(new Commands.StartTurn { });
+                IssueCommandsAndFlush(new Commands.EndPhase());
 
                 bool didSacrifice = false;
-                CurrentPhase = "Main";
+                IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
                 while (true)
                 {
@@ -120,8 +122,11 @@ namespace TouhouSpring
                     }
                 }
 
-                CurrentPhase = "Cleanup";
-                IssueCommandsAndFlush(new Commands.EndTurn());
+                IssueCommandsAndFlush(
+                    new Commands.EndPhase(),
+                    new Commands.StartPhase("Cleanup"),
+                    new Commands.EndPhase(),
+                    new Commands.EndTurn());
             };
 
             //InPlayerPhases = false;
