@@ -55,8 +55,8 @@ namespace TouhouSpring
 			return false;
 		}
 
-		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyControllerEvent))]
-		private bool OnNotified(Interactions.NotifyControllerEvent interactionObj)
+		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyPlayerEvent))]
+		private bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
 		{
             if (interactionObj.Player == Player)
             {

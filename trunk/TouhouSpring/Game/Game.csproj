@@ -89,12 +89,12 @@
     <Compile Include="Game.Players.cs" />
     <Compile Include="Game.Threading.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
-    <Compile Include="Interactions\NotifyControllerEvent.cs" />
-    <Compile Include="Interactions\NotifyGameEvent.cs" />
     <Compile Include="Interactions\BaseInteraction.cs" />
     <Compile Include="Interactions\MessageMap.cs" />
     <Compile Include="Interactions\NotifyCardEvent.cs" />
+    <Compile Include="Interactions\NotifyGameEvent.cs" />
     <Compile Include="Interactions\NotifyOnly.cs" />
+    <Compile Include="Interactions\NotifyPlayerEvent.cs" />
     <Compile Include="Interactions\NotifySpellEvent.cs" />
     <Compile Include="Interactions\SelectCards.cs" />
     <Compile Include="Interactions\TacticalPhase.cs" />

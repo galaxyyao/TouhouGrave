@@ -119,6 +119,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="ResourceContainer.cs" />
     <Compile Include="Services\UIManager.cs" />
+    <Compile Include="Services\UIStates\PlayerTransition.cs" />
     <Compile Include="Services\UIStates\SelectCards.cs" />
     <Compile Include="Services\UIStates\TacticalPhase.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />

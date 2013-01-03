@@ -23,15 +23,15 @@ namespace TouhouSpring.UI
 			set { throw new InvalidOperationException("Dispatcher can't be set directly."); }
 		}
 
-		public new Rectangle Region
-		{
-			get { return base.Region; }
-		}
-
 		public Graphics.TextRenderer.IFormattedText Text
 		{
 			get; private set;
 		}
+
+        public float Transparency
+        {
+            get; set;
+        }
 
         public ModalDialog(Graphics.TextRenderer.IFormattedText text)
 		{
@@ -40,10 +40,12 @@ namespace TouhouSpring.UI
 				throw new ArgumentNullException("text");
 			}
 
-			Text = text;
 			m_eventRelay = new MouseEventRelay(this);
 			m_eventRelay.SetHandledAfterRelay = true;
 			m_renderable = new Renderable(this);
+
+            Text = text;
+            Transparency = 0.25f;
 		}
 
 		public void AddButton(Button button)
@@ -67,7 +69,7 @@ namespace TouhouSpring.UI
 
 			m_buttons.Add(button);
 			Listeners.Add(button);
-			button.MouseButton1Up += (sender, e) => OnButtonClicked(sender, e);
+			button.MouseButton1Up += (sender, e) => End();
 		}
 
 		public void Begin(EventDispatcher parent)
@@ -103,6 +105,13 @@ namespace TouhouSpring.UI
 			HasBegun = true;
 		}
 
+        public void End()
+        {
+            HasBegun = false;
+            Dispatcher.Listeners.Remove(m_eventRelay);
+            Dispatcher.Listeners.Remove(this);
+        }
+
 		public void OnRender(RenderEventArgs e)
 		{
 			float screenWidth = e.RenderManager.Device.Viewport.Width;
@@ -111,7 +120,7 @@ namespace TouhouSpring.UI
 
 			// draw a black overlay
 			Graphics.TexturedQuad quadOverlay = new Graphics.TexturedQuad();
-			quadOverlay.ColorScale = new Vector4(0, 0, 0, 0.75f);
+			quadOverlay.ColorScale = new Vector4(0, 0, 0, 1 - Transparency);
 			e.RenderManager.Draw(quadOverlay, new Point(-0.5f, -0.5f), transform);
 
             var textLeft = (int)(screenWidth - Text.Size.Width) / 2;
@@ -124,12 +133,6 @@ namespace TouhouSpring.UI
             drawOptions.ColorScaling = Color.White.ToVector4();
             drawOptions.Offset = new Point(textLeft, textTop);
             e.TextRenderer.DrawText(Text, transform, drawOptions);
-		}
-
-		private void OnButtonClicked(object sender, MouseEventArgs e)
-		{
-			Dispatcher.Listeners.Remove(m_eventRelay);
-			Dispatcher.Listeners.Remove(this);
 		}
 	}
 }

@@ -27,24 +27,44 @@ namespace TouhouSpring.Services
         private Graphics.TextRenderer.IFormattedText[] m_buttonTexts = new Graphics.TextRenderer.IFormattedText[4];
 		private Graphics.TextRenderer.FontDescriptor m_msgFont;
 
-		public void Show(string message)
-		{
-			Show(message, Button.OK, null);
-		}
+        public UI.ModalDialog CurrentModalDialg
+        {
+            get; private set;
+        }
 
-		public void Show(string message, Action action)
-		{
-			Show(message, Button.OK, action != null ? (btn) => action() : (Action<Button>)null);
-		}
+        public void Show(string message)
+        {
+            Show(message, Button.OK, 0.25f, (btn) => { });
+        }
 
-		public void Show(string message, Button button, Action<Button> action)
+        public void Show(string message, Action action)
+        {
+            Show(message, Button.OK, 0.25f, action != null ? (btn) => action() : (Action<Button>)null);
+        }
+
+        public void Show(string message, Button button, Action action)
+        {
+            Show(message, button, 0.25f, action != null ? (btn) => action() : (Action<Button>)null);
+        }
+
+        public void Show(string message, Button button, Action<Button> action)
+        {
+            Show(message, button, 0.25f, action);
+        }
+
+		public void Show(string message, Button button, float transparency, Action<Button> action)
 		{
 			if (message == null)
 			{
 				throw new ArgumentNullException("message");
 			}
+            else if (CurrentModalDialg != null)
+            {
+                throw new InvalidOperationException("Can't show more than one modal dialog at once.");
+            }
 
 			var dialog = new UI.ModalDialog(GameApp.Service<Graphics.TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont)));
+            dialog.Transparency = transparency;
 
 			if ((button & Button.OK) != 0)
 			{
@@ -55,7 +75,7 @@ namespace TouhouSpring.Services
 				};
 				if (action != null)
 				{
-					btn.MouseButton1Up += (s, e) => action(Button.OK);
+                    btn.MouseButton1Up += (s, e) => { action(Button.OK); CurrentModalDialg = null; };
 				}
 				dialog.AddButton(btn);
 			}
@@ -68,7 +88,7 @@ namespace TouhouSpring.Services
 				};
 				if (action != null)
 				{
-					btn.MouseButton1Up += (s, e) => action(Button.Yes);
+                    btn.MouseButton1Up += (s, e) => { action(Button.Yes); CurrentModalDialg = null; };
 				}
 				dialog.AddButton(btn);
 			}
@@ -81,7 +101,7 @@ namespace TouhouSpring.Services
 				};
 				if (action != null)
 				{
-					btn.MouseButton1Up += (s, e) => action(Button.No);
+                    btn.MouseButton1Up += (s, e) => { action(Button.No); CurrentModalDialg = null; };
 				}
 				dialog.AddButton(btn);
 			}
@@ -94,13 +114,25 @@ namespace TouhouSpring.Services
 				};
 				if (action != null)
 				{
-					btn.MouseButton1Up += (s, e) => action(Button.Cancel);
+                    btn.MouseButton1Up += (s, e) => { action(Button.Cancel); CurrentModalDialg = null; };
 				}
 				dialog.AddButton(btn);
 			}
 
 			dialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher);
+            CurrentModalDialg = dialog;
 		}
+
+        public void Hide()
+        {
+            if (CurrentModalDialg == null)
+            {
+                throw new InvalidOperationException("No modal dialog to hide.");
+            }
+
+            CurrentModalDialg.End();
+            CurrentModalDialg = null;
+        }
 
 		public override void Startup()
 		{

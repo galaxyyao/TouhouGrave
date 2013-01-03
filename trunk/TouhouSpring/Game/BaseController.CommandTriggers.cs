@@ -14,28 +14,12 @@ namespace TouhouSpring
 
         internal void OnCommandEnd(Commands.BaseCommand command)
         {
-            if (command is Commands.DrawCard)
+            if (command is Commands.CastSpell)
             {
-                var card = (command as Commands.DrawCard).CardDrawn;
-                if (card.Owner == Player)
+                var spell = (command as Commands.CastSpell).Spell;
+                if (spell.Host.Owner == Player)
                 {
-                    new Interactions.NotifyCardEvent(this, "OnCardDrawn", card).Run();
-                }
-            }
-            else if (command is Commands.PlayCard)
-            {
-                var card = (command as Commands.PlayCard).CardToPlay;
-                if (card.Owner == Player)
-                {
-                    new Interactions.NotifyCardEvent(this, "OnCardPlayed", card).Run();
-                }
-            }
-            else if (command is Commands.Summon)
-            {
-                var card = (command as Commands.Summon).CardSummoned;
-                if (card.Owner == Player)
-                {
-                    new Interactions.NotifyCardEvent(this, "OnCardSummoned", card).Run();
+                    new Interactions.NotifySpellEvent(this, "OnSpellCasted", spell as Behaviors.ICastableSpell).Run();
                 }
             }
             else if (command is Commands.DealDamageToPlayer)
@@ -43,7 +27,22 @@ namespace TouhouSpring
                 var cmd = command as Commands.DealDamageToPlayer;
                 if (cmd.Player == Player)
                 {
-                    new Interactions.NotifyControllerEvent(this, "OnPlayerDamaged", Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.DamageToDeal)).Run();
+                    new Interactions.NotifyPlayerEvent(this, "OnPlayerDamaged", Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.DamageToDeal)).Run();
+                }
+            }
+            else if (command is Commands.DrawCard)
+            {
+                var card = (command as Commands.DrawCard).CardDrawn;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent(this, "OnCardDrawn", card).Run();
+                }
+            }
+            else if (command is Commands.EndTurn)
+            {
+                if (Game.ActingPlayer == Player)
+                {
+                    new Interactions.NotifyPlayerEvent(this, "OnTurnEnded", Player).Run();
                 }
             }
             else if (command is Commands.Kill)
@@ -54,32 +53,47 @@ namespace TouhouSpring
                     new Interactions.NotifyCardEvent(this, "OnCardDestroyed", card).Run();
                 }
             }
-            else if (command is Commands.CastSpell)
+            else if (command is Commands.PlayCard)
             {
-                var spell = (command as Commands.CastSpell).Spell;
-                if (spell.Host.Owner == Player)
+                var card = (command as Commands.PlayCard).CardToPlay;
+                if (card.Owner == Player)
                 {
-                    new Interactions.NotifySpellEvent(this, "OnSpellCasted", spell as Behaviors.ICastableSpell).Run();
+                    new Interactions.NotifyCardEvent(this, "OnCardPlayed", card).Run();
+                }
+            }
+            else if (command is Commands.StartTurn)
+            {
+                if (Game.ActingPlayer == Player)
+                {
+                    new Interactions.NotifyPlayerEvent(this, "OnTurnStarted", Player).Run();
+                }
+            }
+            else if (command is Commands.Summon)
+            {
+                var card = (command as Commands.Summon).CardSummoned;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent(this, "OnCardSummoned", card).Run();
                 }
             }
         }
 
         internal void OnCommandCanceled(Commands.BaseCommand command, string reason)
         {
-            if (command is Commands.PlayCard)
-            {
-                var card = (command as Commands.PlayCard).CardToPlay;
-                if (card.Owner == Player)
-                {
-                    new Interactions.NotifyCardEvent((this), "OnCardPlayCanceled", card, reason).Run();
-                }
-            }
-            else if (command is Commands.CastSpell)
+            if (command is Commands.CastSpell)
             {
                 var spell = (command as Commands.CastSpell).Spell;
                 if (spell.Host.Owner == Player)
                 {
                     new Interactions.NotifySpellEvent(this, "OnSpellCastCanceled", spell as Behaviors.ICastableSpell, reason).Run();
+                }
+            }
+            else if (command is Commands.PlayCard)
+            {
+                var card = (command as Commands.PlayCard).CardToPlay;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent((this), "OnCardPlayCanceled", card, reason).Run();
                 }
             }
         }

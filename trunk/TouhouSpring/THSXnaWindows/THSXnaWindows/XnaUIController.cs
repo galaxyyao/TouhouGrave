@@ -60,15 +60,23 @@ namespace TouhouSpring
 			return false;
 		}
 
-		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyControllerEvent))]
-		private bool OnNotified(Interactions.NotifyControllerEvent interactionObj)
+		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyPlayerEvent))]
+		private bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
 		{
 			switch (interactionObj.Notification)
 			{
-				case "OnPlayerPhaseChanged":
-					break;
 				case "OnPlayerDamaged":
 					break;
+                case "OnTurnEnded":
+                    GameApp.Service<GameUI>().EnterState(new Services.UIStates.PlayerTransition(), interactionObj);
+                    return true;
+                case "OnTurnStarted":
+                    if (GameApp.Service<GameUI>().UIState is Services.UIStates.PlayerTransition)
+                    {
+                        (GameApp.Service<GameUI>().UIState as Services.UIStates.PlayerTransition).OnTurnStarted(interactionObj);
+                        return true;
+                    }
+                    break;
 				default:
 					break;
 			}
