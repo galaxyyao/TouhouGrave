@@ -78,7 +78,7 @@ namespace TouhouSpring.Services
                 Graveyard = new CardZone(UIStyle.ChildIds["Graveyard"]);
             }
 
-            public bool TryGetValue(string id, out string replacement)
+            public bool EvaluateBinding(string id, out string replacement)
             {
                 switch (id)
                 {

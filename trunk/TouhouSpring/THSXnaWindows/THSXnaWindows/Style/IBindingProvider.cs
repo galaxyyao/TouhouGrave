@@ -7,6 +7,6 @@ namespace TouhouSpring.Style
 {
 	interface IBindingProvider
 	{
-		bool TryGetValue(string id, out string replacement);
+		bool EvaluateBinding(string id, out string replacement);
 	}
 }

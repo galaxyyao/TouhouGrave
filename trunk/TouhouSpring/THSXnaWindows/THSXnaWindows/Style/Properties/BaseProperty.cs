@@ -52,7 +52,7 @@ namespace TouhouSpring.Style.Properties
 				string replacement = null;
 				foreach (var bindingProvider in GetConcatedProviders())
 				{
-					if (bindingProvider.TryGetValue(id, out replacement))
+					if (bindingProvider.EvaluateBinding(id, out replacement))
 					{
 						break;
 					}

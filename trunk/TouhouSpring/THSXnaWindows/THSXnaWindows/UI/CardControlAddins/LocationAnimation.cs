@@ -134,7 +134,7 @@ namespace TouhouSpring.UI.CardControlAddins
             GameApp.Service<Graphics.ParticleRenderer>().Draw(m_cardActivated, Matrix.Identity, 1.0f, 1.3333f);
         }
 
-        public bool TryGetValue(string id, out string replacement)
+        public bool EvaluateBinding(string id, out string replacement)
         {
             switch (id)
             {

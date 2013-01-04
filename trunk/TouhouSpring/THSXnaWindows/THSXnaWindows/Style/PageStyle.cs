@@ -64,7 +64,7 @@ namespace TouhouSpring.Style
             }
         }
 
-        public bool TryGetValue(string id, out string replacement)
+        public bool EvaluateBinding(string id, out string replacement)
         {
             var game = GameApp.Service<Services.GameManager>().Game;
             var gameui = GameApp.Service<Services.GameUI>();
@@ -147,7 +147,7 @@ namespace TouhouSpring.Style
                 default:
                     if (id.StartsWith("Card.") && gameui.ZoomedInCard != null)
                     {
-                        return gameui.ZoomedInCard.TryGetValue(id, out replacement);
+                        return gameui.ZoomedInCard.EvaluateBinding(id, out replacement);
                     }
                     replacement = null;
                     return false;

@@ -7,7 +7,7 @@ namespace TouhouSpring.UI
 {
     partial class CardControl : Style.IBindingProvider
     {
-        public bool TryGetValue(string id, out string replacement)
+        public bool EvaluateBinding(string id, out string replacement)
         {
             var warrior = Card.Behaviors.Get<Behaviors.Warrior>();
             switch (id)
