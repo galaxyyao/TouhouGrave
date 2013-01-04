@@ -6,16 +6,16 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Immobilize : SimpleBehavior<Immobilize>,
-        IEpilogTrigger<Commands.StartTurn>
+        IEpilogTrigger<Commands.StartPhase>
     {
-        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
+        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
         {
-            if (Host.IsOnBattlefield && Game.ActingPlayer == Host.Owner)
+            if (command.PhaseName == "Upkeep"
+                && Game.ActingPlayer == Host.Owner
+                && Host.IsOnBattlefield
+                && Host.Behaviors.Has<Warrior>())
             {
-                if (Host.Behaviors.Has<Warrior>())
-                {
-                    Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
-                }
+                Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
         }
     }

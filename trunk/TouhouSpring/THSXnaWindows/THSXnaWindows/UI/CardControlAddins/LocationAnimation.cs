@@ -81,6 +81,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_playToBattlefield = (NextLocation.m_zone.ZoneId == "Battlefield"
                                        || NextLocation.m_zone.ZoneId == "Sacrifice"
                                        || NextLocation.m_zone.ZoneId == "Hero")
+                                      && m_lastLocation.m_zone != null
                                       && m_lastLocation.m_zone.ZoneId == "Hand";
                 m_lastLocation = NextLocation;
             }

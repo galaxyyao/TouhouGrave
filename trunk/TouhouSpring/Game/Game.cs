@@ -26,7 +26,7 @@ namespace TouhouSpring
         /// </summary>
         public string CurrentPhase
         {
-            get; private set;
+            get; internal set;
         }
 
         public int Round
@@ -77,6 +77,8 @@ namespace TouhouSpring
                 m_players[i] = new Player(m_profiles[i], this, m_controllers[i]);
                 m_players[i].Initialize(deck);
             }
+
+            CurrentPhase = "";
 
             InitializeLetterBoxes();
             StartGameFlowThread();

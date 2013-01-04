@@ -75,27 +75,28 @@ namespace TouhouSpring.Services
                 var cardDb = GameApp.Service<CardDatabase>();
 
                 Deck deck = new Deck("MikoUnion");
-                deck.Add(cardDb.GetModel("alice"));
-                deck.Add(cardDb.GetModel("alice"));
-                deck.Add(cardDb.GetModel("alice"));
-                deck.Add(cardDb.GetModel("cirno"));
-                deck.Add(cardDb.GetModel("cirno"));
-                deck.Add(cardDb.GetModel("cirno"));
-                deck.Add(cardDb.GetModel("cirno"));
-                deck.Add(cardDb.GetModel("cirno"));
-                deck.Add(cardDb.GetModel("sakuya"));
-                deck.Add(cardDb.GetModel("sakuya"));
-                deck.Add(cardDb.GetModel("sakuya"));
-                deck.Add(cardDb.GetModel("gungnir"));
-                deck.Add(cardDb.GetModel("gungnir"));
-                deck.Add(cardDb.GetModel("kusanagi"));
-                deck.Add(cardDb.GetModel("kusanagi"));
-                deck.Add(cardDb.GetModel("redfog"));
-                deck.Add(cardDb.GetModel("redfog"));
-                deck.Add(cardDb.GetModel("ripples"));
-                deck.Add(cardDb.GetModel("ripples"));
-                deck.Add(cardDb.GetModel("cautionaryborder"));
-                deck.Add(cardDb.GetModel("cautionaryborder"));
+                //Unused ConversationUI
+                //deck.Add(cardDb.GetModel("alice"));
+                //deck.Add(cardDb.GetModel("alice"));
+                //deck.Add(cardDb.GetModel("alice"));
+                //deck.Add(cardDb.GetModel("cirno"));
+                //deck.Add(cardDb.GetModel("cirno"));
+                //deck.Add(cardDb.GetModel("cirno"));
+                //deck.Add(cardDb.GetModel("cirno"));
+                //deck.Add(cardDb.GetModel("cirno"));
+                //deck.Add(cardDb.GetModel("sakuya"));
+                //deck.Add(cardDb.GetModel("sakuya"));
+                //deck.Add(cardDb.GetModel("sakuya"));
+                //deck.Add(cardDb.GetModel("gungnir"));
+                //deck.Add(cardDb.GetModel("gungnir"));
+                //deck.Add(cardDb.GetModel("kusanagi"));
+                //deck.Add(cardDb.GetModel("kusanagi"));
+                //deck.Add(cardDb.GetModel("redfog"));
+                //deck.Add(cardDb.GetModel("redfog"));
+                //deck.Add(cardDb.GetModel("ripples"));
+                //deck.Add(cardDb.GetModel("ripples"));
+                //deck.Add(cardDb.GetModel("cautionaryborder"));
+                //deck.Add(cardDb.GetModel("cautionaryborder"));
                 deck.Hero = cardDb.GetModel("marisa");
 
                 param[0] = new GameStartupParameters()
