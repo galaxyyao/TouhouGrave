@@ -27,8 +27,12 @@
 /trunk/TouhouSpring/Console/obj/*
 /trunk/TouhouSpring/Dashboard/bin/*
 /trunk/TouhouSpring/Dashboard/obj/*
+/trunk/TouhouSpring/DashboardSetup/Debug/*
+/trunk/TouhouSpring/DashboardSetup/Release/*
 /trunk/TouhouSpring/Game/bin/*
 /trunk/TouhouSpring/Game/obj/*
+/trunk/TouhouSpring/THSv0.5/bin/*
+/trunk/TouhouSpring/THSv0.5/obj/*
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/THSXnaWindows.csproj.Debug.cachefile
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/THSXnaWindows.csproj.Release.cachefile
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/bin/*
