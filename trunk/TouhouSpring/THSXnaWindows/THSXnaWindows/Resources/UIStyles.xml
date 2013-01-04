@@ -152,6 +152,7 @@
   </Card>
   <Card Id="PileBack" Width="210" Height="300">
     <Layout Id="Main">
+      <Transform Matrix="#CardAnimator.InstantRotation#" />
       <Transform Scaling="0.0048,-0.0048,0.0048" />
       <Layout Id="Body">
         <Transform Translation="0,0,#PileBackOffset#" />
