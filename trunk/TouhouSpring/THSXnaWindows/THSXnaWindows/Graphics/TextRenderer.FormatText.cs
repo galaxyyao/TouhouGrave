@@ -92,6 +92,8 @@ namespace TouhouSpring.Graphics
             colorStack.Push(Color.White);
             var fontMetrics = m_registeredFonts[GetFontId(formatOptions.Font)];
             var ansiFontMetrics = m_registeredFonts[GetFontId(formatOptions.AnsiFont)];
+            var ascentOffset = Math.Max(fontMetrics.m_ascentInPixels, ansiFontMetrics.m_ascentInPixels) - fontMetrics.m_ascentInPixels;
+            var ansiAscentOffset = Math.Max(fontMetrics.m_ascentInPixels, ansiFontMetrics.m_ascentInPixels) - ansiFontMetrics.m_ascentInPixels;
 
             float currentX = 0;
             float currentY = 0;
@@ -187,7 +189,7 @@ namespace TouhouSpring.Graphics
                     var glyphData = Load(ch, formatOptions);
                     var fg = new FormattedGlyph
                     {
-                        m_pos = new Vector2(currentX, 0),
+                        m_pos = new Vector2(currentX, ch >= 0 && ch <= 127 ? ansiAscentOffset : ascentOffset),
                         m_color = colorStack.Peek(),
                         m_glyph = ch,
                     };

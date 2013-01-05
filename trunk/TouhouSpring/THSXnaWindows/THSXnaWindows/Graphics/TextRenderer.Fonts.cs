@@ -14,6 +14,7 @@ namespace TouhouSpring.Graphics
             public string m_id;
             public float m_spaceWidth;
             public float m_fullWidthSpaceWidth;
+            public float m_ascentInPixels;
             public Font m_fontObject;
         }
 
@@ -55,6 +56,7 @@ namespace TouhouSpring.Graphics
                     m_id = fontId,
                     m_fontObject = fontObject,
                     m_spaceWidth = MeasureSpace(fontObject).Width,
+                    m_ascentInPixels = CalculateAscentInPixel(fontObject),
                     m_fullWidthSpaceWidth = MeasureFullwidthSpace(fontObject).Width
                 });
                 index = m_registeredFonts.Count - 1;
@@ -66,6 +68,12 @@ namespace TouhouSpring.Graphics
             }
 
             return index;
+        }
+
+        private float CalculateAscentInPixel(Font fontObject)
+        {
+            var ratio = fontObject.Size / fontObject.FontFamily.GetEmHeight(fontObject.Style);
+            return fontObject.FontFamily.GetCellAscent(fontObject.Style) * ratio;
         }
     }
 }
