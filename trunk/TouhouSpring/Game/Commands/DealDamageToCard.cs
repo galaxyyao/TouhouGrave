@@ -46,7 +46,7 @@ namespace TouhouSpring.Commands
             }
             else if (!Target.Behaviors.Has<Behaviors.Warrior>())
             {
-                FailValidation("Damage can only be dealt to non-warrior cards.");
+                FailValidation("Damage cannot be dealt to non-warrior cards.");
             }
         }
 

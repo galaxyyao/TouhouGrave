@@ -82,7 +82,7 @@
     <Compile Include="Behaviors\Passive_WarriorAlwaysStandBy.cs" />
     <Compile Include="Behaviors\Passive_WarriorAttackAndDefenseUpWhenAttackedHero.cs" />
     <Compile Include="Behaviors\Passive_HeroPenetrate.cs" />
-    <Compile Include="Behaviors\Passive_WarriorDestroyAfterAttack.cs" />
+    <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />

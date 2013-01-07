@@ -65,6 +65,7 @@
     <Compile Include="Commands\BaseCommand.Validation.cs" />
     <Compile Include="Commands\CastSpell.cs" />
     <Compile Include="Commands\EndPhase.cs" />
+    <Compile Include="Commands\HealCard.cs" />
     <Compile Include="Commands\StartPhase.cs" />
     <Compile Include="Commands\HealPlayer.cs" />
     <Compile Include="Commands\DealDamageToCard.cs" />

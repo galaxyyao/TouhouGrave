@@ -5,8 +5,8 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Passive_WarriorDestroyAfterAttack :
-        BaseBehavior<Passive_WarriorDestroyAfterAttack.ModelType>,
+    public sealed class Passive_DeathTouch :
+        BaseBehavior<Passive_DeathTouch.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.DealDamageToCard>
     {
@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_WarriorDestroyAfterAttack), DefaultName = "死神")]
+        [BehaviorModel(typeof(Passive_DeathTouch), DefaultName = "死神")]
         public class ModelType : BehaviorModel
         { }
     }

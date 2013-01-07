@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\Passive_DamageWhenWarriorDestroyed.cs" />
+    <Compile Include="Behaviors\Passive_DeathBomb.cs" />
+    <Compile Include="Behaviors\Passive_VampireNLife.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

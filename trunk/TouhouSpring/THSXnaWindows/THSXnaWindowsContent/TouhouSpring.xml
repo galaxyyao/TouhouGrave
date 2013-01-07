@@ -89,6 +89,10 @@
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_VampireNLife+ModelType">
+          <Name>吸血鬼</Name>
+          <LifeToHeal>2</LifeToHeal>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
@@ -414,7 +418,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_DamageWhenWarriorDestroyed+ModelType">
+        <Behavior Type="TouhouSpring.Behaviors.Passive_DeathBomb+ModelType">
           <Name>凤凰烈焰</Name>
           <Damage>3</Damage>
         </Behavior>
@@ -504,7 +508,7 @@ X等于己方场上本卡的数量</Description>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_WarriorDestroyAfterAttack+ModelType">
+        <Behavior Type="TouhouSpring.Behaviors.Passive_DeathTouch+ModelType">
           <Name>死神</Name>
         </Behavior>
       </Behaviors>
