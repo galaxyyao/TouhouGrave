@@ -64,7 +64,7 @@ namespace TouhouSpring.Style
         string TextProperty.IHost.DefaultFontStyle { get { return "regular"; } }
         string TextProperty.IHost.DefaultTextColor { get { return "Black"; } }
 
-        void TextProperty.IHost.SetText(string text, Font font, Color textColor)
+        void TextProperty.IHost.SetText(string text, Font font, Font ansiFont, Color textColor)
         {
             SystemFontStyle fontStyle;
             switch (font.Style)
@@ -81,14 +81,33 @@ namespace TouhouSpring.Style
                     break;
             }
 
+            SystemFontStyle ansiFontStyle;
+            switch (ansiFont.Style)
+            {
+                default:
+                case FontStyle.Regular:
+                    ansiFontStyle = SystemFontStyle.Regular;
+                    break;
+                case FontStyle.Bold:
+                    ansiFontStyle = SystemFontStyle.Bold;
+                    break;
+                case FontStyle.Italic:
+                    ansiFontStyle = SystemFontStyle.Italic;
+                    break;
+            }
+
             if (TypedTarget.Label.FormattedText == null
                 || TypedTarget.Label.FormattedText.Text != text
                 || TypedTarget.Label.FormattedText.FormatOptions.Font.FamilyName != font.Family
                 || TypedTarget.Label.FormattedText.FormatOptions.Font.Size != font.Size
-                || TypedTarget.Label.FormattedText.FormatOptions.Font.Style != fontStyle)
+                || TypedTarget.Label.FormattedText.FormatOptions.Font.Style != fontStyle
+                || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.FamilyName != ansiFont.Family
+                || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.Size != ansiFont.Size
+                || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.Style != ansiFontStyle)
             {
                 var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
-                TypedTarget.Label.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd));
+                var ansiFd = new Graphics.TextRenderer.FontDescriptor(ansiFont.Family, ansiFont.Size.Value, ansiFontStyle);
+                TypedTarget.Label.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd, ansiFd));
             }
             TypedTarget.Label.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
         }

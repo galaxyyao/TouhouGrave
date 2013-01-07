@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 
 namespace TouhouSpring.UI.CardControlAddins
 {
-	class InstantRotation: CardControl.Addin, Style.IBindingProvider
-	{
+    class InstantRotation : CardControl.Addin, Style.IBindingProvider
+    {
         private Matrix m_transform;
 
         public bool Rotated
@@ -15,36 +15,36 @@ namespace TouhouSpring.UI.CardControlAddins
             get; private set;
         }
 
-		public InstantRotation(CardControl control) : base(control)
-		{
-			Control.Style.RegisterBinding(this);
+        public InstantRotation(CardControl control) : base(control)
+        {
+            Control.Style.RegisterBinding(this);
             m_transform = Matrix.Identity;
-		}
+        }
 
-		public override void Update(float deltaTime)
-		{
-			var needRotate = Card.Owner.Game.ActingPlayer != Card.Owner;
+        public override void Update(float deltaTime)
+        {
+            var needRotate = Card.Owner.Game.ActingPlayer != Card.Owner;
 
-			if (needRotate != Rotated)
-			{
+            if (needRotate != Rotated)
+            {
                 Rotated = needRotate;
                 SetTransform();
-			}
-		}
+            }
+        }
 
-		public bool EvaluateBinding(string id, out string replacement)
-		{
-			switch (id)
-			{
-				case "CardAnimator.InstantRotation":
+        public bool EvaluateBinding(string id, out string replacement)
+        {
+            switch (id)
+            {
+                case "CardAnimator.InstantRotation":
                     replacement = m_transform.Serialize();
-					return true;
+                    return true;
 
-				default:
-					replacement = null;
-					return false;
-			}
-		}
+                default:
+                    replacement = null;
+                    return false;
+            }
+        }
 
         private void SetTransform()
         {
@@ -57,5 +57,5 @@ namespace TouhouSpring.UI.CardControlAddins
                             * MatrixHelper.Translate(halfWidth, halfHeight)
                           : MatrixHelper.Identity;
         }
-	}
+    }
 }

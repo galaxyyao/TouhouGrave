@@ -87,7 +87,7 @@ namespace TouhouSpring.Graphics
             RenderManager.BeginPixEvent(0, "DrawText: " + formattedText.Text);
 
             var typedFormattedText = (FormattedText)formattedText;
-            var glyphDatas = typedFormattedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormattedText.FormatOptions.Font)).ToArray();
+            var glyphDatas = typedFormattedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormattedText.FormatOptions)).ToArray();
             int totalPages = glyphDatas.Sum(glyph => glyph.m_pageIndices.Length);
             var glyphPages = new PositionedGlyphPage[totalPages];
 

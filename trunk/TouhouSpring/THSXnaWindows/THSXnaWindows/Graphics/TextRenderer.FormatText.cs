@@ -25,14 +25,19 @@ namespace TouhouSpring.Graphics
         public struct FormatOptions
         {
             public FontDescriptor Font;
+            public FontDescriptor AnsiFont;
             public Alignment Alignment;
             public float CharSpacing;
             public float LineSpacing;
             public int TabSpaces;
 
-            public FormatOptions(FontDescriptor font)
+            public FormatOptions(FontDescriptor font) : this(font, font)
+            { }
+
+            public FormatOptions(FontDescriptor font, FontDescriptor ansiFont)
             {
                 Font = font;
+                AnsiFont = ansiFont;
                 Alignment = TextRenderer.Alignment.LeftTop;
                 CharSpacing = 0;
                 LineSpacing = 0;
@@ -86,6 +91,9 @@ namespace TouhouSpring.Graphics
             var colorStack = new Stack<Color>();
             colorStack.Push(Color.White);
             var fontMetrics = m_registeredFonts[GetFontId(formatOptions.Font)];
+            var ansiFontMetrics = m_registeredFonts[GetFontId(formatOptions.AnsiFont)];
+            var ascentOffset = Math.Max(fontMetrics.m_ascentInPixels, ansiFontMetrics.m_ascentInPixels) - fontMetrics.m_ascentInPixels;
+            var ansiAscentOffset = Math.Max(fontMetrics.m_ascentInPixels, ansiFontMetrics.m_ascentInPixels) - ansiFontMetrics.m_ascentInPixels;
 
             float currentX = 0;
             float currentY = 0;
@@ -97,14 +105,15 @@ namespace TouhouSpring.Graphics
             var glyphs = new List<FormattedGlyph>();
             var lines = new List<FormattedText.FormattedLine>();
             var maxLineWidth = 0.0f;
-            var lineSpacing = formatOptions.LineSpacing + fontMetrics.m_fontObject.Height;
+            var lineHeight = Math.Max(fontMetrics.m_fontObject.Height, ansiFontMetrics.m_fontObject.Height);
+            var lineSpacing = formatOptions.LineSpacing + lineHeight;
 
             for (int i = 0; i < charArray.Length; ++i)
             {
                 var ch = charArray[i];
                 if (ch == ' ')
                 {
-                    currentX += fontMetrics.m_spaceWidth;
+                    currentX += ansiFontMetrics.m_spaceWidth;
                 }
                 else if (ch == '\x3000')
                 {
@@ -112,7 +121,7 @@ namespace TouhouSpring.Graphics
                 }
                 else if (ch == '\t')
                 {
-                    currentX += fontMetrics.m_spaceWidth * formatOptions.TabSpaces;
+                    currentX += ansiFontMetrics.m_spaceWidth * formatOptions.TabSpaces;
                 }
                 else if (ch == '\n')
                 {
@@ -177,10 +186,10 @@ namespace TouhouSpring.Graphics
                         }
                     }
 
-                    var glyphData = Load(ch, formatOptions.Font);
+                    var glyphData = Load(ch, formatOptions);
                     var fg = new FormattedGlyph
                     {
-                        m_pos = new Vector2(currentX, 0),
+                        m_pos = new Vector2(currentX, ch >= 0 && ch <= 127 ? ansiAscentOffset : ascentOffset),
                         m_color = colorStack.Peek(),
                         m_glyph = ch,
                     };
@@ -191,7 +200,7 @@ namespace TouhouSpring.Graphics
 
             var offsetY = 0.0f;
             var textHeight = lines.Count > 0
-                             ? lineSpacing * (lines.Count - 1) + fontMetrics.m_fontObject.Height
+                             ? lineSpacing * (lines.Count - 1) + lineHeight
                              : 0;
             if (formatOptions.Alignment == Alignment.LeftMiddle
                 || formatOptions.Alignment == Alignment.CenterMiddle

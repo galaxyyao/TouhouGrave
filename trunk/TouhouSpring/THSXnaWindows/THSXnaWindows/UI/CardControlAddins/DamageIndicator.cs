@@ -33,7 +33,7 @@ namespace TouhouSpring.UI.CardControlAddins
 
             public override void Startup()
             {
-                var font = new Graphics.TextRenderer.FontDescriptor("Georgia", 20, System.Drawing.FontStyle.Bold);
+                var font = new Graphics.TextRenderer.FontDescriptor("Constantia", 20, System.Drawing.FontStyle.Bold);
                 FormatOptions = new Graphics.TextRenderer.FormatOptions(font) { Alignment = Graphics.TextRenderer.Alignment.CenterMiddle };
                 var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = Vector4.One;

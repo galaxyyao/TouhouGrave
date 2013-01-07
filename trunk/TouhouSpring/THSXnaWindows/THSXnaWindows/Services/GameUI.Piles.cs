@@ -27,16 +27,17 @@ namespace TouhouSpring.Services
                 Behaviors = new List<Behaviors.BehaviorModel>(),
                 Name = ""
             };
-            var dummyCard = new BaseCard(dummyModel, null);
 
             m_playerLibraryPiles = new UI.CardControl[Game.Players.Count];
             for (int i = 0; i < Game.Players.Count; ++i)
             {
+                var dummyCard = new BaseCard(dummyModel, Game.Players[i]);
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
                 m_playerLibraryPiles[i] = ccStyle.TypedTarget;
                 m_playerLibraryPiles[i].EnableDepth = true;
                 var pile = Game.Players[i].Library;
+                m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.InstantRotation(m_playerLibraryPiles[i]));
                 m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], () => pile.Count));
                 m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].Library.Container;
             }
@@ -81,6 +82,7 @@ namespace TouhouSpring.Services
                 m_playerGraveyardPiles[pid].Dispose();
             }
             cardControl.Addins.Clear();
+            cardControl.Addins.Add(new UI.CardControlAddins.InstantRotation(cardControl));
             cardControl.MouseTracked.MouseButton1Up -= CardControl_MouseButton1Up;
             cardControl.MouseTracked.MouseButton2Down -= CardControl_MouseButton2Down;
             cardControl.Saturate = 0;
