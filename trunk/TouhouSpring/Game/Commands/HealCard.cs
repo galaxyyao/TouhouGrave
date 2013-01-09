@@ -55,8 +55,8 @@ namespace TouhouSpring.Commands
         internal override void RunMain()
         {
             var warrior = Target.Behaviors.Get<Behaviors.Warrior>();
-            warrior.Life = (warrior.Life + LifeToHeal) > warrior.InitialLife
-                ? warrior.InitialLife
+            warrior.Life = (warrior.Life + LifeToHeal) > warrior.MaxLife
+                ? warrior.MaxLife
                 : (warrior.Life + LifeToHeal);
         }
     }

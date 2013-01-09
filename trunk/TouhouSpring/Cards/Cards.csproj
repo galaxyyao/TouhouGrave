@@ -74,7 +74,6 @@
     <Compile Include="Behaviors\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
     <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
     <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
-    <Compile Include="Behaviors\Passive_HealedWhenWarriorAttacks.cs" />
     <Compile Include="Behaviors\Passive_HeroAttackUpWithCardNumber.cs" />
     <Compile Include="Behaviors\Passive_ManaGainUpWhenAttackedByWarrior.cs" />
     <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpAndDefenseUp.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="Behaviors\Passive_WarriorAlwaysStandBy.cs" />
     <Compile Include="Behaviors\Passive_WarriorAttackAndDefenseUpWhenAttackedHero.cs" />
     <Compile Include="Behaviors\Passive_HeroPenetrate.cs" />
-    <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
     <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Behaviors\Spell_PreventAllDamageInOneRound.cs" />

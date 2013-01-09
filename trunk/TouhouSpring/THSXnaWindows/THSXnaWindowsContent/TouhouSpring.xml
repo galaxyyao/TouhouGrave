@@ -131,6 +131,9 @@
           <Name>ManaCost</Name>
           <Cost>6</Cost>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_RegenerateFull+ModelType">
+          <Name>单卡完全恢复</Name>
+        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
@@ -141,7 +144,9 @@
       <Id>sakuya</Id>
       <Name>十六夜咲夜</Name>
       <Description>【先攻】：被攻击时，
-优先对对方造成伤害并判定一次</Description>
+优先对对方造成伤害，
+如果造成的伤害大于等于对方的体力，则此卡不受到伤害
+</Description>
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -152,6 +157,9 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_AttackFirst+ModelType">
+          <Name>先攻</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -173,6 +181,7 @@
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
+        
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
         </Behavior>

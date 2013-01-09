@@ -42,6 +42,12 @@ namespace TouhouSpring.Behaviors
             get { return Model.Life; }
         }
 
+        public int MaxLife
+        {
+            get;
+            internal set;
+        }
+
         public IList<BaseCard> Equipments
         {
             get; private set;
@@ -64,6 +70,7 @@ namespace TouhouSpring.Behaviors
             State = WarriorState.StandingBy;
             Attack = Model.Attack;
             Life = Model.Life;
+            MaxLife = Life;
             Equipments = new List<BaseCard>();
         }
 
