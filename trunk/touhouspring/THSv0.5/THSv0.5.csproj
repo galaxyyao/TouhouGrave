@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\Passive_AttackFirst.cs" />
+    <Compile Include="Behaviors\Passive_Aura_ReduceDamage_NDamage.cs" />
     <Compile Include="Behaviors\Passive_DamageToSelectedCard_NDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DeathBomb.cs" />
     <Compile Include="Behaviors\Passive_DeathTouch.cs" />
