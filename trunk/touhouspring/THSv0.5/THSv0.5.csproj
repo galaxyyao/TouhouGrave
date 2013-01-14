@@ -46,10 +46,12 @@
     <Compile Include="Behaviors\Passive_DeathBomb.cs" />
     <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Passive_Bleed_ToEnemiesNDamageEachTurn.cs" />
+    <Compile Include="Behaviors\Passive_DeterAura_NAttack.cs" />
     <Compile Include="Behaviors\Passive_NoPlayerAttacker.cs" />
     <Compile Include="Behaviors\Passive_RegenerateFull.cs" />
     <Compile Include="Behaviors\Passive_VampireNLife.cs" />
     <Compile Include="Behaviors\Spell_DirectDamage_NDamage.cs" />
+    <Compile Include="Behaviors\Spell_HealAllAlly_NLife.cs" />
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +60,10 @@
     <ProjectReference Include="..\..\Fountain\Common\Common.csproj">
       <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cards\Cards.csproj">
+      <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
+      <Name>Cards</Name>
     </ProjectReference>
     <ProjectReference Include="..\Game\Game.csproj">
       <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
