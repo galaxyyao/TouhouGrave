@@ -42,11 +42,13 @@
   <ItemGroup>
     <Compile Include="Behaviors\Passive_AttackFirst.cs" />
     <Compile Include="Behaviors\Passive_Aura_ReduceDamage_NDamage.cs" />
+    <Compile Include="Behaviors\Passive_BloodThirsty.cs" />
     <Compile Include="Behaviors\Passive_DamageToSelectedCard_NDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DeathBomb.cs" />
     <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Passive_Bleed_ToEnemiesNDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DeterAura_NAttack.cs" />
+    <Compile Include="Behaviors\Passive_DrawCardOnPlay.cs" />
     <Compile Include="Behaviors\Passive_NoPlayerAttacker.cs" />
     <Compile Include="Behaviors\Passive_RegenerateFull.cs" />
     <Compile Include="Behaviors\Passive_VampireNLife.cs" />
