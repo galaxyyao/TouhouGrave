@@ -14,7 +14,10 @@ namespace TouhouSpring.Behaviors
         {
             foreach (var card in Game.ActingPlayer.CardsOnBattlefield)
             {
-                Game.IssueCommands(new Commands.HealCard(card, Model.LifeToHeal, this));
+                if (card.Behaviors.Has<Warrior>())
+                {
+                    Game.IssueCommands(new Commands.HealCard(card, Model.LifeToHeal, this));
+                }
             }
         }
 

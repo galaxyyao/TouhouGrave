@@ -8,18 +8,40 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeathBomb :
         BaseBehavior<Passive_DeathBomb.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.Kill>
+        IEpilogTrigger<Commands.DealDamageToCard>,
+        IEpilogTrigger<Commands.Resolve>
     {
-        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
+        private Warrior m_fatalWarriorCause;
+        // 1, listen to DealDamageToCard command
+        // if a fatal damage is dealt by Warrior, set m_fatalWarriorCause to this warrior;
+        // 2, listen to Resolve command
+        // if the card's life > 0, cancel the whole process
+        // otherwise the bomb effect is triggered
+        // 3, m_fatalWarriorCause is cleared to null
+
+        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
         {
-            if (command.Target == Host && command.EnteredGraveyard)
+            if (command.Target == Host && command.Cause is Warrior)
             {
-                if (!(command.Cause is Warrior))
-                    return;
-                Game.IssueCommands(new Commands.DealDamageToCard((command.Cause as Warrior).Host, Model.Damage, this));
+                var warrior = Host.Behaviors.Get<Warrior>();
+                if (warrior != null
+                    && warrior.Life > -command.DamageToDeal
+                    && warrior.Life <= 0)
+                {
+                    m_fatalWarriorCause = command.Cause as Warrior;
+                }
             }
         }
 
+        void IEpilogTrigger<Commands.Resolve>.Run(Commands.Resolve command)
+        {
+            if (m_fatalWarriorCause != null
+                && Host.Behaviors.Get<Warrior>().Life <= 0)
+            {
+                Game.IssueCommands(new Commands.DealDamageToCard(m_fatalWarriorCause.Host, Model.Damage, this));
+            }
+            m_fatalWarriorCause = null;
+        }
 
         [BehaviorModel(typeof(Passive_DeathBomb), DefaultName = "死后炸弹")]
         public class ModelType : BehaviorModel
