@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Spell_DrawCard_NCard), DefaultName = "")]
+        [BehaviorModel(typeof(Spell_DrawCard_NCard))]
         public class ModelType : BehaviorModel
         {
             public int CardToDraw

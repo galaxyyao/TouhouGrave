@@ -97,7 +97,8 @@ namespace TouhouSpring.Interactions
             SacrificeCandidates = canSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
             RedeemCandidates = player.CardsSacrificed
                                     .Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable();
-            AttackerCandidates = EnumerateAttackerCandidates().ToArray().ToIndexable();
+            AttackerCandidates = EnumerateAttackerCandidates()
+                                    .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)
             {
                 DefenderCandidates = Player.Game.Players.Where(p => p != Player).SelectMany(p => p.CardsOnBattlefield)

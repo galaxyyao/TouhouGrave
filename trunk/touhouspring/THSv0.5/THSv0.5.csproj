@@ -57,6 +57,7 @@
     <Compile Include="Behaviors\Passive_VampireNLife.cs" />
     <Compile Include="Behaviors\Spell_DirectDamage_NDamage.cs" />
     <Compile Include="Behaviors\Spell_DrawCard_NCard.cs" />
+    <Compile Include="Behaviors\Spell_Freeze.cs" />
     <Compile Include="Behaviors\Spell_HealAllAlly_NLife.cs" />
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

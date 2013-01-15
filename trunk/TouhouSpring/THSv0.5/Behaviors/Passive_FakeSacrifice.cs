@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_FakeSacrifice), DefaultName = "")]
+        [BehaviorModel(typeof(Passive_FakeSacrifice))]
         public class ModelType : BehaviorModel
         {
             public CardModelReference SummonType { get; set; }
