@@ -8,21 +8,27 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_ManaCannon:
         BaseBehavior<Spell_ManaCannon.ModelType>,
         Commands.ICause,
+        IPrerequisiteTrigger<Commands.CastSpell>,
         ICastableSpell
     {
-        void ICastableSpell.Run(Commands.CastSpell command)
+        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(Commands.CastSpell command)
         {
-            //TODO: Future change for 3 or more players
-            int freeMana=Game.ActingPlayer.FreeMana;
+            int freeMana = Game.ActingPlayer.FreeMana;
             if (freeMana == 0)
             {
-                //TODO: Add failed condition check handling
-                new Interactions.MessageBox(Game.ActingPlayer, "没有足够的灵力来施放", Interactions.MessageBoxButtons.OK);
+                return CommandResult.Cancel("没有足够的灵力来施放");
             }
             if (Game.ActingPlayerEnemies.First().CardsOnBattlefield.Count == 0)
             {
-                new Interactions.MessageBox(Game.ActingPlayer, "没有可以施放的对象", Interactions.MessageBoxButtons.OK);
+                return CommandResult.Cancel("没有可以施放的对象");
             }
+            return CommandResult.Pass;
+        }
+
+        void ICastableSpell.Run(Commands.CastSpell command)
+        {
+            //TODO: Future change for 3 or more players
+            int freeMana = Game.ActingPlayer.FreeMana;
             
             var selectedCard = new Interactions.SelectCards(
                 Game.ActingPlayerEnemies.First()
