@@ -445,8 +445,8 @@
         【护卫】：
         如果场上有护卫，
         对手无法攻击护卫以外的目标
-        【反击2】：
-        被攻击后造成2点反击伤害
+        【反击1】：
+        被攻击后造成1点反击伤害
       </Description>
       <ArtworkUri>Textures/Characters/meirin_stand</ArtworkUri>
       <Behaviors>
@@ -457,11 +457,11 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>1</Cost>
+          <Cost>5</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Counterattack_NDamage+ModelType">
           <Name>Passive_Counterattack_NDamage</Name>
-          <DamageToDeal>2</DamageToDeal>
+          <DamageToDeal>1</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -678,9 +678,8 @@
     <Resource ID="#Resource27" Type="TouhouSpring.EditorCardModel">
       <Id>keine</Id>
       <Name>上白泽慧音</Name>
-      <Description>
-        灵力池上限增加1点，
-        不受本回合是否已献祭影响
+      <Description>向灵力池里献祭1张毛玉，
+不受本回合是否已献祭影响
       </Description>
       <ArtworkUri>Textures/Characters/keine_stand</ArtworkUri>
       <Behaviors>
@@ -748,6 +747,10 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummon+ModelType">
+          <Name>人偶召唤</Name>
+          <SummonType>#Resource2</SummonType>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>

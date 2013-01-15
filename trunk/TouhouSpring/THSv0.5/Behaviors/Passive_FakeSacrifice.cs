@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_FakeSacrifice:
         BaseBehavior<Passive_FakeSacrifice.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.Redeem>
+        IEpilogTrigger<Commands.PlayCard>
     {
         void IEpilogTrigger<Commands.Redeem>.Run(Commands.Redeem command)
         {

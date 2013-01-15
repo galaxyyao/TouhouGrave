@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_DirectDamage_NDamage.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        IPrologTrigger<Commands.PlayCard>
+        ISetupTrigger<Commands.PlayCard>
     {
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
         }
 
         //TODO: Future change for instant handling
-        void IPrologTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             var selectedCard = new Interactions.SelectCards(
                 Game.ActingPlayerEnemies.First(),
@@ -31,8 +31,16 @@ namespace TouhouSpring.Behaviors
                 Interactions.SelectCards.SelectMode.Single,
                 "指定1张对手的卡，造成伤害"
                 ).Run();
+
+            if (selectedCard.Count == 0)
+            {
+                return CommandResult.Cancel("取消施放");
+            }
+
             BaseCard castTarget = selectedCard[0];
             Game.IssueCommands(new Commands.DealDamageToCard(castTarget, Model.DamageToDeal, this));
+
+            return CommandResult.Pass;
         }
 
         [BehaviorModel(typeof(Spell_DirectDamage_NDamage), DefaultName = "直接伤害")]
