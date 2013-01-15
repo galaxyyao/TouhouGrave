@@ -84,6 +84,14 @@ namespace TouhouSpring
             return list[list.Count - 1];
         }
 
+        public static void Repeat(this int times, Action func)
+        {
+            for (int i = 0; i < times; ++i)
+            {
+                func();
+            }
+        }
+
 		public static void Repeat(this int times, Action<int> func)
 		{
 			for (int i = 0; i < times; ++i)
