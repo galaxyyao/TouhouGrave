@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    internal class Resolve : BaseCommand
+    public class Resolve : BaseCommand
     {
         internal override void ValidateOnIssue()
         {

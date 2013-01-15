@@ -19,7 +19,14 @@ namespace TouhouSpring
 
         public void IssueCommands(params Commands.BaseCommand[] commands)
         {
-            commands.ForEach(cmd => IssueCommand(cmd));
+            commands.ForEach(cmd =>
+            {
+                if (cmd is Commands.Resolve)
+                {
+                    throw new ArgumentException("Resolve command can't be issued in behaviors.");
+                }
+                IssueCommand(cmd);
+            });
         }
 
         internal void IssueCommandsAndFlush(params Commands.BaseCommand[] commands)

@@ -8,7 +8,7 @@
     <ProjectGuid>{8772ADE0-B78C-47B5-8C24-E43C1C685732}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>THSv0._5</RootNamespace>
+    <RootNamespace>TouhouSpring</RootNamespace>
     <AssemblyName>THSv0.5</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,16 +43,20 @@
     <Compile Include="Behaviors\Passive_AttackFirst.cs" />
     <Compile Include="Behaviors\Passive_Aura_ReduceDamage_NDamage.cs" />
     <Compile Include="Behaviors\Passive_BloodThirsty.cs" />
+    <Compile Include="Behaviors\Passive_Counterattack_NDamage.cs" />
     <Compile Include="Behaviors\Passive_DamageToSelectedCard_NDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DeathBomb.cs" />
     <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Passive_Bleed_ToEnemiesNDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DeterAura_NAttack.cs" />
     <Compile Include="Behaviors\Passive_DrawCardOnPlay.cs" />
+    <Compile Include="Behaviors\Passive_FakeSacrifice.cs" />
     <Compile Include="Behaviors\Passive_NoPlayerAttacker.cs" />
     <Compile Include="Behaviors\Passive_RegenerateFull.cs" />
+    <Compile Include="Behaviors\Passive_Shield_NDamage.cs" />
     <Compile Include="Behaviors\Passive_VampireNLife.cs" />
     <Compile Include="Behaviors\Spell_DirectDamage_NDamage.cs" />
+    <Compile Include="Behaviors\Spell_DrawCard_NCard.cs" />
     <Compile Include="Behaviors\Spell_HealAllAlly_NLife.cs" />
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
