@@ -599,9 +599,8 @@
     <Resource ID="#Resource23" Type="TouhouSpring.EditorCardModel">
       <Id>cirno</Id>
       <Name>琪露诺</Name>
-      <Description>
-        对方玩家
-        在下一个行动阶段无法发动攻击
+      <Description>当前对方玩家场上的角色卡
+在下一个行动阶段无法发动攻击
       </Description>
       <ArtworkUri>Textures/Characters/cirno_stand</ArtworkUri>
       <Behaviors>
@@ -637,10 +636,9 @@
     <Resource ID="#Resource25" Type="TouhouSpring.EditorCardModel">
       <Id>suika</Id>
       <Name>伊吹萃香</Name>
-      <Description>
-        指定己方场上1张卡，
-        攻击力+3，
-        直到行动结束
+      <Description>指定己方场上1张卡，
+攻击力+3，
+直到行动结束
       </Description>
       <ArtworkUri>Textures/Characters/suika_stand</ArtworkUri>
       <Behaviors>
@@ -678,7 +676,7 @@
     <Resource ID="#Resource27" Type="TouhouSpring.EditorCardModel">
       <Id>keine</Id>
       <Name>上白泽慧音</Name>
-      <Description>向灵力池里献祭1张毛玉，
+      <Description>向灵力池里献祭2张毛玉，
 不受本回合是否已献祭影响
       </Description>
       <ArtworkUri>Textures/Characters/keine_stand</ArtworkUri>
@@ -686,6 +684,11 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_PillSummon+ModelType">
+          <Name>毛玉召唤</Name>
+          <SummonType>#Resource32</SummonType>
+          <NumToSummon>2</NumToSummon>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
@@ -738,9 +741,8 @@
     <Resource ID="#Resource30" Type="TouhouSpring.EditorCardModel">
       <Id>yakumo</Id>
       <Name>八云紫</Name>
-      <Description>
-        从灵力池赎回卡牌时
-        不减少灵力上限
+      <Description>从灵力池赎回卡牌时，
+用1张毛玉作为替身留在灵力池中
       </Description>
       <ArtworkUri>Textures/Characters/yakumo_stand</ArtworkUri>
       <Behaviors>
@@ -748,9 +750,9 @@
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummon+ModelType">
-          <Name>人偶召唤</Name>
-          <SummonType>#Resource2</SummonType>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_FreeRedeem+ModelType">
+          <Name>毛玉替身</Name>
+          <SummonType>#Resource32</SummonType>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
@@ -784,15 +786,18 @@
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource32" Type="TouhouSpring.EditorCardModel">
-      <Id>patyu</Id>
+      <Id>pill</Id>
       <Name>毛玉</Name>
-      <Description></Description>
-      <ArtworkUri>Textures/Characters/patyu_stand</ArtworkUri>
+      <Description>不可被赎回</Description>
+      <ArtworkUri>Textures/Characters/pill_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Attack>0</Attack>
           <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_UnRedeemable+ModelType">
+          <Name>不可赎回</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>

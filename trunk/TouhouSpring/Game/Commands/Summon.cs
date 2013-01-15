@@ -6,7 +6,7 @@ using System.Text;
 namespace TouhouSpring.Commands
 {
     /// <summary>
-    /// Directly play a card onto the 
+    /// Directly play a card onto the battlefield
     /// </summary>
     public class Summon : BaseCommand
     {
