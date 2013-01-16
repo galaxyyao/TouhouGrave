@@ -706,7 +706,9 @@
     <Resource ID="#Resource28" Type="TouhouSpring.EditorCardModel">
       <Id>koakuma</Id>
       <Name>小恶魔</Name>
-      <Description></Description>
+      <Description>当攻击对方角色卡时，
+对对方玩家造成1点伤害
+</Description>
       <ArtworkUri>Textures/Characters/koakuma_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -717,6 +719,10 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Sputter_NDamage+ModelType">
+          <Name>溅射</Name>
+          <DamageToDeal>1</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
