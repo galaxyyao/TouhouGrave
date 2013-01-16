@@ -491,7 +491,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Counterattack_NDamage+ModelType">
           <Name>Passive_Counterattack_NDamage</Name>
-          <DamageToDeal>1</DamageToDeal>
+          <DamageToDeal>5</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Protector+ModelType">
           <Name>护卫</Name>
