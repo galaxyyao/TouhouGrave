@@ -13,14 +13,20 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
+        public BaseCard CardDisActivated
+        {
+            get;
+            private set;
+        }
+
         public ActivateAssist(BaseCard cardToActivate)
         {
             if (cardToActivate == null)
             {
                 throw new ArgumentNullException("cardToActivate");
             }
-
             CardToActivate = cardToActivate;
+            CardDisActivated = CardToActivate.Owner.ActivatedAssist;
         }
 
         internal override void ValidateOnIssue()
