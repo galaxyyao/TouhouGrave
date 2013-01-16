@@ -471,10 +471,10 @@
     <Resource ID="#Resource17" Type="TouhouSpring.EditorCardModel">
       <Id>meirin</Id>
       <Name>红美铃</Name>
-      <Description>
-        【护卫】：
-        如果场上有护卫，
-        对手无法攻击护卫以外的目标
+      <Description>【护卫】：
+如果场上有护卫，
+对手无法攻击护卫以外的目标，
+每一个玩家的场上最多只能有1张护卫
         【反击1】：
         被攻击后造成1点反击伤害
       </Description>
@@ -487,11 +487,14 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>5</Cost>
+          <Cost>1</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Counterattack_NDamage+ModelType">
           <Name>Passive_Counterattack_NDamage</Name>
           <DamageToDeal>1</DamageToDeal>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Protector+ModelType">
+          <Name>护卫</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>

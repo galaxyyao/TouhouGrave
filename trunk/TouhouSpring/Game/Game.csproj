@@ -55,6 +55,7 @@
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\Neutralize.cs" />
+    <Compile Include="Behaviors\ProtectedCard.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\UniqueWarrior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
