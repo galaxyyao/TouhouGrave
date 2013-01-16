@@ -224,6 +224,14 @@ namespace TouhouSpring
                     yield return cardToActivate;
                 }
             }
+            else if (command is Commands.ActivateAssist && command.ExecutionPhase == Commands.CommandPhase.Epilog)
+            {
+                var previouslyActivated = (command as Commands.ActivateAssist).PreviouslyActivatedCard;
+                if (previouslyActivated != null)
+                {
+                    yield return previouslyActivated;
+                }
+            }
             else if (command is Commands.Redeem)
             {
                 var cardToRedeem = (command as Commands.Redeem).Target;

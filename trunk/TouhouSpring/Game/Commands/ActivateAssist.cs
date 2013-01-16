@@ -13,6 +13,11 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
+        public BaseCard PreviouslyActivatedCard
+        {
+            get; private set;
+        }
+
         public ActivateAssist(BaseCard cardToActivate)
         {
             if (cardToActivate == null)
@@ -42,6 +47,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
+            PreviouslyActivatedCard = CardToActivate.Owner.ActivatedAssist;
             CardToActivate.Owner.ActivatedAssist = CardToActivate;
         }
     }

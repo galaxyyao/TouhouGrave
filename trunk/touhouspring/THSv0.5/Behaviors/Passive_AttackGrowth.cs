@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Passive_AttackGrowth
+    public sealed class Passive_AttackGrowth : BaseBehavior<Passive_AttackGrowth.ModelType>
     {
 
         [BehaviorModel(typeof(Passive_AttackGrowth), DefaultName = "")]
