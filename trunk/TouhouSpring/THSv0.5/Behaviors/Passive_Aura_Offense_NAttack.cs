@@ -47,8 +47,11 @@ namespace TouhouSpring.Behaviors
                 && Host.Owner == command.CardToPlay.Owner)
             {
                 var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
-                Game.IssueCommands(
-                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                if (warrior != null)
+                {
+                    Game.IssueCommands(
+                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                }
             }
         }
 

@@ -14,7 +14,15 @@ namespace TouhouSpring
 
         internal void OnCommandEnd(Commands.BaseCommand command)
         {
-            if (command is Commands.CastSpell)
+            if (command is Commands.AddCardToManaPool)
+            {
+                var card = (command as Commands.AddCardToManaPool).CardAdded;
+                if (card.Owner == Player)
+                {
+                    new Interactions.NotifyCardEvent(this, "OnCardAddedToManaPool", card).Run();
+                }
+            }
+            else if (command is Commands.CastSpell)
             {
                 var spell = (command as Commands.CastSpell).Spell;
                 if (spell.Host.Owner == Player)

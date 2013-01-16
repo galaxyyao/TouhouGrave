@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
 
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
-            if (Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).Count() == 0)
+            if (!Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).Any())
             {
                 return CommandResult.Cancel("没有可以释放的对象");
             }
@@ -28,8 +28,8 @@ namespace TouhouSpring.Behaviors
         CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             var selectedCard = new Interactions.SelectCards(
-                Game.ActingPlayer,
-                Game.ActingPlayer.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                Host.Owner,
+                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
                 Interactions.SelectCards.SelectMode.Single,
                 "指定1张己方的卡，增加3点攻击力"
                 ).Run();

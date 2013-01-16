@@ -9,8 +9,11 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_DirectDamage_NDamage.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        ISetupTrigger<Commands.PlayCard>
+        ISetupTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.PlayCard>
     {
+        private BaseCard m_castTarget = null;
+
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
             //TODO: Future change for 3 or more players
@@ -37,10 +40,17 @@ namespace TouhouSpring.Behaviors
                 return CommandResult.Cancel("取消施放");
             }
 
-            BaseCard castTarget = selectedCard[0];
-            Game.IssueCommands(new Commands.DealDamageToCard(castTarget, Model.DamageToDeal, this));
+            m_castTarget = selectedCard[0];
 
             return CommandResult.Pass;
+        }
+
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        {
+            if (command.CardToPlay == Host && m_castTarget != null)
+            {
+                Game.IssueCommands(new Commands.DealDamageToCard(m_castTarget, Model.DamageToDeal, this));
+            }
         }
 
         [BehaviorModel(typeof(Spell_DirectDamage_NDamage), DefaultName = "直接伤害")]

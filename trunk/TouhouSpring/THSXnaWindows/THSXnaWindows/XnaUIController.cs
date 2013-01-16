@@ -22,11 +22,13 @@ namespace TouhouSpring
             {
                 switch (interactionObj.Notification)
                 {
+                    case "OnCardAddedToManaPool":
+                    case "OnCardDrawn":
+                    case "OnCardSummoned":
+                        GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
+                        break;
                     case "OnCardDestroyed":
                         GameApp.Service<GameUI>().UnregisterCard(interactionObj.Card);
-                        break;
-                    case "OnCardDrawn":
-                        GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
                         break;
                     case "OnCardPlayCanceled":
                         if (interactionObj.Message != string.Empty)
@@ -34,9 +36,6 @@ namespace TouhouSpring
                             GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () => interactionObj.Respond());
                             return true;
                         }
-                        break;
-                    case "OnCardSummoned":
-                        GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
                         break;
                     default:
                         break;
