@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
     <Compile Include="Behaviors\Passive_AttackFirst.cs" />
     <Compile Include="Behaviors\Passive_Protector.cs" />
     <Compile Include="Behaviors\Passive_Sputter_NDamage.cs" />
