@@ -620,15 +620,17 @@
     <Resource ID="#Resource24" Type="TouhouSpring.EditorCardModel">
       <Id>patchouli</Id>
       <Name>帕秋莉·诺蕾姬</Name>
-      <Description>
-        己方场上角色卡
-        攻击力+1
+      <Description>己方场上角色卡
+攻击力+1
       </Description>
       <ArtworkUri>Textures/Characters/patchouli_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Aura_Offense_NAttack+ModelType">
+          <Name>进攻光环</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
@@ -640,14 +642,16 @@
       <Id>suika</Id>
       <Name>伊吹萃香</Name>
       <Description>指定己方场上1张卡，
-攻击力+3，
-直到行动结束
+攻击力+3
       </Description>
       <ArtworkUri>Textures/Characters/suika_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Spell_AttackGrowth+ModelType">
+          <Name>变巨术</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
