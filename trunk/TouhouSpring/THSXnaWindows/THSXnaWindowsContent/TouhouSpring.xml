@@ -191,11 +191,11 @@
     <Resource ID="#Resource7" Type="TouhouSpring.EditorCardModel">
       <Id>eirin</Id>
       <Name>八意永琳</Name>
-      <Description>
-        在玩家行动阶段开始后，
-        对每个对手造成1点伤害，
-        并指定场上1张角色卡，
-        造成1点伤害
+      <Description>在玩家行动阶段开始后，
+指定场上1张角色卡，
+造成1点伤害；
+玩家的角色卡攻击时，
+对对方玩家造成1点伤害
       </Description>
       <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
       <Behaviors>
@@ -203,8 +203,8 @@
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Bleed_ToEnemiesNDamageEachTurn+ModelType">
-          <Name>对敌方玩家回合伤害</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Assist_MassSputter_NDamage+ModelType">
+          <Name>大规模溅射</Name>
           <DamageToDeal>1</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_DamageToSelectedCard_NDamageEachTurn+ModelType">
