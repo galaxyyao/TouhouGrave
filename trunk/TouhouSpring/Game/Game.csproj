@@ -56,6 +56,7 @@
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\Neutralize.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
+    <Compile Include="Behaviors\UniqueWarrior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />

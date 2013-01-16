@@ -101,6 +101,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -148,6 +151,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -175,6 +181,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -252,6 +261,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -279,6 +291,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -331,6 +346,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -356,6 +374,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -379,6 +400,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -408,6 +432,9 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType">
           <Name>星光</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -434,6 +461,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -466,6 +496,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -494,6 +527,9 @@
           <Name>凤凰烈焰</Name>
           <Damage>3</Damage>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -519,6 +555,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -565,6 +604,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -592,6 +634,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathTouch+ModelType">
           <Name>死神</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -727,6 +772,9 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -747,6 +795,9 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>1</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -794,6 +845,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
+          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
