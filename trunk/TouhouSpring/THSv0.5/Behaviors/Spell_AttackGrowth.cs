@@ -9,9 +9,11 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_AttackGrowth.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        ISetupTrigger<Commands.PlayCard>
+        ISetupTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.PlayCard>
     {
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 3);
+        private BaseCard castTarget = null;
 
         CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
         {
@@ -37,10 +39,20 @@ namespace TouhouSpring.Behaviors
                 return CommandResult.Cancel("取消施放");
             }
 
-            BaseCard castTarget = selectedCard[0];
-            Game.IssueCommands(new Commands.SendBehaviorMessage(castTarget.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
+            castTarget = selectedCard[0];
+            
 
             return CommandResult.Pass;
+        }
+
+        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        {
+            if (command.CardToPlay == Host
+                && castTarget != null)
+            {
+                Game.IssueCommands(new Commands.SendBehaviorMessage(castTarget.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
+                castTarget = null;
+            }
         }
 
         [BehaviorModel(typeof(Spell_AttackGrowth), DefaultName = "变巨术")]

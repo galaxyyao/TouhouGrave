@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\Passive_AttackFirst.cs" />
-    <Compile Include="Behaviors\Passive_AttackGrowth.cs" />
+    <Compile Include="Behaviors\Spell_AttackGrowth.cs" />
     <Compile Include="Behaviors\Passive_Aura_Offense_NAttack.cs" />
     <Compile Include="Behaviors\Passive_Aura_ReduceDamage_NDamage.cs" />
     <Compile Include="Behaviors\Passive_BloodThirsty.cs" />
