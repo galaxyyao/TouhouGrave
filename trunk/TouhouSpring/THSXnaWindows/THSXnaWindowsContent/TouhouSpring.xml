@@ -487,20 +487,21 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>1</Cost>
+          <Cost>5</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Counterattack_NDamage+ModelType">
           <Name>Passive_Counterattack_NDamage</Name>
-          <DamageToDeal>5</DamageToDeal>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Protector+ModelType">
-          <Name>护卫</Name>
+          <DamageToDeal>1</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Protector+ModelType">
+          <Name>Protector</Name>
+          <Unique>true</Unique>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>

@@ -101,8 +101,10 @@ namespace TouhouSpring.Interactions
                                     .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)
             {
-                DefenderCandidates = Player.Game.Players.Where(p => p != Player).SelectMany(p => p.CardsOnBattlefield)
-                    .Where(card => card.Behaviors.Has<Behaviors.Warrior>()).Where(card=>!card.Behaviors.Has<Behaviors.ProtectedCard>()).ToArray().ToIndexable();
+                var defenders = Player.Game.Players.Where(p => p != Player).SelectMany(p => p.CardsOnBattlefield)
+                                .Where(card => card.Behaviors.Has<Behaviors.Warrior>()).ToArray();
+                var protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
+                DefenderCandidates = (protectors.Length != 0 ? protectors : defenders).ToIndexable();
             }
             else
             {
