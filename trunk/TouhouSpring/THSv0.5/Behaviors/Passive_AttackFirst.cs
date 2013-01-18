@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IPrologTrigger<Commands.DealDamageToCard>,
         IEpilogTrigger<Commands.DealDamageToCard>
     {
-        void IPrologTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunProlog(Commands.DealDamageToCard command)
         {
             if (command.Target == Host
                 && Host.IsOnBattlefield
@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunEpilog(Commands.DealDamageToCard command)
         {
             if (command.Cause != this)
                 return;

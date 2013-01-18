@@ -141,7 +141,7 @@ namespace TouhouSpring
                                        card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
                                        ).ToList())
             {
-                var result = trigger.Run(command);
+                var result = trigger.RunPrerequisite(command);
                 if (result.Canceled)
                 {
                     Players.ForEach(player => player.Controller.OnCommandCanceled(command, result.Reason));
@@ -157,7 +157,7 @@ namespace TouhouSpring
                                        card.Behaviors.OfType<ISetupTrigger<TCommand>>()
                                        ).ToList())
             {
-                var result = trigger.Run(command);
+                var result = trigger.RunSetup(command);
                 if (result.Canceled)
                 {
                     Players.ForEach(player => player.Controller.OnCommandCanceled(command, result.Reason));
@@ -173,7 +173,7 @@ namespace TouhouSpring
             command.ExecutionPhase = Commands.CommandPhase.Prolog;
             Players.ForEach(player => player.Controller.OnCommandBegin(command));
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IPrologTrigger<TCommand>>())
-                .ToList().ForEach(trigger => trigger.Run(command));
+                .ToList().ForEach(trigger => trigger.RunProlog(command));
 
             ////////////////////////////////////////////
 
@@ -184,7 +184,7 @@ namespace TouhouSpring
 
             command.ExecutionPhase = Commands.CommandPhase.Epilog;
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
-                .ToList().ForEach(trigger => trigger.Run(command));
+                .ToList().ForEach(trigger => trigger.RunEpilog(command));
             Players.ForEach(player => player.Controller.OnCommandEnd(command));
         }
 
@@ -194,7 +194,7 @@ namespace TouhouSpring
             foreach (var trigger in EnumerateCommandTargets(command)
                 .SelectMany(card => card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()).ToList())
             {
-                var result = trigger.Run(command);
+                var result = trigger.RunPrerequisite(command);
                 if (result.Canceled)
                 {
                     ClearReservations();

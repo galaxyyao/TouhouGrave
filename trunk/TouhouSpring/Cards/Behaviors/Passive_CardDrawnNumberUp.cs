@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_CardDrawnNumberUp.ModelType>,
         IEpilogTrigger<Commands.DrawCard>
     {
-        void IEpilogTrigger<Commands.DrawCard>.Run(Commands.DrawCard command)
+        public void RunEpilog(Commands.DrawCard command)
         {
             if (Host.IsOnBattlefield)
             {

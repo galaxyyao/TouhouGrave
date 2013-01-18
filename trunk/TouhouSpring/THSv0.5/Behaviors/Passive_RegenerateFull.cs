@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.StartTurn>
     {
-        void IEpilogTrigger<Commands.StartTurn>.Run(Commands.StartTurn command)
+        public void RunEpilog(Commands.StartTurn command)
         {
             if (Host.Owner == Game.ActingPlayer
                 && Host.IsOnBattlefield)

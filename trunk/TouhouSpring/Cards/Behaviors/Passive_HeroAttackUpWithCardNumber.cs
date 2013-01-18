@@ -12,7 +12,7 @@ namespace TouhouSpring.Behaviors
     {
         private Warrior.ValueModifier m_attackModifier = null;
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
                 || Host.IsOnBattlefield && command.CardToPlay.Owner == Host.Owner)
@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
+        public void RunEpilog(Commands.Kill command)
         {
             if (command.LeftBattlefield
                 && (command.Target == Host

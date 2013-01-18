@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
             get { return Model.VisualId; }
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {

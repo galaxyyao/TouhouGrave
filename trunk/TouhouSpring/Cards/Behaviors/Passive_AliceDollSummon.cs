@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
         IEpilogTrigger<Commands.StartPhase>
     {
-        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
+        public void RunEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Main"
                 && Game.ActingPlayer == Host.Owner 

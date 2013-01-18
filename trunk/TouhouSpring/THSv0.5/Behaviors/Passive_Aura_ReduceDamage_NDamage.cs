@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IPrologTrigger<Commands.DealDamageToCard>
     {
-        void IPrologTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunProlog(Commands.DealDamageToCard command)
         {
             //TODO: Modify if Cancel feature is available in Setup phase
             if (Host.Owner.ActivatedAssist != Host)

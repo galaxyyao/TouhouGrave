@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         ICastableSpell
     {
-        void ICastableSpell.Run(Commands.CastSpell command)
+        public void RunSpell(Commands.CastSpell command)
         {
             // TODO: select player to deal damage to
             Game.IssueCommands(new Commands.DealDamageToPlayer(

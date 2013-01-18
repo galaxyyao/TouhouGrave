@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
     {
         private BaseCard m_castTarget;
 
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {
@@ -26,7 +26,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunSetup(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {
@@ -47,7 +47,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {

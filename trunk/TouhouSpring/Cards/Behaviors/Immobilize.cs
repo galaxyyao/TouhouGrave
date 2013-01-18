@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public sealed class Immobilize : SimpleBehavior<Immobilize>,
         IEpilogTrigger<Commands.StartPhase>
     {
-        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
+        public void RunEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Upkeep"
                 && Game.ActingPlayer == Host.Owner

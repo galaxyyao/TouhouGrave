@@ -12,7 +12,7 @@ namespace TouhouSpring.Behaviors
     {
         private bool isAttackedByWarriorLastRound = false;
 
-        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.DealDamageToPlayer command)
         {
             if (command.Player == Host.Owner
                 && command.Cause is Warrior
@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IPrologTrigger<Commands.UpdateMana>.Run(Commands.UpdateMana command)
+        public void RunProlog(Commands.UpdateMana command)
         {
             if (command.Cause is Game && Game.CurrentPhase == "PhaseB"
                 && command.Player == Host.Owner

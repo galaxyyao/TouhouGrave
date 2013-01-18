@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IPrerequisiteTrigger<Commands.Redeem>
     {
-        CommandResult IPrerequisiteTrigger<Commands.Redeem>.Run(Commands.Redeem command)
+        public CommandResult RunPrerequisite(Commands.Redeem command)
         {
             if (command.Target == Host)
                 return CommandResult.Cancel();

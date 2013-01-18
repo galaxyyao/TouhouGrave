@@ -12,7 +12,7 @@ namespace TouhouSpring.Behaviors
         class Effect : SimpleBehavior<Effect>
         { }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
                 && Host.Behaviors.Has<Warrior>())
@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
+        public void RunEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Cleanup"
                 && Game.ActingPlayer == Host.Owner

@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.DrawCard>
     {
-        void IEpilogTrigger<Commands.DrawCard>.Run(Commands.DrawCard command)
+        public void RunEpilog(Commands.DrawCard command)
         {
             //TODO: Need to be modified for 3 or more players' game
             if (Game.ActingPlayer == Host.Owner

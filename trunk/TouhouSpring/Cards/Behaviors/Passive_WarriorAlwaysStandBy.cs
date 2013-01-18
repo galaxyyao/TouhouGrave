@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
         IEpilogTrigger<Commands.StartPhase>
     {
-        void IEpilogTrigger<Commands.StartPhase>.Run(Commands.StartPhase command)
+        public void RunEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Cleanup"
                 && Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())

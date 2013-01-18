@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 3);
         private BaseCard castTarget = null;
 
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (!Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).Any())
             {
@@ -25,7 +25,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunSetup(Commands.PlayCard command)
         {
             var selectedCard = new Interactions.SelectCards(
                 Host.Owner,
@@ -45,7 +45,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
                 && castTarget != null)

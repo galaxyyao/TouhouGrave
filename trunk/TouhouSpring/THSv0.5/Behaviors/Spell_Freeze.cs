@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
                 && !Game.Players.Where(player => player != Host.Owner)
@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {

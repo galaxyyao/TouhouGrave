@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
                 && Host.Owner.CardsOnBattlefield.Any(card => card.Model == Host.Model))

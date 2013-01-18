@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.Kill>
     {
-        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
+        public void RunEpilog(Commands.Kill command)
         {
             if (command.Target == Host && command.EnteredGraveyard)
             {

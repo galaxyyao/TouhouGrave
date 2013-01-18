@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 2);
         private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1);
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {
@@ -41,7 +41,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
+        public void RunEpilog(Commands.Kill command)
         {
             if (!command.LeftBattlefield)
             {

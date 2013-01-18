@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.DealDamageToCard>
     {
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunEpilog(Commands.DealDamageToCard command)
         {
             if (command.Target != Host)
                 return;

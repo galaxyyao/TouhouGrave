@@ -25,21 +25,21 @@ namespace TouhouSpring
 
     public interface IPrerequisiteTrigger<TCommand> where TCommand : Commands.BaseCommand
     {
-        CommandResult Run(TCommand command);
+        CommandResult RunPrerequisite(TCommand command);
     }
 
     public interface ISetupTrigger<TCommand> where TCommand : Commands.BaseCommand
     {
-        CommandResult Run(TCommand command);
+        CommandResult RunSetup(TCommand command);
     }
 
     public interface IPrologTrigger<TCommand> where TCommand : Commands.BaseCommand
     {
-        void Run(TCommand command);
+        void RunProlog(TCommand command);
     }
 
     public interface IEpilogTrigger<TCommand> where TCommand : Commands.BaseCommand
     {
-        void Run(TCommand command);
+        void RunEpilog(TCommand command);
     }
 }

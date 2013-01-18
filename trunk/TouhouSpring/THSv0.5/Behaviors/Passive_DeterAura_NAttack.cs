@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
     {
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1);
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             //TODO: Future change for 3 or more players
             if (!Host.IsOnBattlefield)
@@ -51,7 +51,7 @@ namespace TouhouSpring.Behaviors
                                 ));
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
+        public void RunEpilog(Commands.Kill command)
         {
             if (command.Target != Host)
                 return;

@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         ICastableSpell
     {
-        void ICastableSpell.Run(Commands.CastSpell command)
+        public void RunSpell(Commands.CastSpell command)
         {
             var warriors = Game.Players.Where(player => player != Host.Owner)
                             .SelectMany(player => player.CardsOnBattlefield)

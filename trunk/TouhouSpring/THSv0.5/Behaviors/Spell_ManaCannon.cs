@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.CastSpell>,
         ICastableSpell
     {
-        CommandResult IPrerequisiteTrigger<Commands.CastSpell>.Run(Commands.CastSpell command)
+        public CommandResult RunPrerequisite(Commands.CastSpell command)
         {
             int freeMana = Game.ActingPlayer.FreeMana;
             if (freeMana == 0)
@@ -25,7 +25,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void ICastableSpell.Run(Commands.CastSpell command)
+        public void RunSpell(Commands.CastSpell command)
         {
             //TODO: Future change for 3 or more players
             int freeMana = Game.ActingPlayer.FreeMana;

@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
     {
         bool isAttackedThisTurn = false;
 
-        void IEpilogTrigger<Commands.DrawCard>.Run(Commands.DrawCard command)
+        public void RunEpilog(Commands.DrawCard command)
         {
             if (Game.ActingPlayer != Host.Owner)
                 return;
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
         }
 
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunEpilog(Commands.DealDamageToCard command)
         {
             if (Game.ActingPlayer == Host.Owner
                 && Host.IsOnBattlefield
@@ -32,7 +32,7 @@ namespace TouhouSpring.Behaviors
                 isAttackedThisTurn = true;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (Game.ActingPlayer != Host.Owner
                 && command.CardToPlay.Owner == Host.Owner

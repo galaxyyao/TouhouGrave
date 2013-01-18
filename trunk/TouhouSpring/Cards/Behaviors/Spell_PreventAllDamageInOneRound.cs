@@ -16,26 +16,26 @@ namespace TouhouSpring.Behaviors
         private Player m_currentPlayer;
         private Player m_spellCaster;
 
-        void ICastableSpell.Run(Commands.CastSpell command)
+        public void RunSpell(Commands.CastSpell command)
         {
             m_isProtected = true;
             m_currentPlayer = Game.ActingPlayer;
             m_spellCaster = Host.Owner;
         }
 
-        void IPrologTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
+        public void RunProlog(Commands.DealDamageToPlayer command)
         {
             if(m_isProtected&& command.Player == m_spellCaster)
                 command.PatchDamageToDeal(0);
         }
 
-        void IPrologTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunProlog(Commands.DealDamageToCard command)
         {
             if (m_isProtected && command.Target.Owner == m_spellCaster)
                 command.PatchDamageToDeal(0);
         }
 
-        void IEpilogTrigger<Commands.EndTurn>.Run(Commands.EndTurn command)
+        public void RunEpilog(Commands.EndTurn command)
         {
             if (Game.ActingPlayer != m_currentPlayer && m_isProtected)
             {

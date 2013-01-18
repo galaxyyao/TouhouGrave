@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.DealDamageToCard>,
         IEpilogTrigger<Commands.DealDamageToPlayer>
     {
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunEpilog(Commands.DealDamageToCard command)
         {
             if (command.DamageToDeal > 0
                 && Host.IsOnBattlefield
@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.DealDamageToPlayer command)
         {
             if (command.DamageToDeal > 0
                 && Host.IsOnBattlefield

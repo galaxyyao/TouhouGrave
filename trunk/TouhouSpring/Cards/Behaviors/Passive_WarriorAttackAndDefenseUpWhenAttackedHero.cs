@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_WarriorAttackAndDefenseUpWhenAttackedHero.ModelType>,
         IEpilogTrigger<Commands.DealDamageToPlayer>
     {
-        void IEpilogTrigger<Commands.DealDamageToPlayer>.Run(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.DealDamageToPlayer command)
         {
             if (command.Cause == Host)
             {

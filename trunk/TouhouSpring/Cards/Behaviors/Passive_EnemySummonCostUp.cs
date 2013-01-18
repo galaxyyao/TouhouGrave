@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IPrologTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay.Owner != Host.Owner)
             {
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IPrologTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunProlog(Commands.PlayCard command)
         {
             if (command.CardToPlay.Owner != Host.Owner)
             {

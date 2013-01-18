@@ -53,7 +53,7 @@ namespace TouhouSpring.Behaviors
             get; private set;
         }
 
-        void IEpilogTrigger<Commands.Kill>.Run(Commands.Kill command)
+        public void RunEpilog(Commands.Kill command)
         {
             if (command.Target == Host)
             {

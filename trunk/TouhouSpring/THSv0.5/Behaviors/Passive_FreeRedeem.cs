@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.Redeem>
     {
-        void IEpilogTrigger<Commands.Redeem>.Run(Commands.Redeem command)
+        public void RunEpilog(Commands.Redeem command)
         {
             if (Host.Owner.ActivatedAssist == Host)
             {

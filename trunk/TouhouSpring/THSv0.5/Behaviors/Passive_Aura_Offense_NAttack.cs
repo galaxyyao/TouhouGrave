@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
     {
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
 
-        void IEpilogTrigger<Commands.ActivateAssist>.Run(Commands.ActivateAssist command)
+        public void RunEpilog(Commands.ActivateAssist command)
         {
             if (command.CardToActivate == Host)
             {
@@ -41,7 +41,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (Host.Owner.ActivatedAssist == Host
                 && Host.Owner == command.CardToPlay.Owner)

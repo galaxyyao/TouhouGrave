@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
     {
         private BaseCard m_castTarget = null;
 
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             //TODO: Future change for 3 or more players
             if (Game.ActingPlayerEnemies.First().CardsOnBattlefield.Count == 0)
@@ -26,7 +26,7 @@ namespace TouhouSpring.Behaviors
         }
 
         //TODO: Future change for instant handling
-        CommandResult ISetupTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunSetup(Commands.PlayCard command)
         {
             var selectedCard = new Interactions.SelectCards(
                 Game.ActingPlayerEnemies.First(),
@@ -45,7 +45,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host && m_castTarget != null)
             {

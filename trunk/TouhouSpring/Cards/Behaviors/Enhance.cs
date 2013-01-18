@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
             m_attackModifier = attackMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, attackMod) : null;
         }
 
-        void IEpilogTrigger<Commands.AddBehavior>.Run(Commands.AddBehavior command)
+        public void RunEpilog(Commands.AddBehavior command)
         {
             if (command.Behavior == this)
             {
@@ -42,7 +42,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IPrologTrigger<Commands.RemoveBehavior>.Run(Commands.RemoveBehavior command)
+        public void RunProlog(Commands.RemoveBehavior command)
         {
             if (command.Behavior == this)
             {

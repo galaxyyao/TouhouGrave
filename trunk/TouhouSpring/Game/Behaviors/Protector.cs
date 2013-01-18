@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public sealed class Protector : BaseBehavior<Protector.ModelType>,
         IPrerequisiteTrigger<Commands.PlayCard>
     {
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
                 && Model.Unique

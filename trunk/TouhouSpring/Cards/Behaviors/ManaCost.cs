@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
             get { return Model.Cost; }
         }
 
-        CommandResult IPrerequisiteTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {
@@ -34,7 +34,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.PlayCard>.Run(Commands.PlayCard command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {
@@ -42,7 +42,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        CommandResult IPrerequisiteTrigger<Commands.ActivateAssist>.Run(Commands.ActivateAssist command)
+        public CommandResult RunPrerequisite(Commands.ActivateAssist command)
         {
             if (command.CardToActivate == Host)
             {
@@ -57,7 +57,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.ActivateAssist>.Run(Commands.ActivateAssist command)
+        public void RunEpilog(Commands.ActivateAssist command)
         {
             if (command.CardToActivate == Host)
             {
@@ -65,7 +65,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        CommandResult IPrerequisiteTrigger<Commands.Redeem>.Run(Commands.Redeem command)
+        public CommandResult RunPrerequisite(Commands.Redeem command)
         {
             if (command.Target == Host)
             {
@@ -80,7 +80,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        void IEpilogTrigger<Commands.Redeem>.Run(Commands.Redeem command)
+        public void RunEpilog(Commands.Redeem command)
         {
             if (command.Target == Host)
             {

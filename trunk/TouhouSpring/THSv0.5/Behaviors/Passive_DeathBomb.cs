@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
         // otherwise the bomb effect is triggered
         // 3, m_fatalWarriorCause is cleared to null
 
-        void IEpilogTrigger<Commands.DealDamageToCard>.Run(Commands.DealDamageToCard command)
+        public void RunEpilog(Commands.DealDamageToCard command)
         {
             if (command.Target == Host && command.Cause is Warrior)
             {
@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.Resolve>.Run(Commands.Resolve command)
+        public void RunEpilog(Commands.Resolve command)
         {
             if (m_fatalWarriorCause != null
                 && Host.Behaviors.Get<Warrior>().Life <= 0)
