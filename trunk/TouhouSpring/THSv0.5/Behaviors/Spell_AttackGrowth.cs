@@ -9,49 +9,30 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_AttackGrowth.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        ISetupTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
         private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 3);
-        private BaseCard castTarget = null;
 
         public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
-            if (!Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).Any())
+            if (command.CardToPlay == Host)
             {
-                return CommandResult.Cancel("没有可以释放的对象");
+                Game.NeedTarget(this,
+                    Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                    "指定1张己方的卡，增加3点攻击力");
             }
-
-            return CommandResult.Pass;
-        }
-
-        public CommandResult RunSetup(Commands.PlayCard command)
-        {
-            var selectedCard = new Interactions.SelectCards(
-                Host.Owner,
-                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
-                Interactions.SelectCards.SelectMode.Single,
-                "指定1张己方的卡，增加3点攻击力"
-                ).Run();
-
-            if (selectedCard.Count == 0)
-            {
-                return CommandResult.Cancel("取消施放");
-            }
-
-            castTarget = selectedCard[0];
-            
 
             return CommandResult.Pass;
         }
 
         public void RunEpilog(Commands.PlayCard command)
         {
-            if (command.CardToPlay == Host
-                && castTarget != null)
+            if (command.CardToPlay == Host)
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(castTarget.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
-                castTarget = null;
+                Game.IssueCommands(new Commands.SendBehaviorMessage(
+                    Game.GetTarget(this)[0].Behaviors.Get<Warrior>(),
+                    "AttackModifiers",
+                    new object[] { "add", m_attackMod }));
             }
         }
 

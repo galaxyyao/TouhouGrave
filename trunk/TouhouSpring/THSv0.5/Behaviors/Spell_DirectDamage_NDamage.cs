@@ -9,47 +9,27 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Spell_DirectDamage_NDamage.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        ISetupTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private BaseCard m_castTarget = null;
-
         public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
-            //TODO: Future change for 3 or more players
-            if (Game.ActingPlayerEnemies.First().CardsOnBattlefield.Count == 0)
+            if (command.CardToPlay == Host)
             {
-                return CommandResult.Cancel("没有可以被指定为对象的卡");
+                Game.NeedTarget(this,
+                    Game.Players.Where(player => player != Host.Owner)
+                    .SelectMany(player => player.CardsOnBattlefield)
+                    .Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                    "指定1张对手的卡，造成伤害");
             }
-
-            return CommandResult.Pass;
-        }
-
-        //TODO: Future change for instant handling
-        public CommandResult RunSetup(Commands.PlayCard command)
-        {
-            var selectedCard = new Interactions.SelectCards(
-                Game.ActingPlayerEnemies.First(),
-                Game.ActingPlayerEnemies.First().CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
-                Interactions.SelectCards.SelectMode.Single,
-                "指定1张对手的卡，造成伤害"
-                ).Run();
-
-            if (selectedCard.Count == 0)
-            {
-                return CommandResult.Cancel("取消施放");
-            }
-
-            m_castTarget = selectedCard[0];
 
             return CommandResult.Pass;
         }
 
         public void RunEpilog(Commands.PlayCard command)
         {
-            if (command.CardToPlay == Host && m_castTarget != null)
+            if (command.CardToPlay == Host)
             {
-                Game.IssueCommands(new Commands.DealDamageToCard(m_castTarget, Model.DamageToDeal, this));
+                Game.IssueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Model.DamageToDeal, this));
             }
         }
 
@@ -57,7 +37,9 @@ namespace TouhouSpring.Behaviors
         public class ModelType : BehaviorModel
         {
             public int DamageToDeal
-            { get; set; }
+            {
+                get; set;
+            }
         }
     }
 }

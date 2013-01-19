@@ -51,6 +51,8 @@ namespace TouhouSpring
             m_profiles = new Profile[numPlayers];
             m_players = new Player[numPlayers];
             m_controllers = new BaseController[numPlayers];
+            m_manaNeeded = new int[numPlayers];
+            m_remainingManaNeeded = new bool[numPlayers];
 
             for (int i = 0; i < numPlayers; ++i)
             {

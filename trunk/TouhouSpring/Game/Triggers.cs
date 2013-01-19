@@ -28,11 +28,6 @@ namespace TouhouSpring
         CommandResult RunPrerequisite(TCommand command);
     }
 
-    public interface ISetupTrigger<TCommand> where TCommand : Commands.BaseCommand
-    {
-        CommandResult RunSetup(TCommand command);
-    }
-
     public interface IPrologTrigger<TCommand> where TCommand : Commands.BaseCommand
     {
         void RunProlog(TCommand command);

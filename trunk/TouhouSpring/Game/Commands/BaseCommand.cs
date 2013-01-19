@@ -10,7 +10,7 @@ namespace TouhouSpring.Commands
     {
         Pending,
         Prerequisite,
-        Setup,
+        Condition,
         Prolog,
         Main,
         Epilog

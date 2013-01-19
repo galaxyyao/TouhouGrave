@@ -76,16 +76,6 @@ namespace TouhouSpring
             get; internal set;
         }
 
-        public int ReservedHealth
-        {
-            get; internal set;
-        }
-
-        public int FreeHealth
-        {
-            get { return Health - ReservedHealth; }
-        }
-
         public int Mana
         {
             get; internal set;
@@ -94,16 +84,6 @@ namespace TouhouSpring
         public int MaxMana
         {
             get { return CardsSacrificed.Count; }
-        }
-
-        public int ReservedMana
-        {
-            get; internal set;
-        }
-
-        public int FreeMana
-        {
-            get { return Mana - ReservedMana; }
         }
 
         public Game Game

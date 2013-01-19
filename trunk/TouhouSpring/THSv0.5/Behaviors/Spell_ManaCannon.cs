@@ -13,33 +13,21 @@ namespace TouhouSpring.Behaviors
     {
         public CommandResult RunPrerequisite(Commands.CastSpell command)
         {
-            int freeMana = Game.ActingPlayer.FreeMana;
-            if (freeMana == 0)
+            if (command.Spell == this)
             {
-                return CommandResult.Cancel("没有足够的灵力来施放");
-            }
-            if (Game.ActingPlayerEnemies.First().CardsOnBattlefield.Count == 0)
-            {
-                return CommandResult.Cancel("没有可以施放的对象");
+                Game.NeedRemainingMana(Host.Owner);
+                Game.NeedTarget(this,
+                    Game.Players.Where(player => player != Host.Owner)
+                    .SelectMany(player => player.CardsOnBattlefield)
+                    .Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                    "指定1张对手的卡，造成伤害");
             }
             return CommandResult.Pass;
         }
 
         public void RunSpell(Commands.CastSpell command)
         {
-            //TODO: Future change for 3 or more players
-            int freeMana = Game.ActingPlayer.FreeMana;
-            
-            var selectedCard = new Interactions.SelectCards(
-                Game.ActingPlayerEnemies.First()
-                , Game.ActingPlayerEnemies.First().CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable()
-                , Interactions.SelectCards.SelectMode.Single
-                , "指定1张对手的卡，造成伤害"
-                ).Run();
-            BaseCard castTarget = selectedCard[0];
-            
-            Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -freeMana, this));
-            Game.IssueCommands(new Commands.DealDamageToCard(castTarget, freeMana, this));
+            Game.IssueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Game.GetRemainingMana(Host.Owner), this));
         }
 
         [BehaviorModel(typeof(Spell_ManaCannon), DefaultName = "灵力炮")]

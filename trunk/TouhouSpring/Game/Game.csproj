@@ -87,8 +87,8 @@
     <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
     <Compile Include="Commands\UpdateMana.cs" />
+    <Compile Include="Game.CommandCondition.cs" />
     <Compile Include="Game.CommandQueue.cs" />
-    <Compile Include="Game.Resource.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />

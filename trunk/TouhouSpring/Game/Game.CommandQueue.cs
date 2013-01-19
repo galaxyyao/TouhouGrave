@@ -91,10 +91,9 @@ namespace TouhouSpring
             {
                 Debug.Assert(RunningCommand.ExecutionPhase != Commands.CommandPhase.Pending);
 
-                if (RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite
-                    || RunningCommand.ExecutionPhase == Commands.CommandPhase.Setup)
+                if (RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite)
                 {
-                    throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "Command can't be issued in {0} phase.", RunningCommand.ExecutionPhase.ToString()));
+                    throw new InvalidOperationException("Command can't be issued in Prerequisite phase.");
                 }
             }
 
@@ -145,30 +144,23 @@ namespace TouhouSpring
                 if (result.Canceled)
                 {
                     Players.ForEach(player => player.Controller.OnCommandCanceled(command, result.Reason));
-                    ClearReservations();
+                    ClearConditions();
                     return;
                 }
             }
 
             ////////////////////////////////////////////
 
-            command.ExecutionPhase = Commands.CommandPhase.Setup;
-            foreach (var trigger in EnumerateCommandTargets(command).SelectMany(card =>
-                                       card.Behaviors.OfType<ISetupTrigger<TCommand>>()
-                                       ).ToList())
+            command.ExecutionPhase = Commands.CommandPhase.Condition;
+            var conditionResult = ResolveConditions(false);
+            if (conditionResult.Canceled)
             {
-                var result = trigger.RunSetup(command);
-                if (result.Canceled)
-                {
-                    Players.ForEach(player => player.Controller.OnCommandCanceled(command, result.Reason));
-                    ClearReservations();
-                    return;
-                }
+                Players.ForEach(player => player.Controller.OnCommandCanceled(command, conditionResult.Reason));
+                ClearConditions();
+                return;
             }
 
             ////////////////////////////////////////////
-
-            ClearReservations();
 
             command.ExecutionPhase = Commands.CommandPhase.Prolog;
             Players.ForEach(player => player.Controller.OnCommandBegin(command));
@@ -186,6 +178,8 @@ namespace TouhouSpring
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.RunEpilog(command));
             Players.ForEach(player => player.Controller.OnCommandEnd(command));
+
+            ClearConditions();
         }
 
         private CommandResult RunPrerequisite<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
@@ -197,13 +191,14 @@ namespace TouhouSpring
                 var result = trigger.RunPrerequisite(command);
                 if (result.Canceled)
                 {
-                    ClearReservations();
+                    ClearConditions();
                     return result;
                 }
             }
 
-            ClearReservations();
-            return CommandResult.Pass;
+            var ret = ResolveConditions(true);
+            ClearConditions();
+            return ret;
         }
 
         private IEnumerable<BaseCard> EnumerateCommandTargets(Commands.BaseCommand command)
