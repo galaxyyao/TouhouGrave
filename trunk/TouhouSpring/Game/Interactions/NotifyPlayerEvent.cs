@@ -18,12 +18,12 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        internal NotifyPlayerEvent(BaseController controller, string notification, Player player)
-            : this(controller, notification, player, null)
+        internal NotifyPlayerEvent(Game game, string notification, Player player)
+            : this(game, notification, player, null)
         { }
 
-        internal NotifyPlayerEvent(BaseController controller, string notification, Player player, string message)
-            : base(controller, notification)
+        internal NotifyPlayerEvent(Game game, string notification, Player player, string message)
+            : base(game, notification)
         {
             Debug.Assert(player != null);
             Player = player;

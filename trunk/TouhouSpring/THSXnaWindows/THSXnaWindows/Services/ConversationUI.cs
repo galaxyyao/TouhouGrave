@@ -102,16 +102,14 @@ namespace TouhouSpring.Services
                 param[0] = new GameStartupParameters()
                 {
                     m_profile = new Profile() { Name = "夜空" },
-                    m_deck = deck,
-                    m_controller = new XnaUIController()
+                    m_deck = deck
                 };
                 param[0].m_profile.Decks.Add(deck);
 
                 param[1] = new GameStartupParameters()
                 {
                     m_profile = new Profile() { Name = "星奈" },
-                    m_deck = deck,
-                    m_controller = new XnaUIController()
+                    m_deck = deck
                 };
                 param[1].m_profile.Decks.Add(deck);
 

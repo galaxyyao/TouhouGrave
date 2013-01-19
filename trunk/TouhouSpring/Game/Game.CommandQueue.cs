@@ -143,7 +143,7 @@ namespace TouhouSpring
                 var result = trigger.RunPrerequisite(command);
                 if (result.Canceled)
                 {
-                    Players.ForEach(player => player.Controller.OnCommandCanceled(command, result.Reason));
+                    Controller.OnCommandCanceled(command, result.Reason);
                     ClearConditions();
                     return;
                 }
@@ -155,7 +155,7 @@ namespace TouhouSpring
             var conditionResult = ResolveConditions(false);
             if (conditionResult.Canceled)
             {
-                Players.ForEach(player => player.Controller.OnCommandCanceled(command, conditionResult.Reason));
+                Controller.OnCommandCanceled(command, conditionResult.Reason);
                 ClearConditions();
                 return;
             }
@@ -163,7 +163,7 @@ namespace TouhouSpring
             ////////////////////////////////////////////
 
             command.ExecutionPhase = Commands.CommandPhase.Prolog;
-            Players.ForEach(player => player.Controller.OnCommandBegin(command));
+            Controller.OnCommandBegin(command);
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IPrologTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.RunProlog(command));
 
@@ -177,7 +177,7 @@ namespace TouhouSpring
             command.ExecutionPhase = Commands.CommandPhase.Epilog;
             EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
                 .ToList().ForEach(trigger => trigger.RunEpilog(command));
-            Players.ForEach(player => player.Controller.OnCommandEnd(command));
+            Controller.OnCommandEnd(command);
 
             ClearConditions();
         }

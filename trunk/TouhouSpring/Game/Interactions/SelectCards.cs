@@ -9,8 +9,8 @@ namespace TouhouSpring.Interactions
     {
         public enum SelectMode
         {
-            Single,			// select 0-1 card
-            Multiple		// select 0-N cards, N is the number of cards at the specified location
+            Single,     // select 0-1 card
+            Multiple    // select 0-N cards, N is the number of cards at the specified location
         }
 
         public Player Player
@@ -33,16 +33,12 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        protected BaseController Controller
-        {
-            get { return Player.Controller; }
-        }
-
         public SelectCards(Player player, IIndexable<BaseCard> fromSet, SelectMode mode)
             : this(player, fromSet, mode, null)
         { }
 
         public SelectCards(Player player, IIndexable<BaseCard> fromSet, SelectMode mode, string message)
+            : base(player.Game)
         {
             if (player == null)
             {
@@ -57,7 +53,7 @@ namespace TouhouSpring.Interactions
 
         public virtual IIndexable<BaseCard> Run()
         {
-            var result = NotifyAndWait<IIndexable<BaseCard>>(Controller);
+            var result = NotifyAndWait<IIndexable<BaseCard>>();
             Validate(result);
             return result;
         }
@@ -65,7 +61,7 @@ namespace TouhouSpring.Interactions
         public virtual void Respond(IIndexable<BaseCard> selectedCards)
         {
             Validate(selectedCards);
-            RespondBack(Controller, selectedCards);
+            RespondBack(selectedCards);
         }
 
         protected void Validate(IIndexable<BaseCard> selectedCards)

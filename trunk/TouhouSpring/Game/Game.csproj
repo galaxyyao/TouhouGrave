@@ -92,7 +92,6 @@
     <Compile Include="Deck.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
-    <Compile Include="Game.Messaging.cs" />
     <Compile Include="Game.Players.cs" />
     <Compile Include="Game.Threading.cs" />
     <Compile Include="Interactions\MessageBox.cs" />

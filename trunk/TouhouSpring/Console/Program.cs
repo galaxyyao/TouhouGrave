@@ -129,13 +129,10 @@ namespace TouhouSpring
 
 			while (true)
 			{
-				foreach (var player in TouhouSpringGame.Players)
-				{
-					if (player.Controller.ProcessMessage())
-					{
-						return;
-					}
-				}
+                if (TouhouSpringGame.Controller.ProcessMessage())
+                {
+                    return;
+                }
 				System.Threading.Thread.Sleep(10);
 			}
 		}

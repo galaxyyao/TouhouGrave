@@ -11,14 +11,12 @@ namespace TouhouSpring
     /// </summary>
     public partial class Game
     {
-        private Random m_randomGenerator = new Random();
-
         /// <summary>
         /// Give a random number generator for this game.
         /// </summary>
         public Random Random
         {
-            get { return m_randomGenerator; }
+            get; private set;
         }
 
         /// <summary>
@@ -34,11 +32,29 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public Game(IIndexable<GameStartupParameters> startUpParams)
+        public BaseController Controller
+        {
+            get; private set;
+        }
+
+        internal Messaging.LetterBox LetterBox
+        {
+            get; private set;
+        }
+
+        public Game(IIndexable<GameStartupParameters> startUpParams, BaseController controller)
         {
             if (startUpParams == null)
             {
                 throw new ArgumentNullException("startUpParams");
+            }
+            else if (controller == null)
+            {
+                throw new ArgumentNullException("controller");
+            }
+            else if (controller.Game != null)
+            {
+                throw new ArgumentException("The controller is already bound.", "controller");
             }
 
             int numPlayers = startUpParams.Count;
@@ -50,7 +66,6 @@ namespace TouhouSpring
 
             m_profiles = new Profile[numPlayers];
             m_players = new Player[numPlayers];
-            m_controllers = new BaseController[numPlayers];
             m_manaNeeded = new int[numPlayers];
             m_remainingManaNeeded = new bool[numPlayers];
 
@@ -59,10 +74,6 @@ namespace TouhouSpring
                 if (startUpParams[i].m_profile == null)
                 {
                     throw new ArgumentNullException(String.Format(CultureInfo.CurrentCulture, "parms[{0}].m_profile", i));
-                }
-                else if (startUpParams[i].m_controller == null)
-                {
-                    throw new ArgumentNullException(String.Format(CultureInfo.CurrentCulture, "parms[{0}].m_controller", i));
                 }
 
                 var deck = startUpParams[i].m_deck;
@@ -74,15 +85,18 @@ namespace TouhouSpring
                 }
 
                 m_profiles[i] = startUpParams[i].m_profile;
-                m_controllers[i] = startUpParams[i].m_controller;
 
-                m_players[i] = new Player(m_profiles[i], this, m_controllers[i]);
+                m_players[i] = new Player(m_profiles[i], this);
                 m_players[i].Initialize(deck);
             }
 
+            controller.Game = this;
+
             CurrentPhase = "";
 
-            InitializeLetterBoxes();
+            Random = new System.Random();
+            Controller = controller;
+            LetterBox = new Messaging.LetterBox();
             StartGameFlowThread();
         }
     }

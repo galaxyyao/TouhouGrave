@@ -14,14 +14,9 @@ namespace TouhouSpring
 		/// <summary>
 		/// The letter box object of this controller for communicating with Game
 		/// </summary>
-		public Messaging.LetterBox Inbox
+		internal Messaging.LetterBox Inbox
 		{
 			get { return m_letterBox; }
-		}
-
-		public Messaging.LetterBox Outbox
-		{
-			get { return Game.LetterBoxes[Game.Players.IndexOf(Player)]; }
 		}
 
 		/// <summary>

@@ -18,28 +18,26 @@ namespace TouhouSpring
 		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyCardEvent))]
 		private bool OnNotified(Interactions.NotifyCardEvent interactionObj)
 		{
-            if (interactionObj.Card.Owner == Player)
+            switch (interactionObj.Notification)
             {
-                switch (interactionObj.Notification)
-                {
-                    case "OnCardAddedToManaPool":
-                    case "OnCardDrawn":
-                    case "OnCardSummoned":
-                        GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
-                        break;
-                    case "OnCardDestroyed":
-                        GameApp.Service<GameUI>().UnregisterCard(interactionObj.Card);
-                        break;
-                    case "OnCardPlayCanceled":
-                        if (interactionObj.Message != string.Empty)
-                        {
-                            GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () => interactionObj.Respond());
-                            return true;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                case "OnCardAddedToManaPool":
+                case "OnCardDrawn":
+                case "OnCardSummoned":
+                    GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
+                    break;
+                case "OnCardDestroyed":
+                    GameApp.Service<GameUI>().UnregisterCard(interactionObj.Card);
+                    break;
+                case "OnCardPlayCanceled":
+                    // TODO: (Controller) Show dialog only to Local agent
+                    if (interactionObj.Message != string.Empty)
+                    {
+                        GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () => interactionObj.Respond());
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
             }
 
 			interactionObj.Respond();
@@ -87,21 +85,19 @@ namespace TouhouSpring
 		[Interactions.MessageMap.Handler(typeof(Interactions.NotifySpellEvent))]
 		private bool OnNotified(Interactions.NotifySpellEvent interactionObj)
 		{
-            if (interactionObj.Spell.Host.Owner == Player)
+            switch (interactionObj.Notification)
             {
-                switch (interactionObj.Notification)
-                {
-                    case "OnSpellCasted":
-                        break;
-                    case "OnSpellCastCanceled":
-                        GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () =>
-                        {
-                            interactionObj.Respond();
-                        });
-                        return true;
-                    default:
-                        break;
-                }
+                case "OnSpellCasted":
+                    break;
+                case "OnSpellCastCanceled":
+                    // TODO: (Controller) Show dialog only to Local agent
+                    GameApp.Service<Services.ModalDialog>().Show(interactionObj.Message, () =>
+                    {
+                        interactionObj.Respond();
+                    });
+                    return true;
+                default:
+                    break;
             }
 
 			interactionObj.Respond();

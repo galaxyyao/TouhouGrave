@@ -37,7 +37,6 @@ namespace TouhouSpring
 				gsp.m_profile.Name = playerName;
 				gsp.m_profile.Decks.Add(deck);
 				gsp.m_deck = deck;
-				gsp.m_controller = new ConsoleController();
 				s_startupParams.Add(gsp);
 			}
 		}
@@ -51,7 +50,7 @@ namespace TouhouSpring
 
 			public void Execute(params string[] parms)
 			{
-				Program.TouhouSpringGame = new Game(s_startupParams.ToIndexable());
+                Program.TouhouSpringGame = new Game(s_startupParams.ToIndexable(), new ConsoleController());
 			}
 		}
 	}

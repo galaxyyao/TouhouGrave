@@ -70,12 +70,8 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        private BaseController Controller
-        {
-            get { return Player.Controller; }
-        }
-
         public TacticalPhase(Player player, bool canSacrifice)
+            : base(player.Game)
         {
             if (player == null)
             {
@@ -114,14 +110,14 @@ namespace TouhouSpring.Interactions
 
         public Result Run()
         {
-            var result = NotifyAndWait<Result>(Controller);
+            var result = NotifyAndWait<Result>();
             Validate(result);
             return result;
         }
 
         public void Respond()
         {
-            RespondBack(Controller, new Result { ActionType = Action.Pass });
+            RespondBack(new Result { ActionType = Action.Pass });
         }
 
         public void RespondPlay(BaseCard selectedCard)
@@ -138,7 +134,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         public void RespondActivate(BaseCard selectedCard)
@@ -155,7 +151,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         public void RespondCast(Behaviors.ICastableSpell selectedSpell)
@@ -172,7 +168,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         public void RespondSacrifice(BaseCard selectedCard)
@@ -189,7 +185,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         public void RespondRedeem(BaseCard selectedCard)
@@ -206,7 +202,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         public void RespondAttackCard(BaseCard attacker, BaseCard defender)
@@ -227,7 +223,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         public void RespondAttackPlayer(BaseCard attacker, Player player)
@@ -248,7 +244,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            RespondBack(Controller, result);
+            RespondBack(result);
         }
 
         protected void Validate(Result result)

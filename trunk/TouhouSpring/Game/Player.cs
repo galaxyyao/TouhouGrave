@@ -91,12 +91,7 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public BaseController Controller
-        {
-            get; private set;
-        }
-
-        internal Player(Profile profile, Game game, BaseController controller)
+        internal Player(Profile profile, Game game)
         {
             if (profile == null)
             {
@@ -105,14 +100,6 @@ namespace TouhouSpring
             else if (game == null)
             {
                 throw new ArgumentNullException("game");
-            }
-            else if (controller == null)
-            {
-                throw new ArgumentNullException("controller");
-            }
-            else if (controller.Player != null)
-            {
-                throw new InvalidOperationException("The controller is bound to some player before.");
             }
 
             CardsOnHand = m_handSet.ToIndexable();
@@ -124,8 +111,6 @@ namespace TouhouSpring
 
             m_profile = profile;
             Game = game;
-            Controller = controller;
-            Controller.Player = this;
         }
 
         /// <summary>

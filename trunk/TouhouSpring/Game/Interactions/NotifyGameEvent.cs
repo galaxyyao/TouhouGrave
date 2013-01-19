@@ -5,17 +5,17 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-	public class NotifyGameEvent : NotifyOnly
-	{
-    	public string Message
-    	{
-    		get; private set;
-    	}
+    public class NotifyGameEvent : NotifyOnly
+    {
+        public string Message
+        {
+            get; private set;
+        }
 
-		internal NotifyGameEvent(BaseController controller, string notification, string message)
-			: base(controller, notification)
-		{
-			Message = message;
-		}
-	}
+        internal NotifyGameEvent(Game game, string notification, string message)
+            : base(game, notification)
+        {
+            Message = message;
+        }
+    }
 }

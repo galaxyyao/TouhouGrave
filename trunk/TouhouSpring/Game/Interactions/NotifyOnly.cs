@@ -6,33 +6,28 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-	public class NotifyOnly : BaseInteraction
-	{
-		public BaseController Controller
-		{
-			get; private set;
-		}
+    public class NotifyOnly : BaseInteraction
+    {
+        public string Notification
+        {
+            get; private set;
+        }
 
-		public string Notification
-		{
-			get; private set;
-		}
+        public void Run()
+        {
+            NotifyAndWait<object>();
+        }
 
-		public void Run()
-		{
-			var ret = NotifyAndWait<object>(Controller);
-		}
+        public void Respond()
+        {
+            RespondBack(string.Empty);
+        }
 
-		public void Respond()
-		{
-			RespondBack(Controller, string.Empty);
-		}
-
-		internal NotifyOnly(BaseController controller, string notification)
-		{
-			Debug.Assert(controller != null && notification != null);
-			Controller = controller;
-			Notification = notification;
-		}
-	}
+        internal NotifyOnly(Game game, string notification)
+            : base(game)
+        {
+            Debug.Assert(!String.IsNullOrEmpty(notification));
+            Notification = notification;
+        }
+    }
 }

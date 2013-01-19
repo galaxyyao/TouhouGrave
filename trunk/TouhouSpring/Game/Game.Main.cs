@@ -38,7 +38,7 @@ namespace TouhouSpring
             {
                 Round++;
 
-                IssueCommandsAndFlush(new Commands.StartTurn { });
+                IssueCommandsAndFlush(new Commands.StartTurn(ActingPlayer));
 
                 IssueCommand(new Commands.StartPhase("Upkeep"));
                 // skip drawing card for the starting player in the first round
@@ -126,12 +126,12 @@ namespace TouhouSpring
                     new Commands.EndPhase(),
                     new Commands.StartPhase("Cleanup"),
                     new Commands.EndPhase(),
-                    new Commands.EndTurn());
+                    new Commands.EndTurn(ActingPlayer));
             };
 
             //InPlayerPhases = false;
 
-            new Interactions.NotifyOnly(ActingPlayer.Controller, String.Format(CultureInfo.CurrentCulture, "{0} 获得了胜利", Winner.Name));
+            //new Interactions.NotifyOnly(ActingPlayer.Controller, String.Format(CultureInfo.CurrentCulture, "{0} 获得了胜利", Winner.Name));
         }
 
         private bool AreWinnersDecided()

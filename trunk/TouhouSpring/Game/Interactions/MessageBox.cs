@@ -16,17 +16,17 @@ namespace TouhouSpring.Interactions
         No = 0x08,
     }
 
-	public class MessageBox : BaseInteraction
-	{
+    public class MessageBox : BaseInteraction
+    {
         public Player Player
         {
             get; private set;
         }
 
         public string Text
-		{
-			get; private set;
-		}
+        {
+            get; private set;
+        }
 
         public MessageBoxButtons Buttons
         {
@@ -34,26 +34,27 @@ namespace TouhouSpring.Interactions
         }
 
         public MessageBoxButtons Run()
-		{
-            return NotifyAndWait<MessageBoxButtons>(Player.Controller);
-		}
+        {
+            return NotifyAndWait<MessageBoxButtons>();
+        }
 
         public void Respond(MessageBoxButtons button)
-		{
-			if ((Buttons & button) == 0)
-			{
-				throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Button '{0}' shall not be selected.", button));
-			}
+        {
+            if ((Buttons & button) == 0)
+            {
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Button '{0}' shall not be selected.", button));
+            }
 
-			RespondBack(Player.Controller, button);
-		}
+            RespondBack(button);
+        }
 
         public MessageBox(Player player, string text, MessageBoxButtons buttons)
-		{
-			Debug.Assert(player != null && text != null);
-			Player = player;
-			Text = text;
-			Buttons = buttons;
-		}
-	}
+            : base(player.Game)
+        {
+            Debug.Assert(player != null && !String.IsNullOrEmpty(text));
+            Player = player;
+            Text = text;
+            Buttons = buttons;
+        }
+    }
 }

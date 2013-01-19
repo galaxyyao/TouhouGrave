@@ -9,7 +9,6 @@ namespace TouhouSpring
     {
         private Profile[] m_profiles;
         private Player[] m_players;
-        private BaseController[] m_controllers;
 
         private int m_actingPlayer = -1;
 
