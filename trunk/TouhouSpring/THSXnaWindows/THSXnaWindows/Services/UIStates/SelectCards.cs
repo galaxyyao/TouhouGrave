@@ -31,7 +31,7 @@ namespace TouhouSpring.Services.UIStates
         {
             m_io = (Interactions.SelectCards)io;
             m_gameUI.RemoveAllContextButtons();
-            m_gameUI.AddContextButton("Skip", ContextButton_OnSkip);
+            m_gameUI.AddContextButton("略过", ContextButton_OnSkip);
             GameApp.Service<ModalDialog>().Show(m_io.Message, () => {});
         }
 
@@ -59,7 +59,7 @@ namespace TouhouSpring.Services.UIStates
                 }
 
                 m_gameUI.RemoveAllContextButtons();
-                m_gameUI.AddContextButton(m_selectedCards.Count != 0 ? "Done" : "Skip", ContextButton_OnSkip);
+                m_gameUI.AddContextButton(m_selectedCards.Count != 0 ? "确认" : "略过", ContextButton_OnSkip);
             }
         }
 

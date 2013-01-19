@@ -31,7 +31,7 @@ namespace TouhouSpring.Services.UIStates
         {
             m_io = (Interactions.TacticalPhase)io;
             m_gameUI.RemoveAllContextButtons();
-            m_gameUI.AddContextButton("Pass", ContextButton_OnPass);
+            m_gameUI.AddContextButton("结束", ContextButton_OnPass);
             m_castFromCards = m_io.CastSpellCandidates.Select(spell => spell.Host).Distinct().ToArray();
         }
 
@@ -51,17 +51,17 @@ namespace TouhouSpring.Services.UIStates
             var card = SelectedCard != null ? SelectedCard.Card : null;
 
             m_gameUI.RemoveAllContextButtons();
-            m_gameUI.AddContextButton("Pass", ContextButton_OnPass);
+            m_gameUI.AddContextButton("结束", ContextButton_OnPass);
 
             if (m_io.PlayCardCandidates.Contains(card))
             {
                 if (card.Behaviors.Has<Behaviors.Warrior>())
                 {
-                    m_gameUI.AddContextButton("Summon", ContextButton_OnPlay);
+                    m_gameUI.AddContextButton("召唤", ContextButton_OnPlay);
                 }
                 else if (card.Behaviors.Has<Behaviors.Instant>())
                 {
-                    m_gameUI.AddContextButton("Cast", ContextButton_OnPlay);
+                    m_gameUI.AddContextButton("施放", ContextButton_OnPlay);
                 }
                 else
                 {
@@ -70,13 +70,13 @@ namespace TouhouSpring.Services.UIStates
             }
             if (m_io.ActivateAssistCandidates.Contains(card))
             {
-                m_gameUI.AddContextButton("Activate", ContextButton_OnActivate);
+                m_gameUI.AddContextButton("激活", ContextButton_OnActivate);
             }
             if (m_castFromCards.Contains(card))
             {
                 foreach (var spell in card.Spells.Intersect(m_io.CastSpellCandidates))
                 {
-                    m_gameUI.AddContextButton("Cast " + spell.Model.Name, text =>
+                    m_gameUI.AddContextButton("施放 " + spell.Model.Name, text =>
                     {
                         m_io.RespondCast(spell);
                         m_gameUI.LeaveState();
@@ -85,16 +85,16 @@ namespace TouhouSpring.Services.UIStates
             }
             if (m_io.SacrificeCandidates.Contains(card))
             {
-                m_gameUI.AddContextButton("Sacrifice", ContextButton_OnSacrifice);
+                m_gameUI.AddContextButton("牺牲", ContextButton_OnSacrifice);
             }
             if (m_io.RedeemCandidates.Contains(card))
             {
-                m_gameUI.AddContextButton("Redeem", ContextButton_OnRedeem);
+                m_gameUI.AddContextButton("赎回", ContextButton_OnRedeem);
             }
             AttackerSelected = m_io.AttackerCandidates.Contains(card);
             if (AttackerSelected && m_io.DefenderCandidates.Count == 0)
             {
-                m_gameUI.AddContextButton("Attack Player", ContextButton_OnAttackPlayer);
+                m_gameUI.AddContextButton("攻击对方", ContextButton_OnAttackPlayer);
             }
         }
 

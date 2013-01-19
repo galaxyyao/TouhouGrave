@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Style>
   <Page Id="MainMenu">
-    <Menu Id="storymode" Font="Segoe UI, 24" Text="Story Mode" Left="600" Top="250" Color="Gray" />
-    <Menu Id="freemode" Font="Segoe UI, 24" Text="Free Mode" Left="600" Top="300" />
-    <Menu Id="extras" Font="Segoe UI, 24" Text="Extras" Left="600" Top="350" Color="Gray" />
-    <Menu Id="options" Font="Segoe UI, 24" Text="Options" Left="600" Top="400" Color="Gray" />
-    <Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="450" />
+    <Menu Id="storymode" Font="DFKai-SB, 24" Text="战役模式" Left="600" Top="250" Color="Gray" />
+    <Menu Id="freemode" Font="DFKai-SB, 24" Text="自由模式" Left="600" Top="300" />
+    <Menu Id="extras" Font="DFKai-SB, 24" Text="？？？" Left="600" Top="350" Color="Gray" />
+    <Menu Id="options" Font="DFKai-SB, 24" Text="选项" Left="600" Top="400" Color="Gray" />
+    <Menu Id="quit" Font="DFKai-SB, 24" Text="退出" Left="600" Top="450" />
     <!--<Image Uri="atlas:TitleMenuItems/FreeMode_Normal" />
 		<Image Uri="atlas:TitleMenuItems/FreeMode_Highlight" Left="200" />-->
   </Page>
   <Page Id="FreeMode">
-    <Menu Id="vsai" Font="Segoe UI, 24" Text="VS AI" Left="600" Top="250" Color="Gray" />
-    <Menu Id="vsnetwork" Font="Segoe UI, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
-    <Menu Id="hotseat" Font="Segoe UI, 24" Text="Hot Seat" Left="600" Top="350" />
-    <Menu Id="replay" Font="Segoe UI, 24" Text="Replay" Left="600" Top="400" Color="Gray" />
-    <Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="500" />
+    <Menu Id="vsai" Font="DFKai-SB, 24" Text="VS AI" Left="600" Top="250" Color="Gray" />
+    <Menu Id="vsnetwork" Font="DFKai-SB, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
+    <Menu Id="hotseat" Font="DFKai-SB, 24" Text="热座模式" Left="600" Top="350" />
+    <Menu Id="replay" Font="DFKai-SB, 24" Text="重播" Left="600" Top="400" Color="Gray" />
+    <Menu Id="back" Font="DFKai-SB, 24" Text="后退" Left="600" Top="500" />
   </Page>
   <Page Id="Quit">
-    <Menu Id="quit" Font="Segoe UI, 24" Text="Quit" Left="600" Top="300" />
-    <Menu Id="back" Font="Segoe UI, 24" Text="Back" Left="600" Top="350" />
+    <Menu Id="quit" Font="DFKai-SB, 24" Text="退出" Left="600" Top="300" />
+    <Menu Id="back" Font="DFKai-SB, 24" Text="后退" Left="600" Top="350" />
   </Page>
   <Page Id="InGame">
     <Layout Id="Background2D">

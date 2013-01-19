@@ -7,8 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TouhouSpring.Services
 {
     [LifetimeDependency(typeof(Graphics.TextRenderer))]
-	partial class GameUI
-	{
+    partial class GameUI
+    {
         private List<UI.Button> m_contextButtons = new List<UI.Button>();
 
         private Graphics.TexturedQuad m_buttonFace;
@@ -37,22 +37,22 @@ namespace TouhouSpring.Services
             m_contextButtons.Clear();
         }
 
-		private void InitializeContextButton()
-		{
-			var device = GameApp.Instance.GraphicsDevice;
-			var content = GameApp.Instance.Content;
+        private void InitializeContextButton()
+        {
+            var device = GameApp.Instance.GraphicsDevice;
+            var content = GameApp.Instance.Content;
 
-			var resourceMgr = GameApp.Service<ResourceManager>();
-			var buttonTexture = resourceMgr.Acquire<Graphics.VirtualTexture>("Textures/Button");
+            var resourceMgr = GameApp.Service<ResourceManager>();
+            var buttonTexture = resourceMgr.Acquire<Graphics.VirtualTexture>("Textures/Button");
             m_buttonFace = new Graphics.TexturedQuad(buttonTexture);
 
-            var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI Light", 16);
+            var font = new Graphics.TextRenderer.FontDescriptor("DFKai-SB", 16);
             m_buttonTextFormatOptions = new Graphics.TextRenderer.FormatOptions(font);
-		}
+        }
 
-		private void DestroyContextButton()
-		{
-			GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
-		}
-	}
+        private void DestroyContextButton()
+        {
+            GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
+        }
+    }
 }
