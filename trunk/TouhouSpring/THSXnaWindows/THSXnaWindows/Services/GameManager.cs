@@ -12,9 +12,22 @@ namespace TouhouSpring.Services
             get; private set;
         }
 
-        public void StartGame(params GameStartupParameters[] parameters)
+        public void StartGame(GameStartupParameters[] parameters, Agents.BaseAgent[] agents)
         {
-            Game = new Game(parameters.ToIndexable(), new XnaUIController());
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("parameters");
+            }
+            else if (agents == null)
+            {
+                throw new ArgumentNullException("agents");
+            }
+            else if (parameters.Length != agents.Length)
+            {
+                throw new InvalidOperationException("Parameters and agents shall have the same length.");
+            }
+
+            Game = new Game(parameters.ToIndexable(), new XnaUIController(agents));
             GameApp.Service<GameUI>().GameStarted();
             GameApp.Service<Graphics.Scene>().GameStarted();
         }

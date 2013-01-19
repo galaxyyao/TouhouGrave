@@ -156,7 +156,11 @@ namespace TouhouSpring.Services
                     };
                     param[1].m_profile.Decks.Add(deck2);
 
-                    GameApp.Service<GameManager>().StartGame(param);
+                    GameApp.Service<GameManager>().StartGame(param,
+                        new Agents.BaseAgent[] {
+                            new Agents.LocalPlayerAgent(),
+                            new Agents.LocalPlayerAgent()
+                        });
                 }
                 else if (id == "back")
                 {
