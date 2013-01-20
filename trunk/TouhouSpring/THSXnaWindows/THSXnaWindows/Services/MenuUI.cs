@@ -69,7 +69,7 @@ namespace TouhouSpring.Services
 
             m_pages["FreeMode"].MenuClicked += (id, item) =>
             {
-                if (id == "hotseat")
+                if (id == "vsai" || id == "hotseat")
                 {
                     CurrentPage = null;
                     // detach menu ui
@@ -159,7 +159,7 @@ namespace TouhouSpring.Services
                     GameApp.Service<GameManager>().StartGame(param,
                         new Agents.BaseAgent[] {
                             new Agents.LocalPlayerAgent(),
-                            new Agents.LocalPlayerAgent()
+                            id == "vsai" ? (Agents.BaseAgent)new Agents.AIAgent() : (Agents.BaseAgent)new Agents.LocalPlayerAgent()
                         });
                 }
                 else if (id == "back")

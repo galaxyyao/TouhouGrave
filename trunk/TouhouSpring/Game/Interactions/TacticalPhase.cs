@@ -116,7 +116,7 @@ namespace TouhouSpring.Interactions
             return result;
         }
 
-        public void Respond()
+        public void RespondPass()
         {
             RespondBack(new Result { ActionType = Action.Pass });
         }

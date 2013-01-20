@@ -10,7 +10,7 @@
 		<Image Uri="atlas:TitleMenuItems/FreeMode_Highlight" Left="200" />-->
   </Page>
   <Page Id="FreeMode">
-    <Menu Id="vsai" Font="DFKai-SB, 24" Text="VS AI" Left="600" Top="250" Color="Gray" />
+    <Menu Id="vsai" Font="DFKai-SB, 24" Text="VS AI" Left="600" Top="250" />
     <Menu Id="vsnetwork" Font="DFKai-SB, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
     <Menu Id="hotseat" Font="DFKai-SB, 24" Text="热座模式" Left="600" Top="350" />
     <Menu Id="replay" Font="DFKai-SB, 24" Text="重播" Left="600" Top="400" Color="Gray" />

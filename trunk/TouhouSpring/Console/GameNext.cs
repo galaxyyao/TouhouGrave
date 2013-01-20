@@ -16,7 +16,7 @@ namespace TouhouSpring
 		{
 			if (Program.ActiveInteraction is Interactions.TacticalPhase)
             {
-                ((Interactions.TacticalPhase)Program.ActiveInteraction).Respond();
+                ((Interactions.TacticalPhase)Program.ActiveInteraction).RespondPass();
             }
             else if (Program.ActiveInteraction is Interactions.SelectCards)
 			{

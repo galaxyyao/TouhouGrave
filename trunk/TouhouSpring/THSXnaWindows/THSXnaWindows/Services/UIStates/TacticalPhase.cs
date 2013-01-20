@@ -117,7 +117,7 @@ namespace TouhouSpring.Services.UIStates
 
         private void ContextButton_OnPass(string text)
         {
-            m_io.Respond();
+            m_io.RespondPass();
             m_gameUI.LeaveState();
         }
 
