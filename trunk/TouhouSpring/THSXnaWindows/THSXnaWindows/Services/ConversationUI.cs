@@ -97,7 +97,7 @@ namespace TouhouSpring.Services
                 //deck.Add(cardDb.GetModel("ripples"));
                 //deck.Add(cardDb.GetModel("cautionaryborder"));
                 //deck.Add(cardDb.GetModel("cautionaryborder"));
-                deck.Hero = cardDb.GetModel("marisa");
+                //deck.Hero = cardDb.GetModel("marisa");
 
                 param[0] = new GameStartupParameters()
                 {

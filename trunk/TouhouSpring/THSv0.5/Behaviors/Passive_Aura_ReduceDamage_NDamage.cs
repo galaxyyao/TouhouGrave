@@ -12,12 +12,13 @@ namespace TouhouSpring.Behaviors
     {
         public void RunProlog(Commands.DealDamageToCard command)
         {
-            //TODO: Modify if Cancel feature is available in Setup phase
-            if (Host.Owner.ActivatedAssist != Host)
-                return;
-            if (command.Cause is Warrior)
+            if (Host.Owner.ActivatedAssist == Host)
             {
-                Game.IssueCommands(new Commands.HealCard(command.Target, Model.DamageReduced, this));
+                if (command.Target.Owner == Host.Owner
+                    && command.Cause is Warrior)
+                {
+                    command.PatchDamageToDeal(Math.Max(command.DamageToDeal - Model.DamageReduced, 0));
+                }
             }
         }
 

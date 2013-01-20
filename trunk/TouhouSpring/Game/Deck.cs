@@ -68,11 +68,11 @@ namespace TouhouSpring
 
         public ValidationResult Validate()
         {
-            if (Hero == null)
+            /*if (Hero == null)
             {
                 return ValidationResult.NoHero;
             }
-            else if (Assists.Any(card => !card.Behaviors.Any(bhvMdl => bhvMdl is Behaviors.Assist.ModelType)))
+            else*/ if (Assists.Any(card => !card.Behaviors.Any(bhvMdl => bhvMdl is Behaviors.Assist.ModelType)))
             {
                 return ValidationResult.InvalidAssist;
             }

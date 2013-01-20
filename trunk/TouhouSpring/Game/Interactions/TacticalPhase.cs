@@ -357,7 +357,7 @@ namespace TouhouSpring.Interactions
 
         private IEnumerable<BaseCard> EnumeratePlayCardCandidates()
         {
-            if (!Player.CardsOnBattlefield.Contains(Player.Hero))
+            if (!Player.CardsOnBattlefield.Contains(Player.Hero) && Player.Hero != null)
             {
                 yield return Player.Hero;
             }

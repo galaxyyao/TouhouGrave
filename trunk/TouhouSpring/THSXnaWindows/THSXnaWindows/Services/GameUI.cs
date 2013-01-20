@@ -133,7 +133,10 @@ namespace TouhouSpring.Services
             foreach (var player in Game.Players)
             {
                 player.Assists.ForEach(card => RegisterCard(card));
-                RegisterCard(player.Hero);
+                if (player.Hero != null)
+                {
+                    RegisterCard(player.Hero);
+                }
             }
         }
     }

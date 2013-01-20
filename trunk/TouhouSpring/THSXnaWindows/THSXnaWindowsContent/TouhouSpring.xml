@@ -38,10 +38,9 @@
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
       <Id>alice</Id>
       <Name>爱丽丝·玛格特罗依德</Name>
-      <Description>
-        人偶制作 【被动】
-        己方行动开始时，召唤一只1/1的人偶
-        战斗卡到场上。人偶无法阻挡
+      <Description>人偶制作 【被动】
+己方行动开始时，召唤一只1/1的人偶
+战斗卡到场上。人偶无法阻挡
       </Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
@@ -83,9 +82,8 @@
     <Resource ID="#Resource3" Type="TouhouSpring.EditorCardModel">
       <Id>remilia</Id>
       <Name>蕾米莉亚·斯卡雷特</Name>
-      <Description>
-        【吸血2】：
-        每次攻击回复2点体力
+      <Description>【吸血2】：
+每次攻击回复2点体力
       </Description>
       <ArtworkUri>Textures/Characters/remilia_stand</ArtworkUri>
       <Behaviors>
@@ -135,9 +133,8 @@
     <Resource ID="#Resource5" Type="TouhouSpring.EditorCardModel">
       <Id>kanako</Id>
       <Name>八坂神奈子</Name>
-      <Description>
-        己方行动阶段开始时，
-        该卡的体力恢复至上限
+      <Description>己方行动阶段开始时，
+该卡的体力恢复至上限
       </Description>
       <ArtworkUri>Textures/Characters/kanako_stand</ArtworkUri>
       <Behaviors>
@@ -166,10 +163,9 @@
     <Resource ID="#Resource6" Type="TouhouSpring.EditorCardModel">
       <Id>sakuya</Id>
       <Name>十六夜咲夜</Name>
-      <Description>
-        【先攻】：被攻击时，
-        优先对对方造成伤害，
-        如果造成的伤害大于等于对方的体力，则此卡不受到伤害
+      <Description>【先攻】：被攻击时，
+优先对对方造成伤害，
+如果造成的伤害大于等于对方的体力，则此卡不受到伤害
       </Description>
       <ArtworkUri>Textures/Characters/sakuya_stand</ArtworkUri>
       <Behaviors>
@@ -224,9 +220,8 @@
     <Resource ID="#Resource8" Type="TouhouSpring.EditorCardModel">
       <Id>tenshi</Id>
       <Name>比那名居天子</Name>
-      <Description>
-        己方场上角色卡受到攻击伤害时，
-        伤害-1
+      <Description>己方场上角色卡受到攻击伤害时，
+伤害-1
       </Description>
       <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
       <Behaviors>
@@ -275,10 +270,9 @@
     <Resource ID="#Resource10" Type="TouhouSpring.EditorCardModel">
       <Id>marisa</Id>
       <Name>雾雨魔理沙</Name>
-      <Description>
-        指定1张角色卡，
-        消耗灵力池里所有灵力，
-        对该卡造成等量的伤害
+      <Description>指定1张角色卡，
+消耗灵力池里所有灵力，
+对该卡造成等量的伤害
       </Description>
       <ArtworkUri>Textures/Characters/marisa_stand</ArtworkUri>
       <Behaviors>
@@ -307,9 +301,8 @@
     <Resource ID="#Resource11" Type="TouhouSpring.EditorCardModel">
       <Id>kaguya</Id>
       <Name>蓬莱山辉夜</Name>
-      <Description>
-        己方场上所有的角色卡
-        回复1点体力
+      <Description>己方场上所有的角色卡
+回复1点体力
       </Description>
       <ArtworkUri>Textures/Characters/kaguya_stand</ArtworkUri>
       <Behaviors>
@@ -330,10 +323,9 @@
     <Resource ID="#Resource12" Type="TouhouSpring.EditorCardModel">
       <Id>sanae</Id>
       <Name>东风谷早苗</Name>
-      <Description>
-        【灵压】：
-        对方场上所有角色卡
-        攻击力降低1点
+      <Description>【灵压】：
+对方场上所有角色卡
+攻击力降低1点
       </Description>
       <ArtworkUri>Textures/Characters/sanae_stand</ArtworkUri>
       <Behaviors>
@@ -362,10 +354,9 @@
     <Resource ID="#Resource13" Type="TouhouSpring.EditorCardModel">
       <Id>sunny</Id>
       <Name>桑尼</Name>
-      <Description>
-        日光折射【被动】
-        每次受到攻击后防御力-1，
-        可累加
+      <Description>日光折射【被动】
+每次受到攻击后防御力-1，
+可累加
       </Description>
       <ArtworkUri>Textures/Characters/sunny_stand</ArtworkUri>
       <Behaviors>
@@ -419,10 +410,9 @@
     <Resource ID="#Resource15" Type="TouhouSpring.EditorCardModel">
       <Id>star</Id>
       <Name>斯塔</Name>
-      <Description>
-        星光【被动】
-        每次抽牌时多抽X张，
-        X等于己方场上本卡的数量
+      <Description>星光【被动】
+每次抽牌时多抽X张，
+X等于己方场上本卡的数量
       </Description>
       <ArtworkUri>Textures/Characters/star_stand</ArtworkUri>
       <Behaviors>
@@ -451,9 +441,8 @@
     <Resource ID="#Resource16" Type="TouhouSpring.EditorCardModel">
       <Id>flandre</Id>
       <Name>芙兰朵露·斯卡雷特</Name>
-      <Description>
-        当此卡造成攻击伤害时，
-        攻击力+1
+      <Description>当此卡造成攻击伤害时，
+攻击力+1
       </Description>
       <ArtworkUri>Textures/Characters/flandre_stand</ArtworkUri>
       <Behaviors>
@@ -486,8 +475,8 @@
 如果场上有护卫，
 对手无法攻击护卫以外的目标，
 每一个玩家的场上最多只能有1张护卫
-        【反击1】：
-        被攻击后造成1点反击伤害
+【反击1】：
+被攻击后造成1点反击伤害
       </Description>
       <ArtworkUri>Textures/Characters/meirin_stand</ArtworkUri>
       <Behaviors>
@@ -518,9 +507,8 @@
     <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
       <Id>mokou</Id>
       <Name>藤原妹红</Name>
-      <Description>
-        当被破坏时，
-        对破坏者造成3点伤害
+      <Description>当被破坏时，
+对破坏者造成3点伤害
       </Description>
       <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
       <Behaviors>
@@ -550,11 +538,10 @@
     <Resource ID="#Resource19" Type="TouhouSpring.EditorCardModel">
       <Id>chen</Id>
       <Name>八云橙</Name>
-      <Description>
-        式神化猫【被动】
-        己方主角卡具有【穿透】效果
-        （进攻阶段，所有卡造成的溢出
-        伤害直接作用于主角卡）
+      <Description>式神化猫【被动】
+己方主角卡具有【穿透】效果
+（进攻阶段，所有卡造成的溢出
+伤害直接作用于主角卡）
       </Description>
       <ArtworkUri>Textures/Characters/chen_stand</ArtworkUri>
       <Behaviors>
@@ -600,10 +587,9 @@
     <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
       <Id>aya</Id>
       <Name>射命丸文</Name>
-      <Description>
-        风神【被动】
-        带有【高速】效果
-        （比不带【高速】效果的卡提前造成伤害）
+      <Description>风神【被动】
+带有【高速】效果
+（比不带【高速】效果的卡提前造成伤害）
       </Description>
       <ArtworkUri>Textures/Characters/aya_stand</ArtworkUri>
       <Behaviors>
@@ -629,10 +615,9 @@
     <Resource ID="#Resource22" Type="TouhouSpring.EditorCardModel">
       <Id>komachi</Id>
       <Name>小野冢小町</Name>
-      <Description>
-        【死神】：
-        受到该卡伤害的角色卡
-        会在行动阶段结束被送往冥界
+      <Description>【死神】：
+受到该卡伤害的角色卡
+会在行动阶段结束被送往冥界
       </Description>
       <ArtworkUri>Textures/Characters/komachi_stand</ArtworkUri>
       <Behaviors>
@@ -724,11 +709,10 @@
     <Resource ID="#Resource26" Type="TouhouSpring.EditorCardModel">
       <Id>ran</Id>
       <Name>八云蓝</Name>
-      <Description>
-        式神九尾【突袭】
-        己方场上所有卡获得【穿透】效果
-        （进攻阶段，所有卡造成的溢出伤害直接作用于主角卡），
-        直到行动结束
+      <Description>式神九尾【突袭】
+己方场上所有卡获得【穿透】效果
+（进攻阶段，所有卡造成的溢出伤害直接作用于主角卡），
+直到行动结束
       </Description>
       <ArtworkUri>Textures/Characters/ran_stand</ArtworkUri>
       <Behaviors>
@@ -770,7 +754,7 @@
       <Name>小恶魔</Name>
       <Description>当攻击对方角色卡时，
 对对方玩家造成1点伤害
-</Description>
+      </Description>
       <ArtworkUri>Textures/Characters/koakuma_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -799,9 +783,8 @@
     <Resource ID="#Resource29" Type="TouhouSpring.EditorCardModel">
       <Id>hatate</Id>
       <Name>姬海棠极</Name>
-      <Description>
-        【敏捷】：
-        上场的那个回合就可以进攻
+      <Description>【敏捷】：
+上场的那个回合就可以进攻
       </Description>
       <ArtworkUri>Textures/Characters/hatate_stand</ArtworkUri>
       <Behaviors>

@@ -26,6 +26,10 @@ namespace TouhouSpring.Commands
                 {
                     Game.IssueCommands(new Commands.Kill(card, null));
                 }
+                else if (warrior.Life > warrior.MaxLife)
+                {
+                    warrior.Life = warrior.MaxLife;
+                }
             }
         }
     }

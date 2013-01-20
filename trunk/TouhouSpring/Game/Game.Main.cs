@@ -89,7 +89,9 @@ namespace TouhouSpring
                     else if (result.ActionType == TacticalPhase.Action.Redeem)
                     {
                         var cardToRedeem = (BaseCard)result.Data;
-                        IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
+                        IssueCommandsAndFlush(
+                            new Commands.Redeem(cardToRedeem),
+                            new Commands.UpdateMana(ActingPlayer, -1, this));
                         didRedeem = true;
                     }
                     else if (result.ActionType == TacticalPhase.Action.AttackCard)

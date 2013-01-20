@@ -106,7 +106,7 @@ namespace TouhouSpring.Services
                     deck1.Add(cardDb.GetModel("kaguya"));
                     deck1.Add(cardDb.GetModel("kaguya"));
                     deck1.Add(cardDb.GetModel("kaguya"));
-                    deck1.Hero = cardDb.GetModel("flandre");
+                    //deck1.Hero = cardDb.GetModel("flandre");
                     deck1.Assists.Add(cardDb.GetModel("eirin"));
                     deck1.Assists.Add(cardDb.GetModel("patchouli"));
 
@@ -138,7 +138,7 @@ namespace TouhouSpring.Services
                     deck2.Add(cardDb.GetModel("nightbug"));
                     deck2.Add(cardDb.GetModel("nightbug"));
                     deck2.Add(cardDb.GetModel("nightbug"));
-                    deck2.Hero = cardDb.GetModel("marisa");
+                    //deck2.Hero = cardDb.GetModel("marisa");
                     deck2.Assists.Add(cardDb.GetModel("yakumo"));
                     deck2.Assists.Add(cardDb.GetModel("tenshi"));
 

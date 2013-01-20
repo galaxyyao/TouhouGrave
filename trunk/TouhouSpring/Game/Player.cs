@@ -135,7 +135,7 @@ namespace TouhouSpring
             }
 
             // initialize player's hero
-            Hero = new BaseCard(deck.Hero, this);
+            //Hero = new BaseCard(deck.Hero, this);
 
             // initialize assists
             foreach (var cardModel in deck.Assists)
