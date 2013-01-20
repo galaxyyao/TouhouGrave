@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Spell_DirectDamage_NDamage), DefaultName = "直接伤害")]
+        [BehaviorModel(typeof(Spell_DirectDamage_NDamage), Category = "v0.5/Spell", DefaultName = "直接伤害")]
         public class ModelType : BehaviorModel
         {
             public int DamageToDeal

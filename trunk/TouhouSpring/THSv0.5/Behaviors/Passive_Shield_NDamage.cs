@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
                 Game.IssueCommands(new Commands.HealCard(Host, Model.DamageToMod, this));
         }
 
-        [BehaviorModel(typeof(Passive_Shield_NDamage), DefaultName = "厚皮")]
+        [BehaviorModel(typeof(Passive_Shield_NDamage), Category = "v0.5/Passive", DefaultName = "厚皮")]
         public class ModelType : BehaviorModel
         {
             public int DamageToMod

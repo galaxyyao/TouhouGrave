@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
                     , this));
         }
 
-        [BehaviorModel(typeof(Passive_RegenerateFull), DefaultName = "单卡完全恢复")]
+        [BehaviorModel(typeof(Passive_RegenerateFull), Category = "v0.5/Passive", DefaultName = "单卡完全恢复")]
         public class ModelType : BehaviorModel
         {
         }

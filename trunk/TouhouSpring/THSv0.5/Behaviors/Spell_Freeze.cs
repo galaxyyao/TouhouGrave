@@ -39,7 +39,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Spell_Freeze), DefaultName = "冰冻")]
+        [BehaviorModel(typeof(Spell_Freeze), Category = "v0.5/Spell", DefaultName = "冰冻")]
         public class ModelType : BehaviorModel
         {
         }

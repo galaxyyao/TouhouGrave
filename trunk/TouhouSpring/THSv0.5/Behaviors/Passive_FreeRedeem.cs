@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_FreeRedeem), DefaultName = "毛玉替身")]
+        [BehaviorModel(typeof(Passive_FreeRedeem), Category = "v0.5/Passive", DefaultName = "毛玉替身")]
         public class ModelType : BehaviorModel
         {
             public CardModelReference SummonType { get; set; }

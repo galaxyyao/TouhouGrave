@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_BloodThirsty), DefaultName = "嗜血")]
+        [BehaviorModel(typeof(Passive_BloodThirsty), Category = "v0.5/Passive", DefaultName = "嗜血")]
         public class ModelType : BehaviorModel
         {
         }

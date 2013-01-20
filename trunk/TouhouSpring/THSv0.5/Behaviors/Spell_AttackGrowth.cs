@@ -36,7 +36,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Spell_AttackGrowth), DefaultName = "变巨术")]
+        [BehaviorModel(typeof(Spell_AttackGrowth), Category = "v0.5/Spell", DefaultName = "变巨术")]
         public class ModelType : BehaviorModel
         {
         }

@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_AttackFirst), DefaultName = "先攻")]
+        [BehaviorModel(typeof(Passive_AttackFirst), Category = "v0.5/Passive", DefaultName = "先攻")]
         public class ModelType : BehaviorModel
         { }
     }

@@ -71,7 +71,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_DeterAura_NAttack), DefaultName = "灵压")]
+        [BehaviorModel(typeof(Passive_DeterAura_NAttack), Category = "v0.5/Passive", DefaultName = "灵压")]
         public class ModelType : BehaviorModel
         {
         }

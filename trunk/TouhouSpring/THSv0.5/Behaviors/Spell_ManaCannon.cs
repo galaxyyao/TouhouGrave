@@ -30,7 +30,7 @@ namespace TouhouSpring.Behaviors
             Game.IssueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Game.GetRemainingMana(Host.Owner), this));
         }
 
-        [BehaviorModel(typeof(Spell_ManaCannon), DefaultName = "灵力炮")]
+        [BehaviorModel(typeof(Spell_ManaCannon), Category = "v0.5/Spell", DefaultName = "灵力炮")]
         public class ModelType : BehaviorModel
         {
         }

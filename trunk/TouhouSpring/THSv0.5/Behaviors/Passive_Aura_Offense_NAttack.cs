@@ -55,7 +55,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_Aura_Offense_NAttack), DefaultName = "进攻光环")]
+        [BehaviorModel(typeof(Passive_Aura_Offense_NAttack), Category = "v0.5/Passive", DefaultName = "进攻光环")]
         public class ModelType : BehaviorModel
         {
         }

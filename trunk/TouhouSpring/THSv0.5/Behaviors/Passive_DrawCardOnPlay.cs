@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
                 Game.IssueCommands(new Commands.DrawCard(Host.Owner));
         }
 
-        [BehaviorModel(typeof(Passive_DrawCardOnPlay), DefaultName = "上场抽卡")]
+        [BehaviorModel(typeof(Passive_DrawCardOnPlay), Category = "v0.5/Passive", DefaultName = "上场抽卡")]
         public class ModelType : BehaviorModel
         {
         }

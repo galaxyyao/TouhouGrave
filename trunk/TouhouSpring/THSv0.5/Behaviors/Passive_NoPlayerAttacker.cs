@@ -44,7 +44,7 @@ namespace TouhouSpring.Behaviors
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
         }
 
-        [BehaviorModel(typeof(Passive_NoPlayerAttacker), DefaultName = "不可攻击玩家")]
+        [BehaviorModel(typeof(Passive_NoPlayerAttacker), Category = "v0.5/Passive", DefaultName = "不可攻击玩家")]
         public class ModelType : BehaviorModel
         { }
     }

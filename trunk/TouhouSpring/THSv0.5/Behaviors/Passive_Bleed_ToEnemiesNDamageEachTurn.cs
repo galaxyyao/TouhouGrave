@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_Bleed_ToEnemiesNDamageEachTurn), DefaultName = "对敌方玩家回合伤害")]
+        [BehaviorModel(typeof(Passive_Bleed_ToEnemiesNDamageEachTurn), Category = "v0.5/Passive", DefaultName = "对敌方玩家回合伤害")]
         public class ModelType : BehaviorModel
         {
             public int DamageToDeal
