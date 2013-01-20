@@ -8,8 +8,7 @@ namespace TouhouSpring.Behaviors
     public sealed class ManaCost : BaseBehavior<ManaCost.ModelType>,
         Commands.ICause,
         IPrerequisiteTrigger<Commands.PlayCard>,
-        IPrerequisiteTrigger<Commands.ActivateAssist>,
-        IPrerequisiteTrigger<Commands.Redeem>
+        IPrerequisiteTrigger<Commands.ActivateAssist>
     {
         public int Cost
         {
@@ -29,16 +28,6 @@ namespace TouhouSpring.Behaviors
         public CommandResult RunPrerequisite(Commands.ActivateAssist command)
         {
             if (command.CardToActivate == Host)
-            {
-                Game.NeedMana(Host.Owner, Model.Cost);
-            }
-
-            return CommandResult.Pass;
-        }
-
-        public CommandResult RunPrerequisite(Commands.Redeem command)
-        {
-            if (command.Target == Host)
             {
                 Game.NeedMana(Host.Owner, Model.Cost);
             }

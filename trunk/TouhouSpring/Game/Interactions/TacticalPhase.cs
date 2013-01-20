@@ -70,7 +70,7 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public TacticalPhase(Player player, bool canSacrifice)
+        public TacticalPhase(Player player, bool canSacrifice, bool canRedeem)
             : base(player.Game)
         {
             if (player == null)
@@ -91,8 +91,9 @@ namespace TouhouSpring.Interactions
             CastSpellCandidates = EnumerateCastSpellCandidates().SelectMany(card => card.Spells)
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
             SacrificeCandidates = canSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
-            RedeemCandidates = player.CardsSacrificed
-                                    .Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable();
+            RedeemCandidates = canRedeem
+                               ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
+                               : Indexable.Empty<BaseCard>();
             AttackerCandidates = EnumerateAttackerCandidates()
                                     .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)

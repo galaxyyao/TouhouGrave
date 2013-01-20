@@ -73,6 +73,9 @@
           <Attack>1</Attack>
           <Life>1</Life>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
@@ -103,6 +106,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -153,6 +159,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -264,6 +273,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -294,6 +306,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -349,6 +364,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -377,6 +395,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -403,6 +424,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -435,6 +459,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -464,6 +491,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -534,6 +564,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -562,6 +595,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -611,6 +647,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -641,6 +680,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -779,6 +821,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -802,6 +847,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -853,6 +901,9 @@
         <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
           <Name>UniqueWarrior</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -862,11 +913,6 @@
       <Description>不可被赎回</Description>
       <ArtworkUri>Textures/Characters/pill_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>Warrior</Name>
-          <Attack>0</Attack>
-          <Life>1</Life>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_UnRedeemable+ModelType">
           <Name>不可赎回</Name>
         </Behavior>

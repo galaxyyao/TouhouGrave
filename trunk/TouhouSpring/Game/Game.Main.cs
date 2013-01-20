@@ -54,11 +54,12 @@ namespace TouhouSpring
                 IssueCommandsAndFlush(new Commands.EndPhase());
 
                 bool didSacrifice = false;
+                bool didRedeem = false;
                 IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
                 while (true)
                 {
-                    var result = new Interactions.TacticalPhase(ActingPlayer, !didSacrifice).Run();
+                    var result = new Interactions.TacticalPhase(ActingPlayer, !didSacrifice, !didRedeem).Run();
                     if (result.ActionType == TacticalPhase.Action.PlayCard)
                     {
                         var cardToPlay = (BaseCard)result.Data;
@@ -89,6 +90,7 @@ namespace TouhouSpring
                     {
                         var cardToRedeem = (BaseCard)result.Data;
                         IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
+                        didRedeem = true;
                     }
                     else if (result.ActionType == TacticalPhase.Action.AttackCard)
                     {
