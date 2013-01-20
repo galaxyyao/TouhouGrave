@@ -70,6 +70,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>1</Attack>
           <Life>1</Life>
         </Behavior>
@@ -90,6 +91,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>2</Attack>
           <Life>4</Life>
         </Behavior>
@@ -103,9 +105,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -144,6 +143,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>5</Attack>
           <Life>6</Life>
         </Behavior>
@@ -156,9 +156,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -178,6 +175,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>3</Attack>
           <Life>2</Life>
         </Behavior>
@@ -190,9 +188,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -257,6 +252,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>5</Attack>
           <Life>5</Life>
         </Behavior>
@@ -269,9 +265,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -291,6 +284,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>2</Attack>
           <Life>1</Life>
         </Behavior>
@@ -303,9 +297,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -348,6 +339,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>3</Attack>
           <Life>4</Life>
         </Behavior>
@@ -360,9 +352,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -382,6 +371,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>1</Attack>
           <Life>1</Life>
         </Behavior>
@@ -391,9 +381,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -409,6 +396,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>2</Attack>
           <Life>2</Life>
         </Behavior>
@@ -421,9 +409,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -443,6 +428,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>1</Attack>
           <Life>2</Life>
         </Behavior>
@@ -455,9 +441,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType">
           <Name>星光</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -476,6 +459,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>1</Attack>
           <Life>2</Life>
         </Behavior>
@@ -488,9 +472,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -512,6 +493,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>0</Attack>
           <Life>7</Life>
         </Behavior>
@@ -525,9 +507,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Protector+ModelType">
           <Name>Protector</Name>
@@ -547,6 +526,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>2</Attack>
           <Life>2</Life>
         </Behavior>
@@ -560,9 +540,6 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathBomb+ModelType">
           <Name>凤凰烈焰</Name>
           <Damage>3</Damage>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -583,6 +560,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>2</Attack>
           <Life>2</Life>
         </Behavior>
@@ -592,9 +570,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -634,6 +609,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>2</Attack>
           <Life>1</Life>
         </Behavior>
@@ -643,9 +619,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -665,6 +638,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>1</Attack>
           <Life>3</Life>
         </Behavior>
@@ -677,9 +651,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathTouch+ModelType">
           <Name>死神</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -804,6 +775,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>3</Attack>
           <Life>1</Life>
         </Behavior>
@@ -817,9 +789,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -838,15 +807,13 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>1</Attack>
           <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>1</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -884,6 +851,7 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
+          <Unique>true</Unique>
           <Attack>3</Attack>
           <Life>4</Life>
         </Behavior>
@@ -897,9 +865,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.UniqueWarrior+ModelType">
-          <Name>UniqueWarrior</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>

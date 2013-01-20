@@ -14,6 +14,7 @@ namespace TouhouSpring.Behaviors
 
     public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
         Commands.ICause,
+        IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.Kill>
     {
         public WarriorState State
@@ -51,6 +52,18 @@ namespace TouhouSpring.Behaviors
         public IList<BaseCard> Equipments
         {
             get; private set;
+        }
+
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        {
+            if (command.CardToPlay == Host)
+            {
+                if (Model.Unique && Host.Owner.CardsOnBattlefield.Any(card => card.Model == Host.Model))
+                {
+                    return CommandResult.Cancel();
+                }
+            }
+            return CommandResult.Pass;
         }
 
         public void RunEpilog(Commands.Kill command)
@@ -126,8 +139,14 @@ namespace TouhouSpring.Behaviors
         [BehaviorModel(typeof(Warrior), Category = "Core", Description = "The card is capable of being engaged into combats.")]
         public class ModelType : BehaviorModel
         {
+            public bool Unique { get; set; }
             public int Attack { get; set; }
             public int Life { get; set; }
+
+            public ModelType()
+            {
+                Unique = true;
+            }
         }
     }
 }
