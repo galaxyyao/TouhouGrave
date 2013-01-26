@@ -11,10 +11,14 @@
   </Page>
   <Page Id="FreeMode">
     <Menu Id="vsai" Font="DFKai-SB, 24" Text="VS AI" Left="600" Top="250" />
-    <Menu Id="vsnetwork" Font="DFKai-SB, 24" Text="VS Network" Left="600" Top="300" Color="Gray" />
+    <Menu Id="vsnetwork" Font="DFKai-SB, 24" Text="VS Network" Left="600" Top="300" />
     <Menu Id="hotseat" Font="DFKai-SB, 24" Text="热座模式" Left="600" Top="350" />
     <Menu Id="replay" Font="DFKai-SB, 24" Text="重播" Left="600" Top="400" Color="Gray" />
     <Menu Id="back" Font="DFKai-SB, 24" Text="后退" Left="600" Top="500" />
+  </Page>
+  <Page Id="Network">
+    <Menu Id="waiting" Font="DFKai-SB, 24" Text="网络连接中..." Left="600" Top="300" />
+    <Menu Id="backtofreemode" Font="DFKai-SB, 24" Text="后退" Left="600" Top="350" />
   </Page>
   <Page Id="Quit">
     <Menu Id="quit" Font="DFKai-SB, 24" Text="退出" Left="600" Top="300" />

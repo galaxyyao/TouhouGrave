@@ -17,11 +17,14 @@ namespace TouhouSpring.Services
 
         public UI.TransformNode Root
         {
-            get; private set;
+            get;
+            private set;
         }
 
         public override void Startup()
         {
+
+            #region Initialize Page
             Matrix toScreenSpace = Matrix.Identity;
             toScreenSpace.M11 = 2 / 1024.0f;
             toScreenSpace.M22 = 2 / 768.0f;
@@ -46,8 +49,12 @@ namespace TouhouSpring.Services
 
             LoadPage("MainMenu");
             LoadPage("FreeMode");
+            LoadPage("Network");
             LoadPage("Quit");
 
+            #endregion
+
+            #region Main Menu
             m_pages["MainMenu"].MenuClicked += (id, item) =>
             {
                 if (id == "freemode")
@@ -66,10 +73,12 @@ namespace TouhouSpring.Services
                     CurrentPage = m_pages["Quit"];
                 }
             };
+            #endregion
 
+            #region FreeMode Menu
             m_pages["FreeMode"].MenuClicked += (id, item) =>
             {
-                if (id == "vsai" || id == "hotseat")
+                if (id == "vsai" || id == "hotseat" || id == "vsnetwork")
                 {
                     CurrentPage = null;
                     // detach menu ui
@@ -106,7 +115,9 @@ namespace TouhouSpring.Services
                     deck1.Add(cardDb.GetModel("kaguya"));
                     deck1.Add(cardDb.GetModel("kaguya"));
                     deck1.Add(cardDb.GetModel("kaguya"));
-                    //deck1.Hero = cardDb.GetModel("flandre");
+                    deck1.Add(cardDb.GetModel("flandre"));
+                    deck1.Add(cardDb.GetModel("flandre"));
+                    deck1.Add(cardDb.GetModel("flandre"));
                     deck1.Assists.Add(cardDb.GetModel("eirin"));
                     deck1.Assists.Add(cardDb.GetModel("patchouli"));
 
@@ -138,7 +149,9 @@ namespace TouhouSpring.Services
                     deck2.Add(cardDb.GetModel("nightbug"));
                     deck2.Add(cardDb.GetModel("nightbug"));
                     deck2.Add(cardDb.GetModel("nightbug"));
-                    //deck2.Hero = cardDb.GetModel("marisa");
+                    deck2.Add(cardDb.GetModel("marisa"));
+                    deck2.Add(cardDb.GetModel("marisa"));
+                    deck2.Add(cardDb.GetModel("marisa"));
                     deck2.Assists.Add(cardDb.GetModel("yakumo"));
                     deck2.Assists.Add(cardDb.GetModel("tenshi"));
 
@@ -156,18 +169,57 @@ namespace TouhouSpring.Services
                     };
                     param[1].m_profile.Decks.Add(deck2);
 
-                    GameApp.Service<GameManager>().StartGame(param,
-                        new Agents.BaseAgent[] {
-                            new Agents.LocalPlayerAgent(),
-                            id == "vsai" ? (Agents.BaseAgent)new Agents.AIAgent() : (Agents.BaseAgent)new Agents.LocalPlayerAgent()
-                        });
+                    switch (id)
+                    {
+                        case "vsai":
+                            GameApp.Service<GameManager>().StartGame(param
+                                ,new Agents.BaseAgent[] {
+                                    new Agents.LocalPlayerAgent(),
+                                    new Agents.AIAgent()
+                                });
+                            break;
+                        case "hotseat":
+                            GameApp.Service<GameManager>().StartGame(param
+                                , new Agents.BaseAgent[] {
+                                    new Agents.LocalPlayerAgent(),
+                                    new Agents.LocalPlayerAgent()
+                                });
+                            break;
+                        case "vsnetwork":
+                            Network.Client client = new Network.Client();
+                            client.Connect("127.0.0.1", 13389);
+                            GameApp.Service<GameManager>().StartGame(param
+                                , new Agents.BaseAgent[] {
+                                    new Agents.NetworkLocalPlayerAgent(),
+                                    new Agents.LocalPlayerAgent()
+                                });
+                            break;
+                        default:
+                            throw new InvalidOperationException("Invalid menu item");
+                    }
+                }
+                else if (id == "vsnetwork")
+                {
+                    CurrentPage = m_pages["Network"];
                 }
                 else if (id == "back")
                 {
                     CurrentPage = m_pages["MainMenu"];
                 }
             };
+            #endregion
 
+            #region FreeMode Menu
+            m_pages["Network"].MenuClicked += (id, item) =>
+            {
+                if (id == "backtofreemode")
+                {
+                    CurrentPage = m_pages["FreeMode"];
+                }
+            };
+            #endregion
+
+            #region Quit Menu
             m_pages["Quit"].MenuClicked += (id, item) =>
             {
                 if (id == "quit")
@@ -179,6 +231,7 @@ namespace TouhouSpring.Services
                     CurrentPage = m_pages["MainMenu"];
                 }
             };
+            #endregion
 
             CurrentPage = m_pages["MainMenu"];
         }

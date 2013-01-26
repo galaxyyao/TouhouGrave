@@ -77,6 +77,7 @@
     <Compile Include="Agents\AIAgent.ScoreLibrary.cs" />
     <Compile Include="Agents\BaseAgent.cs" />
     <Compile Include="Agents\LocalPlayerAgent.cs" />
+    <Compile Include="Agents\NetworkLocalPlayerAgent.cs" />
     <Compile Include="Animation\ReverseLinearTrack.cs" />
     <Compile Include="Animation\CurveTrack.cs" />
     <Compile Include="Animation\LinearTrack.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Graphics\TextRenderer.FormatText.cs" />
     <Compile Include="Graphics\TextureAtlasManager.cs" />
     <Compile Include="Graphics\VirtualTexture.cs" />
+    <Compile Include="Network\Client.cs" />
     <Compile Include="Ray.cs" />
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
@@ -209,6 +211,10 @@
     <ProjectReference Include="..\..\..\Fountain\TextureAtlas\TextureAtlas.csproj">
       <Project>{C7BA8901-BC39-4DC8-8BC3-B9EBF4D72EC7}</Project>
       <Name>TextureAtlas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Third-parties\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
+      <Name>Lidgren.Network %28Third Parties\Lidgren.Network\Lidgren.Network%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cards\Cards.csproj">
       <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
