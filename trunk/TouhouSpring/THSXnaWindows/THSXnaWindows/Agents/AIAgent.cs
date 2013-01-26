@@ -5,10 +5,38 @@ using System.Text;
 
 namespace TouhouSpring.Agents
 {
-    class AIAgent : BaseAgent
+    partial class AIAgent : BaseAgent
     {
+        private struct CardScorePair
+        {
+            public BaseCard Card;
+            public double Score;
+        }
+
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
+            // sacrifice
+            var sacrifice = Sacrifice_MakeChoice2(io);
+            if (sacrifice != null)
+            {
+                io.RespondSacrifice(sacrifice);
+                return;
+            }
+
+            var playcard = PlayOrActivateCard_MakeChoice(io);
+            if (io.PlayCardCandidates.Contains(playcard))
+            {
+                // play
+                io.RespondPlay(playcard);
+                return;
+            }
+            else if (io.ActivateAssistCandidates.Contains(playcard))
+            {
+                // activate
+                io.RespondActivate(playcard);
+                return;
+            }
+
             io.RespondPass();
         }
 
