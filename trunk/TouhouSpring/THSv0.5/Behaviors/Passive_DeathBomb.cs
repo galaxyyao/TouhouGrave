@@ -43,6 +43,14 @@ namespace TouhouSpring.Behaviors
             m_fatalWarriorCause = null;
         }
 
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            if (m_fatalWarriorCause != null)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
         [BehaviorModel(typeof(Passive_DeathBomb), Category = "v0.5/Passive", DefaultName = "死后炸弹")]
         public class ModelType : BehaviorModel
         {

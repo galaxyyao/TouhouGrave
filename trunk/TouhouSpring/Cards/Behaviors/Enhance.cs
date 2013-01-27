@@ -57,6 +57,11 @@ namespace TouhouSpring.Behaviors
             m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, Model.AttackBoost);
         }
 
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            m_attackModifier = (original as Enhance).m_attackModifier;
+        }
+
         public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }

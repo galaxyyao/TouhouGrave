@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
                 && Host.IsOnBattlefield
                 && command.Cause==Host.Behaviors.Get<Warrior>())
             {
-                Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+                var m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }
@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
                 && Host.IsOnBattlefield
                 && command.Cause == Host.Behaviors.Get<Warrior>())
             {
-                Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+                var m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }

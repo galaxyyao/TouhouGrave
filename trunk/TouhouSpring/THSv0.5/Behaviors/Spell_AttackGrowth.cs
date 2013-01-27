@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 3);
+        private Warrior.ValueModifier m_attackMod;
 
         public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
@@ -34,6 +34,16 @@ namespace TouhouSpring.Behaviors
                     "AttackModifiers",
                     new object[] { "add", m_attackMod }));
             }
+        }
+
+        protected override void OnInitialize()
+        {
+            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 3);
+        }
+
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            m_attackMod = (original as Spell_AttackGrowth).m_attackMod;
         }
 
         [BehaviorModel(typeof(Spell_AttackGrowth), Category = "v0.5/Spell", DefaultName = "变巨术")]

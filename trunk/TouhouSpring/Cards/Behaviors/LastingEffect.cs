@@ -44,6 +44,17 @@ namespace TouhouSpring.Behaviors
             m_duration = Model.Duration;
         }
 
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            var lastingEffect = original as LastingEffect;
+            m_duration = lastingEffect.m_duration;
+            for (int i = 0; i < lastingEffect.CleanUps.Count; ++i)
+            {
+                var index = lastingEffect.Host.Behaviors.IndexOf(lastingEffect.CleanUps[i]);
+                CleanUps.Add(Host.Behaviors[index]);
+            }
+        }
+
         public class ModelType : BehaviorModel
         {
             public int Duration { get; set; }

@@ -42,6 +42,7 @@
   <ItemGroup>
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseCard.Behaviors.cs" />
+    <Compile Include="BaseCard.Clone.cs" />
     <Compile Include="BaseCard.cs" />
     <Compile Include="BaseController.CommandTriggers.cs" />
     <Compile Include="BaseController.cs" />
@@ -86,13 +87,13 @@
     <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
     <Compile Include="Commands\UpdateMana.cs" />
+    <Compile Include="Game.Clone.cs" />
     <Compile Include="Game.CommandCondition.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Players.cs" />
-    <Compile Include="Game.Threading.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\BaseInteraction.cs" />
     <Compile Include="Interactions\MessageMap.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Interactions\TacticalPhase.cs" />
     <Compile Include="Miscs.cs" />
     <Compile Include="Pile.cs" />
+    <Compile Include="Player.Clone.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

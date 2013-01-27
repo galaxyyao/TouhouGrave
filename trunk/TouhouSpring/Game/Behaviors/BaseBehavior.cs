@@ -64,6 +64,18 @@ namespace TouhouSpring.Behaviors
             OnInitialize();
         }
 
+        void IInternalBehavior.TransferFrom(IBehavior original)
+        {
+            if (Model != null)
+            {
+                throw new InvalidOperationException("Already initialized.");
+            }
+
+            Model = (T)original.Model;
+            Persistent = original.Persistent;
+            OnTransferFrom(original);
+        }
+
         /// <summary>
         /// Called by BaseCard for binding this behavior to it.
         /// </summary>
@@ -87,5 +99,6 @@ namespace TouhouSpring.Behaviors
 
         protected virtual void OnMessage(string message, object[] args) { }
         protected virtual void OnInitialize() { }
+        protected virtual void OnTransferFrom(IBehavior original) { }
     }
 }

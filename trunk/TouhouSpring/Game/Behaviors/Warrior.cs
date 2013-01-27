@@ -79,6 +79,21 @@ namespace TouhouSpring.Behaviors
             MaxLife = Life;
         }
 
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            var warrior = original as Warrior;
+            State = warrior.State;
+            Attack = warrior.Attack;
+            Life = warrior.Life;
+            MaxLife = warrior.MaxLife;
+            for (int i = 0; i < warrior.m_attackModifers.Count; ++i)
+            {
+                // modifiers are immutable objects
+                // thus sharing them is safe
+                m_attackModifers.Add(warrior.m_attackModifers[i]);
+            }
+        }
+
         protected override void OnMessage(string message, object[] args)
         {
             if (message == "GoCoolingDown")

@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.Kill>
     {
-        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1);
+        private Warrior.ValueModifier m_attackMod;
 
         public void RunEpilog(Commands.PlayCard command)
         {
@@ -69,6 +69,16 @@ namespace TouhouSpring.Behaviors
                     LeaveAura(card);
                 }
             }
+        }
+
+        protected override void OnInitialize()
+        {
+            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1);
+        }
+
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            m_attackMod = (original as Passive_DeterAura_NAttack).m_attackMod;
         }
 
         [BehaviorModel(typeof(Passive_DeterAura_NAttack), Category = "v0.5/Passive", DefaultName = "灵压")]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace TouhouSpring
 {
@@ -64,7 +65,6 @@ namespace TouhouSpring
                 throw new NotSupportedException("Battle of more than two players are not supported.");
             }
 
-            m_profiles = new Profile[numPlayers];
             m_players = new Player[numPlayers];
             m_manaNeeded = new int[numPlayers];
             m_remainingManaNeeded = new bool[numPlayers];
@@ -84,9 +84,7 @@ namespace TouhouSpring
                         "The deck {0} is invalid: {1}", deck.Name, validationResult));
                 }
 
-                m_profiles[i] = startUpParams[i].m_profile;
-
-                m_players[i] = new Player(m_profiles[i], this);
+                m_players[i] = new Player(startUpParams[i].m_profile.Name, this);
                 m_players[i].Initialize(deck);
             }
 
@@ -94,10 +92,13 @@ namespace TouhouSpring
 
             CurrentPhase = "";
 
+            Players = m_players.ToIndexable();
             Random = new System.Random();
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
-            StartGameFlowThread();
+
+            // run the game flow in another thread
+            new Thread(new ThreadStart(Main)) { IsBackground = true }.Start();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private Profile[] m_profiles;
         private Player[] m_players;
 
         private int m_actingPlayer = -1;
@@ -38,7 +37,7 @@ namespace TouhouSpring
         /// </summary>
         public IIndexable<Player> Players
         {
-            get { return m_players.ToIndexable(); }
+            get; private set;
         }
     }
 }

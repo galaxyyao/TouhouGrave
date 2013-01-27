@@ -15,6 +15,7 @@ namespace TouhouSpring.Behaviors
     internal interface IInternalBehavior : IBehavior
     {
         void Initialize(BehaviorModel model, bool persistent);
+        void TransferFrom(IBehavior original);
         void Bind(BaseCard host);
         void Unbind();
         void ReceiveMessage(string message, object[] args);

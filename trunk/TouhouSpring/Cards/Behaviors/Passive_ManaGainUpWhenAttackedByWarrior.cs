@@ -33,6 +33,11 @@ namespace TouhouSpring.Behaviors
             }
         }
 
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            isAttackedByWarriorLastRound = (original as Passive_ManaGainUpWhenAttackedByWarrior).isAttackedByWarriorLastRound;
+        }
+
         [BehaviorModel(typeof(Passive_ManaGainUpWhenAttackedByWarrior), DefaultName = "M子")]
         public class ModelType : BehaviorModel
         { }
