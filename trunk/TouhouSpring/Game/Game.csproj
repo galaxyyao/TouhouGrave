@@ -94,8 +94,10 @@
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Players.cs" />
+    <Compile Include="Game.Simulation.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\BaseInteraction.cs" />
+    <Compile Include="Interactions\MessageHandlerAttribute.cs" />
     <Compile Include="Interactions\MessageMap.cs" />
     <Compile Include="Interactions\NotifyCardEvent.cs" />
     <Compile Include="Interactions\NotifyGameEvent.cs" />

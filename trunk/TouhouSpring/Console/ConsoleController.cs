@@ -8,13 +8,13 @@ namespace TouhouSpring
 {
     class ConsoleController : BaseController
     {
-        [Interactions.MessageMap.Handler(typeof(Interactions.NotifyOnly))]
+        [Interactions.MessageHandler(typeof(Interactions.NotifyOnly))]
         private bool OnNotified(Interactions.NotifyOnly interactionObj)
         {
 			throw new ArgumentException("Interactions.NotifyOnly is no longer in use.");
         }
 
-        [Interactions.MessageMap.Handler(typeof(Interactions.NotifyCardEvent))]
+        [Interactions.MessageHandler(typeof(Interactions.NotifyCardEvent))]
         private bool OnNotified(Interactions.NotifyCardEvent interactionObj)
         {
             switch (interactionObj.Notification)
@@ -39,7 +39,7 @@ namespace TouhouSpring
             return false;
         }
 
-		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyGameEvent))]
+		[Interactions.MessageHandler(typeof(Interactions.NotifyGameEvent))]
 		private bool OnNotified(Interactions.NotifyGameEvent interactionObj)
 		{
 			switch (interactionObj.Notification)
@@ -52,7 +52,7 @@ namespace TouhouSpring
 			return false;
 		}
 
-		[Interactions.MessageMap.Handler(typeof(Interactions.NotifyPlayerEvent))]
+		[Interactions.MessageHandler(typeof(Interactions.NotifyPlayerEvent))]
 		private bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
 		{
             switch (interactionObj.Notification)
@@ -73,7 +73,7 @@ namespace TouhouSpring
 			return false;
 		}
 
-        [Interactions.MessageMap.Handler(typeof(Interactions.TacticalPhase))]
+        [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
         private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
         {
             Debug.Assert(Program.ActiveInteraction == null);
@@ -81,7 +81,7 @@ namespace TouhouSpring
             return true;
         }
 
-        [Interactions.MessageMap.Handler(typeof(Interactions.SelectCards))]
+        [Interactions.MessageHandler(typeof(Interactions.SelectCards))]
         private bool OnSelectCard(Interactions.SelectCards interactionObj)
         {
             Console.WriteLine(interactionObj.Message);

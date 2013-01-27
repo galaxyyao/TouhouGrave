@@ -8,39 +8,20 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-	public class MessageMap
+	class MessageMap
 	{
-        [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-		public class HandlerAttribute : Attribute
-		{
-			public Type InteractionType
-			{
-				get; private set;
-			}
-
-            public HandlerAttribute(Type interactionType)
-			{
-                if (interactionType == null)
-				{
-                    throw new ArgumentNullException("interactionType");
-				}
-
-                InteractionType = interactionType;
-			}
-		}
-
 		private Dictionary<string, Func<object, bool>> m_messageMap = new Dictionary<string, Func<object, bool>>();
 
 		public MessageMap(object controller)
 		{
 			foreach (var method in controller.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
 			{
-				var attribs = method.GetCustomAttributes(typeof(HandlerAttribute), true);
+				var attribs = method.GetCustomAttributes(typeof(MessageHandlerAttribute), true);
 				if (attribs.Length == 0)
 				{
 					continue;
 				}
-				var attr = (HandlerAttribute)attribs[0];
+                var attr = (MessageHandlerAttribute)attribs[0];
 
 				Type interactionType = attr.InteractionType;
 				Debug.Assert(interactionType != null);
@@ -75,14 +56,8 @@ namespace TouhouSpring.Interactions
 			}
 		}
 
-		public bool Process(Messaging.LetterBox letterBox)
+		public bool Process(Messaging.Message msg)
 		{
-			if (letterBox == null)
-			{
-				throw new ArgumentNullException("letterBox");
-			}
-
-			Messaging.Message msg = letterBox.Receive();
 			if (msg != null)
 			{
 				Func<object, bool> handler;

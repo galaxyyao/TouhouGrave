@@ -126,6 +126,10 @@
     <Compile Include="Services\UIStates\PlayerTransition.cs" />
     <Compile Include="Services\UIStates\SelectCards.cs" />
     <Compile Include="Services\UIStates\TacticalPhase.cs" />
+    <Compile Include="Simulation\Choice.cs" />
+    <Compile Include="Simulation\Context.cs" />
+    <Compile Include="Simulation\BaseSimulator.cs" />
+    <Compile Include="Simulation\PlayCardSimulator.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />
     <Compile Include="Style\CardControlStyle.cs" />
     <Compile Include="Style\Exceptions.cs" />

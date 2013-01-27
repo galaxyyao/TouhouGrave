@@ -30,11 +30,6 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public bool CanSacrifice
-        {
-            get; private set;
-        }
-
         public IIndexable<BaseCard> PlayCardCandidates
         {
             get; private set;
@@ -70,7 +65,7 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public TacticalPhase(Player player, bool canSacrifice, bool canRedeem)
+        internal TacticalPhase(Player player)
             : base(player.Game)
         {
             if (player == null)
@@ -83,15 +78,14 @@ namespace TouhouSpring.Interactions
             }
 
             Player = player;
-            CanSacrifice = canSacrifice;
             PlayCardCandidates = EnumeratePlayCardCandidates()
                                     .Where(card => player.Game.IsCardPlayable(card)).ToArray().ToIndexable();
             ActivateAssistCandidates = EnumerateActivateAssistCandidates()
                                     .Where(card => player.Game.IsCardActivatable(card)).ToArray().ToIndexable();
             CastSpellCandidates = EnumerateCastSpellCandidates().SelectMany(card => card.Spells)
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
-            SacrificeCandidates = canSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
-            RedeemCandidates = canRedeem
+            SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
+            RedeemCandidates = !Game.DidRedeem
                                ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
                                : Indexable.Empty<BaseCard>();
             AttackerCandidates = EnumerateAttackerCandidates()
@@ -109,7 +103,7 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        public Result Run()
+        internal Result Run()
         {
             var result = NotifyAndWait<Result>();
             Validate(result);

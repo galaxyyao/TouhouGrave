@@ -8,6 +8,11 @@ namespace TouhouSpring.Behaviors
     public class SimpleBehavior<T> : BaseBehavior<SimpleBehavior<T>.ModelType>
     {
         public class ModelType : BehaviorModel
-        {}
+        {
+            public override Type GetBehaviorType()
+            {
+                return typeof(T);
+            }
+        }
     }
 }

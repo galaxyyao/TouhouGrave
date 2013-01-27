@@ -46,6 +46,12 @@ namespace TouhouSpring
             clonedGame.Random = CloneRandom();
             clonedGame.Controller = simulationController;
 
+            clonedGame.CurrentPhase = CurrentPhase;
+            clonedGame.Round = Round;
+            clonedGame.m_actingPlayer = m_actingPlayer;
+            clonedGame.DidSacrifice = DidSacrifice;
+            clonedGame.DidRedeem = DidRedeem;
+
             // Clone the data structure (Behaviors will only be default-constructed)
             for (int i = 0; i < numPlayers; ++i)
             {

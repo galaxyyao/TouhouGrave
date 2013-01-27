@@ -12,6 +12,8 @@ namespace TouhouSpring
     /// </summary>
     public partial class Game
     {
+        private Thread m_gameFlowThread;
+
         /// <summary>
         /// Give a random number generator for this game.
         /// </summary>
@@ -98,7 +100,11 @@ namespace TouhouSpring
             LetterBox = new Messaging.LetterBox();
 
             // run the game flow in another thread
-            new Thread(new ThreadStart(Main)) { IsBackground = true }.Start();
+            m_gameFlowThread = new Thread(new ThreadStart(GameFlowMain))
+            {
+                IsBackground = true
+            };
+            m_gameFlowThread.Start();
         }
     }
 }

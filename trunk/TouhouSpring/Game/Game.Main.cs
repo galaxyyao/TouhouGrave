@@ -15,7 +15,88 @@ namespace TouhouSpring
             get; private set;
         }
 
-        private void Main()
+        public bool DidSacrifice
+        {
+            get; private set;
+        }
+
+        public bool DidRedeem
+        {
+            get; private set;
+        }
+
+        private bool MainPhase()
+        {
+            var result = new Interactions.TacticalPhase(ActingPlayer).Run();
+            if (result.ActionType == TacticalPhase.Action.PlayCard)
+            {
+                var cardToPlay = (BaseCard)result.Data;
+                Debug.Assert(cardToPlay.Owner == ActingPlayer);
+                IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
+            }
+            else if (result.ActionType == TacticalPhase.Action.ActivateAssist)
+            {
+                var cardToActivate = (BaseCard)result.Data;
+                Debug.Assert(cardToActivate.Owner == ActingPlayer);
+                IssueCommandsAndFlush(new Commands.ActivateAssist(cardToActivate));
+            }
+            else if (result.ActionType == TacticalPhase.Action.CastSpell)
+            {
+                var spellToCast = (Behaviors.ICastableSpell)result.Data;
+                Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
+                IssueCommandsAndFlush(new Commands.CastSpell(spellToCast));
+            }
+            else if (result.ActionType == TacticalPhase.Action.Sacrifice)
+            {
+                var cardToSacrifice = (BaseCard)result.Data;
+                IssueCommandsAndFlush(
+                    new Commands.Sacrifice(cardToSacrifice),
+                    new Commands.UpdateMana(ActingPlayer, 1, this));
+                DidSacrifice = true;
+            }
+            else if (result.ActionType == TacticalPhase.Action.Redeem)
+            {
+                var cardToRedeem = (BaseCard)result.Data;
+                IssueCommandsAndFlush(
+                    new Commands.Redeem(cardToRedeem),
+                    new Commands.UpdateMana(ActingPlayer, -1, this));
+                DidRedeem = true;
+            }
+            else if (result.ActionType == TacticalPhase.Action.AttackCard)
+            {
+                var pair = (BaseCard[])result.Data;
+                var attackerWarrior = pair[0].Behaviors.Get<Behaviors.Warrior>();
+                IssueCommandsAndFlush(
+                    new Commands.DealDamageToCard(
+                        pair[1], attackerWarrior.Attack, attackerWarrior),
+                    new Commands.SendBehaviorMessage(
+                        attackerWarrior, "GoCoolingDown", null)
+                    );
+            }
+            else if (result.ActionType == TacticalPhase.Action.AttackPlayer)
+            {
+                var pair = (object[])result.Data;
+                var attackerWarrior = (pair[0] as BaseCard).Behaviors.Get<Behaviors.Warrior>();
+                IssueCommandsAndFlush(
+                    new Commands.DealDamageToPlayer(
+                        pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
+                    new Commands.SendBehaviorMessage(
+                        attackerWarrior, "GoCoolingDown", null)
+                    );
+            }
+            else if (result.ActionType == TacticalPhase.Action.Pass)
+            {
+                return false;
+            }
+            else
+            {
+                throw new InvalidDataException();
+            }
+
+            return true;
+        }
+
+        private void GameFlowMain()
         {
             IssueCommand(new Commands.StartPhase("Begin"));
 
@@ -53,78 +134,11 @@ namespace TouhouSpring
                         new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
                 IssueCommandsAndFlush(new Commands.EndPhase());
 
-                bool didSacrifice = false;
-                bool didRedeem = false;
+                DidSacrifice = false;
+                DidRedeem = false;
                 IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
-                while (true)
-                {
-                    var result = new Interactions.TacticalPhase(ActingPlayer, !didSacrifice, !didRedeem).Run();
-                    if (result.ActionType == TacticalPhase.Action.PlayCard)
-                    {
-                        var cardToPlay = (BaseCard)result.Data;
-                        Debug.Assert(cardToPlay.Owner == ActingPlayer);
-                        IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.ActivateAssist)
-                    {
-                        var cardToActivate = (BaseCard)result.Data;
-                        Debug.Assert(cardToActivate.Owner == ActingPlayer);
-                        IssueCommandsAndFlush(new Commands.ActivateAssist(cardToActivate));
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.CastSpell)
-                    {
-                        var spellToCast = (Behaviors.ICastableSpell)result.Data;
-                        Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
-                        IssueCommandsAndFlush(new Commands.CastSpell(spellToCast));
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.Sacrifice)
-                    {
-                        var cardToSacrifice = (BaseCard)result.Data;
-                        IssueCommandsAndFlush(
-                            new Commands.Sacrifice(cardToSacrifice),
-                            new Commands.UpdateMana(ActingPlayer, 1, this));
-                        didSacrifice = true;
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.Redeem)
-                    {
-                        var cardToRedeem = (BaseCard)result.Data;
-                        IssueCommandsAndFlush(
-                            new Commands.Redeem(cardToRedeem),
-                            new Commands.UpdateMana(ActingPlayer, -1, this));
-                        didRedeem = true;
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.AttackCard)
-                    {
-                        var pair = (BaseCard[])result.Data;
-                        var attackerWarrior = pair[0].Behaviors.Get<Behaviors.Warrior>();
-                        IssueCommandsAndFlush(
-                            new Commands.DealDamageToCard(
-                                pair[1], attackerWarrior.Attack, attackerWarrior),
-                            new Commands.SendBehaviorMessage(
-                                attackerWarrior, "GoCoolingDown", null)
-                            );
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.AttackPlayer)
-                    {
-                        var pair = (object[])result.Data;
-                        var attackerWarrior = (pair[0] as BaseCard).Behaviors.Get<Behaviors.Warrior>();
-                        IssueCommandsAndFlush(
-                            new Commands.DealDamageToPlayer(
-                                pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
-                            new Commands.SendBehaviorMessage(
-                                attackerWarrior, "GoCoolingDown", null)
-                            );
-                    }
-                    else if (result.ActionType == TacticalPhase.Action.Pass)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        throw new InvalidDataException();
-                    }
-                }
+                while (MainPhase()) ;
 
                 IssueCommandsAndFlush(
                     new Commands.EndPhase(),
