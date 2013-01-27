@@ -29,9 +29,9 @@ namespace TouhouSpring.Behaviors
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                                                  .SelectMany(player => player.CardsOnBattlefield))
                 {
-                    var lasting = new LastingEffect(2);
-                    var neutralize = new Neutralize();
-                    lasting.CleanUps.Add(neutralize);
+                    var lasting = new LastingEffect.ModelType { Duration = 2 }.Instantiate();
+                    var neutralize = new Neutralize.ModelType().Instantiate();
+                    (lasting as LastingEffect).CleanUps.Add(neutralize);
                     Game.IssueCommands(
                         new Commands.AddBehavior(card, neutralize),
                         new Commands.AddBehavior(card, lasting));

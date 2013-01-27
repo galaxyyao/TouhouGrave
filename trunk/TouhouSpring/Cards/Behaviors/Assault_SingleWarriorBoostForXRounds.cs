@@ -28,9 +28,9 @@ namespace TouhouSpring.Behaviors
             {
                 if (Model.AttackBoost > 0 )
                 {
-                    var lasting = new LastingEffect(Model.Duration);
-                    var enhanceMod = new Enhance(Model.AttackBoost);
-                    lasting.CleanUps.Add(enhanceMod);
+                    var lasting = new LastingEffect.ModelType { Duration = Model.Duration }.Instantiate();
+                    var enhanceMod = new Enhance.ModelType { AttackBoost = Model.AttackBoost }.Instantiate();
+                    (lasting as LastingEffect).CleanUps.Add(enhanceMod);
                     Game.IssueCommands(
                         new Commands.AddBehavior(Game.GetTarget(this)[0], enhanceMod),
                         new Commands.AddBehavior(Game.GetTarget(this)[0], lasting));

@@ -45,13 +45,7 @@ namespace TouhouSpring.Behaviors
 
         public int MaxLife
         {
-            get;
-            internal set;
-        }
-
-        public IList<BaseCard> Equipments
-        {
-            get; private set;
+            get; internal set;
         }
 
         public CommandResult RunPrerequisite(Commands.PlayCard command)
@@ -74,7 +68,6 @@ namespace TouhouSpring.Behaviors
                 m_attackModifers.Clear();
                 Attack = Model.Attack;
                 Life = Model.Life;
-                Equipments.Clear();
             }
         }
 
@@ -84,7 +77,6 @@ namespace TouhouSpring.Behaviors
             Attack = Model.Attack;
             Life = Model.Life;
             MaxLife = Life;
-            Equipments = new List<BaseCard>();
         }
 
         protected override void OnMessage(string message, object[] args)

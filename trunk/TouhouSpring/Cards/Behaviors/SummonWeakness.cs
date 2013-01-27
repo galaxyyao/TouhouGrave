@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
                 && Host.Behaviors.Has<Warrior>())
             {
                 Game.IssueCommands(
-                    new Commands.AddBehavior(Host, new Effect()),
+                    new Commands.AddBehavior(Host, new Effect.ModelType().Instantiate()),
                     new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
         }

@@ -5,21 +5,11 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Enhance : SimpleBehavior<Enhance>,
+    public sealed class Enhance : BaseBehavior<Enhance.ModelType>,
         IEpilogTrigger<Commands.AddBehavior>,
         IPrologTrigger<Commands.RemoveBehavior>
     {
         private Warrior.ValueModifier m_attackModifier;
-
-        public Enhance(int attackMod)
-        {
-            if (attackMod == 0)
-            {
-                throw new ArgumentException("Attack must not be zero.");
-            }
-
-            m_attackModifier = attackMod != 0 ? new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, attackMod) : null;
-        }
 
         public void RunEpilog(Commands.AddBehavior command)
         {
@@ -55,6 +45,21 @@ namespace TouhouSpring.Behaviors
                     m_attackModifier = null;
                 }
             }
+        }
+
+        protected override void OnInitialize()
+        {
+            if (Model.AttackBoost == 0)
+            {
+                throw new ArgumentException("Attack must not be zero.");
+            }
+
+            m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, Model.AttackBoost);
+        }
+
+        public class ModelType : BehaviorModel
+        {
+            public int AttackBoost { get; set; }
         }
     }
 }
