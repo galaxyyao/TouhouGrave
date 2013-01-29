@@ -190,8 +190,8 @@ namespace TouhouSpring.Services
                             client.Connect("127.0.0.1", 13389);
                             GameApp.Service<GameManager>().StartGame(param
                                 , new Agents.BaseAgent[] {
-                                    new Agents.NetworkLocalPlayerAgent(),
-                                    new Agents.LocalPlayerAgent()
+                                    new Agents.NetworkLocalPlayerAgent(client),
+                                    new Agents.NetworkRemoteAgent(client)
                                 });
                             break;
                         default:

@@ -78,6 +78,7 @@
     <Compile Include="Agents\BaseAgent.cs" />
     <Compile Include="Agents\LocalPlayerAgent.cs" />
     <Compile Include="Agents\NetworkLocalPlayerAgent.cs" />
+    <Compile Include="Agents\NetworkRemoteAgent.cs" />
     <Compile Include="Animation\ReverseLinearTrack.cs" />
     <Compile Include="Animation\CurveTrack.cs" />
     <Compile Include="Animation\LinearTrack.cs" />
