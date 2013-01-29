@@ -17,7 +17,7 @@
     <Menu Id="back" Font="DFKai-SB, 24" Text="后退" Left="600" Top="500" />
   </Page>
   <Page Id="Network">
-    <Menu Id="waiting" Font="DFKai-SB, 24" Text="网络连接中..." Left="600" Top="300" />
+    <Menu Id="networkmsg" Font="DFKai-SB, 24" Text="网络连接中..." Left="600" Top="300" />
     <Menu Id="backtofreemode" Font="DFKai-SB, 24" Text="后退" Left="600" Top="350" />
   </Page>
   <Page Id="Quit">

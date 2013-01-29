@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Lidgren.Network;
 using System.Threading;
+using System.Diagnostics;
 
 namespace TouhouSpring.Network
 {
@@ -18,7 +19,7 @@ namespace TouhouSpring.Network
             NetPeerConfiguration config = new NetPeerConfiguration("ths");
             config.AutoFlushSendQueue = false;
             _client = new NetClient(config);
-            //_client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
+            _client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
         }
 
         public void Connect(string host, int port)
@@ -42,6 +43,53 @@ namespace TouhouSpring.Network
 
         public void GotMessage(object peer)
         {
+            NetIncomingMessage im;
+            while ((im = _client.ReadMessage()) != null)
+            {
+                // handle incoming message
+                switch (im.MessageType)
+                {
+                    case NetIncomingMessageType.DebugMessage:
+                    case NetIncomingMessageType.ErrorMessage:
+                    case NetIncomingMessageType.WarningMessage:
+                    case NetIncomingMessageType.VerboseDebugMessage:
+                        {
+                            string text = im.ReadString();
+                            //Output(text);
+                            Debug.Print(text);
+                        }
+                        break;
+                    case NetIncomingMessageType.StatusChanged:
+                        {
+                            NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
+
+                            if (status == NetConnectionStatus.Connected)
+                            {
+                                ;
+                            }
+                            else if (status == NetConnectionStatus.Disconnected)
+                            {
+                                ;
+                            }
+
+                            string text = im.ReadString();
+                            //Output(status.ToString() + ": " + reason);
+                            Debug.Print(text);
+                        }
+                        break;
+                    case NetIncomingMessageType.Data:
+                        {
+                            string text = im.ReadString();
+                            //Output(chat);
+                            Debug.Print(text);
+                        }
+                        break;
+                    default:
+                        //Output("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
+                        Debug.Print("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
+                        break;
+                }
+            }
         }
     }
 }

@@ -188,6 +188,7 @@ namespace TouhouSpring.Services
                         case "vsnetwork":
                             Network.Client client = new Network.Client();
                             client.Connect("127.0.0.1", 13389);
+                            
                             GameApp.Service<GameManager>().StartGame(param
                                 , new Agents.BaseAgent[] {
                                     new Agents.NetworkLocalPlayerAgent(client),
