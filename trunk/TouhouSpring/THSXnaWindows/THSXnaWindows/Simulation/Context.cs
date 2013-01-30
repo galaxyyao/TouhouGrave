@@ -7,7 +7,7 @@ namespace TouhouSpring.Simulation
 {
     class Context : BaseController
     {
-        private class Branch
+        public class Branch
         {
             public List<Choice> ChoicePath;
             public Game Result;
@@ -23,6 +23,11 @@ namespace TouhouSpring.Simulation
         public Game RootGame
         {
             get; private set;
+        }
+
+        public IEnumerable<Branch> Branches
+        {
+            get { return m_branches; }
         }
 
         private bool ChoiceMade
@@ -60,7 +65,7 @@ namespace TouhouSpring.Simulation
                 TryMoveNextChoice();
 
                 var game = RootGame.CloneForSimulation(this);
-                game.SimulateMainPhase();
+                game.RunMainPhase();
 
                 m_branches.Add(new Branch
                 {
@@ -86,7 +91,7 @@ namespace TouhouSpring.Simulation
                 }
             }
             newChoicePath.Add(choice);
-            m_pendingChoices.Add(newChoicePath);
+            m_pendingChoices.Insert(0, newChoicePath);
         }
 
         private void TryMoveNextChoice()
@@ -123,6 +128,10 @@ namespace TouhouSpring.Simulation
             if (ChoiceMade)
             {
                 NextChoice.Make(interactionObj);
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
 
             return false;

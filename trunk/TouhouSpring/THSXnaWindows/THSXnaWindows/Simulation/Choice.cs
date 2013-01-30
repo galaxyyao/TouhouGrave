@@ -29,6 +29,44 @@ namespace TouhouSpring.Simulation
         }
     }
 
+    class ActivateAssistChoice : Choice
+    {
+        public int CardIndex
+        {
+            get; private set;
+        }
+
+        public ActivateAssistChoice(int cardIndex)
+        {
+            CardIndex = cardIndex;
+        }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            var tacticalPhase = io as Interactions.TacticalPhase;
+            tacticalPhase.RespondActivate(tacticalPhase.ActivateAssistCandidates[CardIndex]);
+        }
+    }
+
+    class CastSpellChoice : Choice
+    {
+        public int SpellIndex
+        {
+            get; private set;
+        }
+
+        public CastSpellChoice(int spellIndex)
+        {
+            SpellIndex = spellIndex;
+        }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            var tacticalPhase = io as Interactions.TacticalPhase;
+            tacticalPhase.RespondCast(tacticalPhase.CastSpellCandidates[SpellIndex]);
+        }
+    }
+
     class PassChoice : Choice
     {
         public override void Make(Interactions.BaseInteraction io)
