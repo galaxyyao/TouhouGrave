@@ -51,6 +51,7 @@ namespace TouhouSpring.Agents
 
             if (m_stage1Plan.ChoicePath.Count > 0)
             {
+                System.Diagnostics.Debug.WriteLine(m_stage1Plan.ChoicePath[0].Print(io));
                 m_stage1Plan.ChoicePath[0].Make(io);
                 m_stage1Plan.ChoicePath.RemoveAt(0);
                 return;

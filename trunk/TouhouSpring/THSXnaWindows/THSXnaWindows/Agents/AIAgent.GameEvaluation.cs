@@ -40,8 +40,22 @@ namespace TouhouSpring.Agents
             double handCountScore = Math.Pow(player.CardsOnHand.Count, HandCountCurvePower);
 
             // total card attacks
-            int totalCardAttacks = player.CardsOnBattlefield.Sum(card =>
-                card.Behaviors.Has<Behaviors.Warrior>() ? card.Behaviors.Get<Behaviors.Warrior>().Attack : 0);
+            double totalCardAttacks = 0;
+            foreach (var card in player.CardsOnBattlefield)
+            {
+                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
+                if (warrior == null)
+                {
+                    continue;
+                }
+
+                if (card.Behaviors.Has<Behaviors.Neutralize>())
+                {
+                    continue;
+                }
+
+                totalCardAttacks += (warrior.State == Behaviors.WarriorState.StandingBy ? 1 : 0.5f) * warrior.Attack;
+            }
             double cardAttackScore = Math.Pow(totalCardAttacks, CardAttackCurvePower);
 
             // TODO: sum of each card lifes
