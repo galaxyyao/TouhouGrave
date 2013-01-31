@@ -15,8 +15,6 @@ namespace TouhouSpring.NetServerCore
 
         private NetServer _server;
 
-        private NetIncomingMessage _im; 
-
         public bool IsRunning
         {
             get

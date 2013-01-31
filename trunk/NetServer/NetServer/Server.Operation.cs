@@ -21,32 +21,31 @@ namespace TouhouSpring.NetServerCore
 
         public void Listen()
         {
-            while (true)
+            NetIncomingMessage im;
+            while ((im = _server.ReadMessage()) != null)
             {
-
-                _im = _server.ReadMessage();
-                if (_im == null)
-                    continue;
-                switch (_im.MessageType)
+                switch (im.MessageType)
                 {
                     case NetIncomingMessageType.DebugMessage:
                     case NetIncomingMessageType.ErrorMessage:
                     case NetIncomingMessageType.WarningMessage:
                     case NetIncomingMessageType.VerboseDebugMessage:
-                        string text = _im.ReadString();
-                        Console.WriteLine(text);
+                        {
+                            string text = im.ReadString();
+                            Console.WriteLine(text);
+                        }
                         break;
                     case NetIncomingMessageType.StatusChanged:
                         {
-                            NetConnectionStatus status = (NetConnectionStatus)_im.ReadByte();
-                            string reason = _im.ReadString();
-                            Console.WriteLine(string.Format("{0} - {1}:{2}", NetUtility.ToHexString(_im.SenderConnection.RemoteUniqueIdentifier), status, reason));
+                            NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
+                            string text = im.ReadString();
+                            Console.WriteLine(string.Format("{0} - {1}:{2}", NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier), status, text));
 
                             if (status == NetConnectionStatus.Connected)
                             {
                                 NetOutgoingMessage om = _server.CreateMessage();
-                                om.Write(string.Format(" enterroom"));
-                                _server.SendMessage(om, _im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                                om.Write(string.Format("1 enterroom"));
+                                _server.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
                             }
                             else if (status == NetConnectionStatus.Disconnected)
                             {
@@ -56,24 +55,30 @@ namespace TouhouSpring.NetServerCore
                         break;
                     case NetIncomingMessageType.Data:
                         {
-                            string data = _im.ReadString();
-                            Console.WriteLine(data);
+                            string text = im.ReadString();
+                            Console.WriteLine(text);
                             //TODO: Do something to Data
                             NetOutgoingMessage om = _server.CreateMessage();
-                            om.Write(NetUtility.ToHexString(_im.SenderConnection.RemoteUniqueIdentifier) + " said: " + "aaa");
-                            _server.SendMessage(om, _im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                            om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + "aaa");
+                            _server.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
                         }
                         break;
                     default:
                         Console.WriteLine(string.Format("Unhandled type: {0} {1} bytes {2}|{3}"
-                            , _im.MessageType
-                            , _im.LengthBytes
-                            , _im.DeliveryMethod
-                            , _im.SequenceChannel
+                            , im.MessageType
+                            , im.LengthBytes
+                            , im.DeliveryMethod
+                            , im.SequenceChannel
                             ));
                         break;
                 }
-            }
+                Thread.Sleep(1);
+            } 
+        }
+
+        private string InterpretMessage(string message)
+        {
+            return null;
         }
 
         public void Shutdown()
