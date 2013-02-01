@@ -33,8 +33,9 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
-            var needFlip = GameApp.Service<Services.GameUI>().ZoomedInCard != Control
-                           && Card.Owner != Card.Owner.Game.ActingPlayer && Card.Owner.CardsOnHand.Contains(Card);
+            var gameui = GameApp.Service<Services.GameUI>();
+            var needFlip = gameui.ZoomedInCard != Control
+                           && !gameui.ShallPlayerBeRevealed(Card.Owner) && Card.Owner.CardsOnHand.Contains(Card);
 
             if (needFlip != Flipped)
             {

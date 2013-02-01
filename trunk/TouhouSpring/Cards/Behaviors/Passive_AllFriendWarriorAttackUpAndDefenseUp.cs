@@ -10,8 +10,8 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.Kill>
     {
-        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
-        private readonly Warrior.ValueModifier m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+        private Warrior.ValueModifier m_attackMod;
+        private Warrior.ValueModifier m_defenseMod;
 
         public void RunEpilog(Commands.PlayCard command)
         {
@@ -79,6 +79,18 @@ namespace TouhouSpring.Behaviors
                         "DefenseModifiers",
                         new object[] { "remove", m_defenseMod }));
             }
+        }
+
+        protected override void OnInitialize()
+        {
+            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+            m_defenseMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+        }
+
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            m_attackMod = (original as Passive_AllFriendWarriorAttackUpAndDefenseUp).m_attackMod;
+            m_defenseMod = (original as Passive_AllFriendWarriorAttackUpAndDefenseUp).m_defenseMod;
         }
 
         [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpAndDefenseUp), DefaultName = "秘药")]

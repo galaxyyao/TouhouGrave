@@ -13,6 +13,19 @@ namespace TouhouSpring.Agents
             public double Score;
         }
 
+        private struct ScoredBranch : IComparable<ScoredBranch>
+        {
+            public Simulation.Context.Branch Branch;
+            public double Score;
+
+            public int CompareTo(ScoredBranch other)
+            {
+                return Score.CompareTo(other.Score);
+            }
+        }
+
+        private Simulation.Context.Branch m_stage1Plan;
+
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
             // sacrifice
@@ -23,20 +36,28 @@ namespace TouhouSpring.Agents
                 return;
             }
 
-            var playcard = PlayOrActivateCard_MakeChoice(io);
-            if (io.PlayCardCandidates.Contains(playcard))
+            if (m_stage1Plan == null)
             {
-                // play
-                io.RespondPlay(playcard);
-                return;
+                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage1Simulator());
+                simulationCtx.Start();
+
+                int pid = io.Game.Players.IndexOf(io.Player);
+                var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+                m_stage1Plan = scoredBranches.Max().Branch;
+
+                System.Diagnostics.Debug.Assert(m_stage1Plan.ChoicePath.Last() is Simulation.PassChoice);
+                m_stage1Plan.ChoicePath.RemoveAt(m_stage1Plan.ChoicePath.Count - 1);
             }
-            else if (io.ActivateAssistCandidates.Contains(playcard))
+
+            if (m_stage1Plan.ChoicePath.Count > 0)
             {
-                // activate
-                io.RespondActivate(playcard);
+                System.Diagnostics.Debug.WriteLine(m_stage1Plan.ChoicePath[0].Print(io));
+                m_stage1Plan.ChoicePath[0].Make(io);
+                m_stage1Plan.ChoicePath.RemoveAt(0);
                 return;
             }
 
+            m_stage1Plan = null;
             io.RespondPass();
         }
 

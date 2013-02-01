@@ -23,7 +23,7 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
-            var needRotate = Card.Owner.Game.ActingPlayer != Card.Owner;
+            var needRotate = !GameApp.Service<Services.GameUI>().ShallPlayerBeRevealed(Card.Owner);
 
             if (needRotate != Rotated)
             {

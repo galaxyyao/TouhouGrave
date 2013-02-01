@@ -10,14 +10,14 @@ namespace TouhouSpring
     /// <summary>
     /// Represent a collection of player-specific states.
     /// </summary>
-    public sealed class Player
+    public sealed partial class Player
     {
-        private Profile m_profile;
-
         internal List<BaseCard> m_handSet = new List<BaseCard>();
         internal List<BaseCard> m_sacrifices = new List<BaseCard>();
         internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
         internal List<BaseCard> m_assists = new List<BaseCard>();
+        internal List<BaseCard> m_library = new List<BaseCard>();
+        internal List<BaseCard> m_graveyard = new List<BaseCard>();
 
         /// <summary>
         /// Return a collection of cards on hand.
@@ -68,7 +68,7 @@ namespace TouhouSpring
 
         public string Name
         {
-            get { return m_profile.Name; }
+            get; private set;
         }
 
         public int Health
@@ -91,11 +91,11 @@ namespace TouhouSpring
             get; private set;
         }
 
-        internal Player(Profile profile, Game game)
+        internal Player(string name, Game game)
         {
-            if (profile == null)
+            if (String.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("profile");
+                throw new ArgumentNullException("name");
             }
             else if (game == null)
             {
@@ -106,10 +106,10 @@ namespace TouhouSpring
             CardsSacrificed = m_sacrifices.ToIndexable();
             CardsOnBattlefield = m_battlefieldCards.ToIndexable();
             Assists = m_assists.ToIndexable();
-            Library = new Pile();
-            Graveyard = new Pile();
+            Library = new Pile(m_library);
+            Graveyard = new Pile(m_graveyard);
 
-            m_profile = profile;
+            Name = name;
             Game = game;
         }
 
@@ -122,10 +122,6 @@ namespace TouhouSpring
             if (deck == null)
             {
                 throw new ArgumentNullException("deck");
-            }
-            else if (!m_profile.Decks.Contains(deck))
-            {
-                throw new ArgumentOutOfRangeException("deck");
             }
 
             // initialize player's library

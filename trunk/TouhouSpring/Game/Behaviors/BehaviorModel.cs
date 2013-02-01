@@ -29,14 +29,9 @@ namespace TouhouSpring.Behaviors
             m_name = null;
         }
 
-        public Type GetBehaviorType()
+        public virtual Type GetBehaviorType()
         {
             return m_bhvModelAttr.BehaviorType;
-        }
-
-        public string GetDescription()
-        {
-            return m_bhvModelAttr.Description;
         }
 
         public IBehavior Instantiate()
@@ -51,7 +46,8 @@ namespace TouhouSpring.Behaviors
 
         private IBehavior Instantiate(bool persistent)
         {
-            var bhv = m_bhvModelAttr.BehaviorType.Assembly.CreateInstance(m_bhvModelAttr.BehaviorType.FullName) as IBehavior;
+            var bhvType = GetBehaviorType();
+            var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as IBehavior;
             (bhv as IInternalBehavior).Initialize(this, persistent);
             return bhv;
         }

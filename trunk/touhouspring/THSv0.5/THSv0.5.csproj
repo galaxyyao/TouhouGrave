@@ -57,7 +57,6 @@
     <Compile Include="Behaviors\Passive_DrawCardOnPlay.cs" />
     <Compile Include="Behaviors\Passive_FreeRedeem.cs" />
     <Compile Include="Behaviors\Passive_PillSummon.cs" />
-    <Compile Include="Behaviors\Passive_NoPlayerAttacker.cs" />
     <Compile Include="Behaviors\Passive_RegenerateFull.cs" />
     <Compile Include="Behaviors\Passive_Shield_NDamage.cs" />
     <Compile Include="Behaviors\Passive_UnRedeemable.cs" />

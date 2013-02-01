@@ -7,7 +7,6 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private Profile[] m_profiles;
         private Player[] m_players;
 
         private int m_actingPlayer = -1;
@@ -20,6 +19,14 @@ namespace TouhouSpring
             get
             {
                 return m_actingPlayer != -1 ? m_players[m_actingPlayer] : null;
+            }
+        }
+
+        public Player NextActingPlayer
+        {
+            get
+            {
+                return m_actingPlayer != -1 ? m_players[(m_actingPlayer + 1) % m_players.Length] : null;
             }
         }
 
@@ -38,7 +45,7 @@ namespace TouhouSpring
         /// </summary>
         public IIndexable<Player> Players
         {
-            get { return m_players.ToIndexable(); }
+            get; private set;
         }
     }
 }

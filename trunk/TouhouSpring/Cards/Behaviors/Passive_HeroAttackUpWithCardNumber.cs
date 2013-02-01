@@ -10,7 +10,7 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.Kill>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private Warrior.ValueModifier m_attackModifier = null;
+        private Warrior.ValueModifier m_attackModifier;
 
         public void RunEpilog(Commands.PlayCard command)
         {
@@ -29,6 +29,11 @@ namespace TouhouSpring.Behaviors
             {
                 UpdateNumber();
             }
+        }
+
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            m_attackModifier = (original as Passive_HeroAttackUpWithCardNumber).m_attackModifier;
         }
 
         private void UpdateNumber()

@@ -45,6 +45,14 @@ namespace TouhouSpring.Behaviors
             }
         }
 
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            var other = original as Spell_PreventAllDamageInOneRound;
+            m_isProtected = other.m_isProtected;
+            m_currentPlayer = m_currentPlayer != null ? Host.Owner.Game.Players[other.Host.Owner.Game.Players.IndexOf(other.m_currentPlayer)] : null;
+            m_spellCaster = m_currentPlayer != null ? Host.Owner.Game.Players[other.Host.Owner.Game.Players.IndexOf(other.m_spellCaster)] : null;
+        }
+
         [BehaviorModel(typeof(Spell_PreventAllDamageInOneRound), DefaultName = "梦想封印")]
         public class ModelType : BehaviorModel
         { }

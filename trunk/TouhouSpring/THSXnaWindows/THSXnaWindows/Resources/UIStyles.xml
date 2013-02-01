@@ -40,7 +40,7 @@
     <Layout Id="World2D">
       <!--This layer is for drawing the 2D elements of the game (e.g. spell buttons)-->
       <Transform Matrix="#Game.UICamera.Transform#" />
-      <Layout Id="Game.ActingPlayer.Hand" Left="180" Top="630">
+      <Layout Id="Game.ActingLocalPlayer.Hand" Left="180" Top="630">
         <Transform Scaling="84,-84" />
         <Zone Span="8" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,8,12" />
       </Layout>

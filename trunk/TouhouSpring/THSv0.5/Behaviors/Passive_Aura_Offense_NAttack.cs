@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.ActivateAssist>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private readonly Warrior.ValueModifier m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+        private Warrior.ValueModifier m_attackMod;
 
         public void RunEpilog(Commands.ActivateAssist command)
         {
@@ -53,6 +53,16 @@ namespace TouhouSpring.Behaviors
                         new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
                 }
             }
+        }
+
+        protected override void OnInitialize()
+        {
+            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+        }
+
+        protected override void OnTransferFrom(IBehavior original)
+        {
+            m_attackMod = (original as Passive_Aura_Offense_NAttack).m_attackMod;
         }
 
         [BehaviorModel(typeof(Passive_Aura_Offense_NAttack), Category = "v0.5/Passive", DefaultName = "进攻光环")]

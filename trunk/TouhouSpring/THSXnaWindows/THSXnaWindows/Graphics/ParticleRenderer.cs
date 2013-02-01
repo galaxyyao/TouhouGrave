@@ -125,6 +125,9 @@ namespace TouhouSpring.Graphics
             var oldDepth = device.DepthStencilState;
             device.DepthStencilState = m_depthDisabled;
 
+            var oldRasterizer = device.RasterizerState;
+            device.RasterizerState = instance.System.DoubleFaced ? RasterizerState.CullNone : RasterizerState.CullCounterClockwise;
+
             SetDataOptions hint = SetDataOptions.NoOverwrite;
             if (m_bufferWriteCursor + numParticles > BufferCapacity)
             {
@@ -148,6 +151,7 @@ namespace TouhouSpring.Graphics
 
             device.BlendState = oldBlend;
             device.DepthStencilState = oldDepth;
+            device.RasterizerState = oldRasterizer;
         }
 
         public override void Startup()

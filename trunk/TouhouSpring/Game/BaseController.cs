@@ -19,8 +19,12 @@ namespace TouhouSpring
         }
 
         protected BaseController()
+            : this(false)
+        { }
+
+        protected BaseController(bool syncMode)
         {
-            InitializeMessaging();
+            InitializeMessaging(syncMode);
         }
     }
 }

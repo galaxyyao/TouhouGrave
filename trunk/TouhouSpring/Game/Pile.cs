@@ -5,13 +5,13 @@ using System.Text;
 
 namespace TouhouSpring
 {
-	/// <summary>
-	/// Represents a group of cards piling up together.
-	/// </summary>
+    /// <summary>
+    /// Represents a group of cards piling up together.
+    /// </summary>
     public class Pile
     {
-		// list start from bottom to top
-		private List<BaseCard> m_orderedCards = new List<BaseCard>();
+        // list start from bottom to top
+        private List<BaseCard> m_orderedCards;
 
         /// <summary>
         /// Get the number of cards in Pile
@@ -27,101 +27,111 @@ namespace TouhouSpring
             return m_orderedCards.Contains(card);
         }
 
-		/// <summary>
-		/// Get the card at the bottom of the pile.
-		/// </summary>
-		public BaseCard Bottom
-		{
-			get
-			{
-				if (m_orderedCards.Count == 0)
-				{
-					throw new InvalidOperationException("The pile is empty.");
-				}
+        /// <summary>
+        /// Get the card at the bottom of the pile.
+        /// </summary>
+        public BaseCard Bottom
+        {
+            get
+            {
+                if (m_orderedCards.Count == 0)
+                {
+                    throw new InvalidOperationException("The pile is empty.");
+                }
 
-				return m_orderedCards[0];
-			}
-		}
-
-		/// <summary>
-		/// Get the card at the top of the pile.
-		/// </summary>
-		public BaseCard Top
-		{
-			get
-			{
-				if (m_orderedCards.Count == 0)
-				{
-					throw new InvalidOperationException("The pile is empty.");
-				}
-
-				return m_orderedCards.Last();
-			}
-		}
-
-		/// <summary>
-		/// Add one card to the bottom of the pile.
-		/// </summary>
-		/// <param name="card">The card to be added.</param>
-		public void AddCardToBottom(BaseCard card)
-		{
-			m_orderedCards.Insert(0, card);
-		}
-
-		/// <summary>
-		/// Add one card to the top of the pile.
-		/// </summary>
-		/// <param name="card">The card to be added.</param>
-		public void AddCardToTop(BaseCard card)
-		{
-			m_orderedCards.Add(card);
-		}
-
-		/// <summary>
-		/// Remove one card from the bottom of the pile.
-		/// </summary>
-		/// <returns>The card just removed.</returns>
-		public BaseCard RemoveCardFromBottom()
-		{
-			BaseCard bottom = Bottom;
-			m_orderedCards.RemoveAt(0);
-			return bottom;
-		}
-
-		/// <summary>
-		/// Remove one card from the top of the pile.
-		/// </summary>
-		/// <returns>The card just removed.</returns>
-		public BaseCard RemoveCardFromTop()
-		{
-			BaseCard top = Top;
-			m_orderedCards.RemoveAt(m_orderedCards.Count - 1);
-			return top;
-		}
-
-		/// <summary>
-		/// Shuffle the cards in the pile.
-		/// </summary>
-        public void Shuffle(Random random)
-		{
-			for (int i = 0; i < m_orderedCards.Count; ++i)
-			{
-				int swapIndex = random.Next(i, m_orderedCards.Count);
-				if (swapIndex != i)
-				{
-					BaseCard temp = m_orderedCards[i];
-					m_orderedCards[i] = m_orderedCards[swapIndex];
-					m_orderedCards[swapIndex] = temp;
-				}
-			}
+                return m_orderedCards[0];
+            }
         }
 
-		/// <summary>
-		/// Query cards from the pile meeting the given predication.
-		/// </summary>
-		/// <param name="p">The predication.</param>
-		/// <returns>A collection of the queried cards.</returns>
-		public BaseCard[] QueryCards(Predicate<BaseCard> predicate)
+        /// <summary>
+        /// Get the card at the top of the pile.
+        /// </summary>
+        public BaseCard Top
+        {
+            get
+            {
+                if (m_orderedCards.Count == 0)
+                {
+                    throw new InvalidOperationException("The pile is empty.");
+                }
+
+                return m_orderedCards.Last();
+            }
+        }
+
+        public Pile(List<BaseCard> cardList)
+        {
+            if (cardList == null)
+            {
+                throw new ArgumentNullException("cardList");
+            }
+
+            m_orderedCards = cardList;
+        }
+
+        /// <summary>
+        /// Add one card to the bottom of the pile.
+        /// </summary>
+        /// <param name="card">The card to be added.</param>
+        public void AddCardToBottom(BaseCard card)
+        {
+            m_orderedCards.Insert(0, card);
+        }
+
+        /// <summary>
+        /// Add one card to the top of the pile.
+        /// </summary>
+        /// <param name="card">The card to be added.</param>
+        public void AddCardToTop(BaseCard card)
+        {
+            m_orderedCards.Add(card);
+        }
+
+        /// <summary>
+        /// Remove one card from the bottom of the pile.
+        /// </summary>
+        /// <returns>The card just removed.</returns>
+        public BaseCard RemoveCardFromBottom()
+        {
+            BaseCard bottom = Bottom;
+            m_orderedCards.RemoveAt(0);
+            return bottom;
+        }
+
+        /// <summary>
+        /// Remove one card from the top of the pile.
+        /// </summary>
+        /// <returns>The card just removed.</returns>
+        public BaseCard RemoveCardFromTop()
+        {
+            BaseCard top = Top;
+            m_orderedCards.RemoveAt(m_orderedCards.Count - 1);
+            return top;
+        }
+
+        /// <summary>
+        /// Shuffle the cards in the pile.
+        /// </summary>
+        public void Shuffle(Random random)
+        {
+            for (int i = 0; i < m_orderedCards.Count; ++i)
+            {
+                int swapIndex = random.Next(i, m_orderedCards.Count);
+                if (swapIndex != i)
+                {
+                    BaseCard temp = m_orderedCards[i];
+                    m_orderedCards[i] = m_orderedCards[swapIndex];
+                    m_orderedCards[swapIndex] = temp;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Query cards from the pile meeting the given predication.
+        /// </summary>
+        /// <param name="p">The predication.</param>
+        /// <returns>A collection of the queried cards.</returns>
+        public BaseCard[] QueryCards(Predicate<BaseCard> predicate)
         {
             return (from card in m_orderedCards where predicate(card) select card).ToArray();
         }

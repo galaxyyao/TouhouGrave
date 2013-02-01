@@ -9,6 +9,9 @@ namespace TouhouSpring.Interactions
 {
     public class BaseInteraction
     {
+        // This member is only used when the interaction is run in sync mode
+        private Messaging.Message m_syncModeMessage;
+
         public Game Game
         {
             get; private set;
@@ -42,16 +45,29 @@ namespace TouhouSpring.Interactions
         protected TResult NotifyAndWait<TResult>()
         {
             string msgText = GetMessageText(GetType());
+            var outboxMsg = new Messaging.Message(msgText, this);
+            Messaging.Message inboxMsg;
 
-            new Messaging.Message(msgText, this).SendTo(Game.Controller.Inbox);
-            var msg = Game.LetterBox.WaitForNextMessage();
-            Debug.Assert(msg != null);
-
-            if (msg.Text != msgText)
+            if (Game.LetterBox != null && Game.Controller.Inbox != null)
             {
-                throw new Messaging.UnexpectedMessageException(msgText, msg.Text);
+                outboxMsg.SendTo(Game.Controller.Inbox);
+                inboxMsg = Game.LetterBox.WaitForNextMessage();
             }
-            return (TResult)msg.Attachment;
+            else
+            {
+                // run interaction without inter-thread communication (sync mode)
+                Game.Controller.ProcessMessage(outboxMsg);
+                inboxMsg = m_syncModeMessage;
+                m_syncModeMessage = null;
+            }
+
+            Debug.Assert(inboxMsg != null);
+
+            if (inboxMsg.Text != msgText)
+            {
+                throw new Messaging.UnexpectedMessageException(msgText, inboxMsg.Text);
+            }
+            return (TResult)inboxMsg.Attachment;
         }
 
         /// <summary>
@@ -63,8 +79,16 @@ namespace TouhouSpring.Interactions
         protected void RespondBack<TResult>(TResult result)
         {
             string msgText = GetMessageText(GetType());
+            var msg = new Messaging.Message(msgText, result);
 
-            new Messaging.Message(msgText, result).SendTo(Game.LetterBox);
+            if (Game.LetterBox != null)
+            {
+                msg.SendTo(Game.LetterBox);
+            }
+            else
+            {
+                m_syncModeMessage = msg;
+            }
         }
     }
 }

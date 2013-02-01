@@ -42,8 +42,13 @@ namespace TouhouSpring.Agents
 
         public override bool OnTurnEnded(Interactions.NotifyPlayerEvent io)
         {
-            GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.PlayerTransition(), io);
-            return true;
+            var nextPid = io.Game.Players.IndexOf(io.Game.NextActingPlayer);
+            if ((io.Game.Controller as XnaUIController).Agents[nextPid] is LocalPlayerAgent)
+            {
+                GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.PlayerTransition(), io);
+                return true;
+            }
+            return false;
         }
 
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
