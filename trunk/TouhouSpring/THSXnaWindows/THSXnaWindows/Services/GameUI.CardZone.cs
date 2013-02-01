@@ -182,7 +182,7 @@ namespace TouhouSpring.Services
         }
 
         private PlayerZones[] m_playerZones;
-        private CardZone m_actingPlayerHandZone;
+        private CardZone m_actingLocalPlayerHandZone;
         private CardZone m_zoomedInZone;
 
         private void InitializeCardZones()
@@ -195,7 +195,7 @@ namespace TouhouSpring.Services
                 m_playerZones[i] = new PlayerZones(Game.Players[i], world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
             }
 
-            m_actingPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingPlayer.Hand"]);
+            m_actingLocalPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingLocalPlayer.Hand"]);
             m_zoomedInZone = new ZoomedInZone(InGameUIPage.Style.ChildIds["ZoomedIn"]);
         }
 
@@ -209,7 +209,7 @@ namespace TouhouSpring.Services
             for (int i = 0; i < m_playerZones.Length; ++i)
             {
                 var pzTransform = m_playerZones[i].UIRoot as UI.ITransformNode;
-                pzTransform.Transform = Game.ActingPlayer == Game.Players[i] ? Matrix.Identity : Matrix.CreateRotationZ(MathHelper.Pi);
+                pzTransform.Transform = ShallPlayerBeRevealed(Game.Players[i]) ? Matrix.Identity : Matrix.CreateRotationZ(MathHelper.Pi);
             }
         }
 
@@ -243,9 +243,9 @@ namespace TouhouSpring.Services
                 }
                 else if (card.Owner.CardsOnHand.Contains(card) || card.Owner.Hero == card)
                 {
-                    if (Game.ActingPlayer == card.Owner)
+                    if (ShallPlayerBeRevealed(card.Owner))
                     {
-                        locationAnim.SetNextLocation(m_actingPlayerHandZone, card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1);
+                        locationAnim.SetNextLocation(m_actingLocalPlayerHandZone, card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1);
                     }
                     else
                     {
@@ -264,7 +264,7 @@ namespace TouhouSpring.Services
                 pz.Battlefield.Rearrange();
                 pz.Sacrifice.Rearrange();
             }
-            m_actingPlayerHandZone.Rearrange();
+            m_actingLocalPlayerHandZone.Rearrange();
         }
     }
 }

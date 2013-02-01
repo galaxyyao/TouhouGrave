@@ -22,6 +22,14 @@ namespace TouhouSpring
             }
         }
 
+        public Player NextActingPlayer
+        {
+            get
+            {
+                return m_actingPlayer != -1 ? m_players[(m_actingPlayer + 1) % m_players.Length] : null;
+            }
+        }
+
         public IEnumerable<Player> ActingPlayerEnemies
         {
             get

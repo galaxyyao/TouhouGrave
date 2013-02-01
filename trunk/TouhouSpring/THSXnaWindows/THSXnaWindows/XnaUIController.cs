@@ -11,9 +11,15 @@ namespace TouhouSpring
     {
         private Agents.BaseAgent[] m_agents;
 
+        public IIndexable<Agents.BaseAgent> Agents
+        {
+            get; private set;
+        }
+
         public XnaUIController(Agents.BaseAgent[] agents)
         {
             m_agents = agents;
+            Agents = m_agents.ToIndexable();
         }
 
         [Interactions.MessageHandler(typeof(Interactions.NotifyOnly))]
