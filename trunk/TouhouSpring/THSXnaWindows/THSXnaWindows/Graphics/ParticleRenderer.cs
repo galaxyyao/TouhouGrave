@@ -126,7 +126,7 @@ namespace TouhouSpring.Graphics
             device.DepthStencilState = m_depthDisabled;
 
             var oldRasterizer = device.RasterizerState;
-            device.RasterizerState = RasterizerState.CullNone;
+            device.RasterizerState = instance.System.DoubleFaced ? RasterizerState.CullNone : RasterizerState.CullCounterClockwise;
 
             SetDataOptions hint = SetDataOptions.NoOverwrite;
             if (m_bufferWriteCursor + numParticles > BufferCapacity)

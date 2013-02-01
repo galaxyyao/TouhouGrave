@@ -3,6 +3,7 @@
   <Asset Type="Particle:ParticleSystem">
     <TextureName>Textures/CardHighlight</TextureName>
     <BlendMode>Additive</BlendMode>
+    <DoubleFaced>true</DoubleFaced>
     <Effects>
       <Effect>
         <Name>main</Name>

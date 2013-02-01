@@ -190,6 +190,9 @@ namespace TouhouSpring.Particle
             var oldDepth = GraphicsDevice.DepthStencilState;
             GraphicsDevice.DepthStencilState = m_depthDisabled;
 
+            var oldRasterizer = GraphicsDevice.RasterizerState;
+            GraphicsDevice.RasterizerState = SystemInstance.System.DoubleFaced ? RasterizerState.CullNone : RasterizerState.CullCounterClockwise;
+
             foreach (var pass in m_effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -198,6 +201,7 @@ namespace TouhouSpring.Particle
 
             GraphicsDevice.BlendState = oldBlend;
             GraphicsDevice.DepthStencilState = oldDepth;
+            GraphicsDevice.RasterizerState = oldRasterizer;
         }
 
         private void UpdateVertices()

@@ -3,6 +3,7 @@
   <Asset Type="Particle:ParticleSystem">
     <TextureName>atlas:Textures/Particles/Particles</TextureName>
     <BlendMode>Additive</BlendMode>
+    <DoubleFaced>false</DoubleFaced>
     <Effects>
       <Effect>
         <Name>Main</Name>

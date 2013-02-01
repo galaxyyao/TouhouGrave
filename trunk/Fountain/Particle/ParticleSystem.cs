@@ -38,6 +38,11 @@ namespace TouhouSpring.Particle
             get; set;
         }
 
+        public bool DoubleFaced
+        {
+            get; set;
+        }
+
 #if WINDOWS
         [System.ComponentModel.Browsable(false)]
 #endif
