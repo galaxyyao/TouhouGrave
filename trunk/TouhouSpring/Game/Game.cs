@@ -100,7 +100,7 @@ namespace TouhouSpring
             LetterBox = new Messaging.LetterBox();
 
             // run the game flow in another thread
-            m_gameFlowThread = new Thread(new ThreadStart(GameFlowMain))
+            m_gameFlowThread = new Thread(GameFlowMain)
             {
                 IsBackground = true
             };

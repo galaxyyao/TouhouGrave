@@ -25,13 +25,74 @@ namespace TouhouSpring.Agents
             }
         }
 
+        private Messaging.LetterBox m_letterbox = new Messaging.LetterBox();
+
         private Game.BackupPoint m_lastBackupPoint;
         private Game m_lastBackupedGame;
         private Simulation.Context.Branch m_stage1Plan;
         private Simulation.Context.Branch m_stage2Plan;
         private Simulation.Context.Branch m_otherPlan;
 
+        public AIAgent()
+        {
+            var thread = new System.Threading.Thread(AIThread)
+            {
+                IsBackground = true
+            };
+            thread.Start();
+        }
+
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
+        {
+            new Messaging.Message("OnTacticalPhase", io).SendTo(m_letterbox);
+        }
+
+        public override void OnSelectCards(Interactions.SelectCards io)
+        {
+            new Messaging.Message("OnSelectCards", io).SendTo(m_letterbox);
+        }
+
+        public override void OnMessageBox(Interactions.MessageBox io)
+        {
+            if (io.Buttons == Interactions.MessageBoxButtons.OK)
+            {
+                io.Respond(Interactions.MessageBoxButtons.OK);
+                return;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public override void OnGameBackup(Game.BackupPoint backupPoint, Game game)
+        {
+            m_lastBackupPoint = backupPoint;
+            m_lastBackupedGame = game.Clone();
+        }
+
+        private void AIThread()
+        {
+            while (true)
+            {
+                var msg = m_letterbox.WaitForNextMessage();
+                var io = msg.Attachment as Interactions.BaseInteraction;
+
+                switch (msg.Text)
+                {
+                    case "OnTacticalPhase":
+                        TacticalPhasePlanner(io as Interactions.TacticalPhase);
+                        break;
+
+                    case "OnSelectCards":
+                        SelectCardsPlanner(io as Interactions.SelectCards);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void TacticalPhasePlanner(Interactions.TacticalPhase io)
         {
             // sacrifice
             var sacrifice = Sacrifice_MakeChoice2(io);
@@ -93,7 +154,7 @@ namespace TouhouSpring.Agents
             io.RespondPass();
         }
 
-        public override void OnSelectCards(Interactions.SelectCards io)
+        private void SelectCardsPlanner(Interactions.SelectCards io)
         {
             Simulation.Context.Branch plan;
 
@@ -131,23 +192,6 @@ namespace TouhouSpring.Agents
 
             Debug.Assert(plan.ChoicePath[0] is Simulation.SelectCardChoice);
             MakeChoice(plan, io);
-        }
-
-        public override void OnMessageBox(Interactions.MessageBox io)
-        {
-            if (io.Buttons == Interactions.MessageBoxButtons.OK)
-            {
-                io.Respond(Interactions.MessageBoxButtons.OK);
-                return;
-            }
-
-            throw new NotImplementedException();
-        }
-
-        public override void OnGameBackup(Game.BackupPoint backupPoint, Game game)
-        {
-            m_lastBackupPoint = backupPoint;
-            m_lastBackupedGame = game.Clone();
         }
 
         private void MakeChoice(Simulation.Context.Branch plan, Interactions.BaseInteraction io)
