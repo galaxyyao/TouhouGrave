@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using System.Threading;
 
 namespace TouhouSpring.Services
 {
@@ -14,6 +15,8 @@ namespace TouhouSpring.Services
     partial class MenuUI : GameService
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
+
+        GameStartupParameters[] param = new GameStartupParameters[2];
 
         public UI.TransformNode Root
         {
@@ -76,104 +79,22 @@ namespace TouhouSpring.Services
             #endregion
 
             #region FreeMode Menu
+
+            PrepareGameStartupParam();
+
             m_pages["FreeMode"].MenuClicked += (id, item) =>
             {
-                if (id == "vsai" || id == "hotseat" || id == "vsnetwork")
+                if (id == "vsai" || id == "hotseat")
                 {
                     CurrentPage = null;
                     // detach menu ui
                     Root.Dispatcher = null;
 
-                    GameStartupParameters[] param = new GameStartupParameters[2];
-                    var cardDb = GameApp.Service<CardDatabase>();
-
-                    Deck deck1 = new Deck("Profile1");
-                    deck1.Add(cardDb.GetModel("hatate"));
-                    deck1.Add(cardDb.GetModel("hatate"));
-                    deck1.Add(cardDb.GetModel("hatate"));
-                    deck1.Add(cardDb.GetModel("koakuma"));
-                    deck1.Add(cardDb.GetModel("koakuma"));
-                    deck1.Add(cardDb.GetModel("koakuma"));
-                    deck1.Add(cardDb.GetModel("mokou"));
-                    deck1.Add(cardDb.GetModel("mokou"));
-                    deck1.Add(cardDb.GetModel("mokou"));
-                    deck1.Add(cardDb.GetModel("remilia"));
-                    deck1.Add(cardDb.GetModel("remilia"));
-                    deck1.Add(cardDb.GetModel("remilia"));
-                    deck1.Add(cardDb.GetModel("yuyuko"));
-                    deck1.Add(cardDb.GetModel("yuyuko"));
-                    deck1.Add(cardDb.GetModel("yuyuko"));
-                    deck1.Add(cardDb.GetModel("reimu"));
-                    deck1.Add(cardDb.GetModel("reimu"));
-                    deck1.Add(cardDb.GetModel("reimu"));
-                    deck1.Add(cardDb.GetModel("suika"));
-                    deck1.Add(cardDb.GetModel("suika"));
-                    deck1.Add(cardDb.GetModel("suika"));
-                    deck1.Add(cardDb.GetModel("youmu"));
-                    deck1.Add(cardDb.GetModel("youmu"));
-                    deck1.Add(cardDb.GetModel("youmu"));
-                    deck1.Add(cardDb.GetModel("kaguya"));
-                    deck1.Add(cardDb.GetModel("kaguya"));
-                    deck1.Add(cardDb.GetModel("kaguya"));
-                    deck1.Add(cardDb.GetModel("flandre"));
-                    deck1.Add(cardDb.GetModel("flandre"));
-                    deck1.Add(cardDb.GetModel("flandre"));
-                    deck1.Assists.Add(cardDb.GetModel("eirin"));
-                    deck1.Assists.Add(cardDb.GetModel("patchouli"));
-
-                    Deck deck2 = new Deck("Profile2");
-                    deck2.Add(cardDb.GetModel("lunar"));
-                    deck2.Add(cardDb.GetModel("lunar"));
-                    deck2.Add(cardDb.GetModel("lunar"));
-                    deck2.Add(cardDb.GetModel("komachi"));
-                    deck2.Add(cardDb.GetModel("komachi"));
-                    deck2.Add(cardDb.GetModel("komachi"));
-                    deck2.Add(cardDb.GetModel("sakuya"));
-                    deck2.Add(cardDb.GetModel("sakuya"));
-                    deck2.Add(cardDb.GetModel("sakuya"));
-                    deck2.Add(cardDb.GetModel("meirin"));
-                    deck2.Add(cardDb.GetModel("meirin"));
-                    deck2.Add(cardDb.GetModel("meirin"));
-                    deck2.Add(cardDb.GetModel("sanae"));
-                    deck2.Add(cardDb.GetModel("sanae"));
-                    deck2.Add(cardDb.GetModel("sanae"));
-                    deck2.Add(cardDb.GetModel("kanako"));
-                    deck2.Add(cardDb.GetModel("kanako"));
-                    deck2.Add(cardDb.GetModel("kanako"));
-                    deck2.Add(cardDb.GetModel("cirno"));
-                    deck2.Add(cardDb.GetModel("cirno"));
-                    deck2.Add(cardDb.GetModel("cirno"));
-                    deck2.Add(cardDb.GetModel("keine"));
-                    deck2.Add(cardDb.GetModel("keine"));
-                    deck2.Add(cardDb.GetModel("keine"));
-                    deck2.Add(cardDb.GetModel("nightbug"));
-                    deck2.Add(cardDb.GetModel("nightbug"));
-                    deck2.Add(cardDb.GetModel("nightbug"));
-                    deck2.Add(cardDb.GetModel("marisa"));
-                    deck2.Add(cardDb.GetModel("marisa"));
-                    deck2.Add(cardDb.GetModel("marisa"));
-                    deck2.Assists.Add(cardDb.GetModel("yakumo"));
-                    deck2.Assists.Add(cardDb.GetModel("tenshi"));
-
-                    param[0] = new GameStartupParameters()
-                    {
-                        m_profile = new Profile() { Name = "夜空" },
-                        m_deck = deck1
-                    };
-                    param[0].m_profile.Decks.Add(deck1);
-
-                    param[1] = new GameStartupParameters()
-                    {
-                        m_profile = new Profile() { Name = "星奈" },
-                        m_deck = deck2
-                    };
-                    param[1].m_profile.Decks.Add(deck2);
-
                     switch (id)
                     {
                         case "vsai":
                             GameApp.Service<GameManager>().StartGame(param
-                                ,new Agents.BaseAgent[] {
+                                , new Agents.BaseAgent[] {
                                     new Agents.LocalPlayerAgent(),
                                     new Agents.AIAgent()
                                 });
@@ -185,16 +106,6 @@ namespace TouhouSpring.Services
                                     new Agents.LocalPlayerAgent()
                                 });
                             break;
-                        case "vsnetwork":
-                            Network.Client client = new Network.Client();
-                            client.Connect("127.0.0.1", 13389);
-                            
-                            GameApp.Service<GameManager>().StartGame(param
-                                , new Agents.BaseAgent[] {
-                                    new Agents.NetworkLocalPlayerAgent(client),
-                                    new Agents.NetworkRemoteAgent(client)
-                                });
-                            break;
                         default:
                             throw new InvalidOperationException("Invalid menu item");
                     }
@@ -202,6 +113,18 @@ namespace TouhouSpring.Services
                 else if (id == "vsnetwork")
                 {
                     CurrentPage = m_pages["Network"];
+
+                    Network.Client client = new Network.Client();
+                    client.Connect("127.0.0.1", 13389);
+
+                    Thread listenThread=new Thread(()=>ServerContact(client));
+                    listenThread.Start();
+                    listenThread.Join();
+                    GameApp.Service<GameManager>().StartGame(param
+                            , new Agents.BaseAgent[] {
+                                    new Agents.NetworkLocalPlayerAgent(client),
+                                    new Agents.NetworkRemoteAgent(client)
+                                });
                 }
                 else if (id == "back")
                 {
@@ -210,7 +133,7 @@ namespace TouhouSpring.Services
             };
             #endregion
 
-            #region FreeMode Menu
+            #region Network Menu
             m_pages["Network"].MenuClicked += (id, item) =>
             {
                 if (id == "backtofreemode")
@@ -235,6 +158,107 @@ namespace TouhouSpring.Services
             #endregion
 
             CurrentPage = m_pages["MainMenu"];
+        }
+
+        private void PrepareGameStartupParam()
+        {
+            var cardDb = GameApp.Service<CardDatabase>();
+
+            Deck deck1 = new Deck("Profile1");
+            deck1.Add(cardDb.GetModel("hatate"));
+            deck1.Add(cardDb.GetModel("hatate"));
+            deck1.Add(cardDb.GetModel("hatate"));
+            deck1.Add(cardDb.GetModel("koakuma"));
+            deck1.Add(cardDb.GetModel("koakuma"));
+            deck1.Add(cardDb.GetModel("koakuma"));
+            deck1.Add(cardDb.GetModel("mokou"));
+            deck1.Add(cardDb.GetModel("mokou"));
+            deck1.Add(cardDb.GetModel("mokou"));
+            deck1.Add(cardDb.GetModel("remilia"));
+            deck1.Add(cardDb.GetModel("remilia"));
+            deck1.Add(cardDb.GetModel("remilia"));
+            deck1.Add(cardDb.GetModel("yuyuko"));
+            deck1.Add(cardDb.GetModel("yuyuko"));
+            deck1.Add(cardDb.GetModel("yuyuko"));
+            deck1.Add(cardDb.GetModel("reimu"));
+            deck1.Add(cardDb.GetModel("reimu"));
+            deck1.Add(cardDb.GetModel("reimu"));
+            deck1.Add(cardDb.GetModel("suika"));
+            deck1.Add(cardDb.GetModel("suika"));
+            deck1.Add(cardDb.GetModel("suika"));
+            deck1.Add(cardDb.GetModel("youmu"));
+            deck1.Add(cardDb.GetModel("youmu"));
+            deck1.Add(cardDb.GetModel("youmu"));
+            deck1.Add(cardDb.GetModel("kaguya"));
+            deck1.Add(cardDb.GetModel("kaguya"));
+            deck1.Add(cardDb.GetModel("kaguya"));
+            deck1.Add(cardDb.GetModel("flandre"));
+            deck1.Add(cardDb.GetModel("flandre"));
+            deck1.Add(cardDb.GetModel("flandre"));
+            deck1.Assists.Add(cardDb.GetModel("eirin"));
+            deck1.Assists.Add(cardDb.GetModel("patchouli"));
+
+            Deck deck2 = new Deck("Profile2");
+            deck2.Add(cardDb.GetModel("lunar"));
+            deck2.Add(cardDb.GetModel("lunar"));
+            deck2.Add(cardDb.GetModel("lunar"));
+            deck2.Add(cardDb.GetModel("komachi"));
+            deck2.Add(cardDb.GetModel("komachi"));
+            deck2.Add(cardDb.GetModel("komachi"));
+            deck2.Add(cardDb.GetModel("sakuya"));
+            deck2.Add(cardDb.GetModel("sakuya"));
+            deck2.Add(cardDb.GetModel("sakuya"));
+            deck2.Add(cardDb.GetModel("meirin"));
+            deck2.Add(cardDb.GetModel("meirin"));
+            deck2.Add(cardDb.GetModel("meirin"));
+            deck2.Add(cardDb.GetModel("sanae"));
+            deck2.Add(cardDb.GetModel("sanae"));
+            deck2.Add(cardDb.GetModel("sanae"));
+            deck2.Add(cardDb.GetModel("kanako"));
+            deck2.Add(cardDb.GetModel("kanako"));
+            deck2.Add(cardDb.GetModel("kanako"));
+            deck2.Add(cardDb.GetModel("cirno"));
+            deck2.Add(cardDb.GetModel("cirno"));
+            deck2.Add(cardDb.GetModel("cirno"));
+            deck2.Add(cardDb.GetModel("keine"));
+            deck2.Add(cardDb.GetModel("keine"));
+            deck2.Add(cardDb.GetModel("keine"));
+            deck2.Add(cardDb.GetModel("nightbug"));
+            deck2.Add(cardDb.GetModel("nightbug"));
+            deck2.Add(cardDb.GetModel("nightbug"));
+            deck2.Add(cardDb.GetModel("marisa"));
+            deck2.Add(cardDb.GetModel("marisa"));
+            deck2.Add(cardDb.GetModel("marisa"));
+            deck2.Assists.Add(cardDb.GetModel("yakumo"));
+            deck2.Assists.Add(cardDb.GetModel("tenshi"));
+
+            param[0] = new GameStartupParameters()
+            {
+                m_profile = new Profile() { Name = "夜空" },
+                m_deck = deck1
+            };
+            param[0].m_profile.Decks.Add(deck1);
+
+            param[1] = new GameStartupParameters()
+            {
+                m_profile = new Profile() { Name = "星奈" },
+                m_deck = deck2
+            };
+            param[1].m_profile.Decks.Add(deck2);
+        }
+
+        private void ServerContact(Network.Client client)
+        {
+            while (true)
+            {
+                if (client.GetRoomId() != 0)
+                {
+                    break;
+                }
+                Thread.Sleep(100);
+            }
+
+            
         }
 
         private void LoadPage(string id)

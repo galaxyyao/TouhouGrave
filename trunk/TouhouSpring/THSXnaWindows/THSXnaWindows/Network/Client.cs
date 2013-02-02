@@ -12,7 +12,7 @@ namespace TouhouSpring.Network
     {
         private NetClient _client;
 
-        private int RoomNum = 0;
+        private int _roomId = 0;
 
         public Client()
         {
@@ -65,31 +65,54 @@ namespace TouhouSpring.Network
 
                             if (status == NetConnectionStatus.Connected)
                             {
+                                //TODO: Show "Connected" information on UI
                                 ;
                             }
                             else if (status == NetConnectionStatus.Disconnected)
                             {
+                                //TODO: Show "Lost Connection" Information on UI
+                                //TODO: Abort Game Thread and return to Main Menu
                                 ;
                             }
 
-                            string text = im.ReadString();
-                            //Output(status.ToString() + ": " + reason);
+                            string text = status.ToString() + im.ReadString();
                             Debug.Print(text);
                         }
                         break;
                     case NetIncomingMessageType.Data:
                         {
                             string text = im.ReadString();
-                            //Output(chat);
                             Debug.Print(text);
+                            InterpretMessage(text);
                         }
                         break;
                     default:
-                        //Output("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
                         Debug.Print("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
                         break;
                 }
             }
+        }
+
+        private string InterpretMessage(string message)
+        {
+            List<string> parts = message.Split(' ').ToList();
+            switch (parts[1])
+            {
+                case "enterroom":
+                    {
+                        _roomId = Convert.ToInt32(parts[0]);
+                        return string.Format("{0} {1}", _roomId, "roomentered");
+                    }
+                default:
+                    Debug.Print("Invalid argument");
+                    break;
+            }
+            return null;
+        }
+
+        public int GetRoomId()
+        {
+            return _roomId;
         }
     }
 }
