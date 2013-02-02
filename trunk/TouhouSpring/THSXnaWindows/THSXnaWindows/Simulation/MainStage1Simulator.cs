@@ -27,6 +27,8 @@ namespace TouhouSpring.Simulation
             }
         }
 
+        private bool m_stopActivateAssists = false;
+
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
         {
             foreach (var indexedCard in io.PlayCardCandidates
@@ -36,9 +38,13 @@ namespace TouhouSpring.Simulation
                 yield return new PlayCardChoice(indexedCard.Int);
             }
 
-            for (int i = 0; i < io.ActivateAssistCandidates.Count; ++i)
+            if (!m_stopActivateAssists)
             {
-                yield return new ActivateAssistChoice(i);
+                for (int i = 0; i < io.ActivateAssistCandidates.Count; ++i)
+                {
+                    yield return new ActivateAssistChoice(i);
+                }
+                m_stopActivateAssists = true;
             }
 
             for (int i = 0; i < io.CastSpellCandidates.Count; ++i)

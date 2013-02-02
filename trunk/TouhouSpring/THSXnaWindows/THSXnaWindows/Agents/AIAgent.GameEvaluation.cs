@@ -17,18 +17,66 @@ namespace TouhouSpring.Agents
             return sum;
         }
 
-        private double Evaluate(Player player)
+        private double PrintEvaluate(Player player)
         {
             const double PlayerLifeCurvePower = 0.33333;
-            //const double PlayerManaCurvePower = 0.33333;
-            const double HandCountCurvePower = 0.5;
+            const double HandCountCurvePower = 0.22;
             const double CardAttackCurvePower = 0.8;
-            //const double LifeCurvePower = 
 
             const double PlayerLifeWeight = 10;
             const double PlayerManaWeight = 10;
             const double HandCountWeight = 0;
-            const double CardAttackWeight = 5;
+            const double CardAttackWeight = 4;
+
+            // player life
+            double playerLifeScore = player.Health <= 0 ? -10000 : Math.Pow(player.Health, PlayerLifeCurvePower);
+            System.Diagnostics.Debug.WriteLine(String.Format("\tPlayerLife: {0:0.00} x {1:0.00}", playerLifeScore, PlayerLifeWeight));
+
+            // mana pool size
+            double manaPoolScore = Math.Log(player.MaxMana + 1);
+            System.Diagnostics.Debug.WriteLine(String.Format("\tManaPool: {0:0.00} x {1:0.00}", manaPoolScore, PlayerManaWeight));
+
+            // hand count
+            double handCountScore = Math.Pow(player.CardsOnHand.Count, HandCountCurvePower);
+
+            // total card attacks
+            double totalCardAttacks = 0;
+            foreach (var card in player.CardsOnBattlefield)
+            {
+                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
+                if (warrior == null)
+                {
+                    continue;
+                }
+
+                if (card.Behaviors.Has<Behaviors.Neutralize>())
+                {
+                    continue;
+                }
+
+                totalCardAttacks += warrior.Attack;
+            }
+            double cardAttackScore = Math.Pow(totalCardAttacks, CardAttackCurvePower);
+            System.Diagnostics.Debug.WriteLine(String.Format("\tCardAttack: {0:0.00} x {1:0.00}", cardAttackScore, CardAttackWeight));
+
+            // TODO: sum of each card lifes
+
+            return playerLifeScore * PlayerLifeWeight
+                   + manaPoolScore * PlayerManaWeight
+                   + handCountScore * HandCountWeight
+                   + cardAttackScore * CardAttackWeight;
+        }
+
+        private double Evaluate(Player player)
+        {
+            const double PlayerLifeCurvePower = 0.33333;
+            const double HandCountCurvePower = 0.22;
+            const double CardAttackCurvePower = 0.8;
+
+            const double PlayerLifeWeight = 10;
+            const double PlayerManaWeight = 10;
+            const double HandCountWeight = 0;
+            const double CardAttackWeight = 4;
 
             // player life
             double playerLifeScore = player.Health <= 0 ? -10000 : Math.Pow(player.Health, PlayerLifeCurvePower);
@@ -54,7 +102,7 @@ namespace TouhouSpring.Agents
                     continue;
                 }
 
-                totalCardAttacks += (warrior.State == Behaviors.WarriorState.StandingBy ? 1 : 0.5f) * warrior.Attack;
+                totalCardAttacks += warrior.Attack;
             }
             double cardAttackScore = Math.Pow(totalCardAttacks, CardAttackCurvePower);
 

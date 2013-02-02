@@ -22,8 +22,10 @@ namespace TouhouSpring.Behaviors
                     Interactions.SelectCards.SelectMode.Single,
                     "指定1张对手的卡，造成伤害").Run();
 
-                BaseCard castTarget = selectedCard[0];
-                Game.IssueCommands(new Commands.DealDamageToCard(castTarget, Model.DamageToDeal, this));
+                if (selectedCard.Count > 0)
+                {
+                    Game.IssueCommands(new Commands.DealDamageToCard(selectedCard[0], Model.DamageToDeal, this));
+                }
             }
         }
 

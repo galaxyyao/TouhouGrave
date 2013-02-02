@@ -24,9 +24,12 @@ namespace TouhouSpring.Simulation
             {
                 for (int i = 0; i < io.AttackerCandidates.Count; ++i)
                 {
-                    for (int j = 0; j < io.Game.ActingPlayerEnemies.Count(); ++j)
+                    for (int j = 0; j < io.Game.Players.Count(); ++j)
                     {
-                        yield return new AttackPlayerChoice(i, j);
+                        if (io.Game.ActingPlayerEnemies.Contains(io.Game.Players[j]))
+                        {
+                            yield return new AttackPlayerChoice(i, j);
+                        }
                     }
                 }
             }
