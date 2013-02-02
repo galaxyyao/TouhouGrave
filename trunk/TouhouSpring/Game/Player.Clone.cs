@@ -7,7 +7,7 @@ namespace TouhouSpring
 {
     public partial class Player
     {
-        internal Player CloneForSimulation(Game game)
+        internal Player Clone(Game game)
         {
             var clonedPlayer = new Player(Name, game);
 
@@ -16,17 +16,17 @@ namespace TouhouSpring
 
             for (int i = 0; i < m_handSet.Count; ++i)
             {
-                clonedPlayer.m_handSet.Add(m_handSet[i].CloneForSimulation(clonedPlayer));
+                clonedPlayer.m_handSet.Add(m_handSet[i].Clone(clonedPlayer));
             }
 
             for (int i = 0; i < m_sacrifices.Count; ++i)
             {
-                clonedPlayer.m_sacrifices.Add(m_sacrifices[i].CloneForSimulation(clonedPlayer));
+                clonedPlayer.m_sacrifices.Add(m_sacrifices[i].Clone(clonedPlayer));
             }
 
             for (int i = 0; i < m_battlefieldCards.Count; ++i)
             {
-                clonedPlayer.m_battlefieldCards.Add(m_battlefieldCards[i].CloneForSimulation(clonedPlayer));
+                clonedPlayer.m_battlefieldCards.Add(m_battlefieldCards[i].Clone(clonedPlayer));
             }
 
             if (Hero != null)
@@ -36,13 +36,13 @@ namespace TouhouSpring
 
             for (int i = 0; i < m_assists.Count; ++i)
             {
-                clonedPlayer.m_assists.Add(m_assists[i].CloneForSimulation(clonedPlayer));
+                clonedPlayer.m_assists.Add(m_assists[i].Clone(clonedPlayer));
             }
             clonedPlayer.ActivatedAssist = ActivatedAssist != null ? clonedPlayer.m_assists[m_assists.IndexOf(ActivatedAssist)] : null;
 
             for (int i = 0; i < m_library.Count; ++i)
             {
-                clonedPlayer.m_library.Add(m_library[i].CloneForSimulation(clonedPlayer));
+                clonedPlayer.m_library.Add(m_library[i].Clone(clonedPlayer));
             }
 
             // skip cloning graveyard

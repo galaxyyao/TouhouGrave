@@ -18,6 +18,11 @@ namespace TouhouSpring
             get; internal set;
         }
 
+        internal void BackupGame(Game.BackupPoint backupPoint)
+        {
+            OnGameBackup(backupPoint);
+        }
+
         protected BaseController()
             : this(false)
         { }
@@ -26,5 +31,7 @@ namespace TouhouSpring
         {
             InitializeMessaging(syncMode);
         }
+
+        protected virtual void OnGameBackup(Game.BackupPoint backupPoint) { }
     }
 }

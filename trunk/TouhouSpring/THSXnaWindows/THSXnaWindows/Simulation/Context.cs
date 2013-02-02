@@ -54,18 +54,17 @@ namespace TouhouSpring.Simulation
 
             m_simulator = simulator;
             RootGame = game;
-            //RootGame = game.CloneForSimulation(controller);
         }
 
-        public void Start()
+        public void Start(Action<Game> body)
         {
             while (true)
             {
                 m_depth = 0;
                 TryMoveNextChoice();
 
-                var game = RootGame.CloneForSimulation(this);
-                game.RunMainPhase();
+                var game = RootGame.CloneWithController(this);
+                body(game);
 
                 m_branches.Add(new Branch
                 {

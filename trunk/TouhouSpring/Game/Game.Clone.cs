@@ -24,7 +24,12 @@ namespace TouhouSpring
     {
         private static readonly XmlSerializer RandomSerializer = XmlSerializer.FromTypes(new Type[] { typeof(Random) })[0];
 
-        public Game CloneForSimulation(BaseController simulationController)
+        public Game Clone()
+        {
+            return CloneWithController(null);
+        }
+
+        public Game CloneWithController(BaseController controller)
         {
             Game clonedGame = new Game();
 
@@ -40,11 +45,14 @@ namespace TouhouSpring
                 clonedGame.m_remainingManaNeeded[i] = m_remainingManaNeeded[i];
             }
 
-            simulationController.Game = clonedGame;
-
             clonedGame.Players = clonedGame.m_players.ToIndexable();
             clonedGame.Random = CloneRandom();
-            clonedGame.Controller = simulationController;
+
+            if (controller != null)
+            {
+                controller.Game = clonedGame;
+                clonedGame.Controller = controller;
+            }
 
             clonedGame.CurrentPhase = CurrentPhase;
             clonedGame.Round = Round;
@@ -55,7 +63,7 @@ namespace TouhouSpring
             // Clone the data structure (Behaviors will only be default-constructed)
             for (int i = 0; i < numPlayers; ++i)
             {
-                clonedGame.m_players[i] = m_players[i].CloneForSimulation(clonedGame);
+                clonedGame.m_players[i] = m_players[i].Clone(clonedGame);
             }
 
             // Transfer behaviors to cloned ones

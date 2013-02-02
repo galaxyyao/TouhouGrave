@@ -25,6 +25,8 @@ namespace TouhouSpring.Agents
             }
         }
 
+        private Game.BackupPoint m_lastBackupPoint;
+        private Game m_lastBackupedGame;
         private Simulation.Context.Branch m_stage1Plan;
         private Simulation.Context.Branch m_stage2Plan;
         private Simulation.Context.Branch m_otherPlan;
@@ -43,7 +45,7 @@ namespace TouhouSpring.Agents
             if (m_stage1Plan == null)
             {
                 var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage1Simulator());
-                simulationCtx.Start();
+                simulationCtx.Start(game => game.RunMainPhase());
 
                 int pid = io.Game.Players.IndexOf(io.Player);
                 var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
@@ -65,7 +67,7 @@ namespace TouhouSpring.Agents
             if (m_stage2Plan == null)
             {
                 var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage2Simulator());
-                simulationCtx.Start();
+                simulationCtx.Start(game => game.RunMainPhase());
 
                 int pid = io.Game.Players.IndexOf(io.Player);
                 var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
@@ -107,8 +109,15 @@ namespace TouhouSpring.Agents
             {
                 if (m_otherPlan == null || m_otherPlan.ChoicePath.Count == 0)
                 {
-                    var simulationCtx = new Simulation.Context(io.Game, new Simulation.NonMainSimulator());
-                    simulationCtx.Start();
+                    var simulationCtx = new Simulation.Context(m_lastBackupedGame, new Simulation.NonMainSimulator());
+                    if (m_lastBackupPoint == Game.BackupPoint.PreMain)
+                    {
+                        simulationCtx.Start(game => game.RunPreMainPhase());
+                    }
+                    else
+                    {
+                        simulationCtx.Start(game => game.RunPostMainPhase());
+                    }
 
                     int pid = io.Game.Players.IndexOf(io.Player);
                     var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
@@ -133,6 +142,12 @@ namespace TouhouSpring.Agents
             }
 
             throw new NotImplementedException();
+        }
+
+        public override void OnGameBackup(Game.BackupPoint backupPoint, Game game)
+        {
+            m_lastBackupPoint = backupPoint;
+            m_lastBackupedGame = game.Clone();
         }
 
         private void MakeChoice(Simulation.Context.Branch plan, Interactions.BaseInteraction io)

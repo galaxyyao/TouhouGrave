@@ -16,5 +16,7 @@ namespace TouhouSpring.Agents
         public virtual void OnTacticalPhase(Interactions.TacticalPhase io) { }
         public virtual void OnSelectCards(Interactions.SelectCards io) { }
         public virtual void OnMessageBox(Interactions.MessageBox io) { }
+
+        public virtual void OnGameBackup(Game.BackupPoint backupPoint, Game game) { }
     }
 }
