@@ -25,6 +25,7 @@ namespace TouhouSpring.Agents
         }
 
         private Simulation.Context.Branch m_stage1Plan;
+        private Simulation.Context.Branch m_stage2Plan;
 
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
@@ -32,6 +33,7 @@ namespace TouhouSpring.Agents
             var sacrifice = Sacrifice_MakeChoice2(io);
             if (sacrifice != null)
             {
+                System.Diagnostics.Debug.WriteLine("Sacrifice: " + sacrifice.Model.Name);
                 io.RespondSacrifice(sacrifice);
                 return;
             }
@@ -58,6 +60,31 @@ namespace TouhouSpring.Agents
             }
 
             m_stage1Plan = null;
+
+            if (m_stage2Plan == null)
+            {
+                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage2Simulator());
+                simulationCtx.Start();
+
+                int pid = io.Game.Players.IndexOf(io.Player);
+                var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+                m_stage2Plan = scoredBranches.Max().Branch;
+
+                System.Diagnostics.Debug.Assert(m_stage2Plan.ChoicePath.Last() is Simulation.PassChoice);
+                m_stage2Plan.ChoicePath.RemoveAt(m_stage2Plan.ChoicePath.Count - 1);
+            }
+
+            if (m_stage2Plan.ChoicePath.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine(m_stage2Plan.ChoicePath[0].Print(io));
+                m_stage2Plan.ChoicePath[0].Make(io);
+                m_stage2Plan.ChoicePath.RemoveAt(0);
+                return;
+            }
+
+            m_stage2Plan = null;
+
+            System.Diagnostics.Debug.WriteLine("Pass");
             io.RespondPass();
         }
 
