@@ -43,6 +43,10 @@ namespace TouhouSpring.Agents
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
+            if (io.Mode != Interactions.SelectCards.SelectMode.Single)
+            {
+                throw new NotImplementedException("Multiple selection is not implemented yet.");
+            }
             new Messaging.Message("OnSelectCards", io).SendTo(m_letterbox);
         }
 

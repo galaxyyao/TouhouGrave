@@ -23,9 +23,9 @@ namespace TouhouSpring
 
             var io = Program.ActiveInteraction as Interactions.SelectCards;
 
-            for (int i = 0; i < io.SelectFromSet.Count; ++i)
+            for (int i = 0; i < io.Candidates.Count; ++i)
             {
-                Console.WriteLine("> [{0}] {1} ({2})", i + 1, io.SelectFromSet[i].Model.Name, GetLocation(io.SelectFromSet[i]));
+                Console.WriteLine("> [{0}] {1} ({2})", i + 1, io.Candidates[i].Model.Name, GetLocation(io.Candidates[i]));
             }
         }
 

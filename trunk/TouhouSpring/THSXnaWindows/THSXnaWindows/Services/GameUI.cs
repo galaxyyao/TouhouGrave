@@ -85,7 +85,7 @@ namespace TouhouSpring.Services
 
         public override void Update(float deltaTime)
         {
-            if (GameApp.Service<GameManager>().Game != null)
+            if (Game != null)
             {
                 InGameUIPage.Style.Apply();
                 UpdateCardZones();

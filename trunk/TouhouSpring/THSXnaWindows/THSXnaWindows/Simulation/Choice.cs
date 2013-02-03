@@ -224,12 +224,12 @@ namespace TouhouSpring.Simulation
         public override void Make(Interactions.BaseInteraction io)
         {
             var selectCards = io as Interactions.SelectCards;
-            selectCards.Respond(new BaseCard[] { selectCards.SelectFromSet[CardIndex] }.ToIndexable());
+            selectCards.Respond(new BaseCard[] { selectCards.Candidates[CardIndex] }.ToIndexable());
         }
 
         public override string Print(Interactions.BaseInteraction io)
         {
-            return "Select: " + (io as Interactions.SelectCards).SelectFromSet[CardIndex].Model.Name;
+            return "Select: " + (io as Interactions.SelectCards).Candidates[CardIndex].Model.Name;
         }
     }
 }

@@ -71,7 +71,7 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> SelectCards(Interactions.SelectCards io, Context context)
         {
-            for (int i = 0; i < io.SelectFromSet.Count; ++i)
+            for (int i = 0; i < io.Candidates.Count; ++i)
             {
                 yield return new SelectCardChoice(i);
             }
