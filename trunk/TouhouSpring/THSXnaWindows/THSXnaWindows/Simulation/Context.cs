@@ -30,6 +30,11 @@ namespace TouhouSpring.Simulation
             get { return m_branches; }
         }
 
+        public int BranchCount
+        {
+            get { return m_branches.Count; }
+        }
+
         private bool ChoiceMade
         {
             get { return m_depth <= (m_currentChoicePath != null ? m_currentChoicePath.Count : 0); }

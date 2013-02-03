@@ -11,6 +11,30 @@ namespace TouhouSpring.Simulation
         public virtual string Print(Interactions.BaseInteraction io) { return ""; }
     }
 
+    class SacrificeChoice : Choice
+    {
+        public int CardIndex
+        {
+            get; private set;
+        }
+
+        public SacrificeChoice(int cardIndex)
+        {
+            CardIndex = cardIndex;
+        }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            var tacticalPhase = io as Interactions.TacticalPhase;
+            tacticalPhase.RespondSacrifice(tacticalPhase.SacrificeCandidates[CardIndex]);
+        }
+
+        public override string Print(Interactions.BaseInteraction io)
+        {
+            return "Sacrifice: " + (io as Interactions.TacticalPhase).SacrificeCandidates[CardIndex].Model.Name;
+        }
+    }
+
     class PlayCardChoice : Choice
     {
         public int CardIndex
@@ -32,6 +56,30 @@ namespace TouhouSpring.Simulation
         public override string Print(Interactions.BaseInteraction io)
         {
             return "Play: " + (io as Interactions.TacticalPhase).PlayCardCandidates[CardIndex].Model.Name;
+        }
+    }
+
+    class RedeemChoice : Choice
+    {
+        public int CardIndex
+        {
+            get; private set;
+        }
+
+        public RedeemChoice(int cardIndex)
+        {
+            CardIndex = cardIndex;
+        }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            var tacticalPhase = io as Interactions.TacticalPhase;
+            tacticalPhase.RespondRedeem(tacticalPhase.RedeemCandidates[CardIndex]);
+        }
+
+        public override string Print(Interactions.BaseInteraction io)
+        {
+            return "Redeem: " + (io as Interactions.TacticalPhase).RedeemCandidates[CardIndex].Model.Name;
         }
     }
 

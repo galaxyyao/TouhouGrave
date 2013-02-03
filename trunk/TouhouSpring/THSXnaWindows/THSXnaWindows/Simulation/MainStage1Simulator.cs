@@ -31,11 +31,25 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
         {
+            foreach (var indexedCard in io.SacrificeCandidates
+                                            .Select((card, index) => new CardIntPair { Card = card, Int = index })
+                                            .Distinct(new CardModelComparer()))
+            {
+                yield return new SacrificeChoice(indexedCard.Int);
+            }
+
             foreach (var indexedCard in io.PlayCardCandidates
                                             .Select((card, index) => new CardIntPair { Card = card, Int = index })
                                             .Distinct(new CardModelComparer()))
             {
                 yield return new PlayCardChoice(indexedCard.Int);
+            }
+
+            foreach (var indexedCard in io.RedeemCandidates
+                                            .Select((card, index) => new CardIntPair { Card = card, Int = index })
+                                            .Distinct(new CardModelComparer()))
+            {
+                yield return new RedeemChoice(indexedCard.Int);
             }
 
             if (!m_stopActivateAssists)

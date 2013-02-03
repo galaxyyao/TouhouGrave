@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="Agents\AIAgent.cs" />
     <Compile Include="Agents\AIAgent.GameEvaluation.cs" />
-    <Compile Include="Agents\AIAgent.Sacrifice.cs" />
     <Compile Include="Agents\AIAgent.ScoreLibrary.cs" />
     <Compile Include="Agents\BaseAgent.cs" />
     <Compile Include="Agents\LocalPlayerAgent.cs" />
