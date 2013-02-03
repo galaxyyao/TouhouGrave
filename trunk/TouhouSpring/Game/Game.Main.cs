@@ -9,6 +9,12 @@ namespace TouhouSpring
 {
     public partial class Game : Commands.ICause
     {
+        public enum BackupPoint
+        {
+            PreMain,
+            PostMain
+        }
+
         public Player Winner
         {
             get; private set;
@@ -22,6 +28,36 @@ namespace TouhouSpring
         public bool DidRedeem
         {
             get; private set;
+        }
+
+        public void RunPreMainPhase()
+        {
+            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
+                || CurrentPhase != "")
+            {
+                throw new InvalidOperationException("Can't run upkeep phase.");
+            }
+
+            Controller.BackupGame(BackupPoint.PreMain);
+
+            IssueCommandsAndFlush(new Commands.StartTurn(ActingPlayer));
+
+            IssueCommand(new Commands.StartPhase("Upkeep"));
+            // skip drawing card for the starting player in the first round
+            if (Round > 1 || m_actingPlayer != 0)
+            {
+                IssueCommands(new Commands.DrawCard(ActingPlayer));
+            }
+            IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, this));
+            ActingPlayer.CardsOnBattlefield
+                .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
+                .ForEach(card => IssueCommands(
+                    new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
+            IssueCommandsAndFlush(new Commands.EndPhase());
+
+            DidSacrifice = false;
+            DidRedeem = false;
+            IssueCommandsAndFlush(new Commands.StartPhase("Main"));
         }
 
         public void RunMainPhase()
@@ -105,6 +141,26 @@ namespace TouhouSpring
             }
         }
 
+        public void RunPostMainPhase()
+        {
+            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread)
+            {
+                throw new InvalidOperationException("Can't run main phase.");
+            }
+            else if (CurrentPhase != "Main")
+            {
+                throw new InvalidOperationException("The game is not in Main phase.");
+            }
+
+            Controller.BackupGame(BackupPoint.PostMain);
+
+            IssueCommandsAndFlush(
+                new Commands.EndPhase(),
+                new Commands.StartPhase("Cleanup"),
+                new Commands.EndPhase(),
+                new Commands.EndTurn(ActingPlayer));
+        }
+
         private void GameFlowMain()
         {
             IssueCommand(new Commands.StartPhase("Begin"));
@@ -128,32 +184,9 @@ namespace TouhouSpring
             {
                 Round++;
 
-                IssueCommandsAndFlush(new Commands.StartTurn(ActingPlayer));
-
-                IssueCommand(new Commands.StartPhase("Upkeep"));
-                // skip drawing card for the starting player in the first round
-                if (Round > 1 || m_actingPlayer != 0)
-                {
-                    IssueCommands(new Commands.DrawCard(ActingPlayer));
-                }
-                IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, this));
-                ActingPlayer.CardsOnBattlefield
-                    .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
-                    .ForEach(card => IssueCommands(
-                        new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
-                IssueCommandsAndFlush(new Commands.EndPhase());
-
-                DidSacrifice = false;
-                DidRedeem = false;
-                IssueCommandsAndFlush(new Commands.StartPhase("Main"));
-
+                RunPreMainPhase();
                 RunMainPhase();
-
-                IssueCommandsAndFlush(
-                    new Commands.EndPhase(),
-                    new Commands.StartPhase("Cleanup"),
-                    new Commands.EndPhase(),
-                    new Commands.EndTurn(ActingPlayer));
+                RunPostMainPhase();
             };
 
             //InPlayerPhases = false;

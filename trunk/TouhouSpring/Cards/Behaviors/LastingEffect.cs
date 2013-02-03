@@ -31,6 +31,7 @@ namespace TouhouSpring.Behaviors
                 && --m_duration == 0)
             {
                 CleanUps.ForEach(bhv => Game.IssueCommands(new Commands.RemoveBehavior(Host, bhv)));
+                Game.IssueCommands(new Commands.RemoveBehavior(Host, this));
             }
         }
 

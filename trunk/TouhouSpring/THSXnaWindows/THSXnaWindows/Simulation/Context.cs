@@ -54,18 +54,17 @@ namespace TouhouSpring.Simulation
 
             m_simulator = simulator;
             RootGame = game;
-            //RootGame = game.CloneForSimulation(controller);
         }
 
-        public void Start()
+        public void Start(Action<Game> body)
         {
             while (true)
             {
                 m_depth = 0;
                 TryMoveNextChoice();
 
-                var game = RootGame.CloneForSimulation(this);
-                game.RunMainPhase();
+                var game = RootGame.CloneWithController(this);
+                body(game);
 
                 m_branches.Add(new Branch
                 {
@@ -108,16 +107,13 @@ namespace TouhouSpring.Simulation
             }
         }
 
-        #region major interactions
-
-        [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
-        private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
+        private void OnInteraction(Interactions.BaseInteraction io, IEnumerable<Choice> choices)
         {
             ++m_depth;
 
             if (!ChoiceMade)
             {
-                foreach (var choice in m_simulator.TacticalPhase(interactionObj, this))
+                foreach (var choice in choices)
                 {
                     ForkChoice(choice);
                 }
@@ -127,27 +123,34 @@ namespace TouhouSpring.Simulation
 
             if (ChoiceMade)
             {
-                NextChoice.Make(interactionObj);
+                NextChoice.Make(io);
             }
             else
             {
                 throw new NotImplementedException();
             }
+        }
 
+        #region major interactions
+
+        [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
+        private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
+        {
+            OnInteraction(interactionObj, m_simulator.TacticalPhase(interactionObj, this));
             return false;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.SelectCards))]
         private bool OnSelectCards(Interactions.SelectCards interactionObj)
         {
-            m_simulator.SelectCards(interactionObj, this);
+            OnInteraction(interactionObj, m_simulator.SelectCards(interactionObj, this));
             return false;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.MessageBox))]
         private bool OnMessageBox(Interactions.MessageBox interactionObj)
         {
-            m_simulator.MessageBox(interactionObj, this);
+            OnInteraction(interactionObj, m_simulator.MessageBox(interactionObj, this));
             return false;
         }
 

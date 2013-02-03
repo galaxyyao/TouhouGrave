@@ -133,6 +133,8 @@
     <Compile Include="Simulation\Context.cs" />
     <Compile Include="Simulation\BaseSimulator.cs" />
     <Compile Include="Simulation\MainStage1Simulator.cs" />
+    <Compile Include="Simulation\MainStage2Simulator.cs" />
+    <Compile Include="Simulation\NonMainSimulator.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />
     <Compile Include="Style\CardControlStyle.cs" />
     <Compile Include="Style\Exceptions.cs" />

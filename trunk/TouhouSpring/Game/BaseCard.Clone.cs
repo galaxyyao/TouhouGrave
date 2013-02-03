@@ -7,7 +7,7 @@ namespace TouhouSpring
 {
     public partial class BaseCard
     {
-        internal BaseCard CloneForSimulation(Player owner)
+        internal BaseCard Clone(Player owner)
         {
             var clonedCard = new BaseCard
             {
