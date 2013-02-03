@@ -43,9 +43,27 @@ namespace TouhouSpring.NetServerCore
 
                             if (status == NetConnectionStatus.Connected)
                             {
+                                int enteredRoomId = UserEnter(im.SenderConnection);
                                 NetOutgoingMessage om = _server.CreateMessage();
-                                om.Write(string.Format("1 enterroom"));
+                                om.Write(string.Format("{0} enterroom", enteredRoomId));
                                 _server.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+
+                                if (enteredRoomId == -1)//Only 1 player in the room, waiting for another user
+                                {
+                                    om = _server.CreateMessage();
+                                    om.Write(string.Format("{0} waiting", enteredRoomId));
+                                    _server.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                                }
+                                else
+                                {
+                                    Room currentRoom = _roomList[enteredRoomId];
+                                    om = _server.CreateMessage();
+                                    om.Write(string.Format("{0} startgame", enteredRoomId));
+                                    _server.SendMessage(om, currentRoom.Player1Connection, NetDeliveryMethod.ReliableOrdered, 0);
+                                    om = _server.CreateMessage();
+                                    om.Write(string.Format("{0} startgame", enteredRoomId));
+                                    _server.SendMessage(om, currentRoom.Player2Connection, NetDeliveryMethod.ReliableOrdered, 0);
+                                }
                             }
                             else if (status == NetConnectionStatus.Disconnected)
                             {
@@ -73,7 +91,7 @@ namespace TouhouSpring.NetServerCore
                         break;
                 }
                 Thread.Sleep(1);
-            } 
+            }
         }
 
         private string InterpretMessage(string message)

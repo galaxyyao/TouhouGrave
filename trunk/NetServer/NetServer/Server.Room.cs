@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lidgren.Network;
 
 namespace TouhouSpring.NetServerCore
 {
@@ -11,17 +12,17 @@ namespace TouhouSpring.NetServerCore
 
         private int _idleRoomId = -1;
 
-        public int UserEnter(long uid)
+        public int UserEnter(NetConnection playerConn)
         {
             if (_idleRoomId == -1)
             {
                 int createdRoomId = Find1stEmptyRoomNum();
-                Room createdRoom = new Room(createdRoomId, uid);
+                Room createdRoom = new Room(createdRoomId, playerConn);
                 _roomList.Add(createdRoomId, createdRoom);
                 _idleRoomId = createdRoomId;
                 return -1;
             }
-            _roomList[_idleRoomId].Enter(uid);
+            _roomList[_idleRoomId].Player2Enter(playerConn);
             int enteredRoomId = _idleRoomId;
             _idleRoomId = -1;
             return enteredRoomId;
@@ -66,17 +67,32 @@ namespace TouhouSpring.NetServerCore
                 private set;
             }
 
-            public Room(int id, long player1Uid)
+            public NetConnection Player1Connection
+            {
+                get;
+                private set;
+            }
+
+            public NetConnection Player2Connection
+            {
+                get;
+                private set;
+            }
+
+            public Room(int id, NetConnection player1Conn)
             {
                 Status = RoomStatus.Idle;
                 Id = id;
-                Player1Uid = player1Uid;
+                Player1Uid = player1Conn.RemoteUniqueIdentifier;
+                Player1Connection = player1Conn;
                 Player2Uid = -1;
+                Player2Connection = null;
             }
 
-            public void Enter(long player2Uid)
+            public void Player2Enter(NetConnection player2Conn)
             {
-                Player2Uid = player2Uid;
+                Player2Uid = player2Conn.RemoteUniqueIdentifier;
+                Player2Connection = player2Conn;
             }
         }
     }
