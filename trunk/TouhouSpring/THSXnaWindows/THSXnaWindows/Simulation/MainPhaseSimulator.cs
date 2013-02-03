@@ -31,10 +31,10 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
         {
-            var lastChoicePriority = GetChoicePriority(context.LastChoice);
+            var lastChoicePriority = context.CurrentChoicePriority;
 
             // redeem
-            if (lastChoicePriority <= 0)
+            if (lastChoicePriority <= 1)
             {
                 foreach (var indexedCard in io.RedeemCandidates
                                             .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -45,7 +45,7 @@ namespace TouhouSpring.Simulation
             }
 
             // sacrifice
-            if (lastChoicePriority <= 1)
+            if (lastChoicePriority <= 2)
             {
                 foreach (var indexedCard in io.SacrificeCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -58,7 +58,7 @@ namespace TouhouSpring.Simulation
             // play card
             // activate assist
             // cast spell
-            if (lastChoicePriority <= 2)
+            if (lastChoicePriority <= 3)
             {
                 foreach (var indexedCard in io.PlayCardCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -84,7 +84,7 @@ namespace TouhouSpring.Simulation
 
             // attack card
             // attack player
-            if (lastChoicePriority <= 3)
+            if (lastChoicePriority <= 4)
             {
                 if (io.DefenderCandidates.Count != 0)
                 {
@@ -119,37 +119,6 @@ namespace TouhouSpring.Simulation
             for (int i = 0; i < io.Candidates.Count; ++i)
             {
                 yield return new SelectCardChoice(i);
-            }
-        }
-
-        private int GetChoicePriority(Choice choice)
-        {
-            if (choice == null)
-            {
-                return 0;
-            }
-            else if (choice is RedeemChoice)
-            {
-                return 1;
-            }
-            else if (choice is SacrificeChoice)
-            {
-                return 2;
-            }
-            else if (choice is PlayCardChoice
-                     || choice is ActivateAssistChoice
-                     || choice is CastSpellChoice)
-            {
-                return 3;
-            }
-            else if (choice is AttackCardChoice
-                     || choice is AttackPlayerChoice)
-            {
-                return 4;
-            }
-            else
-            {
-                return 5;
             }
         }
     }

@@ -16,6 +16,7 @@ namespace TouhouSpring.Simulation
         private BaseSimulator m_simulator;
         private int m_depth;
         private List<Choice> m_currentChoicePath;
+        private int m_currentChoicePriority;
         private List<List<Choice>> m_pendingChoices = new List<List<Choice>>();
 
         private List<Branch> m_branches = new List<Branch>();
@@ -35,12 +36,12 @@ namespace TouhouSpring.Simulation
             get { return m_branches.Count; }
         }
 
-        public Choice LastChoice
+        public int CurrentChoicePriority
         {
             get
             {
                 System.Diagnostics.Debug.Assert(!ChoiceMade);
-                return m_currentChoicePath == null || m_currentChoicePath.Count == 0 ? null : m_currentChoicePath.Last();
+                return m_currentChoicePriority;
             }
         }
 
@@ -75,6 +76,7 @@ namespace TouhouSpring.Simulation
             while (true)
             {
                 m_depth = 0;
+                m_currentChoicePriority = 0;
                 TryMoveNextChoice();
 
                 var game = RootGame.CloneWithController(this);
@@ -137,7 +139,9 @@ namespace TouhouSpring.Simulation
 
             if (ChoiceMade)
             {
-                NextChoice.Make(io);
+                var nextChoice = NextChoice;
+                nextChoice.Make(io);
+                m_currentChoicePriority = Math.Max(nextChoice.Priority, m_currentChoicePriority);
             }
             else
             {

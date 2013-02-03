@@ -103,7 +103,7 @@ namespace TouhouSpring.Agents
                 Debug.Assert(m_mainPlan.ChoicePath.Last() is Simulation.PassChoice);
                 m_mainPlan.ChoicePath.RemoveAt(m_mainPlan.ChoicePath.Count - 1);
 
-                Debug.WriteLine(String.Format("Stage1Plan (total {0}):", simulationCtx.BranchCount));
+                Debug.WriteLine(String.Format("MainPlan (total {0}):", simulationCtx.BranchCount));
                 PrintEvaluate(m_mainPlan.Result.Players[pid]);
             }
 

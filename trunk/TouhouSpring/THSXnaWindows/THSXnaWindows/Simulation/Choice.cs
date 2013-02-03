@@ -7,8 +7,18 @@ namespace TouhouSpring.Simulation
 {
     class Choice
     {
+        public int Priority
+        {
+            get; private set;
+        }
+
         public virtual void Make(Interactions.BaseInteraction io) { }
         public virtual string Print(Interactions.BaseInteraction io) { return ""; }
+
+        protected Choice(int priority)
+        {
+            Priority = priority;
+        }
     }
 
     class SacrificeChoice : Choice
@@ -18,7 +28,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public SacrificeChoice(int cardIndex)
+        public SacrificeChoice(int cardIndex) : base(2)
         {
             CardIndex = cardIndex;
         }
@@ -42,7 +52,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public PlayCardChoice(int cardIndex)
+        public PlayCardChoice(int cardIndex) : base(3)
         {
             CardIndex = cardIndex;
         }
@@ -66,7 +76,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public RedeemChoice(int cardIndex)
+        public RedeemChoice(int cardIndex) : base(1)
         {
             CardIndex = cardIndex;
         }
@@ -90,7 +100,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public ActivateAssistChoice(int cardIndex)
+        public ActivateAssistChoice(int cardIndex) : base(3)
         {
             CardIndex = cardIndex;
         }
@@ -114,7 +124,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public CastSpellChoice(int spellIndex)
+        public CastSpellChoice(int spellIndex) : base(3)
         {
             SpellIndex = spellIndex;
         }
@@ -143,7 +153,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackCardChoice(int attackerIndex, int defenderIndex)
+        public AttackCardChoice(int attackerIndex, int defenderIndex) : base(4)
         {
             AttackerIndex = attackerIndex;
             DefenderIndex = defenderIndex;
@@ -175,7 +185,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackPlayerChoice(int attackerIndex, int playerIndex)
+        public AttackPlayerChoice(int attackerIndex, int playerIndex) : base(4)
         {
             AttackerIndex = attackerIndex;
             PlayerIndex = playerIndex;
@@ -197,6 +207,8 @@ namespace TouhouSpring.Simulation
 
     class PassChoice : Choice
     {
+        public PassChoice() : base(5) { }
+
         public override void Make(Interactions.BaseInteraction io)
         {
             var tacticalPhase = io as Interactions.TacticalPhase;
@@ -216,7 +228,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public SelectCardChoice(int cardIndex)
+        public SelectCardChoice(int cardIndex) : base(-1)
         {
             CardIndex = cardIndex;
         }
