@@ -11,7 +11,7 @@ namespace TouhouSpring
         string Name { get; }
         string Description { get; }
         string ArtworkUri { get; }
-        IList<Behaviors.BehaviorModel> Behaviors { get; }
+        IList<Behaviors.IBehaviorModel> Behaviors { get; }
     }
 
     public class CardModel : ICardModel
@@ -38,7 +38,7 @@ namespace TouhouSpring
             get; set;
         }
 
-        public IList<Behaviors.BehaviorModel> Behaviors
+        public IList<Behaviors.IBehaviorModel> Behaviors
         {
             get; set;
         }

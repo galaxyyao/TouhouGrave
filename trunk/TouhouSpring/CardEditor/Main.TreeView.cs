@@ -13,7 +13,7 @@ namespace TouhouSpring
             propertyGrid.SelectedObject = e.Node != null ? e.Node.Tag : null;
 
             toolStripDropDownButtonNewBehavior.Visible =
-                e.Node != null && (e.Node.Tag is EditorCardModel || e.Node.Tag is Behaviors.BehaviorModel);
+                e.Node != null && (e.Node.Tag is EditorCardModel || e.Node.Tag is Behaviors.IBehaviorModel);
             toolStripButtonDelete.Visible = e.Node != null && e.Node.Tag != null;
             toolStripSeparator.Visible = toolStripButtonDelete.Visible;
         }

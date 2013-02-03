@@ -13,12 +13,12 @@ namespace TouhouSpring.Behaviors
         {
             if (command.Cause == Host)
             {
-                Game.IssueCommands(new Commands.AddBehavior(Host, new Enhance.ModelType { AttackBoost = 1 }.Instantiate()));
+                Game.IssueCommands(new Commands.AddBehavior(Host, new Enhance.ModelType { AttackBoost = 1 }.CreateInitialized()));
             }
         }
 
-        [BehaviorModel(typeof(Passive_WarriorAttackAndDefenseUpWhenAttackedHero), DefaultName = "午后红茶")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "午后红茶")]
+        public class ModelType : BehaviorModel<Passive_WarriorAttackAndDefenseUpWhenAttackedHero>
         { }
     }
 }

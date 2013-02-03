@@ -30,12 +30,12 @@ namespace TouhouSpring
         }
 
         [ContentSerializer(ElementName = "Behaviors", CollectionItemName = "Behavior")]
-        public List<Behaviors.BehaviorModel> Behaviors
+        public List<Behaviors.IBehaviorModel> Behaviors
         {
             get; set;
         }
 
-        IList<Behaviors.BehaviorModel> ICardModel.Behaviors { get { return Behaviors; } }
+        IList<Behaviors.IBehaviorModel> ICardModel.Behaviors { get { return Behaviors; } }
 
         public string Category
         {
@@ -44,7 +44,7 @@ namespace TouhouSpring
 
         public EditorCardModel()
         {
-            Behaviors = new List<Behaviors.BehaviorModel>();
+            Behaviors = new List<Behaviors.IBehaviorModel>();
         }
 
         public BaseCard Instantiate(Player owner)

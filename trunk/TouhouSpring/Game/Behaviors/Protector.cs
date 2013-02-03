@@ -20,8 +20,8 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        [BehaviorModel(typeof(Protector), Category = "Core")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "Core")]
+        public class ModelType : BehaviorModel<Protector>
         {
             public bool Unique { get; set; }
         }

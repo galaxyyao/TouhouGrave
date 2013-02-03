@@ -20,8 +20,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_VampireNLife), Category = "v0.5/Passive", DefaultName = "吸血")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "吸血")]
+        public class ModelType : BehaviorModel<Passive_VampireNLife>
         {
             public int LifeToHeal
             {

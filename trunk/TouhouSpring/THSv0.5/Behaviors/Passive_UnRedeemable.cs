@@ -17,8 +17,8 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        [BehaviorModel(typeof(Passive_UnRedeemable), Category = "v0.5/Passive", DefaultName = "不可赎回")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "不可赎回")]
+        public class ModelType : BehaviorModel<Passive_UnRedeemable>
         {
         }
     }

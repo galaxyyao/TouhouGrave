@@ -53,6 +53,7 @@
     <Compile Include="Behaviors\Hero.cs" />
     <Compile Include="Behaviors\IBehavior.cs" />
     <Compile Include="Behaviors\BehaviorModel.cs" />
+    <Compile Include="Behaviors\IBehaviorModel.cs" />
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\Neutralize.cs" />

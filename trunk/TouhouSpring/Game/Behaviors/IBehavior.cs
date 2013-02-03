@@ -9,12 +9,12 @@ namespace TouhouSpring.Behaviors
     {
         BaseCard Host { get; }
         bool Persistent { get; }
-        BehaviorModel Model { get; }
+        IBehaviorModel Model { get; }
     }
 
     internal interface IInternalBehavior : IBehavior
     {
-        void Initialize(BehaviorModel model, bool persistent);
+        void Initialize(IBehaviorModel model, bool persistent);
         void TransferFrom(IBehavior original);
         void Bind(BaseCard host);
         void Unbind();

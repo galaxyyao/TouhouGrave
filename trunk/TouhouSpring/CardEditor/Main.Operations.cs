@@ -92,7 +92,7 @@ namespace TouhouSpring
             }
         }
 
-        private void AddBehavior(Behaviors.BehaviorModel behaviorModel, TreeNode cardNode, bool select)
+        private void AddBehavior(Behaviors.IBehaviorModel behaviorModel, TreeNode cardNode, bool select)
         {
             var bhvAttr = behaviorModel.GetType().GetAttribute<Behaviors.BehaviorModelAttribute>();
             var node = new TreeNode(behaviorModel.Name)

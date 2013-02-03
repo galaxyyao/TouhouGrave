@@ -5,7 +5,8 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class BehaviorModel
+    public class BehaviorModel<T> : IInternalBehaviorModel
+        where T : IBehavior, new()
     {
         private BehaviorModelAttribute m_bhvModelAttr;
         private string m_name;
@@ -13,14 +14,14 @@ namespace TouhouSpring.Behaviors
         [System.ComponentModel.Category("Basic")]
         public string Name
         {
-            get { return m_name ?? m_bhvModelAttr.DefaultName; }
+            get { return m_name ?? m_bhvModelAttr.DefaultName ?? ModelTypeName; }
             set { m_name = String.IsNullOrEmpty(value) ? null : value; }
         }
 
         [System.ComponentModel.Category("Basic")]
         public string ModelTypeName
         {
-            get { return GetBehaviorType().FullName; }
+            get { return typeof(T).FullName; }
         }
 
         public BehaviorModel()
@@ -29,25 +30,27 @@ namespace TouhouSpring.Behaviors
             m_name = null;
         }
 
-        public virtual Type GetBehaviorType()
+        public IBehavior CreateInitialized()
         {
-            return m_bhvModelAttr.BehaviorType;
+            return CreateInitialized(false);
         }
 
-        public IBehavior Instantiate()
+        IBehavior IInternalBehaviorModel.Instantiate()
         {
-            return Instantiate(false);
+            return new T();
         }
 
-        internal IBehavior InstantiatePersistent()
+        IBehavior IInternalBehaviorModel.CreateInitializedPersistent()
         {
-            return Instantiate(true);
+            return CreateInitialized(true);
         }
 
-        private IBehavior Instantiate(bool persistent)
+        private IBehavior CreateInitialized(bool persistent)
         {
-            var bhvType = GetBehaviorType();
-            var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as IBehavior;
+            // 5 times faster than:
+            //var bhvType = typeof(T);
+            //var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as IBehavior;
+            var bhv = new T();
             (bhv as IInternalBehavior).Initialize(this, persistent);
             return bhv;
         }
@@ -62,7 +65,7 @@ namespace TouhouSpring.Behaviors
 
         public string DefaultName
         {
-            get { return m_defaultName ?? BehaviorType.Name; }
+            get { return m_defaultName; }
             set { m_defaultName = value; }
         }
 
@@ -76,25 +79,6 @@ namespace TouhouSpring.Behaviors
         {
             get { return m_category ?? String.Empty; }
             set { m_category = value; }
-        }
-
-        public Type BehaviorType
-        {
-            get; private set;
-        }
-
-        public BehaviorModelAttribute(Type behaviorType)
-        {
-            if (behaviorType == null)
-            {
-                throw new ArgumentNullException("behaviorType");
-            }
-            else if (!behaviorType.HasInterface<IBehavior>())
-            {
-                throw new IncompleteTypeDefinitionException(typeof(IBehavior));
-            }
-
-            BehaviorType = behaviorType;
         }
     }
 }

@@ -6,13 +6,10 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class SimpleBehavior<T> : BaseBehavior<SimpleBehavior<T>.ModelType>
+        where T : IBehavior, new()
     {
-        public class ModelType : BehaviorModel
+        public class ModelType : BehaviorModel<T>
         {
-            public override Type GetBehaviorType()
-            {
-                return typeof(T);
-            }
         }
     }
 }

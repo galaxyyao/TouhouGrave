@@ -22,8 +22,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_Aura_ReduceDamage_NDamage), Category = "v0.5/Passive", DefaultName = "减伤光环")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "减伤光环")]
+        public class ModelType : BehaviorModel<Passive_Aura_ReduceDamage_NDamage>
         {
             public int DamageReduced
             {

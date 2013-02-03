@@ -19,8 +19,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_DeathTouch), Category = "v0.5/Passive", DefaultName = "死神")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "死神")]
+        public class ModelType : BehaviorModel<Passive_DeathTouch>
         { }
     }
 }
