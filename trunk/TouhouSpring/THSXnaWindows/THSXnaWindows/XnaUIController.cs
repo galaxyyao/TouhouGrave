@@ -22,12 +22,6 @@ namespace TouhouSpring
             Agents = m_agents.ToIndexable();
         }
 
-        protected override void OnGameBackup(Game.BackupPoint backupPoint)
-        {
-            var pid = Game.Players.IndexOf(Game.ActingPlayer);
-            m_agents[pid].OnGameBackup(backupPoint, Game);
-        }
-
         [Interactions.MessageHandler(typeof(Interactions.NotifyOnly))]
         private bool OnNotified(Interactions.NotifyOnly interactionObj)
         {

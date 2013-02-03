@@ -20,11 +20,7 @@ namespace TouhouSpring.Agents
         }
 
         private Messaging.LetterBox m_letterbox = new Messaging.LetterBox();
-
-        private Game.BackupPoint m_lastBackupPoint;
-        private Game m_lastBackupedGame;
-        private Simulation.Context.Branch m_mainPlan;
-        private Simulation.Context.Branch m_otherPlan;
+        private Simulation.Context.Branch m_plan = null;
 
         public AIAgent()
         {
@@ -60,10 +56,10 @@ namespace TouhouSpring.Agents
             throw new NotImplementedException();
         }
 
-        public override void OnGameBackup(Game.BackupPoint backupPoint, Game game)
+        public override bool OnTurnStarted(Interactions.NotifyPlayerEvent io)
         {
-            m_lastBackupPoint = backupPoint;
-            m_lastBackupedGame = game.Clone();
+            new Messaging.Message("BeginSimulation", io.Game.Clone()).SendTo(m_letterbox);
+            return false;
         }
 
         private void AIThread()
@@ -71,96 +67,51 @@ namespace TouhouSpring.Agents
             while (true)
             {
                 var msg = m_letterbox.WaitForNextMessage();
-                var io = msg.Attachment as Interactions.BaseInteraction;
 
                 switch (msg.Text)
                 {
-                    case "OnTacticalPhase":
-                        TacticalPhasePlanner(io as Interactions.TacticalPhase);
+                    case "BeginSimulation":
+                        MakePlan(msg.Attachment as Game);
                         break;
 
+                    case "OnTacticalPhase":
                     case "OnSelectCards":
-                        SelectCardsPlanner(io as Interactions.SelectCards);
+                        Debug.Assert(m_plan != null);
+                        RespondInteraction(msg.Attachment as Interactions.BaseInteraction);
                         break;
 
                     default:
-                        break;
+                        throw new InvalidOperationException();
                 }
             }
         }
 
-        private void TacticalPhasePlanner(Interactions.TacticalPhase io)
+        private void MakePlan(Game game)
         {
-            if (m_mainPlan == null)
-            {
-                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainPhaseSimulator());
-                simulationCtx.Start(game => game.RunMainPhase());
+            Debug.Assert(m_plan == null);
 
-                int pid = io.Game.Players.IndexOf(io.Player);
-                var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                m_mainPlan = scoredBranches.Max().Branch;
+            var simulationCtx = new Simulation.Context(game, new Simulation.MainPhaseSimulator());
+            simulationCtx.Start(g => g.RunTurn());
 
-                Debug.Assert(m_mainPlan.ChoicePath.Last() is Simulation.PassChoice);
-                m_mainPlan.ChoicePath.RemoveAt(m_mainPlan.ChoicePath.Count - 1);
+            var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
+            var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+            m_plan = scoredBranches.Max().Branch;
 
-                Debug.WriteLine(String.Format("MainPlan (total {0}):", simulationCtx.BranchCount));
-                PrintEvaluate(m_mainPlan.Result.Players[pid]);
-            }
-
-            if (m_mainPlan.ChoicePath.Count > 0)
-            {
-                MakeChoice(m_mainPlan, io);
-                return;
-            }
-
-            m_mainPlan = null;
-
-            Debug.WriteLine("Pass");
-            io.RespondPass();
+            Debug.WriteLine(String.Format("Plan (total {0}):", simulationCtx.BranchCount));
+            PrintEvaluate(m_plan.Result.Players[pid]);
         }
 
-        private void SelectCardsPlanner(Interactions.SelectCards io)
+        private void RespondInteraction(Interactions.BaseInteraction io)
         {
-            Simulation.Context.Branch plan;
+            Debug.Assert(m_plan != null && m_plan.ChoicePath.Count > 0);
+            Debug.WriteLine(m_plan.ChoicePath[0].Print(io));
+            m_plan.ChoicePath[0].Make(io);
+            m_plan.ChoicePath.RemoveAt(0);
 
-            if (m_mainPlan != null && m_mainPlan.ChoicePath.Count > 0)
+            if (m_plan.ChoicePath.Count == 0)
             {
-                plan = m_mainPlan;
+                m_plan = null;
             }
-            else
-            {
-                if (m_otherPlan == null || m_otherPlan.ChoicePath.Count == 0)
-                {
-                    var simulationCtx = new Simulation.Context(m_lastBackupedGame, new Simulation.NonMainSimulator());
-                    if (m_lastBackupPoint == Game.BackupPoint.PreMain)
-                    {
-                        simulationCtx.Start(game => game.RunPreMainPhase());
-                    }
-                    else
-                    {
-                        simulationCtx.Start(game => game.RunPostMainPhase());
-                    }
-
-                    int pid = io.Game.Players.IndexOf(io.Player);
-                    var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                    m_otherPlan = scoredBranches.Max().Branch;
-
-                    Debug.WriteLine(String.Format("OtherPlan (total {0}):", simulationCtx.BranchCount));
-                    PrintEvaluate(m_otherPlan.Result.Players[pid]);
-                }
-                plan = m_otherPlan;
-            }
-
-            Debug.Assert(plan.ChoicePath[0] is Simulation.SelectCardChoice);
-            MakeChoice(plan, io);
-        }
-
-        private void MakeChoice(Simulation.Context.Branch plan, Interactions.BaseInteraction io)
-        {
-            Debug.Assert(plan.ChoicePath.Count > 0);
-            Debug.WriteLine(plan.ChoicePath[0].Print(io));
-            plan.ChoicePath[0].Make(io);
-            plan.ChoicePath.RemoveAt(0);
         }
     }
 }

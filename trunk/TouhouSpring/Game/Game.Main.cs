@@ -9,12 +9,6 @@ namespace TouhouSpring
 {
     public partial class Game : Commands.ICause
     {
-        public enum BackupPoint
-        {
-            PreMain,
-            PostMain
-        }
-
         public Player Winner
         {
             get; private set;
@@ -38,7 +32,16 @@ namespace TouhouSpring
                 throw new InvalidOperationException("Can't run upkeep phase.");
             }
 
-            Controller.BackupGame(BackupPoint.PreMain);
+            
+        }
+
+        public void RunTurn()
+        {
+            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
+                || CurrentPhase != "")
+            {
+                throw new InvalidOperationException("Can't run turn.");
+            }
 
             IssueCommandsAndFlush(new Commands.StartTurn(ActingPlayer));
 
@@ -58,18 +61,6 @@ namespace TouhouSpring
             DidSacrifice = false;
             DidRedeem = false;
             IssueCommandsAndFlush(new Commands.StartPhase("Main"));
-        }
-
-        public void RunMainPhase()
-        {
-            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread)
-            {
-                throw new InvalidOperationException("Can't run main phase.");
-            }
-            else if (CurrentPhase != "Main")
-            {
-                throw new InvalidOperationException("The game is not in Main phase.");
-            }
 
             while (true)
             {
@@ -137,20 +128,6 @@ namespace TouhouSpring
                     throw new InvalidDataException();
                 }
             }
-        }
-
-        public void RunPostMainPhase()
-        {
-            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread)
-            {
-                throw new InvalidOperationException("Can't run main phase.");
-            }
-            else if (CurrentPhase != "Main")
-            {
-                throw new InvalidOperationException("The game is not in Main phase.");
-            }
-
-            Controller.BackupGame(BackupPoint.PostMain);
 
             IssueCommandsAndFlush(
                 new Commands.EndPhase(),
@@ -181,10 +158,7 @@ namespace TouhouSpring
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 Round++;
-
-                RunPreMainPhase();
-                RunMainPhase();
-                RunPostMainPhase();
+                RunTurn();
             };
 
             //InPlayerPhases = false;
