@@ -15,6 +15,7 @@ namespace TouhouSpring.Services
     partial class MenuUI : GameService
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
+        private Network.Client m_networkClient = null;
 
         GameStartupParameters[] param = new GameStartupParameters[2];
 
@@ -26,7 +27,6 @@ namespace TouhouSpring.Services
 
         public override void Startup()
         {
-
             #region Initialize Page
             Matrix toScreenSpace = Matrix.Identity;
             toScreenSpace.M11 = 2 / 1024.0f;
@@ -114,17 +114,8 @@ namespace TouhouSpring.Services
                 {
                     CurrentPage = m_pages["Network"];
 
-                    Network.Client client = new Network.Client();
-                    client.Connect("127.0.0.1", 13389);
-
-                    Thread listenThread=new Thread(()=>ServerContact(client));
-                    listenThread.Start();
-                    listenThread.Join();
-                    GameApp.Service<GameManager>().StartGame(param
-                            , new Agents.BaseAgent[] {
-                                    new Agents.NetworkLocalPlayerAgent(client),
-                                    new Agents.NetworkRemoteAgent(client)
-                                });
+                    m_networkClient = new Network.Client();
+                    m_networkClient.Connect("127.0.0.1", 13389);
                 }
                 else if (id == "back")
                 {
@@ -247,20 +238,6 @@ namespace TouhouSpring.Services
             param[1].m_profile.Decks.Add(deck2);
         }
 
-        private void ServerContact(Network.Client client)
-        {
-            while (true)
-            {
-                if (client.GetRoomId() != 0)
-                {
-                    break;
-                }
-                Thread.Sleep(100);
-            }
-
-            
-        }
-
         private void LoadPage(string id)
         {
             var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle(id));
@@ -270,6 +247,17 @@ namespace TouhouSpring.Services
 
         public override void Update(float deltaTime)
         {
+            if (m_networkClient != null && m_networkClient.RoomStatus == Network.Client.RoomStatusEnum.Starting)
+            {
+
+                GameApp.Service<GameManager>().StartGame(param
+                            , new Agents.BaseAgent[] {
+                                    new Agents.NetworkLocalPlayerAgent(m_networkClient),
+                                    new Agents.NetworkRemoteAgent(m_networkClient)
+                                });
+                m_networkClient.RoomStatus = Network.Client.RoomStatusEnum.Started;
+            }
+
             foreach (var page in m_pages.Values)
             {
                 if (page.Page.Dispatcher != null)

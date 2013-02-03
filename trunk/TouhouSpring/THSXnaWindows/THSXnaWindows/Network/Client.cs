@@ -14,6 +14,17 @@ namespace TouhouSpring.Network
 
         private int _roomId = 0;
 
+        public enum RoomStatusEnum
+        {
+            Waiting, Starting, Started, End
+        }
+
+        public RoomStatusEnum RoomStatus
+        {
+            get;
+            set;
+        }
+
         public Client()
         {
             NetPeerConfiguration config = new NetPeerConfiguration("ths");
@@ -102,6 +113,11 @@ namespace TouhouSpring.Network
                     {
                         _roomId = Convert.ToInt32(parts[0]);
                         return string.Format("{0} {1}", _roomId, "roomentered");
+                    }
+                case "startgame":
+                    {
+                        RoomStatus = RoomStatusEnum.Starting;
+                        return string.Format("{0} {1}", _roomId, "gamestarted");
                     }
                 default:
                     Debug.Print("Invalid argument");
