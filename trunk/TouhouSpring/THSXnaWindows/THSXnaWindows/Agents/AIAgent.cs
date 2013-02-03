@@ -23,8 +23,7 @@ namespace TouhouSpring.Agents
 
         private Game.BackupPoint m_lastBackupPoint;
         private Game m_lastBackupedGame;
-        private Simulation.Context.Branch m_stage1Plan;
-        private Simulation.Context.Branch m_stage2Plan;
+        private Simulation.Context.Branch m_mainPlan;
         private Simulation.Context.Branch m_otherPlan;
 
         public AIAgent()
@@ -92,52 +91,29 @@ namespace TouhouSpring.Agents
 
         private void TacticalPhasePlanner(Interactions.TacticalPhase io)
         {
-            if (m_stage1Plan == null)
+            if (m_mainPlan == null)
             {
-                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage1Simulator());
+                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainPhaseSimulator());
                 simulationCtx.Start(game => game.RunMainPhase());
 
                 int pid = io.Game.Players.IndexOf(io.Player);
                 var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                m_stage1Plan = scoredBranches.Max().Branch;
+                m_mainPlan = scoredBranches.Max().Branch;
 
-                Debug.Assert(m_stage1Plan.ChoicePath.Last() is Simulation.PassChoice);
-                m_stage1Plan.ChoicePath.RemoveAt(m_stage1Plan.ChoicePath.Count - 1);
+                Debug.Assert(m_mainPlan.ChoicePath.Last() is Simulation.PassChoice);
+                m_mainPlan.ChoicePath.RemoveAt(m_mainPlan.ChoicePath.Count - 1);
 
                 Debug.WriteLine(String.Format("Stage1Plan (total {0}):", simulationCtx.BranchCount));
-                PrintEvaluate(m_stage1Plan.Result.Players[pid]);
+                PrintEvaluate(m_mainPlan.Result.Players[pid]);
             }
 
-            if (m_stage1Plan.ChoicePath.Count > 0)
+            if (m_mainPlan.ChoicePath.Count > 0)
             {
-                MakeChoice(m_stage1Plan, io);
+                MakeChoice(m_mainPlan, io);
                 return;
             }
 
-            if (m_stage2Plan == null)
-            {
-                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage2Simulator());
-                simulationCtx.Start(game => game.RunMainPhase());
-
-                int pid = io.Game.Players.IndexOf(io.Player);
-                var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                m_stage2Plan = scoredBranches.Max().Branch;
-
-                Debug.Assert(m_stage2Plan.ChoicePath.Last() is Simulation.PassChoice);
-                m_stage2Plan.ChoicePath.RemoveAt(m_stage2Plan.ChoicePath.Count - 1);
-
-                Debug.WriteLine(String.Format("Stage2Plan (total {0}):", simulationCtx.BranchCount));
-                PrintEvaluate(m_stage2Plan.Result.Players[pid]);
-            }
-
-            if (m_stage2Plan.ChoicePath.Count > 0)
-            {
-                MakeChoice(m_stage2Plan, io);
-                return;
-            }
-
-            m_stage1Plan = null;
-            m_stage2Plan = null;
+            m_mainPlan = null;
 
             Debug.WriteLine("Pass");
             io.RespondPass();
@@ -147,13 +123,9 @@ namespace TouhouSpring.Agents
         {
             Simulation.Context.Branch plan;
 
-            if (m_stage1Plan != null && m_stage1Plan.ChoicePath.Count > 0)
+            if (m_mainPlan != null && m_mainPlan.ChoicePath.Count > 0)
             {
-                plan = m_stage1Plan;
-            }
-            else if (m_stage2Plan != null && m_stage2Plan.ChoicePath.Count > 0)
-            {
-                plan = m_stage2Plan;
+                plan = m_mainPlan;
             }
             else
             {

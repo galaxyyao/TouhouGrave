@@ -35,6 +35,15 @@ namespace TouhouSpring.Simulation
             get { return m_branches.Count; }
         }
 
+        public Choice LastChoice
+        {
+            get
+            {
+                System.Diagnostics.Debug.Assert(!ChoiceMade);
+                return m_currentChoicePath == null || m_currentChoicePath.Count == 0 ? null : m_currentChoicePath.Last();
+            }
+        }
+
         private bool ChoiceMade
         {
             get { return m_depth <= (m_currentChoicePath != null ? m_currentChoicePath.Count : 0); }
