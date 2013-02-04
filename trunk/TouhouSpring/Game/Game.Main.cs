@@ -51,6 +51,17 @@ namespace TouhouSpring
             DidRedeem = false;
             IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
+            RunTurnFromMainPhase();
+        }
+
+        public void RunTurnFromMainPhase()
+        {
+            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
+                || CurrentPhase != "Main")
+            {
+                throw new InvalidOperationException("Can't run turn from main phase.");
+            }
+
             while (true)
             {
                 var result = new Interactions.TacticalPhase(ActingPlayer).Run();

@@ -31,7 +31,7 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
         {
-            var lastChoicePriority = context.CurrentChoicePriority;
+            var lastChoicePriority = context.CurrentBranchPriority;
 
             // redeem
             if (lastChoicePriority <= 1)
