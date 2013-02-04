@@ -114,23 +114,7 @@ namespace TouhouSpring
             return targetCondition.m_selection;
         }
 
-        private void CheckInPrerequisite()
-        {
-            if (RunningCommand == null || RunningCommand.ExecutionPhase != Commands.CommandPhase.Prerequisite)
-            {
-                throw new InvalidOperationException("Conditions can only be registered in Prerequisite phase.");
-            }
-        }
-
-        private void CheckNotInPrerequisite()
-        {
-            if (RunningCommand == null || RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite)
-            {
-                throw new InvalidOperationException("Can't get condition result in Prerequisite phase.");
-            }
-        }
-
-        private void ClearConditions()
+        internal void ClearConditions()
         {
             for (int i = 0; i < Players.Count; ++i)
             {
@@ -140,7 +124,7 @@ namespace TouhouSpring
             m_targetConditions.Clear();
         }
 
-        private CommandResult ResolveConditions(bool prerequisiteOnly)
+        internal CommandResult ResolveConditions(bool prerequisiteOnly)
         {
             for (int i = 0; i < Players.Count; ++i)
             {
@@ -188,6 +172,22 @@ namespace TouhouSpring
             }
 
             return CommandResult.Pass;
+        }
+
+        private void CheckInPrerequisite()
+        {
+            if (RunningCommand == null || RunningCommand.ExecutionPhase != Commands.CommandPhase.Prerequisite)
+            {
+                throw new InvalidOperationException("Conditions can only be registered in Prerequisite phase.");
+            }
+        }
+
+        private void CheckNotInPrerequisite()
+        {
+            if (RunningCommand == null || RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite)
+            {
+                throw new InvalidOperationException("Can't get condition result in Prerequisite phase.");
+            }
         }
     }
 }

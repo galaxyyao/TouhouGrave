@@ -12,6 +12,9 @@ namespace TouhouSpring
     {
         private Queue<Commands.BaseCommand> m_pendingCommands = new Queue<Commands.BaseCommand>();
 
+        // a dictionary of cached command runners to avoid using reflection too intensively
+        private static Dictionary<Type, ICommandRunner> s_commandRunnerMap = new Dictionary<Type, ICommandRunner>();
+
         public Commands.BaseCommand RunningCommand
         {
             get; private set;
@@ -119,142 +122,40 @@ namespace TouhouSpring
 
         private void RunCommandGeneric(Commands.BaseCommand command)
         {
-            var method = GetType().GetMethod("RunCommand", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(command.GetType());
-            method.Invoke(this, new object[] { command });
+            ICommandRunner runner;
+            if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
+            {
+                lock (s_commandRunnerMap)
+                {
+                    if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
+                    {
+                        var runnerType = typeof(CommandRunner<>).MakeGenericType(command.GetType());
+                        runner = runnerType.Assembly.CreateInstance(runnerType.FullName) as ICommandRunner;
+                        s_commandRunnerMap.Add(command.GetType(), runner);
+                    }
+                }
+            }
+
+            runner.Run(command);
         }
 
         private CommandResult RunPrerequisiteGeneric(Commands.BaseCommand command)
         {
-            var method = GetType().GetMethod("RunPrerequisite", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(command.GetType());
-            return (CommandResult)method.Invoke(this, new object[] { command });
-        }
-
-        private void RunCommand<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
-        {
-            command.ValidateOnRun();
-
-            ////////////////////////////////////////////
-
-            command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-            foreach (var trigger in EnumerateCommandTargets(command).SelectMany(card =>
-                                       card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
-                                       ).ToList())
+            ICommandRunner runner;
+            if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
             {
-                var result = trigger.RunPrerequisite(command);
-                if (result.Canceled)
+                lock (s_commandRunnerMap)
                 {
-                    Controller.OnCommandCanceled(command, result.Reason);
-                    ClearConditions();
-                    return;
+                    if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
+                    {
+                        var runnerType = typeof(CommandRunner<>).MakeGenericType(command.GetType());
+                        runner = runnerType.Assembly.CreateInstance(runnerType.FullName) as ICommandRunner;
+                        s_commandRunnerMap.Add(command.GetType(), runner);
+                    }
                 }
             }
 
-            ////////////////////////////////////////////
-
-            command.ExecutionPhase = Commands.CommandPhase.Condition;
-            var conditionResult = ResolveConditions(false);
-            if (conditionResult.Canceled)
-            {
-                Controller.OnCommandCanceled(command, conditionResult.Reason);
-                ClearConditions();
-                return;
-            }
-
-            ////////////////////////////////////////////
-
-            command.ExecutionPhase = Commands.CommandPhase.Prolog;
-            Controller.OnCommandBegin(command);
-            EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IPrologTrigger<TCommand>>())
-                .ToList().ForEach(trigger => trigger.RunProlog(command));
-
-            ////////////////////////////////////////////
-
-            command.ExecutionPhase = Commands.CommandPhase.Main;
-            command.RunMain();
-
-            ////////////////////////////////////////////
-
-            command.ExecutionPhase = Commands.CommandPhase.Epilog;
-            EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
-                .ToList().ForEach(trigger => trigger.RunEpilog(command));
-            Controller.OnCommandEnd(command);
-
-            ClearConditions();
-        }
-
-        private CommandResult RunPrerequisite<TCommand>(TCommand command) where TCommand : Commands.BaseCommand
-        {
-            command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-            foreach (var trigger in EnumerateCommandTargets(command)
-                .SelectMany(card => card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()).ToList())
-            {
-                var result = trigger.RunPrerequisite(command);
-                if (result.Canceled)
-                {
-                    ClearConditions();
-                    return result;
-                }
-            }
-
-            var ret = ResolveConditions(true);
-            ClearConditions();
-            return ret;
-        }
-
-        private IEnumerable<BaseCard> EnumerateCommandTargets(Commands.BaseCommand command)
-        {
-            if (command is Commands.PlayCard && command.ExecutionPhase < Commands.CommandPhase.Epilog)
-            {
-                var cardToPlay = (command as Commands.PlayCard).CardToPlay;
-                if (cardToPlay != null)
-                {
-                    yield return cardToPlay;
-                }
-            }
-            else if (command is Commands.ActivateAssist && command.ExecutionPhase < Commands.CommandPhase.Epilog)
-            {
-                var cardToActivate = (command as Commands.ActivateAssist).CardToActivate;
-                if (cardToActivate != null)
-                {
-                    yield return cardToActivate;
-                }
-            }
-            else if (command is Commands.ActivateAssist && command.ExecutionPhase == Commands.CommandPhase.Epilog)
-            {
-                var previouslyActivated = (command as Commands.ActivateAssist).PreviouslyActivatedCard;
-                if (previouslyActivated != null)
-                {
-                    yield return previouslyActivated;
-                }
-            }
-            else if (command is Commands.Redeem)
-            {
-                var cardToRedeem = (command as Commands.Redeem).Target;
-                if (cardToRedeem != null)
-                {
-                    yield return cardToRedeem;
-                }
-            }
-            else if (command is Commands.Kill && command.ExecutionPhase == Commands.CommandPhase.Epilog)
-            {
-                var cardKilled = (command as Commands.Kill).Target;
-                if (cardKilled != null)
-                {
-                    yield return cardKilled;
-                }
-            }
-
-            foreach (var player in Players)
-            {
-                foreach (var card in player.CardsOnBattlefield)
-                {
-                    yield return card;
-                }
-                if (player.ActivatedAssist != null)
-                {
-                    yield return player.ActivatedAssist;
-                }
-            }
+            return runner.RunPrerequisite(command);
         }
     }
 }
