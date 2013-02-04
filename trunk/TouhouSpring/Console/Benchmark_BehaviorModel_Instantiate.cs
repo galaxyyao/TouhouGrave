@@ -39,7 +39,7 @@ namespace TouhouSpring
 
             QueryPerformanceCounter(out end);
 
-            Console.WriteLine("Time taken: {0:0.3}ms", (end - start) / (double)freq * 1000.0);
+            Console.WriteLine("Time taken: {0:0.000}ms", (end - start) / (double)freq * 1000.0);
         }
 
         [DllImport("Kernel32.dll")]

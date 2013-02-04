@@ -89,22 +89,28 @@ namespace TouhouSpring.Agents
         private void MakePlan(Game game)
         {
             Debug.Assert(m_plan == null);
+            long startTime, endTime, freq;
+
+            QueryPerformanceFrequency(out freq);
+            QueryPerformanceCounter(out startTime);
 
             var simulationCtx = new Simulation.Context(game, new Simulation.MainPhaseSimulator());
-            simulationCtx.Start(g => g.RunTurn());
+            simulationCtx.Start();
 
             var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
             var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
             m_plan = scoredBranches.Max().Branch;
 
-            Debug.WriteLine(String.Format("Plan (total {0}):", simulationCtx.BranchCount));
+            QueryPerformanceCounter(out endTime);
+
+            Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simulationCtx.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
             PrintEvaluate(m_plan.Result.Players[pid]);
         }
 
         private void RespondInteraction(Interactions.BaseInteraction io)
         {
             Debug.Assert(m_plan != null && m_plan.ChoicePath.Count > 0);
-            Debug.WriteLine(m_plan.ChoicePath[0].Print(io));
+            Trace.WriteLine("\t" + m_plan.ChoicePath[0].Print(io));
             m_plan.ChoicePath[0].Make(io);
             m_plan.ChoicePath.RemoveAt(0);
 
@@ -113,5 +119,11 @@ namespace TouhouSpring.Agents
                 m_plan = null;
             }
         }
+
+        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
+        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
+
+        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
+        private static extern bool QueryPerformanceFrequency(out long lpFrequency);
     }
 }

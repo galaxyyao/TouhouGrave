@@ -24,17 +24,6 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public void RunPreMainPhase()
-        {
-            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
-                || CurrentPhase != "")
-            {
-                throw new InvalidOperationException("Can't run upkeep phase.");
-            }
-
-            
-        }
-
         public void RunTurn()
         {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread

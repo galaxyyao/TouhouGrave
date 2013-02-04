@@ -71,7 +71,7 @@ namespace TouhouSpring.Simulation
             RootGame = game;
         }
 
-        public void Start(Action<Game> body)
+        public void Start()
         {
             while (true)
             {
@@ -80,7 +80,7 @@ namespace TouhouSpring.Simulation
                 TryMoveNextChoice();
 
                 var game = RootGame.CloneWithController(this);
-                body(game);
+                game.RunTurn();
 
                 m_branches.Add(new Branch
                 {
