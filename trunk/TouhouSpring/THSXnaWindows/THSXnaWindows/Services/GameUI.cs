@@ -125,7 +125,9 @@ namespace TouhouSpring.Services
         public bool ShallPlayerBeRevealed(Player player)
         {
             var pid = Game.Players.IndexOf(Game.ActingPlayer);
-            bool actingPlayerIsLocalPlayer = pid != -1 && (Game.Controller as XnaUIController).Agents[pid] is Agents.LocalPlayerAgent;
+            bool actingPlayerIsLocalPlayer = pid != -1 &&
+                ((Game.Controller as XnaUIController).Agents[pid] is Agents.LocalPlayerAgent
+                || (Game.Controller as XnaUIController).Agents[pid] is Agents.NetworkLocalPlayerAgent);
             return actingPlayerIsLocalPlayer ? (player == Game.ActingPlayer) : (player != Game.ActingPlayer);
         }
 

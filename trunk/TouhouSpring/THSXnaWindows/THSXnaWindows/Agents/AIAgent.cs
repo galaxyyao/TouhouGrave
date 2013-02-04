@@ -115,7 +115,7 @@ namespace TouhouSpring.Agents
                 Debug.Assert(m_stage1Plan.ChoicePath.Last() is Simulation.PassChoice);
                 m_stage1Plan.ChoicePath.RemoveAt(m_stage1Plan.ChoicePath.Count - 1);
 
-                Debug.WriteLine("Stage1Plan:");
+                Debug.WriteLine(String.Format("Stage1Plan: (total {0})", simulationCtx.Branches.Count()));
                 PrintEvaluate(m_stage1Plan.Result.Players[pid]);
             }
 
@@ -137,7 +137,7 @@ namespace TouhouSpring.Agents
                 Debug.Assert(m_stage2Plan.ChoicePath.Last() is Simulation.PassChoice);
                 m_stage2Plan.ChoicePath.RemoveAt(m_stage2Plan.ChoicePath.Count - 1);
 
-                Debug.WriteLine("Stage2Plan:");
+                Debug.WriteLine(String.Format("Stage2Plan: (total {0})", simulationCtx.Branches.Count()));
                 PrintEvaluate(m_stage2Plan.Result.Players[pid]);
             }
 
@@ -184,7 +184,7 @@ namespace TouhouSpring.Agents
                     var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
                     m_otherPlan = scoredBranches.Max().Branch;
 
-                    Debug.WriteLine("OtherPlan:");
+                    Debug.WriteLine(String.Format("OtherPlan: (total {0})", simulationCtx.Branches.Count()));
                     PrintEvaluate(m_otherPlan.Result.Players[pid]);
                 }
                 plan = m_otherPlan;

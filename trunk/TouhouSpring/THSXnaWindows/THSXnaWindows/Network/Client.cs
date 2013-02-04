@@ -25,6 +25,18 @@ namespace TouhouSpring.Network
             set;
         }
 
+        public int Seed
+        {
+            get;
+            private set;
+        }
+
+        public int PlayerIndex
+        {
+            get;
+            private set;
+        }
+
         public Client()
         {
             NetPeerConfiguration config = new NetPeerConfiguration("ths");
@@ -112,6 +124,8 @@ namespace TouhouSpring.Network
                 case "enterroom":
                     {
                         _roomId = Convert.ToInt32(parts[0]);
+                        PlayerIndex = (_roomId == -1) ? 0 : 1;
+                        Seed = -1;
                         return string.Format("{0} {1}", _roomId, "roomentered");
                     }
                 case "startgame":
@@ -119,6 +133,12 @@ namespace TouhouSpring.Network
                         RoomStatus = RoomStatusEnum.Starting;
                         return string.Format("{0} {1}", _roomId, "gamestarted");
                     }
+                case "generateseed":
+                    {
+                        Seed = Convert.ToInt32(parts[2]);
+                        Debug.Print(string.Format("Seed {0}", Seed));
+                    }
+                    break;
                 default:
                     Debug.Print("Invalid argument");
                     break;

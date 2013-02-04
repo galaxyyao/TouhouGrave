@@ -8,21 +8,27 @@ namespace TouhouSpring.Agents
     class NetworkRemoteAgent : BaseAgent
     {
         Network.Client _client = null;
+        private Interactions.BaseInteraction m_currentIo = null;
 
         public NetworkRemoteAgent(Network.Client client)
         {
             _client = client;
         }
 
-        private struct CardScorePair
+        public override bool OnCardPlayCanceled(Interactions.NotifyCardEvent io)
         {
-            public BaseCard Card;
-            public double Score;
-        }
+            //if (!String.IsNullOrEmpty(io.Message))
+            //{
+                
+            //    m_currentIo = io;
 
-        public override bool OnTurnStarted(Interactions.NotifyPlayerEvent io)
-        {
-            _client.Send("remote turn started");
+            //    //on get message, io.Respond()
+            //    //_client.callback += ()=>
+            //    //{
+            //    //    io.Respond();
+            //    //}
+            //    return true;
+            //}
 
             return false;
         }
@@ -50,15 +56,10 @@ namespace TouhouSpring.Agents
             //    io.RespondActivate(playcard);
             //    return;
             //}
-
-            io.RespondPass();
         }
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
-            io.Respond(io.SelectFromSet.Count != 0
-                       ? new BaseCard[1] { io.SelectFromSet[0] }.ToIndexable()
-                       : Indexable.Empty<BaseCard>());
         }
 
         public override void OnMessageBox(Interactions.MessageBox io)

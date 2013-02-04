@@ -18,6 +18,8 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public void SetFliped()
         {
+            //TEMP: If want opponent's card shown, add "return;" here
+            return;
             Flipped = false;
             OnTrackElapse(0);
             Flipped = true;
@@ -33,6 +35,8 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
+            //TEMP: If want opponent's card shown, add "return;" here
+            return;
             var gameui = GameApp.Service<Services.GameUI>();
             var needFlip = gameui.ZoomedInCard != Control
                            && !gameui.ShallPlayerBeRevealed(Card.Owner) && Card.Owner.CardsOnHand.Contains(Card);

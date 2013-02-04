@@ -9,5 +9,6 @@ namespace TouhouSpring
     {
         public Profile m_profile;
         public Deck m_deck;
+        public int m_seed = -1;
     }
 }

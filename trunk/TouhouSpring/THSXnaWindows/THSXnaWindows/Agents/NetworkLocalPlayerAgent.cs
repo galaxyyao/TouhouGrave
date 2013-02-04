@@ -20,7 +20,11 @@ namespace TouhouSpring.Agents
         {
             if (!String.IsNullOrEmpty(io.Message))
             {
-                GameApp.Service<Services.ModalDialog>().Show(io.Message, () => io.Respond());
+                GameApp.Service<Services.ModalDialog>().Show(io.Message, () =>
+                {
+                    io.Respond();
+                    // send message of "OnCardPlayCanceled respond";
+                });
                 return true;
             }
 
@@ -36,24 +40,6 @@ namespace TouhouSpring.Agents
             }
 
             return false;
-        }
-
-        public override bool OnTurnStarted(Interactions.NotifyPlayerEvent io)
-        {
-            if (GameApp.Service<Services.GameUI>().UIState is Services.UIStates.PlayerTransition)
-            {
-                (GameApp.Service<Services.GameUI>().UIState as Services.UIStates.PlayerTransition).OnTurnStarted(io);
-                _client.Send("turn started");
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool OnTurnEnded(Interactions.NotifyPlayerEvent io)
-        {
-            GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.PlayerTransition(), io);
-            return true;
         }
 
         public override void OnTacticalPhase(Interactions.TacticalPhase io)

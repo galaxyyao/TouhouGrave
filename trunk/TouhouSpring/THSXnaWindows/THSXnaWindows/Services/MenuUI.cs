@@ -249,12 +249,30 @@ namespace TouhouSpring.Services
         {
             if (m_networkClient != null && m_networkClient.RoomStatus == Network.Client.RoomStatusEnum.Starting)
             {
-
-                GameApp.Service<GameManager>().StartGame(param
+                if (m_networkClient.Seed != -1)
+                {
+                    System.Diagnostics.Debug.Print(string.Format("Seed: {0}", m_networkClient.Seed));
+                    foreach (var playerParam in param)
+                    {
+                        playerParam.m_seed = m_networkClient.Seed;
+                    }
+                }
+                if (m_networkClient.PlayerIndex == 0)
+                {
+                    GameApp.Service<GameManager>().StartGame(param
                             , new Agents.BaseAgent[] {
                                     new Agents.NetworkLocalPlayerAgent(m_networkClient),
                                     new Agents.NetworkRemoteAgent(m_networkClient)
                                 });
+                }
+                else
+                {
+                    GameApp.Service<GameManager>().StartGame(param
+                            , new Agents.BaseAgent[] {
+                                new Agents.NetworkRemoteAgent(m_networkClient),
+                                    new Agents.NetworkLocalPlayerAgent(m_networkClient)
+                                });
+                }
                 m_networkClient.RoomStatus = Network.Client.RoomStatusEnum.Started;
             }
 
