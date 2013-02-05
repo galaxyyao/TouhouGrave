@@ -19,8 +19,7 @@ namespace TouhouSpring.NetServerCore
             _server = new Server(port);//temporaily set port to 13389
             _server.Start();
 
-            Console.WriteLine("Server started. Please wait 5 seconds...");
-            Thread.Sleep(5000);
+            Console.WriteLine("Server started.");
 
             while (Console.KeyAvailable == false || Console.ReadKey().Key != ConsoleKey.Escape)
             {

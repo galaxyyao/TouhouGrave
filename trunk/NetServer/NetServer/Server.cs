@@ -15,6 +15,8 @@ namespace TouhouSpring.NetServerCore
 
         private NetServer _server;
 
+        private Random gameStartSeed = new Random();
+
         public bool IsRunning
         {
             get

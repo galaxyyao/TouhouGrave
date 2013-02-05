@@ -124,13 +124,13 @@ namespace TouhouSpring.Network
                 case "enterroom":
                     {
                         _roomId = Convert.ToInt32(parts[0]);
-                        PlayerIndex = (_roomId == -1) ? 0 : 1;
                         Seed = -1;
                         return string.Format("{0} {1}", _roomId, "roomentered");
                     }
                 case "startgame":
                     {
                         RoomStatus = RoomStatusEnum.Starting;
+                        PlayerIndex = Convert.ToInt32(parts[2]);
                         return string.Format("{0} {1}", _roomId, "gamestarted");
                     }
                 case "generateseed":

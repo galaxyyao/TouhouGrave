@@ -51,6 +51,7 @@
     <Compile Include="Log4NetHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Room.cs" />
     <Compile Include="Server.Room.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Server.Operation.cs" />
