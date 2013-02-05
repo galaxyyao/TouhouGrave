@@ -31,10 +31,10 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
         {
-            var lastChoicePriority = context.CurrentBranchPriority;
+            var curOrder = context.CurrentBranchOrder;
 
             // redeem
-            if (lastChoicePriority <= 1)
+            if (curOrder <= 1)
             {
                 foreach (var indexedCard in io.RedeemCandidates
                                             .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -45,7 +45,7 @@ namespace TouhouSpring.Simulation
             }
 
             // sacrifice
-            if (lastChoicePriority <= 2)
+            if (curOrder <= 2)
             {
                 foreach (var indexedCard in io.SacrificeCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -58,7 +58,7 @@ namespace TouhouSpring.Simulation
             // play card
             // activate assist
             // cast spell
-            if (lastChoicePriority <= 3)
+            if (curOrder <= 3)
             {
                 foreach (var indexedCard in io.PlayCardCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -84,7 +84,7 @@ namespace TouhouSpring.Simulation
 
             // attack card
             // attack player
-            if (lastChoicePriority <= 4)
+            if (curOrder <= 4)
             {
                 if (io.DefenderCandidates.Count != 0)
                 {

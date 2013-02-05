@@ -19,7 +19,7 @@ namespace TouhouSpring.Simulation
 
             // save point
             public Game Root;
-            public int Priority;
+            public int Order;
             public int Depth;
         }
 
@@ -44,12 +44,12 @@ namespace TouhouSpring.Simulation
             get { return m_branches.Count; }
         }
 
-        public int CurrentBranchPriority
+        public int CurrentBranchOrder
         {
             get
             {
                 System.Diagnostics.Debug.Assert(!ChoiceMade);
-                return m_currentBranch.Priority;
+                return m_currentBranch.Order;
             }
         }
 
@@ -85,17 +85,13 @@ namespace TouhouSpring.Simulation
             {
                 TryMoveNextBranch();
 
-                if (m_currentBranch != null && m_currentBranch.Root != null)
+                if (m_currentBranch.Root != null)
                 {
                     --m_currentBranch.Depth;
                     m_currentBranch.Root.RunTurnFromMainPhase();
                 }
                 else
                 {
-                    if (m_currentBranch == null)
-                    {
-                        m_currentBranch = new PendingBranch();
-                    }
                     m_currentBranch.Root = RootGame.CloneWithController(this);
                     m_currentBranch.Root.RunTurn();
                 }
@@ -138,7 +134,7 @@ namespace TouhouSpring.Simulation
             }
             else
             {
-                m_currentBranch = null;
+                m_currentBranch = new PendingBranch();
             }
         }
 
@@ -158,7 +154,7 @@ namespace TouhouSpring.Simulation
                         // create save point
                         branch.Root = m_currentBranch.Root.CloneWithController(this);
                         branch.Depth = m_currentBranch.Depth;
-                        branch.Priority = m_currentBranch.Priority;
+                        branch.Order = m_currentBranch.Order;
                     }
                 }
 
@@ -169,7 +165,7 @@ namespace TouhouSpring.Simulation
             {
                 var nextChoice = NextChoice;
                 nextChoice.Make(io);
-                m_currentBranch.Priority = Math.Max(nextChoice.Priority, m_currentBranch.Priority);
+                m_currentBranch.Order = Math.Max(nextChoice.Order, m_currentBranch.Order);
             }
             else
             {

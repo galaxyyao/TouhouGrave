@@ -7,7 +7,7 @@ namespace TouhouSpring.Simulation
 {
     class Choice
     {
-        public int Priority
+        public int Order
         {
             get; private set;
         }
@@ -15,9 +15,9 @@ namespace TouhouSpring.Simulation
         public virtual void Make(Interactions.BaseInteraction io) { }
         public virtual string Print(Interactions.BaseInteraction io) { return ""; }
 
-        protected Choice(int priority)
+        protected Choice(int order)
         {
-            Priority = priority;
+            Order = order;
         }
     }
 
