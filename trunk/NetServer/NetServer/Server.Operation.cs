@@ -69,10 +69,13 @@ namespace TouhouSpring.NetServerCore
                                 #region user disconnect
                                 long disconnectedPlayerUid = im.SenderConnection.RemoteUniqueIdentifier;
                                 int disconnectedRoomId = GetRoomIdByUid(disconnectedPlayerUid);
-                                SendMessage(_roomList[disconnectedRoomId].GetOpponentPlayerConnection(disconnectedPlayerUid)
-                                    , string.Format("{0} disconnect", disconnectedRoomId));
-                                _roomList[disconnectedRoomId] = null;
-                                _roomList.Remove(disconnectedRoomId);
+                                if (_roomList[disconnectedRoomId] != null)
+                                {
+                                    SendMessage(_roomList[disconnectedRoomId].GetOpponentPlayerConnection(disconnectedPlayerUid)
+                                        , string.Format("{0} disconnect", disconnectedRoomId));
+                                    _roomList[disconnectedRoomId] = null;
+                                    _roomList.Remove(disconnectedRoomId);
+                                }
                                 #endregion user disconnect
                             }
                         }
@@ -82,9 +85,8 @@ namespace TouhouSpring.NetServerCore
                             string text = im.ReadString();
                             Console.WriteLine(text);
                             //TODO: Do something to Data
-                            NetOutgoingMessage om = _server.CreateMessage();
-                            om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + "aaa");
-                            _server.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                            string result = InterpretMessage(text);
+
                         }
                         break;
                     default:
