@@ -12,6 +12,10 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
+#if TRACE
+        public string DebugName;
+#endif
+
         public virtual void Make(Interactions.BaseInteraction io) { }
         public virtual string Print(Interactions.BaseInteraction io) { return ""; }
 

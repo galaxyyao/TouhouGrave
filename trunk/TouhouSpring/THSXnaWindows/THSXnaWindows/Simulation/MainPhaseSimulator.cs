@@ -29,42 +29,49 @@ namespace TouhouSpring.Simulation
 
         private bool m_stopActivateAssists = false;
 
-        public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
+        public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, int highestOrder)
         {
-            var curOrder = context.CurrentBranchOrder;
-
             // redeem
-            if (curOrder <= 1)
+            if (highestOrder <= 1)
             {
                 foreach (var indexedCard in io.RedeemCandidates
                                             .Select((card, index) => new CardIntPair { Card = card, Int = index })
                                             .Distinct(new CardModelComparer()))
                 {
-                    yield return new RedeemChoice(indexedCard.Int);
+                    yield return new RedeemChoice(indexedCard.Int)
+#if TRACE
+                    { DebugName = indexedCard.Card.Model.Name };
+#endif
                 }
             }
 
             // sacrifice
-            if (curOrder <= 2)
+            if (highestOrder <= 2)
             {
                 foreach (var indexedCard in io.SacrificeCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
                                                 .Distinct(new CardModelComparer()))
                 {
-                    yield return new SacrificeChoice(indexedCard.Int);
+                    yield return new SacrificeChoice(indexedCard.Int)
+#if TRACE
+                    { DebugName = indexedCard.Card.Model.Name };
+#endif
                 }
             }
 
             // play card
             // activate assist
             // cast spell
-            if (curOrder <= 3)
+            if (highestOrder <= 3)
             {
                 foreach (var indexedCard in io.PlayCardCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
                                                 .Distinct(new CardModelComparer()))
                 {
-                    yield return new PlayCardChoice(indexedCard.Int);
+                    yield return new PlayCardChoice(indexedCard.Int)
+#if TRACE
+                    { DebugName = indexedCard.Card.Model.Name };
+#endif
                 }
 
                 if (!m_stopActivateAssists)
@@ -84,7 +91,7 @@ namespace TouhouSpring.Simulation
 
             // attack card
             // attack player
-            if (curOrder <= 4)
+            if (highestOrder <= 4)
             {
                 if (io.DefenderCandidates.Count != 0)
                 {
@@ -114,11 +121,14 @@ namespace TouhouSpring.Simulation
             yield return new PassChoice();
         }
 
-        public override IEnumerable<Choice> SelectCards(Interactions.SelectCards io, Context context)
+        public override IEnumerable<Choice> SelectCards(Interactions.SelectCards io, int highestOrder)
         {
             for (int i = 0; i < io.Candidates.Count; ++i)
             {
-                yield return new SelectCardChoice(i);
+                yield return new SelectCardChoice(i)
+#if TRACE
+                { DebugName = io.Candidates[i].Model.Name };
+#endif
             }
         }
     }
