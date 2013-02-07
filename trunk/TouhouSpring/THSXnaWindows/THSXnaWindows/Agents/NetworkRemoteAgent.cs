@@ -8,7 +8,6 @@ namespace TouhouSpring.Agents
     class NetworkRemoteAgent : BaseAgent
     {
         Network.Client _client = null;
-        private Interactions.BaseInteraction m_currentIo = null;
 
         public NetworkRemoteAgent(Network.Client client)
         {
@@ -35,6 +34,7 @@ namespace TouhouSpring.Agents
 
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
+            _client.CurrentIo = io;
             //// sacrifice
             //var sacrifice = Sacrifice_MakeChoice2(io);
             //if (sacrifice != null)

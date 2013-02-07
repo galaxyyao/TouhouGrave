@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using Network=TouhouSpring.Network;
+using Network = TouhouSpring.Network;
 
 namespace TouhouSpring.Agents
 {
@@ -42,8 +42,63 @@ namespace TouhouSpring.Agents
             return false;
         }
 
+        public override bool OnTurnEnded(Interactions.NotifyPlayerEvent io)
+        {
+            _client.SendMessage(string.Format("{0} switchturn", _client.RoomId));
+            return false;
+        }
+
+
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
+            Interactions.TacticalPhase.Result currentCommand = new Interactions.TacticalPhase.Result();
+            if (Game.CurrentCommand.Result != null && Game.CurrentCommand.Result != ((object)""))
+            {
+                currentCommand = (Interactions.TacticalPhase.Result)Game.CurrentCommand.Result;
+            }
+            if (currentCommand.Data != null)
+            {
+                switch (currentCommand.ActionType)
+                {
+                    case Interactions.TacticalPhase.Action.Sacrifice:
+                        {
+                            _client.SendMessage(string.Format("{0} sacrifice {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
+                        }
+                        break;
+                    case Interactions.TacticalPhase.Action.PlayCard:
+                        {
+                            _client.SendMessage(string.Format("{0} playcard {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
+                        }
+                        break;
+                    case Interactions.TacticalPhase.Action.AttackCard:
+                        {
+                            _client.SendMessage(string.Format("{0} attackcard {1} {2}", _client.RoomId, Game.CurrentCommand.ResultIndex, Game.CurrentCommand.ResultIndex2));
+                        }
+                        break;
+                    case Interactions.TacticalPhase.Action.AttackPlayer:
+                        {
+                            _client.SendMessage(string.Format("{0} attackplayer {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
+                        }
+                        break;
+                    case Interactions.TacticalPhase.Action.ActivateAssist:
+                        {
+                            _client.SendMessage(string.Format("{0} activateassist {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
+                        }
+                        break;
+                    case Interactions.TacticalPhase.Action.CastSpell:
+                        {
+                            _client.SendMessage(string.Format("{0} castspell {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
+                        }
+                        break;
+                    case Interactions.TacticalPhase.Action.Redeem:
+                        {
+                            _client.SendMessage(string.Format("{0} redeem {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
             GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.TacticalPhase(), io);
         }
 
@@ -95,6 +150,11 @@ namespace TouhouSpring.Agents
                 }
                 io.Respond(ibtn);
             });
+        }
+
+        private bool IsActingPlayer(Interactions.BaseInteraction io)
+        {
+            return io.Game.Players.IndexOf(io.Game.ActingPlayer) == _client.StartupIndex;
         }
     }
 }

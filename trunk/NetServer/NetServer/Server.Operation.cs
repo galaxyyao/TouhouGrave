@@ -59,7 +59,8 @@ namespace TouhouSpring.NetServerCore
                                     foreach (var playerConn in _roomList[enteredRoomId].PlayerConns)
                                     {
                                         SendMessage(playerConn
-                                            , string.Format("{0} startgame {1}", enteredRoomId, _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier)));
+                                            , string.Format("{0} startgame {1}", enteredRoomId
+                                            , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
                                     }
                                 }
                                 #endregion
@@ -69,7 +70,7 @@ namespace TouhouSpring.NetServerCore
                                 #region user disconnect
                                 long disconnectedPlayerUid = im.SenderConnection.RemoteUniqueIdentifier;
                                 int disconnectedRoomId = GetRoomIdByUid(disconnectedPlayerUid);
-                                if (_roomList[disconnectedRoomId] != null)
+                                if (_roomList.ContainsKey(disconnectedRoomId))
                                 {
                                     SendMessage(_roomList[disconnectedRoomId].GetOpponentPlayerConnection(disconnectedPlayerUid)
                                         , string.Format("{0} disconnect", disconnectedRoomId));
@@ -84,8 +85,7 @@ namespace TouhouSpring.NetServerCore
                         {
                             string text = im.ReadString();
                             Console.WriteLine(text);
-                            //TODO: Do something to Data
-                            string result = InterpretMessage(text);
+                            InterpretMessage(im.SenderConnection, text);
 
                         }
                         break;
@@ -146,9 +146,66 @@ namespace TouhouSpring.NetServerCore
             }
         }
 
-        private string InterpretMessage(string message)
+        private void InterpretMessage(NetConnection senderConn, string message)
         {
-            return null;
+            List<string> parts = message.Split(' ').ToList();
+            switch (parts[1])
+            {
+                case "roomentered":
+                case "gamestarted":
+                    break;
+                case "switchturn":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} switchturn", roomId));
+                    }
+                    break;
+                case "sacrifice":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} sacrifice {1}", roomId, parts[2]));
+                    }
+                    break;
+                case "playcard":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} playcard {1}", roomId, parts[2]));
+                    }
+                    break;
+                case "attackcard":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} attackcard {1} {2}", roomId, parts[2], parts[3]));
+                    }
+                    break;
+                case "attackplayer":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} attackplayer {1}", roomId, parts[2]));
+                    }
+                    break;
+                case "activateassist":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} activateassist {1}", roomId, parts[2]));
+                    }
+                    break;
+                case "redeem":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} redeem {1}", roomId, parts[2]));
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void Shutdown()

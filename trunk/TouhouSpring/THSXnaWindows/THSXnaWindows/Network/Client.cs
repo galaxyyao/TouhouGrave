@@ -12,7 +12,17 @@ namespace TouhouSpring.Network
     {
         private NetClient _client;
 
-        private int _roomId = 0;
+        public object Command
+        {
+            get;
+            set;
+        }
+
+        public int RoomId
+        {
+            get;
+            private set;
+        }
 
         public enum RoomStatusEnum
         {
@@ -31,10 +41,16 @@ namespace TouhouSpring.Network
             private set;
         }
 
-        public int PlayerIndex
+        public int StartupIndex
         {
             get;
             private set;
+        }
+
+        public Interactions.BaseInteraction CurrentIo
+        {
+            get;
+            set;
         }
 
         public Client()
@@ -43,112 +59,6 @@ namespace TouhouSpring.Network
             config.AutoFlushSendQueue = false;
             _client = new NetClient(config);
             _client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
-        }
-
-        public void Connect(string host, int port)
-        {
-            _client.Start();
-            _client.Connect(host, port);
-        }
-
-        public void Disconnect()
-        {
-            _client.Disconnect("Disconnect request by user");
-            _client.Shutdown("bye");
-        }
-
-        public void Send(string text)
-        {
-            NetOutgoingMessage om = _client.CreateMessage(text);
-            _client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
-            _client.FlushSendQueue();
-        }
-
-        public void GotMessage(object peer)
-        {
-            NetIncomingMessage im;
-            while ((im = _client.ReadMessage()) != null)
-            {
-                // handle incoming message
-                switch (im.MessageType)
-                {
-                    case NetIncomingMessageType.DebugMessage:
-                    case NetIncomingMessageType.ErrorMessage:
-                    case NetIncomingMessageType.WarningMessage:
-                    case NetIncomingMessageType.VerboseDebugMessage:
-                        {
-                            string text = im.ReadString();
-                            //Output(text);
-                            Debug.Print(text);
-                        }
-                        break;
-                    case NetIncomingMessageType.StatusChanged:
-                        {
-                            NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
-
-                            if (status == NetConnectionStatus.Connected)
-                            {
-                                //TODO: Show "Connected" information on UI
-                                ;
-                            }
-                            else if (status == NetConnectionStatus.Disconnected)
-                            {
-                                //TODO: Show "Lost Connection" Information on UI
-                                //TODO: Abort Game Thread and return to Main Menu
-                                ;
-                            }
-
-                            string text = status.ToString() + im.ReadString();
-                            Debug.Print(text);
-                        }
-                        break;
-                    case NetIncomingMessageType.Data:
-                        {
-                            string text = im.ReadString();
-                            Debug.Print(text);
-                            InterpretMessage(text);
-                        }
-                        break;
-                    default:
-                        Debug.Print("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
-                        break;
-                }
-            }
-        }
-
-        private string InterpretMessage(string message)
-        {
-            List<string> parts = message.Split(' ').ToList();
-            switch (parts[1])
-            {
-                case "enterroom":
-                    {
-                        _roomId = Convert.ToInt32(parts[0]);
-                        Seed = -1;
-                        return string.Format("{0} {1}", _roomId, "roomentered");
-                    }
-                case "startgame":
-                    {
-                        RoomStatus = RoomStatusEnum.Starting;
-                        PlayerIndex = Convert.ToInt32(parts[2]);
-                        return string.Format("{0} {1}", _roomId, "gamestarted");
-                    }
-                case "generateseed":
-                    {
-                        Seed = Convert.ToInt32(parts[2]);
-                        Debug.Print(string.Format("Seed {0}", Seed));
-                    }
-                    break;
-                default:
-                    Debug.Print("Invalid argument");
-                    break;
-            }
-            return null;
-        }
-
-        public int GetRoomId()
-        {
-            return _roomId;
         }
     }
 }

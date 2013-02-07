@@ -257,7 +257,7 @@ namespace TouhouSpring.Services
                         playerParam.m_seed = m_networkClient.Seed;
                     }
                 }
-                if (m_networkClient.PlayerIndex == 0)
+                if (m_networkClient.StartupIndex == 0)
                 {
                     GameApp.Service<GameManager>().StartGame(param
                             , new Agents.BaseAgent[] {

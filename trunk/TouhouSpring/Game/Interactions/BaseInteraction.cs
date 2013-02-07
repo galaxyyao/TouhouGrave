@@ -14,7 +14,8 @@ namespace TouhouSpring.Interactions
 
         public Game Game
         {
-            get; private set;
+            get;
+            private set;
         }
 
         internal static string GetMessageText(Type interactionType)
@@ -78,6 +79,8 @@ namespace TouhouSpring.Interactions
         /// <param name="result">The result of this interaction</param>
         protected void RespondBack<TResult>(TResult result)
         {
+            if((object)result!=string.Empty)
+                Game.CurrentCommand.Result = result;
             string msgText = GetMessageText(GetType());
             var msg = new Messaging.Message(msgText, result);
 

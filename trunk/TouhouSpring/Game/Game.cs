@@ -35,6 +35,27 @@ namespace TouhouSpring
             get; private set;
         }
 
+        public static class CurrentCommand
+        {
+            public static object Result
+            {
+                get;
+                set;
+            }
+
+            public static int ResultIndex
+            {
+                get;
+                set;
+            }
+
+            public static int ResultIndex2
+            {
+                get;
+                set;
+            }
+        }
+
         public BaseController Controller
         {
             get; private set;

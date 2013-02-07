@@ -129,6 +129,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
+            Game.CurrentCommand.ResultIndex = PlayCardCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -146,6 +147,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
+            Game.CurrentCommand.ResultIndex = ActivateAssistCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -163,6 +165,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
+            Game.CurrentCommand.ResultIndex = CastSpellCandidates.IndexOf(selectedSpell);
             RespondBack(result);
         }
 
@@ -178,8 +181,9 @@ namespace TouhouSpring.Interactions
                 ActionType = Action.Sacrifice,
                 Data = selectedCard
             };
-
+            
             Validate(result);
+            Game.CurrentCommand.ResultIndex = SacrificeCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -197,6 +201,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
+            Game.CurrentCommand.ResultIndex = RedeemCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -218,6 +223,8 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
+            Game.CurrentCommand.ResultIndex = AttackerCandidates.IndexOf(attacker);
+            Game.CurrentCommand.ResultIndex2 = DefenderCandidates.IndexOf(defender);
             RespondBack(result);
         }
 
@@ -239,6 +246,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
+            Game.CurrentCommand.ResultIndex = AttackerCandidates.IndexOf(attacker);
             RespondBack(result);
         }
 
