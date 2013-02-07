@@ -62,14 +62,9 @@ namespace TouhouSpring.Behaviors
             m_attackModifier = (original as Enhance).m_attackModifier;
         }
 
-        public class ModelType : BehaviorModel
+        public class ModelType : BehaviorModel<Enhance>
         {
             public int AttackBoost { get; set; }
-
-            public override Type GetBehaviorType()
-            {
-                return typeof(Enhance);
-            }
         }
     }
 }

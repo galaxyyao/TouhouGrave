@@ -31,8 +31,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Environment))]
-        public class ModelType : BehaviorModel
+        [BehaviorModel]
+        public class ModelType : BehaviorModel<Environment>
         {
             // TODO: (BHV) Select VisualID from textures
             public string VisualId { get; set; }

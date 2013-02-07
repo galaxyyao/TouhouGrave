@@ -22,8 +22,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Spell_MassDamageToWarriorOnEnemyBattlefield), DefaultName = "Master Spark")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "Master Spark")]
+        public class ModelType : BehaviorModel<Spell_MassDamageToWarriorOnEnemyBattlefield>
         {
             public int Damage { get; set; }
         }

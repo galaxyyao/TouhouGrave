@@ -28,8 +28,8 @@ namespace TouhouSpring.Behaviors
             {
                 if (Model.AttackBoost > 0 )
                 {
-                    var lasting = new LastingEffect.ModelType { Duration = Model.Duration }.Instantiate();
-                    var enhanceMod = new Enhance.ModelType { AttackBoost = Model.AttackBoost }.Instantiate();
+                    var lasting = new LastingEffect.ModelType { Duration = Model.Duration }.CreateInitialized();
+                    var enhanceMod = new Enhance.ModelType { AttackBoost = Model.AttackBoost }.CreateInitialized();
                     (lasting as LastingEffect).CleanUps.Add(enhanceMod);
                     Game.IssueCommands(
                         new Commands.AddBehavior(Game.GetTarget(this)[0], enhanceMod),
@@ -38,8 +38,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Assault_SingleWarriorBoostForXRounds), DefaultName = "鬼神")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "鬼神")]
+        public class ModelType : BehaviorModel<Assault_SingleWarriorBoostForXRounds>
         {
             public int AttackBoost { get; set; }
             public int Duration { get; set; }

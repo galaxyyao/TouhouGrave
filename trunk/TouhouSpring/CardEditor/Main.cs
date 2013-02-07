@@ -29,7 +29,7 @@ namespace TouhouSpring
 
             var itemList = new List<ToolStripMenuItem>();
 
-            foreach (var t in AssemblyReflection.GetTypesDerivedFrom<Behaviors.BehaviorModel>().Where(t => !t.IsAbstract))
+            foreach (var t in AssemblyReflection.GetTypesImplements<Behaviors.IBehaviorModel>().Where(t => !t.IsAbstract))
             {
                 var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
                 if (bhvAttr == null)
@@ -55,7 +55,7 @@ namespace TouhouSpring
                     }
                 }
 
-                var item = new ToolStripMenuItem(bhvAttr.DefaultName);
+                var item = new ToolStripMenuItem(bhvAttr.DefaultName ?? (t.Assembly.CreateInstance(t.FullName) as Behaviors.IBehaviorModel).ModelTypeName);
                 item.Tag = t;
                 item.Click += new EventHandler(NewBehavior_Click);
                 rootMenu.Add(item);
@@ -130,7 +130,7 @@ namespace TouhouSpring
                            : treeViewCards.SelectedNode.Parent;
             var cardModel = cardNode.Tag as EditorCardModel;
             var bhvType = (sender as ToolStripMenuItem).Tag as Type;
-            var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as Behaviors.BehaviorModel;
+            var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as Behaviors.IBehaviorModel;
 
             cardModel.Behaviors.Add(bhv);
             AddBehavior(bhv, cardNode, true);
@@ -156,9 +156,9 @@ namespace TouhouSpring
                 var cardModel = node.Tag as EditorCardModel;
                 m_document.Cards.Remove(cardModel);
             }
-            else if (node.Tag is Behaviors.BehaviorModel)
+            else if (node.Tag is Behaviors.IBehaviorModel)
             {
-                var behaviorModel = node.Tag as Behaviors.BehaviorModel;
+                var behaviorModel = node.Tag as Behaviors.IBehaviorModel;
                 (node.Parent.Tag as EditorCardModel).Behaviors.Remove(behaviorModel);
             }
 
@@ -234,7 +234,7 @@ namespace TouhouSpring
                 }
             }
             else if (e.ChangedItem.PropertyDescriptor.Name == "Name"
-                     && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(Behaviors.BehaviorModel))
+                     && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(Behaviors.IBehaviorModel))
             {
                 var bhvNode = treeViewCards.SelectedNode;
                 bhvNode.Text = (string)e.ChangedItem.Value;

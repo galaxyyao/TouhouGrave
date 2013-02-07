@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="Agents\AIAgent.cs" />
     <Compile Include="Agents\AIAgent.GameEvaluation.cs" />
-    <Compile Include="Agents\AIAgent.Sacrifice.cs" />
     <Compile Include="Agents\AIAgent.ScoreLibrary.cs" />
     <Compile Include="Agents\BaseAgent.cs" />
     <Compile Include="Agents\LocalPlayerAgent.cs" />
@@ -133,9 +132,7 @@
     <Compile Include="Simulation\Choice.cs" />
     <Compile Include="Simulation\Context.cs" />
     <Compile Include="Simulation\BaseSimulator.cs" />
-    <Compile Include="Simulation\MainStage1Simulator.cs" />
-    <Compile Include="Simulation\MainStage2Simulator.cs" />
-    <Compile Include="Simulation\NonMainSimulator.cs" />
+    <Compile Include="Simulation\MainPhaseSimulator.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />
     <Compile Include="Style\CardControlStyle.cs" />
     <Compile Include="Style\Exceptions.cs" />

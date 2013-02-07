@@ -29,8 +29,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_DamageToSelectedCard_NDamageEachTurn), Category = "v0.5/Passive", DefaultName = "对指定卡造成伤害")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "对指定卡造成伤害")]
+        public class ModelType : BehaviorModel<Passive_DamageToSelectedCard_NDamageEachTurn>
         {
             public int DamageToDeal
             {

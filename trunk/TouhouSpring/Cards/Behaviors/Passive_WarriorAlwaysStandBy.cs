@@ -18,8 +18,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_WarriorAlwaysStandBy))]
-        public class ModelType : BehaviorModel
+        [BehaviorModel]
+        public class ModelType : BehaviorModel<Passive_WarriorAlwaysStandBy>
         { }
     }
 }

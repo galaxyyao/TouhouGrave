@@ -24,7 +24,7 @@ namespace TouhouSpring.Services
         {
             var dummyModel = new CardModel
             {
-                Behaviors = new List<Behaviors.BehaviorModel>(),
+                Behaviors = new List<Behaviors.IBehaviorModel>(),
                 Name = ""
             };
 

@@ -170,7 +170,7 @@ namespace TouhouSpring.Services
             public override Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
             {
                 Matrix mat = base.ResolveLocationTransform(control, thisIndex);
-                if (control.Card.Owner != control.Card.Owner.Game.ActingPlayer)
+                if (!GameApp.Service<GameUI>().ShallPlayerBeRevealed(control.Card.Owner))
                 {
                     mat = Matrix.CreateTranslation(-0.5f, control.Region.Height / control.Region.Width * 0.5f, 0)
                           * Matrix.CreateRotationZ(MathHelper.Pi)

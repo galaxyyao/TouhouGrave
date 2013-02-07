@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
     /// The base class for all behaviors
     /// </summary>
     public abstract class BaseBehavior<T> : IInternalBehavior
-        where T : BehaviorModel
+        where T : IBehaviorModel
     {
         /// <summary>
         /// The hosting card i.e. the card to which this behavior is bound
@@ -39,12 +39,12 @@ namespace TouhouSpring.Behaviors
             get { return Host != null && Host.Owner != null ? Host.Owner.Game : null; }
         }
 
-        BehaviorModel IBehavior.Model
+        IBehaviorModel IBehavior.Model
         {
             get { return Model; }
         }
 
-        void IInternalBehavior.Initialize(BehaviorModel model, bool persistent)
+        void IInternalBehavior.Initialize(IBehaviorModel model, bool persistent)
         {
             if (model == null)
             {

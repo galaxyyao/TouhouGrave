@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
                 && Host.Behaviors.Has<Warrior>())
             {
                 Game.IssueCommands(
-                    new Commands.AddBehavior(Host, new Effect.ModelType().Instantiate()),
+                    new Commands.AddBehavior(Host, new Effect.ModelType().CreateInitialized()),
                     new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
         }
@@ -37,8 +37,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(SummonWeakness))]
-        public class ModelType : BehaviorModel
+        [BehaviorModel]
+        public class ModelType : BehaviorModel<SummonWeakness>
         { }
     }
 }

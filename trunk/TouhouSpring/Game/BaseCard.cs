@@ -31,7 +31,7 @@ namespace TouhouSpring
             Model = model;
             Owner = owner;
             Behaviors = new Behaviors.BehaviorList(this);
-            Model.Behaviors.ForEach(bhv => Behaviors.Add(bhv.InstantiatePersistent()));
+            Model.Behaviors.ForEach(bhv => Behaviors.Add((bhv as Behaviors.IInternalBehaviorModel).CreateInitializedPersistent()));
         }
 
         public bool IsOnHand

@@ -21,8 +21,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_AliceDollSummon), DefaultName = "人偶召唤")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "人偶召唤")]
+        public class ModelType : BehaviorModel<Passive_AliceDollSummon>
         {
             public CardModelReference SummonType { get; set; }
         }

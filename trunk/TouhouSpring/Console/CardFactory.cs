@@ -12,9 +12,9 @@ namespace TouhouSpring
     {
         private CardModelList m_cards;
 
-        public ICardModel GetCardModel(string id)
+        public IIndexable<ICardModel> CardModels
         {
-            return m_cards.FirstOrDefault(cm => cm.Id == id);
+            get; private set;
         }
 
         public CardFactory(string xml)
@@ -23,6 +23,13 @@ namespace TouhouSpring
             {
                 m_cards = IntermediateSerializer.Deserialize<CardModelList>(xr, Path.GetDirectoryName(xml));
             }
+
+            CardModels = m_cards.Cast<ICardModel>().ToArray().ToIndexable();
+        }
+
+        public ICardModel GetCardModel(string id)
+        {
+            return m_cards.FirstOrDefault(cm => cm.Id == id);
         }
     }
 }

@@ -53,8 +53,8 @@ namespace TouhouSpring.Behaviors
             m_spellCaster = m_currentPlayer != null ? Host.Owner.Game.Players[other.Host.Owner.Game.Players.IndexOf(other.m_spellCaster)] : null;
         }
 
-        [BehaviorModel(typeof(Spell_PreventAllDamageInOneRound), DefaultName = "梦想封印")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "梦想封印")]
+        public class ModelType : BehaviorModel<Spell_PreventAllDamageInOneRound>
         { }
     }
 }

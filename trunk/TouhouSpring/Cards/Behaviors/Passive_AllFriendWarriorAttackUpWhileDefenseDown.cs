@@ -93,8 +93,8 @@ namespace TouhouSpring.Behaviors
             m_defenseMod = (original as Passive_AllFriendWarriorAttackUpWhileDefenseDown).m_defenseMod;
         }
 
-        [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpWhileDefenseDown), DefaultName = "御柱特攻")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "御柱特攻")]
+        public class ModelType : BehaviorModel<Passive_AllFriendWarriorAttackUpWhileDefenseDown>
         { }
     }
 }

@@ -56,14 +56,9 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public class ModelType : BehaviorModel
+        public class ModelType : BehaviorModel<LastingEffect>
         {
             public int Duration { get; set; }
-
-            public override Type GetBehaviorType()
-            {
-                return typeof(LastingEffect);
-            }
         }
     }
 }

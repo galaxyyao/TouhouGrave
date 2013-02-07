@@ -18,9 +18,7 @@ namespace TouhouSpring
 
             for (int i = 0; i < Behaviors.Count; ++i)
             {
-                var bhvType = Behaviors[i].GetType();
-                var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as Behaviors.IBehavior;
-                clonedCard.Behaviors.Add(bhv);
+                clonedCard.Behaviors.Add((Behaviors[i].Model as Behaviors.IInternalBehaviorModel).Instantiate());
             }
 
             return clonedCard;

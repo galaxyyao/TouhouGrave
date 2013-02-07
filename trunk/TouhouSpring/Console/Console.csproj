@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Benchmark_BehaviorModel_Instantiate.cs" />
     <Compile Include="CardFactory.cs" />
     <Compile Include="ConsoleController.cs" />
     <Compile Include="GameShowCastableSpells.cs" />

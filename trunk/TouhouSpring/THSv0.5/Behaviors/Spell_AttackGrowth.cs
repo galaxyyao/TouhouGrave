@@ -46,8 +46,8 @@ namespace TouhouSpring.Behaviors
             m_attackMod = (original as Spell_AttackGrowth).m_attackMod;
         }
 
-        [BehaviorModel(typeof(Spell_AttackGrowth), Category = "v0.5/Spell", DefaultName = "变巨术")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Spell", DefaultName = "变巨术")]
+        public class ModelType : BehaviorModel<Spell_AttackGrowth>
         {
         }
     }

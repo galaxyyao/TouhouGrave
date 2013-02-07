@@ -20,8 +20,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_Counterattack_NDamage), Category = "v0.5/Passive", DefaultName = "反击")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "反击")]
+        public class ModelType : BehaviorModel<Passive_Counterattack_NDamage>
         {
             public int DamageToDeal
             {

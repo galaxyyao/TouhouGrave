@@ -29,8 +29,8 @@ namespace TouhouSpring.Behaviors
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                                                  .SelectMany(player => player.CardsOnBattlefield))
                 {
-                    var lasting = new LastingEffect.ModelType { Duration = 2 }.Instantiate();
-                    var neutralize = new Neutralize.ModelType().Instantiate();
+                    var lasting = new LastingEffect.ModelType { Duration = 2 }.CreateInitialized();
+                    var neutralize = new Neutralize.ModelType().CreateInitialized();
                     (lasting as LastingEffect).CleanUps.Add(neutralize);
                     Game.IssueCommands(
                         new Commands.AddBehavior(card, neutralize),
@@ -39,8 +39,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Spell_Freeze), Category = "v0.5/Spell", DefaultName = "冰冻")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(Category = "v0.5/Spell", DefaultName = "冰冻")]
+        public class ModelType : BehaviorModel<Spell_Freeze>
         {
         }
     }

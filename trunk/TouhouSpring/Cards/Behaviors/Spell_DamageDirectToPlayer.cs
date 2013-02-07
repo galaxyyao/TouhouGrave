@@ -18,8 +18,8 @@ namespace TouhouSpring.Behaviors
                 Model.Damage, this));
         }
 
-        [BehaviorModel(typeof(Spell_DamageDirectToPlayer), DefaultName = "五道难题")]
-        public class ModelType : BehaviorModel
+        [BehaviorModel(DefaultName = "五道难题")]
+        public class ModelType : BehaviorModel<Spell_DamageDirectToPlayer>
         {
             public int Damage { get; set; }
         }

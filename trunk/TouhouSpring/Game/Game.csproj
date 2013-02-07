@@ -53,6 +53,7 @@
     <Compile Include="Behaviors\Hero.cs" />
     <Compile Include="Behaviors\IBehavior.cs" />
     <Compile Include="Behaviors\BehaviorModel.cs" />
+    <Compile Include="Behaviors\IBehaviorModel.cs" />
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
     <Compile Include="Behaviors\Neutralize.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Game.CommandCondition.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Deck.cs" />
+    <Compile Include="Game.CommandRunner.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Players.cs" />

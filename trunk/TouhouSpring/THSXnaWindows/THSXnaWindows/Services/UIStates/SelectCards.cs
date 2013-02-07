@@ -43,7 +43,7 @@ namespace TouhouSpring.Services.UIStates
         {
             var card = cardControl.Card;
 
-            if (m_io.SelectFromSet.Contains(card))
+            if (m_io.Candidates.Contains(card))
             {
                 if (m_selectedCards.Contains(card))
                 {
@@ -65,7 +65,7 @@ namespace TouhouSpring.Services.UIStates
 
         public bool IsCardClickable(UI.CardControl cardControl)
         {
-            return m_io.SelectFromSet.Contains(cardControl.Card);
+            return m_io.Candidates.Contains(cardControl.Card);
         }
 
         public bool IsCardSelected(UI.CardControl cardControl)

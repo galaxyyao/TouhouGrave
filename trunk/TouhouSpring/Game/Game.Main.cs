@@ -9,12 +9,6 @@ namespace TouhouSpring
 {
     public partial class Game : Commands.ICause
     {
-        public enum BackupPoint
-        {
-            PreMain,
-            PostMain
-        }
-
         public Player Winner
         {
             get; private set;
@@ -30,15 +24,13 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public void RunPreMainPhase()
+        public void RunTurn()
         {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
                 || CurrentPhase != "")
             {
-                throw new InvalidOperationException("Can't run upkeep phase.");
+                throw new InvalidOperationException("Can't run turn.");
             }
-
-            Controller.BackupGame(BackupPoint.PreMain);
 
             IssueCommandsAndFlush(new Commands.StartTurn(ActingPlayer));
 
@@ -58,17 +50,16 @@ namespace TouhouSpring
             DidSacrifice = false;
             DidRedeem = false;
             IssueCommandsAndFlush(new Commands.StartPhase("Main"));
+
+            RunTurnFromMainPhase();
         }
 
-        public void RunMainPhase()
+        public void RunTurnFromMainPhase()
         {
-            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread)
+            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
+                || CurrentPhase != "Main")
             {
-                throw new InvalidOperationException("Can't run main phase.");
-            }
-            else if (CurrentPhase != "Main")
-            {
-                throw new InvalidOperationException("The game is not in Main phase.");
+                throw new InvalidOperationException("Can't run turn from main phase.");
             }
 
             while (true)
@@ -103,9 +94,7 @@ namespace TouhouSpring
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Redeem)
                 {
                     var cardToRedeem = (BaseCard)result.Data;
-                    IssueCommandsAndFlush(
-                        new Commands.Redeem(cardToRedeem),
-                        new Commands.UpdateMana(ActingPlayer, -1, this));
+                    IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
                     DidRedeem = true;
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.AttackCard)
@@ -139,20 +128,6 @@ namespace TouhouSpring
                     throw new InvalidDataException();
                 }
             }
-        }
-
-        public void RunPostMainPhase()
-        {
-            if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread)
-            {
-                throw new InvalidOperationException("Can't run main phase.");
-            }
-            else if (CurrentPhase != "Main")
-            {
-                throw new InvalidOperationException("The game is not in Main phase.");
-            }
-
-            Controller.BackupGame(BackupPoint.PostMain);
 
             IssueCommandsAndFlush(
                 new Commands.EndPhase(),
@@ -183,10 +158,7 @@ namespace TouhouSpring
             for (; !AreWinnersDecided(); m_actingPlayer = ++m_actingPlayer % m_players.Length)
             {
                 Round++;
-
-                RunPreMainPhase();
-                RunMainPhase();
-                RunPostMainPhase();
+                RunTurn();
             };
 
             //InPlayerPhases = false;

@@ -8,12 +8,6 @@ namespace TouhouSpring.Agents
 {
     partial class AIAgent : BaseAgent
     {
-        private struct CardScorePair
-        {
-            public BaseCard Card;
-            public double Score;
-        }
-
         private struct ScoredBranch : IComparable<ScoredBranch>
         {
             public Simulation.Context.Branch Branch;
@@ -26,12 +20,7 @@ namespace TouhouSpring.Agents
         }
 
         private Messaging.LetterBox m_letterbox = new Messaging.LetterBox();
-
-        private Game.BackupPoint m_lastBackupPoint;
-        private Game m_lastBackupedGame;
-        private Simulation.Context.Branch m_stage1Plan;
-        private Simulation.Context.Branch m_stage2Plan;
-        private Simulation.Context.Branch m_otherPlan;
+        private Simulation.Context.Branch m_plan = null;
 
         public AIAgent()
         {
@@ -49,6 +38,10 @@ namespace TouhouSpring.Agents
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
+            if (io.Mode != Interactions.SelectCards.SelectMode.Single)
+            {
+                throw new NotImplementedException("Multiple selection is not implemented yet.");
+            }
             new Messaging.Message("OnSelectCards", io).SendTo(m_letterbox);
         }
 
@@ -63,10 +56,10 @@ namespace TouhouSpring.Agents
             throw new NotImplementedException();
         }
 
-        public override void OnGameBackup(Game.BackupPoint backupPoint, Game game)
+        public override bool OnTurnStarted(Interactions.NotifyPlayerEvent io)
         {
-            m_lastBackupPoint = backupPoint;
-            m_lastBackupedGame = game.Clone();
+            new Messaging.Message("BeginSimulation", io.Game.Clone()).SendTo(m_letterbox);
+            return false;
         }
 
         private void AIThread()
@@ -74,132 +67,63 @@ namespace TouhouSpring.Agents
             while (true)
             {
                 var msg = m_letterbox.WaitForNextMessage();
-                var io = msg.Attachment as Interactions.BaseInteraction;
 
                 switch (msg.Text)
                 {
-                    case "OnTacticalPhase":
-                        TacticalPhasePlanner(io as Interactions.TacticalPhase);
+                    case "BeginSimulation":
+                        MakePlan(msg.Attachment as Game);
                         break;
 
+                    case "OnTacticalPhase":
                     case "OnSelectCards":
-                        SelectCardsPlanner(io as Interactions.SelectCards);
+                        Debug.Assert(m_plan != null);
+                        RespondInteraction(msg.Attachment as Interactions.BaseInteraction);
                         break;
 
                     default:
-                        break;
+                        throw new InvalidOperationException();
                 }
             }
         }
 
-        private void TacticalPhasePlanner(Interactions.TacticalPhase io)
+        private void MakePlan(Game game)
         {
-            // sacrifice
-            var sacrifice = Sacrifice_MakeChoice2(io);
-            if (sacrifice != null)
-            {
-                Debug.WriteLine("Sacrifice: " + sacrifice.Model.Name);
-                io.RespondSacrifice(sacrifice);
-                return;
-            }
+            Debug.Assert(m_plan == null);
+            long startTime, endTime, freq;
 
-            if (m_stage1Plan == null)
-            {
-                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage1Simulator());
-                simulationCtx.Start(game => game.RunMainPhase());
+            QueryPerformanceFrequency(out freq);
+            QueryPerformanceCounter(out startTime);
 
-                int pid = io.Game.Players.IndexOf(io.Player);
-                var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                m_stage1Plan = scoredBranches.Max().Branch;
+            var simulationCtx = new Simulation.Context(game, new Simulation.MainPhaseSimulator());
+            simulationCtx.Start();
 
-                Debug.Assert(m_stage1Plan.ChoicePath.Last() is Simulation.PassChoice);
-                m_stage1Plan.ChoicePath.RemoveAt(m_stage1Plan.ChoicePath.Count - 1);
+            var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
+            var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+            m_plan = scoredBranches.Max().Branch;
 
-                Debug.WriteLine(String.Format("Stage1Plan: (total {0})", simulationCtx.Branches.Count()));
-                PrintEvaluate(m_stage1Plan.Result.Players[pid]);
-            }
+            QueryPerformanceCounter(out endTime);
 
-            if (m_stage1Plan.ChoicePath.Count > 0)
-            {
-                MakeChoice(m_stage1Plan, io);
-                return;
-            }
-
-            if (m_stage2Plan == null)
-            {
-                var simulationCtx = new Simulation.Context(io.Game, new Simulation.MainStage2Simulator());
-                simulationCtx.Start(game => game.RunMainPhase());
-
-                int pid = io.Game.Players.IndexOf(io.Player);
-                var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                m_stage2Plan = scoredBranches.Max().Branch;
-
-                Debug.Assert(m_stage2Plan.ChoicePath.Last() is Simulation.PassChoice);
-                m_stage2Plan.ChoicePath.RemoveAt(m_stage2Plan.ChoicePath.Count - 1);
-
-                Debug.WriteLine(String.Format("Stage2Plan: (total {0})", simulationCtx.Branches.Count()));
-                PrintEvaluate(m_stage2Plan.Result.Players[pid]);
-            }
-
-            if (m_stage2Plan.ChoicePath.Count > 0)
-            {
-                MakeChoice(m_stage2Plan, io);
-                return;
-            }
-
-            m_stage1Plan = null;
-            m_stage2Plan = null;
-
-            Debug.WriteLine("Pass");
-            io.RespondPass();
+            Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simulationCtx.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
+            PrintEvaluate(m_plan.Result.Players[pid]);
         }
 
-        private void SelectCardsPlanner(Interactions.SelectCards io)
+        private void RespondInteraction(Interactions.BaseInteraction io)
         {
-            Simulation.Context.Branch plan;
+            Debug.Assert(m_plan != null && m_plan.ChoicePath.Count > 0);
+            Trace.WriteLine("\t" + m_plan.ChoicePath[0].Print(io));
+            m_plan.ChoicePath[0].Make(io);
+            m_plan.ChoicePath.RemoveAt(0);
 
-            if (m_stage1Plan != null && m_stage1Plan.ChoicePath.Count > 0)
+            if (m_plan.ChoicePath.Count == 0)
             {
-                plan = m_stage1Plan;
+                m_plan = null;
             }
-            else if (m_stage2Plan != null && m_stage2Plan.ChoicePath.Count > 0)
-            {
-                plan = m_stage2Plan;
-            }
-            else
-            {
-                if (m_otherPlan == null || m_otherPlan.ChoicePath.Count == 0)
-                {
-                    var simulationCtx = new Simulation.Context(m_lastBackupedGame, new Simulation.NonMainSimulator());
-                    if (m_lastBackupPoint == Game.BackupPoint.PreMain)
-                    {
-                        simulationCtx.Start(game => game.RunPreMainPhase());
-                    }
-                    else
-                    {
-                        simulationCtx.Start(game => game.RunPostMainPhase());
-                    }
-
-                    int pid = io.Game.Players.IndexOf(io.Player);
-                    var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
-                    m_otherPlan = scoredBranches.Max().Branch;
-
-                    Debug.WriteLine(String.Format("OtherPlan: (total {0})", simulationCtx.Branches.Count()));
-                    PrintEvaluate(m_otherPlan.Result.Players[pid]);
-                }
-                plan = m_otherPlan;
-            }
-
-            Debug.Assert(plan.ChoicePath[0] is Simulation.SelectCardChoice);
-            MakeChoice(plan, io);
         }
 
-        private void MakeChoice(Simulation.Context.Branch plan, Interactions.BaseInteraction io)
-        {
-            Debug.Assert(plan.ChoicePath.Count > 0);
-            Debug.WriteLine(plan.ChoicePath[0].Print(io));
-            plan.ChoicePath[0].Make(io);
-            plan.ChoicePath.RemoveAt(0);
-        }
+        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
+        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
+
+        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
+        private static extern bool QueryPerformanceFrequency(out long lpFrequency);
     }
 }
