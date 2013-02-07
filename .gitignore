@@ -16,6 +16,8 @@
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/obj/*
 /trunk/Third-parties/CurveEditor_4_0/CurveEditor/bin/*
 /trunk/Third-parties/CurveEditor_4_0/CurveEditor/obj/*
+/trunk/Third-parties/Lidgren.Network/bin/*
+/trunk/Third-parties/Lidgren.Network/obj/*
 /trunk/Third-parties/Mapper/bin/*
 /trunk/Third-parties/Mapper/obj/*
 /trunk/TouhouSpring.suo
