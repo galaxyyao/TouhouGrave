@@ -115,7 +115,8 @@ namespace TouhouSpring.Services
                     CurrentPage = m_pages["Network"];
 
                     m_networkClient = new Network.Client();
-                    m_networkClient.Connect("127.0.0.1", 13389);
+                    m_networkClient.Connect(System.Configuration.ConfigurationManager.AppSettings["RemoteServerIp"]
+                        , Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RemoteServerPort"]));
                 }
                 else if (id == "back")
                 {
