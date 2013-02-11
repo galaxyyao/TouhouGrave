@@ -12,9 +12,9 @@ namespace TouhouSpring
             var clonedCard = new BaseCard
             {
                 Model = Model,
-                Owner = owner
+                Owner = owner,
+                Guid = Guid
             };
-            clonedCard.Behaviors = new Behaviors.BehaviorList(clonedCard);
 
             for (int i = 0; i < Behaviors.Count; ++i)
             {
@@ -31,7 +31,5 @@ namespace TouhouSpring
                 (Behaviors[i] as Behaviors.IInternalBehavior).TransferFrom(original.Behaviors[i]);
             }
         }
-
-        private BaseCard() { }
     }
 }

@@ -12,6 +12,7 @@ namespace TouhouSpring
     /// </summary>
     public partial class Game
     {
+        private Int32 m_nextCardGuid;
         private Thread m_gameFlowThread;
 
         /// <summary>
@@ -126,6 +127,11 @@ namespace TouhouSpring
                 IsBackground = true
             };
             m_gameFlowThread.Start();
+        }
+
+        internal Int32 GenerateNextCardGuid()
+        {
+            return Interlocked.Increment(ref m_nextCardGuid);
         }
     }
 }

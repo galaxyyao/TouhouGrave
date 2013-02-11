@@ -21,37 +21,59 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public BaseCard(ICardModel model, Player owner)
+        public Int32 Guid
+        {
+            get; private set;
+        }
+
+        public bool IsOnBattlefield
+        {
+            get { return Owner.CardsOnBattlefield.Contains(this); }
+        }
+
+        public bool IsHero
+        {
+            get { return Owner.Hero == this; }
+        }
+
+        public bool IsAssist
+        {
+            get { return Owner.Assists.Contains(this); }
+        }
+
+        internal BaseCard(ICardModel model, Player owner)
+            : this(model, owner, true)
+        { }
+
+        private BaseCard()
+        {
+            Behaviors = new Behaviors.BehaviorList(this);
+        }
+
+        private BaseCard(ICardModel model, Player owner, bool hasGuid) : this()
         {
             if (model == null)
             {
                 throw new ArgumentNullException("model");
             }
+            else if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
 
             Model = model;
             Owner = owner;
-            Behaviors = new Behaviors.BehaviorList(this);
+            Guid = hasGuid ? owner.Game.GenerateNextCardGuid() : 0;
             Model.Behaviors.ForEach(bhv => Behaviors.Add((bhv as Behaviors.IInternalBehaviorModel).CreateInitializedPersistent()));
         }
 
-        public bool IsOnHand
+        public static BaseCard CreateDummyCard(Player owner)
         {
-            get { return Owner != null ? Owner.CardsOnHand.Contains(this) : false; }
-        }
-
-        public bool IsOnBattlefield
-        {
-            get { return Owner != null ? Owner.CardsOnBattlefield.Contains(this) : false; }
-        }
-
-        public bool IsHero
-        {
-            get { return Owner != null ? Owner.Hero == this : false; }
-        }
-
-        public bool IsAssist
-        {
-            get { return Owner != null ? Owner.Assists.Contains(this) : false; }
+            CardModel dummyModel = new CardModel
+            {
+                Behaviors = new List<Behaviors.IBehaviorModel>()
+            };
+            return new BaseCard(dummyModel, owner, false);
         }
     }
 }

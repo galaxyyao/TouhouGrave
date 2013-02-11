@@ -8,18 +8,6 @@ using System.Xml.Serialization;
 
 namespace TouhouSpring
 {
-    internal class CloneContext
-    {
-        public Game BaseGame { get; private set; }
-        public Game ClonedGame { get; private set; }
-
-        public CloneContext(Game baseGame, Game clonedGame)
-        {
-            BaseGame = baseGame;
-            ClonedGame = clonedGame;
-        }
-    }
-
     partial class Game
     {
         private static readonly XmlSerializer RandomSerializer = XmlSerializer.FromTypes(new Type[] { typeof(Random) })[0];
@@ -47,6 +35,7 @@ namespace TouhouSpring
 
             clonedGame.Players = clonedGame.m_players.ToIndexable();
             clonedGame.Random = CloneRandom();
+            clonedGame.m_nextCardGuid = m_nextCardGuid;
 
             if (controller != null)
             {
