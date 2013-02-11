@@ -56,7 +56,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public PlayCardChoice(int cardIndex) : base(3)
+        public PlayCardChoice(int cardIndex) : base(4)
         {
             CardIndex = cardIndex;
         }
@@ -104,7 +104,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public ActivateAssistChoice(int cardIndex) : base(3)
+        public ActivateAssistChoice(int cardIndex) : base(4)
         {
             CardIndex = cardIndex;
         }
@@ -128,7 +128,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public CastSpellChoice(int spellIndex) : base(3)
+        public CastSpellChoice(int spellIndex) : base(4)
         {
             SpellIndex = spellIndex;
         }
@@ -157,7 +157,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackCardChoice(int attackerIndex, int defenderIndex) : base(4)
+        public AttackCardChoice(int attackerIndex, int defenderIndex) : base(5)
         {
             AttackerIndex = attackerIndex;
             DefenderIndex = defenderIndex;
@@ -189,7 +189,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackPlayerChoice(int attackerIndex, int playerIndex) : base(4)
+        public AttackPlayerChoice(int attackerIndex, int playerIndex) : base(5)
         {
             AttackerIndex = attackerIndex;
             PlayerIndex = playerIndex;
@@ -211,7 +211,7 @@ namespace TouhouSpring.Simulation
 
     class PassChoice : Choice
     {
-        public PassChoice() : base(5) { }
+        public PassChoice() : base(6) { }
 
         public override void Make(Interactions.BaseInteraction io)
         {

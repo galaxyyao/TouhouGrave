@@ -27,8 +27,6 @@ namespace TouhouSpring.Simulation
             }
         }
 
-        private bool m_stopActivateAssists = false;
-
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, int highestOrder)
         {
             // redeem
@@ -59,10 +57,21 @@ namespace TouhouSpring.Simulation
                 }
             }
 
+            // activate assist
+            // ActivateAssistChoice has an order of 4, thus yielding once causes this step to be skipped for the rest
+            // of the branch, making this choice to be only made once for one branch
+            if (highestOrder <= 3)
+            {
+                for (int i = 0; i < io.ActivateAssistCandidates.Count; ++i)
+                {
+                    yield return new ActivateAssistChoice(i);
+                }
+            }
+
             // play card
             // activate assist
             // cast spell
-            if (highestOrder <= 3)
+            if (highestOrder <= 4)
             {
                 foreach (var indexedCard in io.PlayCardCandidates
                                                 .Select((card, index) => new CardIntPair { Card = card, Int = index })
@@ -74,14 +83,7 @@ namespace TouhouSpring.Simulation
 #endif
                 }
 
-                if (!m_stopActivateAssists)
-                {
-                    for (int i = 0; i < io.ActivateAssistCandidates.Count; ++i)
-                    {
-                        yield return new ActivateAssistChoice(i);
-                    }
-                    m_stopActivateAssists = true;
-                }
+                
 
                 for (int i = 0; i < io.CastSpellCandidates.Count; ++i)
                 {
@@ -91,7 +93,7 @@ namespace TouhouSpring.Simulation
 
             // attack card
             // attack player
-            if (highestOrder <= 4)
+            if (highestOrder <= 5)
             {
                 if (io.DefenderCandidates.Count != 0)
                 {
