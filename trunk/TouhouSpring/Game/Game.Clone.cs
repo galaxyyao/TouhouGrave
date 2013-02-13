@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace TouhouSpring
 {
     partial class Game
     {
-        private static readonly XmlSerializer RandomSerializer = XmlSerializer.FromTypes(new Type[] { typeof(Random) })[0];
-
         public Game Clone()
         {
             return CloneWithController(null);
@@ -34,7 +29,7 @@ namespace TouhouSpring
             }
 
             clonedGame.Players = clonedGame.m_players.ToIndexable();
-            clonedGame.Random = CloneRandom();
+            clonedGame.Random = new Random(Random);
             clonedGame.m_nextCardGuid = m_nextCardGuid;
 
             if (controller != null)
@@ -65,16 +60,5 @@ namespace TouhouSpring
         }
 
         private Game() { }
-
-        private Random CloneRandom()
-        {
-            using (var ms = new MemoryStream())
-            {
-                var bf = new BinaryFormatter();
-                bf.Serialize(ms, Random);
-                ms.Seek(0, SeekOrigin.Begin);
-                return bf.Deserialize(ms) as Random;
-            }
-        }
     }
 }

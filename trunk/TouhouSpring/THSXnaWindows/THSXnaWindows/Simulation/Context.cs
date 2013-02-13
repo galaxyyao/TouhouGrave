@@ -9,13 +9,13 @@ namespace TouhouSpring.Simulation
     {
         public class Branch
         {
-            public List<Choice> ChoicePath;
+            public Choice[] ChoicePath;
             public Game Result;
         }
 
         private class PendingBranch
         {
-            public List<Choice> ChoicePath;
+            public Choice[] ChoicePath;
 
             // save point
             public Game Root;
@@ -23,12 +23,12 @@ namespace TouhouSpring.Simulation
             public int Depth;
         }
 
+        private static Choice[] s_emptyChoicePath = new Choice[0];
+
         private PendingBranch m_currentBranch;
-        private int m_currentBranchDepth;
-        private int m_currentBranchOrder;
         private List<PendingBranch> m_pendingBranches = new List<PendingBranch>();
 
-        private BaseSimulator m_simulator;
+        private BaseSimulator<Context> m_simulator;
         private List<Branch> m_branches = new List<Branch>();
 
         public Game RootGame
@@ -46,17 +46,32 @@ namespace TouhouSpring.Simulation
             get { return m_branches.Count; }
         }
 
+        public int CurrentBranchDepth
+        {
+            get; private set;
+        }
+
+        public int CurrentBranchOrder
+        {
+            get; private set;
+        }
+
+        public Choice[] CurrentBranchChoicePath
+        {
+            get { return m_currentBranch.ChoicePath; }
+        }
+
         private bool ChoiceMade
         {
-            get { return m_currentBranchDepth <= (m_currentBranch.ChoicePath != null ? m_currentBranch.ChoicePath.Count : 0); }
+            get { return CurrentBranchDepth <= m_currentBranch.ChoicePath.Length; }
         }
 
         private Choice NextChoice
         {
-            get { return m_currentBranch.ChoicePath[m_currentBranchDepth - 1]; }
+            get { return m_currentBranch.ChoicePath[CurrentBranchDepth - 1]; }
         }
 
-        public Context(Game game, BaseSimulator simulator)
+        public Context(Game game, BaseSimulator<Context> simulator)
             : base(true)
         {
             if (game == null)
@@ -80,14 +95,14 @@ namespace TouhouSpring.Simulation
 
                 if (m_currentBranch.Root != null)
                 {
-                    m_currentBranchDepth = m_currentBranch.Depth;
-                    m_currentBranchOrder = m_currentBranch.Order;
+                    CurrentBranchDepth = m_currentBranch.Depth;
+                    CurrentBranchOrder = m_currentBranch.Order;
                     m_currentBranch.Root.RunTurnFromMainPhase();
                 }
                 else
                 {
-                    m_currentBranchDepth = 0;
-                    m_currentBranchOrder = 0;
+                    CurrentBranchDepth = 0;
+                    CurrentBranchOrder = 0;
                     m_currentBranch.Root = RootGame.CloneWithController(this);
                     m_currentBranch.Root.RunTurn();
                 }
@@ -107,15 +122,10 @@ namespace TouhouSpring.Simulation
 
         private PendingBranch ForkBranch(Choice choice)
         {
-            var newBranch = new PendingBranch { ChoicePath = new List<Choice>() };
-            if (m_currentBranch.ChoicePath != null)
-            {
-                for (int i = 0; i < m_currentBranch.ChoicePath.Count; ++i)
-                {
-                    newBranch.ChoicePath.Add(m_currentBranch.ChoicePath[i]);
-                }
-            }
-            newBranch.ChoicePath.Add(choice);
+            var newChoicePath = new Choice[CurrentBranchChoicePath.Length + 1];
+            Array.Copy(CurrentBranchChoicePath, newChoicePath, CurrentBranchChoicePath.Length);
+            newChoicePath[CurrentBranchChoicePath.Length] = choice;
+            var newBranch = new PendingBranch { ChoicePath = newChoicePath };
             m_pendingBranches.Insert(0, newBranch);
             return newBranch;
         }
@@ -130,13 +140,13 @@ namespace TouhouSpring.Simulation
             }
             else
             {
-                m_currentBranch = new PendingBranch();
+                m_currentBranch = new PendingBranch { ChoicePath = s_emptyChoicePath };
             }
         }
 
         private void OnInteraction(Interactions.BaseInteraction io, IEnumerable<Choice> choices)
         {
-            ++m_currentBranchDepth;
+            ++CurrentBranchDepth;
 
             if (!ChoiceMade)
             {
@@ -150,8 +160,8 @@ namespace TouhouSpring.Simulation
                     {
                         // create save point
                         branch.Root = io.Game.CloneWithController(this);
-                        branch.Depth = m_currentBranchDepth - 1;
-                        branch.Order = m_currentBranchOrder;
+                        branch.Depth = CurrentBranchDepth - 1;
+                        branch.Order = CurrentBranchOrder;
                     }
                 }
 
@@ -162,7 +172,7 @@ namespace TouhouSpring.Simulation
             {
                 var nextChoice = NextChoice;
                 nextChoice.Make(io);
-                m_currentBranchOrder = Math.Max(nextChoice.Order, m_currentBranchOrder);
+                CurrentBranchOrder = Math.Max(nextChoice.Order, CurrentBranchOrder);
             }
             else
             {
@@ -175,21 +185,21 @@ namespace TouhouSpring.Simulation
         [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
         private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
         {
-            OnInteraction(interactionObj, m_simulator.TacticalPhase(interactionObj, m_currentBranchOrder));
+            OnInteraction(interactionObj, m_simulator.TacticalPhase(interactionObj, this));
             return false;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.SelectCards))]
         private bool OnSelectCards(Interactions.SelectCards interactionObj)
         {
-            OnInteraction(interactionObj, m_simulator.SelectCards(interactionObj, m_currentBranchOrder));
+            OnInteraction(interactionObj, m_simulator.SelectCards(interactionObj, this));
             return false;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.MessageBox))]
         private bool OnMessageBox(Interactions.MessageBox interactionObj)
         {
-            OnInteraction(interactionObj, m_simulator.MessageBox(interactionObj, m_currentBranchOrder));
+            OnInteraction(interactionObj, m_simulator.MessageBox(interactionObj, this));
             return false;
         }
 

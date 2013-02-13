@@ -12,7 +12,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-#if TRACE
+#if DEBUG
         public string DebugName;
 #endif
 

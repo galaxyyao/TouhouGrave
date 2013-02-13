@@ -117,7 +117,7 @@ namespace TouhouSpring
             CurrentPhase = "";
 
             Players = m_players.ToIndexable();
-            Random = (startUpParams[0].m_seed == -1) ? new System.Random() : new System.Random(startUpParams[0].m_seed);
+            Random = (startUpParams[0].m_seed == -1) ? new Random() : new Random(startUpParams[0].m_seed);
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
 

@@ -5,19 +5,19 @@ using System.Text;
 
 namespace TouhouSpring.Simulation
 {
-    class BaseSimulator
+    class BaseSimulator<TContext>
     {
-        public virtual IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, int highestOrder)
+        public virtual IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, TContext context)
         {
             return Enumerable.Empty<Choice>();
         }
 
-        public virtual IEnumerable<Choice> SelectCards(Interactions.SelectCards io, int highestOrder)
+        public virtual IEnumerable<Choice> SelectCards(Interactions.SelectCards io, TContext context)
         {
             return Enumerable.Empty<Choice>();
         }
 
-        public virtual IEnumerable<Choice> MessageBox(Interactions.MessageBox io, int highestOrder)
+        public virtual IEnumerable<Choice> MessageBox(Interactions.MessageBox io, TContext context)
         {
             return Enumerable.Empty<Choice>();
         }

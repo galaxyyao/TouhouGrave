@@ -21,6 +21,7 @@ namespace TouhouSpring.Agents
 
         private Messaging.LetterBox m_letterbox = new Messaging.LetterBox();
         private Simulation.Context.Branch m_plan = null;
+        private int m_planProgress = 0;
 
         public AIAgent()
         {
@@ -100,6 +101,7 @@ namespace TouhouSpring.Agents
             var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
             var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
             m_plan = scoredBranches.Max().Branch;
+            m_planProgress = 0;
 
             QueryPerformanceCounter(out endTime);
 
@@ -109,12 +111,11 @@ namespace TouhouSpring.Agents
 
         private void RespondInteraction(Interactions.BaseInteraction io)
         {
-            Debug.Assert(m_plan != null && m_plan.ChoicePath.Count > 0);
-            Trace.WriteLine("\t" + m_plan.ChoicePath[0].Print(io));
-            m_plan.ChoicePath[0].Make(io);
-            m_plan.ChoicePath.RemoveAt(0);
+            Debug.Assert(m_plan != null && m_plan.ChoicePath.Length > m_planProgress);
+            Trace.WriteLine("\t" + m_plan.ChoicePath[m_planProgress].Print(io));
+            m_plan.ChoicePath[m_planProgress++].Make(io);
 
-            if (m_plan.ChoicePath.Count == 0)
+            if (m_plan.ChoicePath.Length == m_planProgress)
             {
                 m_plan = null;
             }
