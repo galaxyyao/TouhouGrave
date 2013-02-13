@@ -25,6 +25,17 @@ namespace TouhouSpring.Simulation
         }
     }
 
+    class KillBranchChoice : Choice
+    {
+        public KillBranchChoice() : base(10000)
+        { }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            (io as Interactions.TacticalPhase).RespondPass();
+        }
+    }
+
     class SacrificeChoice : Choice
     {
         public int CardIndex
@@ -32,9 +43,15 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public SacrificeChoice(int cardIndex) : base(2)
+        public ICardModel CardModel
+        {
+            get; private set;
+        }
+
+        public SacrificeChoice(int cardIndex, ICardModel cardModel) : base(1)
         {
             CardIndex = cardIndex;
+            CardModel = cardModel;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -56,9 +73,21 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public PlayCardChoice(int cardIndex) : base(4)
+        public int CardGuid
+        {
+            get; private set;
+        }
+
+        public bool IsWarrior
+        {
+            get; private set;
+        }
+
+        public PlayCardChoice(int cardIndex, int cardGuid, bool isWarrior) : base(4)
         {
             CardIndex = cardIndex;
+            CardGuid = cardGuid;
+            IsWarrior = isWarrior;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -80,9 +109,15 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public RedeemChoice(int cardIndex) : base(1)
+        public int CardGuid
+        {
+            get; private set;
+        }
+
+        public RedeemChoice(int cardIndex, int cardGuid) : base(2)
         {
             CardIndex = cardIndex;
+            CardGuid = cardGuid;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -157,10 +192,16 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackCardChoice(int attackerIndex, int defenderIndex) : base(5)
+        public Int32 DefenderGuid
+        {
+            get; private set;
+        }
+
+        public AttackCardChoice(int attackerIndex, int defenderIndex, int defenderGuid) : base(5)
         {
             AttackerIndex = attackerIndex;
             DefenderIndex = defenderIndex;
+            DefenderGuid = defenderGuid;
         }
 
         public override void Make(Interactions.BaseInteraction io)

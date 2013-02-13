@@ -29,31 +29,51 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
         {
-            // redeem
+            // sacrifice
             if (context.CurrentBranchOrder <= 1)
             {
-                foreach (var indexedCard in io.RedeemCandidates
-                                            .Select((card, index) => new CardIntPair { Card = card, Int = index })
-                                            .Distinct(new CardModelComparer()))
+                var redundantGroup = io.SacrificeCandidates
+                    .Select((card, index) => new CardIntPair { Card = card, Int = index })
+                    .GroupBy(cip => cip.Card.Model).Where(g => g.Count() > 1).FirstOrDefault();
+                if (redundantGroup != null)
                 {
-                    yield return new RedeemChoice(indexedCard.Int);
+                    var indexedCard = redundantGroup.First();
+                    yield return new SacrificeChoice(indexedCard.Int, indexedCard.Card.Model)
 #if DEBUG
-                    { DebugName = indexedCard.Card.Model.Name };
+                    { DebugName = indexedCard.Card.Model.Name }
 #endif
+                    ;
+                }
+                else
+                {
+                    foreach (var indexedCard in io.SacrificeCandidates
+                                                    .Select((card, index) => new CardIntPair { Card = card, Int = index })
+                                                    .Distinct(new CardModelComparer()))
+                    {
+                        yield return new SacrificeChoice(indexedCard.Int, indexedCard.Card.Model)
+#if DEBUG
+                        { DebugName = indexedCard.Card.Model.Name }
+#endif
+                        ;
+                    }
                 }
             }
 
-            // sacrifice
+            // redeem
             if (context.CurrentBranchOrder <= 2)
             {
-                foreach (var indexedCard in io.SacrificeCandidates
-                                                .Select((card, index) => new CardIntPair { Card = card, Int = index })
-                                                .Distinct(new CardModelComparer()))
+                var lastSacrificeChoice = context.CurrentBranchChoicePath.LastOrDefault(choice => choice is SacrificeChoice);
+                var lastSacrificedCardModel = lastSacrificeChoice != null ? (lastSacrificeChoice as SacrificeChoice).CardModel : null;
+                foreach (var indexedCard in io.RedeemCandidates
+                                            .Select((card, index) => new CardIntPair { Card = card, Int = index })
+                                            .Distinct(new CardModelComparer())
+                                            .Where(ic => ic.Card.Model != lastSacrificedCardModel))
                 {
-                    yield return new SacrificeChoice(indexedCard.Int);
+                    yield return new RedeemChoice(indexedCard.Int, indexedCard.Card.Guid)
 #if DEBUG
-                    { DebugName = indexedCard.Card.Model.Name };
+                    { DebugName = indexedCard.Card.Model.Name }
 #endif
+                    ;
                 }
             }
 
@@ -69,25 +89,50 @@ namespace TouhouSpring.Simulation
             }
 
             // play card
-            // activate assist
             // cast spell
             if (context.CurrentBranchOrder <= 4)
             {
-                foreach (var indexedCard in io.PlayCardCandidates
-                                                .Select((card, index) => new CardIntPair { Card = card, Int = index })
-                                                .Distinct(new CardModelComparer()))
+                // when play multiple warriors in one turn, we don't treat "Play A then B" and "Play B then A" as two
+                // different paths by sorting the warriors by their guid
+                var distinctCardsOnHand = io.PlayCardCandidates
+                    .Select((card, index) => new CardIntPair { Card = card, Int = index })
+                    .Distinct(new CardModelComparer()).ToArray();
+                var lastPlayedWarrior = context.CurrentBranchChoicePath.LastOrDefault(choice => choice is PlayCardChoice
+                    && (choice as PlayCardChoice).IsWarrior);
+                if (lastPlayedWarrior != null)
                 {
-                    yield return new PlayCardChoice(indexedCard.Int);
-#if DEBUG
-                    { DebugName = indexedCard.Card.Model.Name };
-#endif
+                    var lastPlayedWarriorGuid = (lastPlayedWarrior as PlayCardChoice).CardGuid;
+                    distinctCardsOnHand = distinctCardsOnHand.Where(ic => ic.Card.Guid > lastPlayedWarriorGuid).ToArray();
                 }
 
-                
+                foreach (var indexedCard in distinctCardsOnHand)
+                {
+                    yield return new PlayCardChoice(
+                        indexedCard.Int,
+                        indexedCard.Card.Guid,
+                        indexedCard.Card.Behaviors.Has<Behaviors.Warrior>())
+#if DEBUG
+                    { DebugName = indexedCard.Card.Model.Name }
+#endif
+                    ;
+                }
 
                 for (int i = 0; i < io.CastSpellCandidates.Count; ++i)
                 {
                     yield return new CastSpellChoice(i);
+                }
+            }
+
+            // kill branch if redeemed card is not played
+            var redeemChoice = context.CurrentBranchChoicePath.FirstOrDefault(choice => choice is RedeemChoice) as RedeemChoice;
+            if (redeemChoice != null)
+            {
+                if (!context.CurrentBranchChoicePath.Any(choice =>
+                    choice is PlayCardChoice
+                    && (choice as PlayCardChoice).CardGuid == redeemChoice.CardGuid))
+                {
+                    yield return new KillBranchChoice();
+                    yield break;
                 }
             }
 
@@ -97,24 +142,37 @@ namespace TouhouSpring.Simulation
             {
                 if (io.DefenderCandidates.Count != 0)
                 {
-                    for (int i = 0; i < io.AttackerCandidates.Count; ++i)
+                    // the last attacked card has a priority to be attacked again
+                    var lastAttackCardChoice = context.CurrentBranchChoicePath.LastOrDefault() as AttackCardChoice;
+                    var lastAttackedCardIndex = lastAttackCardChoice != null
+                        ? io.DefenderCandidates.FindIndex(card => card.Guid == lastAttackCardChoice.DefenderGuid)
+                        : -1;
+                    if (lastAttackedCardIndex != -1)
                     {
-                        for (int j = 0; j < io.DefenderCandidates.Count; ++j)
+                        for (int i = 0; i < io.AttackerCandidates.Count; ++i)
                         {
-                            yield return new AttackCardChoice(i, j);
+                            yield return new AttackCardChoice(i, lastAttackedCardIndex, lastAttackCardChoice.DefenderGuid);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < io.AttackerCandidates.Count; ++i)
+                        {
+                            for (int j = 0; j < io.DefenderCandidates.Count; ++j)
+                            {
+                                yield return new AttackCardChoice(i, j, io.DefenderCandidates[j].Guid);
+                            }
                         }
                     }
                 }
-                else
+                // when attack the opponent player we don't care about the attacking order
+                else if (io.AttackerCandidates.Count > 0)
                 {
-                    for (int i = 0; i < io.AttackerCandidates.Count; ++i)
+                    for (int j = 0; j < io.Game.Players.Count(); ++j)
                     {
-                        for (int j = 0; j < io.Game.Players.Count(); ++j)
+                        if (io.Game.ActingPlayerEnemies.Contains(io.Game.Players[j]))
                         {
-                            if (io.Game.ActingPlayerEnemies.Contains(io.Game.Players[j]))
-                            {
-                                yield return new AttackPlayerChoice(i, j);
-                            }
+                            yield return new AttackPlayerChoice(0, j);
                         }
                     }
                 }
@@ -127,10 +185,11 @@ namespace TouhouSpring.Simulation
         {
             for (int i = 0; i < io.Candidates.Count; ++i)
             {
-                yield return new SelectCardChoice(i);
+                yield return new SelectCardChoice(i)
 #if DEBUG
-                { DebugName = io.Candidates[i].Model.Name };
+                { DebugName = io.Candidates[i].Model.Name }
 #endif
+                ;
             }
         }
     }

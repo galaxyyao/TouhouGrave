@@ -23,8 +23,6 @@ namespace TouhouSpring.Simulation
             public int Depth;
         }
 
-        private static Choice[] s_emptyChoicePath = new Choice[0];
-
         private PendingBranch m_currentBranch;
         private List<PendingBranch> m_pendingBranches = new List<PendingBranch>();
 
@@ -89,10 +87,10 @@ namespace TouhouSpring.Simulation
 
         public void Start()
         {
-            while (true)
-            {
-                TryMoveNextBranch();
+            m_pendingBranches.Add(new PendingBranch { ChoicePath = new Choice[0] });
 
+            while (TryMoveNextBranch())
+            {
                 if (m_currentBranch.Root != null)
                 {
                     CurrentBranchDepth = m_currentBranch.Depth;
@@ -112,11 +110,6 @@ namespace TouhouSpring.Simulation
                     ChoicePath = m_currentBranch.ChoicePath,
                     Result = m_currentBranch.Root
                 });
-
-                if (m_pendingBranches.Count == 0)
-                {
-                    break;
-                }
             }
         }
 
@@ -130,18 +123,17 @@ namespace TouhouSpring.Simulation
             return newBranch;
         }
 
-        private void TryMoveNextBranch()
+        private bool TryMoveNextBranch()
         {
             // discard the current choice path
             if (m_pendingBranches.Count > 0)
             {
                 m_currentBranch = m_pendingBranches[0];
                 m_pendingBranches.RemoveAt(0);
+                return true;
             }
-            else
-            {
-                m_currentBranch = new PendingBranch { ChoicePath = s_emptyChoicePath };
-            }
+
+            return false;
         }
 
         private void OnInteraction(Interactions.BaseInteraction io, IEnumerable<Choice> choices)
