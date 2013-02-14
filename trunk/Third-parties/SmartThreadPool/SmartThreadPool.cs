@@ -180,6 +180,11 @@ namespace Amib.Threading
 		/// </summary>
 		public const ThreadPriority DefaultThreadPriority = ThreadPriority.Normal;
 #endif
+
+#if _WINDOWS
+        public const UInt32 DefaultThreadAffinity = 0xff;
+#endif
+
         /// <summary>
         /// The default thread pool name. (SmartThreadPool)
         /// </summary>
@@ -707,6 +712,25 @@ namespace Amib.Threading
 		/// </summary>
 		private void ProcessQueuedItems()
 		{
+#if _WINDOWS
+            // Fix the managed thread to an OS thread
+            Thread.BeginThreadAffinity();
+
+            var process = Process.GetCurrentProcess();
+#pragma warning disable 618 // AppDomain.GetCurrentThreadId() is obsolete; but with BeginThreadAffinity() it is safe
+            var currentThread = AppDomain.GetCurrentThreadId();
+#pragma warning restore 618
+            foreach (ProcessThread thread in process.Threads)
+            {
+                if (thread.Id == currentThread)
+                {
+                    // set the affinity
+                    thread.ProcessorAffinity = _stpStartInfo.ThreadAffinity;
+                    break;
+                }
+            }
+#endif
+
             // Keep the entry of the dictionary as thread's variable to avoid the synchronization locks
             // of the dictionary.
             CurrentThreadEntry = _workerThreads[Thread.CurrentThread];
@@ -869,6 +893,11 @@ namespace Amib.Threading
 			{
 				InformCompleted();
                 FireOnThreadTermination();
+
+#if _WINDOWS
+                // Reset physical thread affinity
+                Thread.EndThreadAffinity();
+#endif
 			}
 		}
 
@@ -1727,6 +1756,6 @@ namespace Amib.Threading
             Pipe(pipeState, (IEnumerable<Action<T>>)actions);
         }
         #endregion
-	}
+    }
 	#endregion
 }

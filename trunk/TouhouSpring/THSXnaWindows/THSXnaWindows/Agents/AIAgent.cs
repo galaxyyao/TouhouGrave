@@ -95,7 +95,7 @@ namespace TouhouSpring.Agents
             QueryPerformanceFrequency(out freq);
             QueryPerformanceCounter(out startTime);
 
-            Simulation.ISandbox simSandbox = new Simulation.TplSandbox(game, new Simulation.MainPhaseSimulator());
+            Simulation.ISandbox simSandbox = new Simulation.StpSandbox(game, new Simulation.MainPhaseSimulator());
             simSandbox.Run();
 
             var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);

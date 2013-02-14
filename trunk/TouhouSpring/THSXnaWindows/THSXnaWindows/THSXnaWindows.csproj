@@ -135,6 +135,7 @@
     <Compile Include="Simulation\ISandbox.cs" />
     <Compile Include="Simulation\ParallelSandbox.cs" />
     <Compile Include="Simulation\ParallelSandbox.Task.cs" />
+    <Compile Include="Simulation\StpSandbox.cs" />
     <Compile Include="Simulation\TplSandbox.cs" />
     <Compile Include="Simulation\Choice.cs" />
     <Compile Include="Simulation\BaseSimulator.cs" />

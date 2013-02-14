@@ -14,6 +14,9 @@ namespace Amib.Threading
 #if !(WINDOWS_PHONE)
         private ThreadPriority _threadPriority = SmartThreadPool.DefaultThreadPriority;
 #endif
+#if _WINDOWS
+        private IntPtr _threadAffinity = (IntPtr)SmartThreadPool.DefaultThreadAffinity;
+#endif
         private string _performanceCounterInstanceName = SmartThreadPool.DefaultPerformanceCounterInstanceName;
         private bool _areThreadsBackground = SmartThreadPool.DefaultAreThreadsBackground;
         private bool _enableLocalPerformanceCounters;
@@ -39,6 +42,9 @@ namespace Amib.Threading
             _maxWorkerThreads = stpStartInfo.MaxWorkerThreads;
 #if !(WINDOWS_PHONE)
             _threadPriority = stpStartInfo.ThreadPriority;
+#endif
+#if _WINDOWS
+            _threadAffinity = stpStartInfo.ThreadAffinity;
 #endif
             _performanceCounterInstanceName = stpStartInfo.PerformanceCounterInstanceName;
             _enableLocalPerformanceCounters = stpStartInfo._enableLocalPerformanceCounters;
@@ -106,6 +112,19 @@ namespace Amib.Threading
             }
 	    }
 #endif
+
+#if _WINDOWS
+        public virtual IntPtr ThreadAffinity
+        {
+            get { return _threadAffinity; }
+            set
+            {
+                ThrowIfReadOnly();
+                _threadAffinity = value;
+            }
+        }
+#endif
+
         /// <summary>
         /// Get/Set the thread pool name. Threads will get names depending on this.
         /// </summary>
