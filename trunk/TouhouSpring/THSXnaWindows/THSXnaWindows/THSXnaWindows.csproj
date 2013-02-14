@@ -226,6 +226,10 @@
       <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
       <Name>Lidgren.Network %28Third Parties\Lidgren.Network\Lidgren.Network%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Third-parties\SmartThreadPool\SmartThreadPool.csproj">
+      <Project>{74D4C33F-7CC8-4B2A-A7DF-D8B6E63B6EBD}</Project>
+      <Name>SmartThreadPool %28Third Parties\SmartThreadPool\SmartThreadPool%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Cards\Cards.csproj">
       <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
       <Name>Cards</Name>

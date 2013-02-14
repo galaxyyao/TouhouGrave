@@ -93,14 +93,14 @@ namespace TouhouSpring
 
         public Random(Random copy)
         {
-            var newSeedArray = new int[SeedArray.Length];
-            for (int i = 0; i < SeedArray.Length; ++i)
+            var newSeedArray = new int[copy.SeedArray.Length];
+            for (int i = 0; i < copy.SeedArray.Length; ++i)
             {
-                newSeedArray[i] = SeedArray[i];
+                newSeedArray[i] = copy.SeedArray[i];
             }
 
-            inext = inext;
-            inextp = inextp;
+            inext = copy.inext;
+            inextp = copy.inextp;
             SeedArray = newSeedArray;
         }
 
