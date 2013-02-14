@@ -54,6 +54,7 @@ namespace TouhouSpring.Commands
             if (Target.Owner.CardsOnBattlefield.Contains(Target))
             {
                 Target.Owner.m_battlefieldCards.Remove(Target);
+                Game.UnsubscribeCardFromCommands(Target);
                 LeftBattlefield = true;
             }
             else if (Target.Owner.CardsOnHand.Contains(Target))

@@ -51,6 +51,7 @@ namespace TouhouSpring.Commands
         {
             CardToPlay.Owner.m_handSet.Remove(CardToPlay);
             CardToPlay.Owner.m_battlefieldCards.Add(CardToPlay);
+            Game.SubscribeCardToCommands(CardToPlay);
         }
     }
 }

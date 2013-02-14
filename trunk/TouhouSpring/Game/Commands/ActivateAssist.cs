@@ -49,6 +49,11 @@ namespace TouhouSpring.Commands
         {
             PreviouslyActivatedCard = CardToActivate.Owner.ActivatedAssist;
             CardToActivate.Owner.ActivatedAssist = CardToActivate;
+            if (PreviouslyActivatedCard != null)
+            {
+                Game.UnsubscribeCardFromCommands(PreviouslyActivatedCard);
+            }
+            Game.SubscribeCardToCommands(CardToActivate);
         }
     }
 }

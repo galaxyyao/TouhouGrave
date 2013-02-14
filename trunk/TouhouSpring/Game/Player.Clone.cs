@@ -26,7 +26,9 @@ namespace TouhouSpring
 
             for (int i = 0; i < m_battlefieldCards.Count; ++i)
             {
-                clonedPlayer.m_battlefieldCards.Add(m_battlefieldCards[i].Clone(clonedPlayer));
+                var clonedCard = m_battlefieldCards[i].Clone(clonedPlayer);
+                clonedPlayer.m_battlefieldCards.Add(clonedCard);
+                clonedPlayer.Game.SubscribeCardToCommands(clonedCard);
             }
 
             if (Hero != null)
@@ -39,6 +41,10 @@ namespace TouhouSpring
                 clonedPlayer.m_assists.Add(m_assists[i].Clone(clonedPlayer));
             }
             clonedPlayer.ActivatedAssist = ActivatedAssist != null ? clonedPlayer.m_assists[m_assists.IndexOf(ActivatedAssist)] : null;
+            if (clonedPlayer.ActivatedAssist != null)
+            {
+                clonedPlayer.Game.SubscribeCardToCommands(clonedPlayer.ActivatedAssist);
+            }
 
             for (int i = 0; i < m_library.Count; ++i)
             {
