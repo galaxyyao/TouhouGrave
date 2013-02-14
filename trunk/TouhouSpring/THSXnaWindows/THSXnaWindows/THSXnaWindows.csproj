@@ -133,11 +133,12 @@
     <Compile Include="Simulation\BenchmarkSandbox.cs" />
     <Compile Include="Simulation\IContext.cs" />
     <Compile Include="Simulation\ISandbox.cs" />
+    <Compile Include="Simulation\ParallelSandbox.cs" />
+    <Compile Include="Simulation\ParallelSandbox.Task.cs" />
     <Compile Include="Simulation\TplSandbox.cs" />
     <Compile Include="Simulation\Choice.cs" />
     <Compile Include="Simulation\BaseSimulator.cs" />
     <Compile Include="Simulation\MainPhaseSimulator.cs" />
-    <Compile Include="Simulation\TplSandbox.SimulationTask.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />
     <Compile Include="Style\CardControlStyle.cs" />
     <Compile Include="Style\Exceptions.cs" />

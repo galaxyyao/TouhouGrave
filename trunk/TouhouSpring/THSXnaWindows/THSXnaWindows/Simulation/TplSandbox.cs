@@ -1,55 +1,26 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tpl = System.Threading.Tasks;
 
 namespace TouhouSpring.Simulation
 {
-    partial class TplSandbox : ISandbox
+    class TplSandbox : ParallelSandbox
     {
-        private BaseSimulator m_simulator;
-        private ConcurrentBag<Branch> m_branches = new ConcurrentBag<Branch>();
-
-        public Game RootGame
-        {
-            get; private set;
-        }
-
-        public IEnumerable<Branch> Branches
-        {
-            get { return m_branches; }
-        }
-
-        public int BranchCount
-        {
-            get { return m_branches.Count; }
-        }
-
         public TplSandbox(Game game, BaseSimulator simulator)
-        {
-            if (game == null)
-            {
-                throw new ArgumentNullException("game");
-            }
-            else if (simulator == null)
-            {
-                throw new ArgumentNullException("simulator");
-            }
+            : base(game, simulator)
+        { }
 
-            m_simulator = simulator;
-            RootGame = game;
-        }
-
-        public void Start()
+        public override void Run()
         {
-            var task = SimulationTask.Start(this);
+            var task = Tpl.Task.Factory.StartNew(() => new Task(this, new PendingBranch { ChoicePath = new Choice[0] }));
             task.Wait();
         }
 
-        private void AddResult(Game finalState, Choice[] choicePath)
+        protected override void StartBranch(PendingBranch branch)
         {
-            m_branches.Add(new Branch { Result = finalState, ChoicePath = choicePath });
+            Tpl.Task.Factory.StartNew(() => new Task(this, branch), Tpl.TaskCreationOptions.AttachedToParent);
         }
     }
 }

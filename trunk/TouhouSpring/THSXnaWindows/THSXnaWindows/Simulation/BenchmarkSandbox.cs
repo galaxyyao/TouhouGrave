@@ -79,7 +79,7 @@ namespace TouhouSpring.Simulation
             RootGame = game;
         }
 
-        public void Start()
+        public void Run()
         {
             m_pendingBranches.Add(new PendingBranch { ChoicePath = new Choice[0] });
 

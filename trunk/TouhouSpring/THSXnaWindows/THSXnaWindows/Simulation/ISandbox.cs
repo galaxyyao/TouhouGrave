@@ -13,7 +13,7 @@ namespace TouhouSpring.Simulation
 
     interface ISandbox
     {
-        void Start();
+        void Run();
 
         int BranchCount { get; }
         IEnumerable<Branch> Branches { get; }
