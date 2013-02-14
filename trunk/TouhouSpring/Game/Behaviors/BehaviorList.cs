@@ -66,6 +66,11 @@ namespace TouhouSpring.Behaviors
             m_host = host;
         }
 
+        internal void Reserve(int capacity)
+        {
+            m_behaviors.Capacity = capacity;
+        }
+
         internal void Add(IBehavior item)
         {
             if (item == null)

@@ -16,6 +16,7 @@ namespace TouhouSpring
                 Guid = Guid
             };
 
+            clonedCard.Behaviors.Reserve(Behaviors.Count);
             for (int i = 0; i < Behaviors.Count; ++i)
             {
                 clonedCard.Behaviors.Add((Behaviors[i].Model as Behaviors.IInternalBehaviorModel).Instantiate());
