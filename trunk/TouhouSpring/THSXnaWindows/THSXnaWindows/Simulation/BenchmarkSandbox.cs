@@ -5,14 +5,8 @@ using System.Text;
 
 namespace TouhouSpring.Simulation
 {
-    class Context : BaseController
+    class BenchmarkSandbox : BaseController, ISandbox, IContext
     {
-        public class Branch
-        {
-            public Choice[] ChoicePath;
-            public Game Result;
-        }
-
         private class PendingBranch
         {
             public Choice[] ChoicePath;
@@ -26,7 +20,7 @@ namespace TouhouSpring.Simulation
         private PendingBranch m_currentBranch;
         private List<PendingBranch> m_pendingBranches = new List<PendingBranch>();
 
-        private BaseSimulator<Context> m_simulator;
+        private BaseSimulator m_simulator;
         private List<Branch> m_branches = new List<Branch>();
 
         public Game RootGame
@@ -69,7 +63,7 @@ namespace TouhouSpring.Simulation
             get { return m_currentBranch.ChoicePath[CurrentBranchDepth - 1]; }
         }
 
-        public Context(Game game, BaseSimulator<Context> simulator)
+        public BenchmarkSandbox(Game game, BaseSimulator simulator)
             : base(true)
         {
             if (game == null)

@@ -129,6 +129,21 @@ namespace TouhouSpring
             m_gameFlowThread.Start();
         }
 
+        public void OverrideController(BaseController controller)
+        {
+            if (controller == null)
+            {
+                throw new ArgumentNullException("controller");
+            }
+
+            if (Controller != null)
+            {
+                Controller.Game = null;
+            }
+            Controller = controller;
+            Controller.Game = this;
+        }
+
         internal Int32 GenerateNextCardGuid()
         {
             return Interlocked.Increment(ref m_nextCardGuid);

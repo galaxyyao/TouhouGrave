@@ -6,7 +6,7 @@ using System.Text;
 namespace TouhouSpring.Simulation
 {
     // in this simulator, mana-consuming actions are done
-    class MainPhaseSimulator : BaseSimulator<Context>
+    class MainPhaseSimulator : BaseSimulator
     {
         private struct CardIntPair
         {
@@ -27,7 +27,7 @@ namespace TouhouSpring.Simulation
             }
         }
 
-        public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, Context context)
+        public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, IContext context)
         {
             // sacrifice
             if (context.CurrentBranchOrder <= 1)
@@ -181,7 +181,7 @@ namespace TouhouSpring.Simulation
             yield return new PassChoice();
         }
 
-        public override IEnumerable<Choice> SelectCards(Interactions.SelectCards io, Context context)
+        public override IEnumerable<Choice> SelectCards(Interactions.SelectCards io, IContext context)
         {
             for (int i = 0; i < io.Candidates.Count; ++i)
             {

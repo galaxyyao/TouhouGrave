@@ -10,7 +10,7 @@ namespace TouhouSpring.Agents
     {
         private struct ScoredBranch : IComparable<ScoredBranch>
         {
-            public Simulation.Context.Branch Branch;
+            public Simulation.Branch Branch;
             public double Score;
 
             public int CompareTo(ScoredBranch other)
@@ -20,7 +20,7 @@ namespace TouhouSpring.Agents
         }
 
         private Messaging.LetterBox m_letterbox = new Messaging.LetterBox();
-        private Simulation.Context.Branch m_plan = null;
+        private Simulation.Branch m_plan = null;
         private int m_planProgress = 0;
 
         public AIAgent()
@@ -95,17 +95,17 @@ namespace TouhouSpring.Agents
             QueryPerformanceFrequency(out freq);
             QueryPerformanceCounter(out startTime);
 
-            var simulationCtx = new Simulation.Context(game, new Simulation.MainPhaseSimulator());
-            simulationCtx.Start();
+            Simulation.ISandbox simSandbox = new Simulation.TplSandbox(game, new Simulation.MainPhaseSimulator());
+            simSandbox.Start();
 
             var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
-            var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+            var scoredBranches = simSandbox.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
             m_plan = scoredBranches.Max().Branch;
             m_planProgress = 0;
 
             QueryPerformanceCounter(out endTime);
 
-            Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simulationCtx.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
+            Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simSandbox.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
             PrintEvaluate(m_plan.Result.Players[pid]);
         }
 
