@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-    public class TacticalPhase : BaseInteraction
+    public partial class TacticalPhase : BaseInteraction
     {
         public enum Action
         {
@@ -78,22 +78,21 @@ namespace TouhouSpring.Interactions
             }
 
             Player = player;
-            PlayCardCandidates = EnumeratePlayCardCandidates()
+            PlayCardCandidates = GetPlayCardBaseSet(player)
                                     .Where(card => player.Game.IsCardPlayable(card)).ToArray().ToIndexable();
-            ActivateAssistCandidates = EnumerateActivateAssistCandidates()
+            ActivateAssistCandidates = GetActivateAssistBaseSet(player)
                                     .Where(card => player.Game.IsCardActivatable(card)).ToArray().ToIndexable();
-            CastSpellCandidates = EnumerateCastSpellCandidates().SelectMany(card => card.Spells)
+            CastSpellCandidates = GetCastSpellBaseSet(player).SelectMany(card => card.Spells)
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
             SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
             RedeemCandidates = !Game.DidRedeem
                                ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
                                : Indexable.Empty<BaseCard>();
-            AttackerCandidates = EnumerateAttackerCandidates()
+            AttackerCandidates = GetAttackerBaseSet(player)
                                     .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)
             {
-                var defenders = Player.Game.Players.Where(p => p != Player).SelectMany(p => p.CardsOnBattlefield)
-                                .Where(card => card.Behaviors.Has<Behaviors.Warrior>()).ToArray();
+                var defenders = GetDefenderBaseSet(player).ToArray();
                 var protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
                 DefenderCandidates = (protectors.Length != 0 ? protectors : defenders).ToIndexable();
             }
@@ -357,49 +356,66 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private IEnumerable<BaseCard> EnumeratePlayCardCandidates()
+        private static IEnumerable<BaseCard> GetPlayCardBaseSet(Player player)
         {
-            if (!Player.CardsOnBattlefield.Contains(Player.Hero) && Player.Hero != null)
+            if (!player.CardsOnBattlefield.Contains(player.Hero) && player.Hero != null)
             {
-                yield return Player.Hero;
+                yield return player.Hero;
             }
-            foreach (var card in Player.CardsOnHand)
+            foreach (var card in player.CardsOnHand)
             {
                 yield return card;
             }
         }
 
-        private IEnumerable<BaseCard> EnumerateActivateAssistCandidates()
+        private static IEnumerable<BaseCard> GetActivateAssistBaseSet(Player player)
         {
-            foreach (var card in Player.Assists)
+            foreach (var card in player.Assists)
             {
-                if (card != Player.ActivatedAssist)
+                if (card != player.ActivatedAssist)
                 {
                     yield return card;
                 }
             }
         }
 
-        private IEnumerable<BaseCard> EnumerateCastSpellCandidates()
+        private static IEnumerable<BaseCard> GetCastSpellBaseSet(Player player)
         {
-            if (Player.ActivatedAssist != null)
+            if (player.ActivatedAssist != null)
             {
-                yield return Player.ActivatedAssist;
+                yield return player.ActivatedAssist;
             }
-            foreach (var card in Player.CardsOnBattlefield)
+            foreach (var card in player.CardsOnBattlefield)
             {
                 yield return card;
             }
         }
 
-        private IEnumerable<BaseCard> EnumerateAttackerCandidates()
+        private static IEnumerable<BaseCard> GetAttackerBaseSet(Player player)
         {
-            foreach (var card in Player.CardsOnBattlefield)
+            foreach (var card in player.CardsOnBattlefield)
             {
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                 if (warrior != null && warrior.State == Behaviors.WarriorState.StandingBy)
                 {
                     yield return card;
+                }
+            }
+        }
+
+        private static IEnumerable<BaseCard> GetDefenderBaseSet(Player player)
+        {
+            foreach (var p in player.Game.Players)
+            {
+                if (p != player)
+                {
+                    foreach (var card in p.CardsOnBattlefield)
+                    {
+                        if (card.Behaviors.Has<Behaviors.Warrior>())
+                        {
+                            yield return card;
+                        }
+                    }
                 }
             }
         }

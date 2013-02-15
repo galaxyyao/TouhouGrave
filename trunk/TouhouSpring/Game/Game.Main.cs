@@ -56,6 +56,11 @@ namespace TouhouSpring
 
         public void RunTurnFromMainPhase()
         {
+            RunTurnFromMainPhase(null);
+        }
+
+        public void RunTurnFromMainPhase(Interactions.TacticalPhase.CompiledResponse compiledMainPhaseResponse)
+        {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
                 || CurrentPhase != "Main")
             {
@@ -64,7 +69,10 @@ namespace TouhouSpring
 
             while (true)
             {
-                var result = new Interactions.TacticalPhase(ActingPlayer).Run();
+                var result = compiledMainPhaseResponse != null
+                             ? compiledMainPhaseResponse.Restore(ActingPlayer)
+                             : new Interactions.TacticalPhase(ActingPlayer).Run();
+                compiledMainPhaseResponse = null;
                 if (result.ActionType == Interactions.TacticalPhase.Action.PlayCard)
                 {
                     var cardToPlay = (BaseCard)result.Data;
