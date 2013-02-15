@@ -31,8 +31,8 @@ namespace TouhouSpring.Simulation
             {
                 s_stp = new SmartThreadPool(new STPStartInfo
                 {
-                    MinWorkerThreads = Environment.ProcessorCount - 1,
-                    MaxWorkerThreads = Environment.ProcessorCount - 1,
+                    MinWorkerThreads = Math.Min(Environment.ProcessorCount - 1, 4),
+                    MaxWorkerThreads = Math.Min(Environment.ProcessorCount - 1, 4),
                     ThreadAffinity = (IntPtr)0xfe // spare the first core
                 });
             }

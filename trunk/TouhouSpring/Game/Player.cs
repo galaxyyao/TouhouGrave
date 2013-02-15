@@ -16,8 +16,8 @@ namespace TouhouSpring
         internal List<BaseCard> m_sacrifices = new List<BaseCard>();
         internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
         internal List<BaseCard> m_assists = new List<BaseCard>();
-        internal List<BaseCard> m_library = new List<BaseCard>();
-        internal List<BaseCard> m_graveyard = new List<BaseCard>();
+        internal List<ICardModel> m_library = new List<ICardModel>();
+        internal List<ICardModel> m_graveyard = new List<ICardModel>();
 
         /// <summary>
         /// Return a collection of cards on hand.
@@ -127,7 +127,7 @@ namespace TouhouSpring
             // initialize player's library
             foreach (var cardModel in deck)
             {
-                Library.AddCardToTop(new BaseCard(cardModel, this));
+                Library.AddToTop(cardModel);
             }
 
             // initialize player's hero

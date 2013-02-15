@@ -41,6 +41,11 @@ namespace TouhouSpring
             get { return Owner.Assists.Contains(this); }
         }
 
+        public bool IsDestroyed
+        {
+            get; internal set; // set by Kill command
+        }
+
         internal BaseCard(ICardModel model, Player owner)
             : this(model, owner, true)
         { }

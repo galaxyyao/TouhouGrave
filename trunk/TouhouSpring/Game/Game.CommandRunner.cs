@@ -32,14 +32,18 @@ namespace TouhouSpring
                 ////////////////////////////////////////////
 
                 command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-                foreach (var trigger in targets.OfType<IPrerequisiteTrigger<TCommand>>())
+                foreach (var trigger in targets)
                 {
-                    var result = trigger.RunPrerequisite(command);
-                    if (result.Canceled)
+                    var t = trigger as IPrerequisiteTrigger<TCommand>;
+                    if (t != null)
                     {
-                        command.Game.Controller.OnCommandCanceled(command, result.Reason);
-                        command.Game.ClearConditions();
-                        return;
+                        var result = t.RunPrerequisite(command);
+                        if (result.Canceled)
+                        {
+                            command.Game.Controller.OnCommandCanceled(command, result.Reason);
+                            command.Game.ClearConditions();
+                            return;
+                        }
                     }
                 }
 
@@ -58,7 +62,14 @@ namespace TouhouSpring
 
                 command.ExecutionPhase = Commands.CommandPhase.Prolog;
                 command.Game.Controller.OnCommandBegin(command);
-                targets.OfType<IPrologTrigger<TCommand>>().ForEach(trigger => trigger.RunProlog(command));
+                foreach (var trigger in targets)
+                {
+                    var t = trigger as IPrologTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunProlog(command);
+                    }
+                }
 
                 ////////////////////////////////////////////
 
@@ -68,7 +79,14 @@ namespace TouhouSpring
                 ////////////////////////////////////////////
 
                 command.ExecutionPhase = Commands.CommandPhase.Epilog;
-                targets.OfType<IEpilogTrigger<TCommand>>().ForEach(trigger => trigger.RunEpilog(command));
+                foreach (var trigger in targets)
+                {
+                    var t = trigger as IEpilogTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunEpilog(command);
+                    }
+                }
                 command.Game.Controller.OnCommandEnd(command);
 
                 command.Game.ClearConditions();
@@ -78,13 +96,17 @@ namespace TouhouSpring
             {
                 var command = genericCommand as TCommand;
                 command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-                foreach (var trigger in GenerateTargetList(command).OfType<IPrerequisiteTrigger<TCommand>>())
+                foreach (var trigger in GenerateTargetList(command))
                 {
-                    var result = trigger.RunPrerequisite(command);
-                    if (result.Canceled)
+                    var t = trigger as IPrerequisiteTrigger<TCommand>;
+                    if (t != null)
                     {
-                        command.Game.ClearConditions();
-                        return result;
+                        var result = t.RunPrerequisite(command);
+                        if (result.Canceled)
+                        {
+                            command.Game.ClearConditions();
+                            return result;
+                        }
                     }
                 }
 

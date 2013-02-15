@@ -48,10 +48,13 @@ namespace TouhouSpring
 
             for (int i = 0; i < m_library.Count; ++i)
             {
-                clonedPlayer.m_library.Add(m_library[i].Clone(clonedPlayer));
+                clonedPlayer.m_library.Add(m_library[i]);
             }
 
-            // skip cloning graveyard
+            for (int i = 0; i < m_graveyard.Count; ++i)
+            {
+                clonedPlayer.m_graveyard.Add(m_graveyard[i]);
+            }
 
             return clonedPlayer;
         }
@@ -82,13 +85,6 @@ namespace TouhouSpring
             {
                 m_assists[i].TransferFrom(original.m_assists[i]);
             }
-
-            for (int i = 0; i < m_library.Count; ++i)
-            {
-                m_library[i].TransferFrom(original.m_library[i]);
-            }
-
-            // skip transferring graveyard
         }
     }
 }

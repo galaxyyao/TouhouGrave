@@ -66,23 +66,10 @@ namespace TouhouSpring.Commands
                 Debug.Assert(false);
             }
 
-            // reset card states
-            for (int i = 0; i < Target.Behaviors.Count; ++i)
-            {
-                if (!Target.Behaviors[i].Persistent)
-                {
-                    Target.Behaviors.RemoveAt(i);
-                    --i;
-                }
-                else
-                {
-                    // TODO: reset behavior states
-                }
-            }
-
             if (!Target.IsHero)
             {
-                Target.Owner.Graveyard.AddCardToTop(Target);
+                Target.Owner.Graveyard.AddToTop(Target.Model);
+                Target.IsDestroyed = true;
                 EnteredGraveyard = true;
             }
         }

@@ -44,7 +44,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_lastDarken = darken;
             }
 
-            var grayscale = gameUI.ZoomedInCard != Control && Card.Owner.Graveyard.Contains(Card);
+            var grayscale = gameUI.ZoomedInCard != Control && Card.IsDestroyed;
             if (grayscale != m_lastGrayscale)
             {
                 m_saturateTrack.TimeFactor = grayscale ? -1 : 1;
