@@ -119,10 +119,17 @@ namespace TouhouSpring
                 var newSize = command.Game.m_commonTargets.Count + (additionalTarget != null ? additionalTarget.Count : 0);
                 s_tempBhvContainer.Capacity = Math.Max(newSize, s_tempBhvContainer.Capacity);
 
-                s_tempBhvContainer.AddRange(command.Game.m_commonTargets);
+                for (int i = 0; i < command.Game.m_commonTargets.Count; ++i)
+                {
+                    s_tempBhvContainer.Add(command.Game.m_commonTargets[i]);
+                }
+
                 if (additionalTarget != null)
                 {
-                    s_tempBhvContainer.AddRange(additionalTarget);
+                    for (int i = 0; i < additionalTarget.Count; ++i)
+                    {
+                        s_tempBhvContainer.Add(additionalTarget[i]);
+                    }
                 }
 
                 return s_tempBhvContainer;
