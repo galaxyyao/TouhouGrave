@@ -20,8 +20,13 @@ namespace TouhouSpring.Simulation
 
         protected class Task : BaseController, IContext
         {
+            private const int BatchSize = 20;
+
             private ParallelSandbox m_sandbox;
             private PendingBranch m_currentBranch;
+
+            private int m_pendingCursor = 0;
+            private List<PendingBranch> m_pendingBranches = new List<PendingBranch>(BatchSize);
 
             public int CurrentBranchDepth
             {
@@ -52,24 +57,29 @@ namespace TouhouSpring.Simulation
                 : base(true)
             {
                 m_sandbox = sandbox;
-                m_currentBranch = pendingBranch;
+                m_pendingBranches.Add(pendingBranch);
 
-                if (m_currentBranch.Root != null)
+                while (m_pendingCursor < m_pendingBranches.Count)
                 {
-                    CurrentBranchDepth = m_currentBranch.Depth;
-                    CurrentBranchOrder = m_currentBranch.Order;
-                    m_currentBranch.Root.OverrideController(this);
-                    m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
-                }
-                else
-                {
-                    CurrentBranchDepth = 0;
-                    CurrentBranchOrder = 0;
-                    m_currentBranch.Root = m_sandbox.RootGame.CloneWithController(this);
-                    m_currentBranch.Root.RunTurn();
-                }
+                    m_currentBranch = m_pendingBranches[m_pendingCursor++];
 
-                m_sandbox.AddResult(m_currentBranch.Root, m_currentBranch.ChoicePath);
+                    if (m_currentBranch.Root != null)
+                    {
+                        CurrentBranchDepth = m_currentBranch.Depth;
+                        CurrentBranchOrder = m_currentBranch.Order;
+                        m_currentBranch.Root.OverrideController(this);
+                        m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
+                    }
+                    else
+                    {
+                        CurrentBranchDepth = 0;
+                        CurrentBranchOrder = 0;
+                        m_currentBranch.Root = m_sandbox.RootGame.CloneWithController(this);
+                        m_currentBranch.Root.RunTurn();
+                    }
+
+                    m_sandbox.AddResult(m_currentBranch.Root, m_currentBranch.ChoicePath);
+                }
             }
 
             private PendingBranch ForkBranch(Choice choice)
@@ -149,7 +159,14 @@ namespace TouhouSpring.Simulation
                         }
                         else
                         {
-                            m_sandbox.StartBranch(branch);
+                            if (m_pendingBranches.Count < BatchSize)
+                            {
+                                m_pendingBranches.Add(branch);
+                            }
+                            else
+                            {
+                                m_sandbox.StartBranch(branch);
+                            }
                         }
                     }
 
