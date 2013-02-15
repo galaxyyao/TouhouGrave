@@ -15,6 +15,7 @@ namespace TouhouSpring.Simulation
             public Game Root;
             public int Order;
             public int Depth;
+            public Interactions.TacticalPhase.CompiledResponse Response;
         }
 
         private PendingBranch m_currentBranch;
@@ -89,7 +90,7 @@ namespace TouhouSpring.Simulation
                 {
                     CurrentBranchDepth = m_currentBranch.Depth;
                     CurrentBranchOrder = m_currentBranch.Order;
-                    m_currentBranch.Root.RunTurnFromMainPhase();
+                    m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
                 }
                 else
                 {
@@ -136,18 +137,60 @@ namespace TouhouSpring.Simulation
 
             if (!ChoiceMade)
             {
-                bool isTacticalPhase = io is Interactions.TacticalPhase;
+                var mainPhase = io as Interactions.TacticalPhase;
 
                 foreach (var choice in choices)
                 {
                     var branch = ForkBranch(choice);
 
-                    if (isTacticalPhase)
+                    if (mainPhase != null)
                     {
                         // create save point
                         branch.Root = io.Game.CloneWithController(this);
-                        branch.Depth = CurrentBranchDepth - 1;
-                        branch.Order = CurrentBranchOrder;
+                        branch.Depth = CurrentBranchDepth;
+                        branch.Order = Math.Max(choice.Order, CurrentBranchOrder);
+
+                        if (choice is PlayCardChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondPlay(
+                                mainPhase.PlayCardCandidates[(choice as PlayCardChoice).CardIndex]);
+                        }
+                        else if (choice is ActivateAssistChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondActivate(
+                                mainPhase.ActivateAssistCandidates[(choice as ActivateAssistChoice).CardIndex]);
+                        }
+                        else if (choice is CastSpellChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondCast(
+                                mainPhase.CastSpellCandidates[(choice as CastSpellChoice).SpellIndex]);
+                        }
+                        else if (choice is SacrificeChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondSacrifice(
+                                mainPhase.SacrificeCandidates[(choice as SacrificeChoice).CardIndex]);
+                        }
+                        else if (choice is RedeemChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondRedeem(
+                                mainPhase.RedeemCandidates[(choice as RedeemChoice).CardIndex]);
+                        }
+                        else if (choice is AttackCardChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondAttackCard(
+                                mainPhase.AttackerCandidates[(choice as AttackCardChoice).AttackerIndex],
+                                mainPhase.DefenderCandidates[(choice as AttackCardChoice).DefenderIndex]);
+                        }
+                        else if (choice is AttackPlayerChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondAttackPlayer(
+                                mainPhase.AttackerCandidates[(choice as AttackPlayerChoice).AttackerIndex],
+                                mainPhase.Game.Players[(choice as AttackPlayerChoice).PlayerIndex]);
+                        }
+                        else if (choice is PassChoice || choice is KillBranchChoice)
+                        {
+                            branch.Response = mainPhase.CompiledRespondPass();
+                        }
                     }
                 }
 

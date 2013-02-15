@@ -98,7 +98,7 @@ namespace TouhouSpring.Simulation
                             // create save point
                             branch.Root = io.Game.Clone();
                             branch.Depth = CurrentBranchDepth;
-                            branch.Order = Math.Max(choice.Order, CurrentBranchOrder);;
+                            branch.Order = Math.Max(choice.Order, CurrentBranchOrder);
 
                             if (choice is PlayCardChoice)
                             {
