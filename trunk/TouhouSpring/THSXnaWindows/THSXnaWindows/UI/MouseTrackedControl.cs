@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace TouhouSpring.UI
 {
-	class MouseTrackedControl : TransformNode, IMouseTracked, ITransformNode
+	class MouseTrackedControl : TransformNode, IMouseTracked
 	{
 		public Rectangle Region
 		{

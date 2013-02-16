@@ -7,7 +7,7 @@ using TextRenderer = TouhouSpring.Graphics.TextRenderer;
 
 namespace TouhouSpring.UI.ModalDialogs
 {
-    class MessageBox : MouseTrackedControl, IRenderable
+    class MessageBox : TransformNode, IRenderable
     {
         public const int ButtonOK       = 0;
         public const int ButtonCancel   = ButtonOK + 1;
@@ -121,11 +121,6 @@ namespace TouhouSpring.UI.ModalDialogs
 
             m_renderable = new Renderable(this);
 
-            // reset size
-            float screenWidth = GameApp.Service<Services.UIManager>().ViewportWidth;
-            float screenHeight = GameApp.Service<Services.UIManager>().ViewportHeight;
-            Region = new Rectangle(0, 0, screenWidth, screenHeight);
-
             CreateButtons();
         }
 
@@ -135,8 +130,8 @@ namespace TouhouSpring.UI.ModalDialogs
             {
                 var transform = TransformToGlobal;
 
-                var textLeft = (int)(Region.Width - m_text.Size.Width) / 2;
-                var textTop = (int)(Region.Height - m_text.Size.Height) / 2;
+                var textLeft = (int)(e.RenderManager.Device.Viewport.Width - m_text.Size.Width) / 2;
+                var textTop = (int)(e.RenderManager.Device.Viewport.Height - m_text.Size.Height) / 2;
 
                 var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = XnaColor.Black.ToVector4();
@@ -170,13 +165,15 @@ namespace TouhouSpring.UI.ModalDialogs
 
         private void LayoutButtons()
         {
-            // arrange the buttons
+            float screenWidth = GameApp.Service<Services.UIManager>().ViewportWidth;
+            float screenHeight = GameApp.Service<Services.UIManager>().ViewportHeight;
+
             const float intervalH = 20;
             const float intervalV = 20;
             var selectedButtons = m_buttons.Where(btn => btn != null);
             float allButtonsWidth = selectedButtons.Sum(btn => btn.Size.Width) + (selectedButtons.Count() - 1) * intervalH;
-            float x = (Region.Width - allButtonsWidth) / 2;
-            float y = (Region.Height + (m_text != null ? m_text.Size.Height : 0)) / 2 + intervalV;
+            float x = (screenWidth - allButtonsWidth) / 2;
+            float y = (screenHeight + (m_text != null ? m_text.Size.Height : 0)) / 2 + intervalV;
             foreach (var btn in selectedButtons)
             {
                 btn.NormalFace = m_buttonFace;

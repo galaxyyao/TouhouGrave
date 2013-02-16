@@ -7,6 +7,11 @@ namespace TouhouSpring.Commands
 {
     public class EndPhase : BaseCommand
     {
+        public string PreviousPhase
+        {
+            get; private set;
+        }
+
         public EndPhase()
         { }
 
@@ -24,6 +29,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
+            PreviousPhase = Game.CurrentPhase;
             Game.CurrentPhase = "";
         }
     }
