@@ -8,9 +8,10 @@ namespace TouhouSpring.UI
 {
 	class ModalDialog : MouseTrackedControl, IRenderable
 	{
-		private List<Button> m_buttons = new List<Button>();
 		private MouseEventRelay m_eventRelay;
 		private Renderable m_renderable;
+
+        public const float DefaultOpacity = 0.75f;
 
 		public bool HasBegun
 		{
@@ -23,53 +24,18 @@ namespace TouhouSpring.UI
 			set { throw new InvalidOperationException("Dispatcher can't be set directly."); }
 		}
 
-		public Graphics.TextRenderer.IFormattedText Text
-		{
-			get; private set;
-		}
-
-        public float Transparency
+        public float Opacity
         {
             get; set;
         }
 
-        public ModalDialog(Graphics.TextRenderer.IFormattedText text)
+        public ModalDialog()
 		{
-			if (text == null)
-			{
-				throw new ArgumentNullException("text");
-			}
-
 			m_eventRelay = new MouseEventRelay(this);
 			m_eventRelay.SetHandledAfterRelay = true;
 			m_renderable = new Renderable(this);
 
-            Text = text;
-            Transparency = 0.25f;
-		}
-
-		public void AddButton(Button button)
-		{
-			if (button == null)
-			{
-				throw new ArgumentNullException("button");
-			}
-			else if (button.Dispatcher != null)
-			{
-				throw new ArgumentNullException("Button is parented by another dispatcher.");
-			}
-			else if (m_buttons.Contains(button))
-			{
-				throw new ArgumentException("Button has already been added.");
-			}
-			else if (HasBegun)
-			{
-				throw new InvalidOperationException("Can't add buttons after the modal dialog has begun.");
-			}
-
-			m_buttons.Add(button);
-			Listeners.Add(button);
-			button.MouseButton1Up += (sender, e) => End();
+            Opacity = DefaultOpacity;
 		}
 
 		public void Begin(EventDispatcher parent)
@@ -90,18 +56,6 @@ namespace TouhouSpring.UI
 			base.Dispatcher = parent;
 			Dispatcher.Listeners.Add(m_eventRelay);
 
-			// arrange the buttons
-			const float intervalH = 20;
-			const float intervalV = 20;
-			float allButtonsWidth = m_buttons.Sum(btn => btn.Size.Width) + (m_buttons.Count - 1) * intervalH;
-			float x = (screenWidth - allButtonsWidth) / 2;
-			float y = (screenHeight + Text.Size.Height) / 2 + intervalV;
-			foreach (var btn in m_buttons)
-			{
-				btn.Transform = MatrixHelper.Translate(x, y);
-				x += btn.Size.Width + intervalH;
-			}
-
 			HasBegun = true;
 		}
 
@@ -120,19 +74,8 @@ namespace TouhouSpring.UI
 
 			// draw a black overlay
 			Graphics.TexturedQuad quadOverlay = new Graphics.TexturedQuad();
-			quadOverlay.ColorScale = new Vector4(0, 0, 0, 1 - Transparency);
+			quadOverlay.ColorScale = new Vector4(0, 0, 0, Opacity);
 			e.RenderManager.Draw(quadOverlay, new Point(-0.5f, -0.5f), transform);
-
-            var textLeft = (int)(screenWidth - Text.Size.Width) / 2;
-            var textTop = (int)(screenHeight - Text.Size.Height) / 2;
-
-            var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
-            drawOptions.ColorScaling = Color.Black.ToVector4();
-            drawOptions.Offset = new Point(textLeft + 2, textTop + 3);
-            e.TextRenderer.DrawText(Text, transform, drawOptions);
-            drawOptions.ColorScaling = Color.White.ToVector4();
-            drawOptions.Offset = new Point(textLeft, textTop);
-            e.TextRenderer.DrawText(Text, transform, drawOptions);
 		}
 	}
 }

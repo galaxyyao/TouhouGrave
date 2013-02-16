@@ -20,7 +20,7 @@ namespace TouhouSpring.Agents
         {
             if (!String.IsNullOrEmpty(io.Message))
             {
-                GameApp.Service<Services.ModalDialog>().Show(io.Message, () =>
+                GameApp.Service<Services.PopupDialog>().PushMessageBox(io.Message, () =>
                 {
                     io.Respond();
                     // send message of "OnCardPlayCanceled respond";
@@ -35,7 +35,7 @@ namespace TouhouSpring.Agents
         {
             if (!String.IsNullOrEmpty(io.Message))
             {
-                GameApp.Service<Services.ModalDialog>().Show(io.Message, () => io.Respond());
+                GameApp.Service<Services.PopupDialog>().PushMessageBox(io.Message, () => io.Respond());
                 return true;
             }
 
@@ -109,40 +109,40 @@ namespace TouhouSpring.Agents
 
         public override void OnMessageBox(Interactions.MessageBox io)
         {
-            // translate from Interactions.MessageBox.Button to Services.ModalDialog.Button
-            Services.ModalDialog.Button buttons = 0;
+            // translate from Interactions.MessageBox.Button to UI.ModalDialogs.MessageBox.ButtonFlags
+            UI.ModalDialogs.MessageBox.ButtonFlags buttons = 0;
             if ((io.Buttons & Interactions.MessageBoxButtons.OK) != 0)
             {
-                buttons |= Services.ModalDialog.Button.OK;
+                buttons |= UI.ModalDialogs.MessageBox.ButtonFlags.OK;
             }
             if ((io.Buttons & Interactions.MessageBoxButtons.Cancel) != 0)
             {
-                buttons |= Services.ModalDialog.Button.Cancel;
+                buttons |= UI.ModalDialogs.MessageBox.ButtonFlags.Cancel;
             }
             if ((io.Buttons & Interactions.MessageBoxButtons.Yes) != 0)
             {
-                buttons |= Services.ModalDialog.Button.Yes;
+                buttons |= UI.ModalDialogs.MessageBox.ButtonFlags.Yes;
             }
             if ((io.Buttons & Interactions.MessageBoxButtons.No) != 0)
             {
-                buttons |= Services.ModalDialog.Button.No;
+                buttons |= UI.ModalDialogs.MessageBox.ButtonFlags.No;
             }
-            GameApp.Service<Services.ModalDialog>().Show(io.Text, buttons, btn =>
+            GameApp.Service<Services.PopupDialog>().PushMessageBox(io.Text, buttons, btn =>
             {
                 // translate back...
                 Interactions.MessageBoxButtons ibtn;
                 switch (btn)
                 {
-                    case Services.ModalDialog.Button.OK:
+                    case UI.ModalDialogs.MessageBox.ButtonOK:
                         ibtn = Interactions.MessageBoxButtons.OK;
                         break;
-                    case Services.ModalDialog.Button.Cancel:
+                    case UI.ModalDialogs.MessageBox.ButtonCancel:
                         ibtn = Interactions.MessageBoxButtons.Cancel;
                         break;
-                    case Services.ModalDialog.Button.Yes:
+                    case UI.ModalDialogs.MessageBox.ButtonYes:
                         ibtn = Interactions.MessageBoxButtons.Yes;
                         break;
-                    case Services.ModalDialog.Button.No:
+                    case UI.ModalDialogs.MessageBox.ButtonNo:
                         ibtn = Interactions.MessageBoxButtons.No;
                         break;
                     default:

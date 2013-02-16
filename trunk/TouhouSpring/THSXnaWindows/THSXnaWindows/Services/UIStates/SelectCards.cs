@@ -32,7 +32,7 @@ namespace TouhouSpring.Services.UIStates
             m_io = (Interactions.SelectCards)io;
             m_gameUI.RemoveAllContextButtons();
             m_gameUI.AddContextButton("略过", ContextButton_OnSkip);
-            GameApp.Service<ModalDialog>().Show(m_io.Message, () => {});
+            GameApp.Service<PopupDialog>().PushMessageBox(m_io.Message);
         }
 
         public void OnLeave()
