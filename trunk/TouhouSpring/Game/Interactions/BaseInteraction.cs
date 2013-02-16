@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace TouhouSpring.Interactions
@@ -14,8 +14,7 @@ namespace TouhouSpring.Interactions
 
         public Game Game
         {
-            get;
-            private set;
+            get; private set;
         }
 
         internal static string GetMessageText(Type interactionType)
@@ -93,5 +92,24 @@ namespace TouhouSpring.Interactions
                 m_syncModeMessage = msg;
             }
         }
+    }
+
+    [Serializable]
+    public class InteractionValidationFailException : Exception
+    {
+        public InteractionValidationFailException()
+        { }
+
+        public InteractionValidationFailException(string message)
+            : base(message)
+        { }
+
+        public InteractionValidationFailException(string message, Exception innerException)
+            : base(message, innerException)
+        { }
+
+        protected InteractionValidationFailException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        { }
     }
 }

@@ -72,19 +72,19 @@ namespace TouhouSpring.Interactions
         {
             if (selectedCards == null)
             {
-                throw new ArgumentNullException("selectedCards");
+                throw new InteractionValidationFailException("selectedCards");
             }
             else if (Mode == SelectMode.Single && selectedCards.Count != 0 && selectedCards.Count != 1)
             {
-                throw new InvalidDataException("Only one or zero card can be selected.");
+                throw new InteractionValidationFailException("Only one or zero card can be selected.");
             }
             else if (!selectedCards.Unique())
             {
-                throw new InvalidDataException("The selected cards has duplicate.");
+                throw new InteractionValidationFailException("The selected cards has duplicate.");
             }
             else if (selectedCards.Any(card => !Candidates.Contains(card)))
             {
-                throw new InvalidDataException("Some of the cards can't be selected.");
+                throw new InteractionValidationFailException("Some of the cards can't be selected.");
             }
         }
     }

@@ -106,6 +106,7 @@
     <Compile Include="Interactions\NotifyPlayerEvent.cs" />
     <Compile Include="Interactions\NotifySpellEvent.cs" />
     <Compile Include="Interactions\SelectCards.cs" />
+    <Compile Include="Interactions\SelectNumber.cs" />
     <Compile Include="Interactions\TacticalPhase.CompiledResult.cs" />
     <Compile Include="Interactions\TacticalPhase.cs" />
     <Compile Include="Miscs.cs" />

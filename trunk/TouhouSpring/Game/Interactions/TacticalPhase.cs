@@ -256,62 +256,62 @@ namespace TouhouSpring.Interactions
                 case Action.Pass:
                     if (result.Data != null)
                     {
-                        throw new InvalidDataException("Action Pass shall have null data.");
+                        throw new InteractionValidationFailException("Action Pass shall have null data.");
                     }
                     break;
 
                 case Action.PlayCard:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action PlayCard shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action PlayCard shall have an object of BaseCard as its data.");
                     }
                     else if (!PlayCardCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected card can't be played.");
+                        throw new InteractionValidationFailException("Selected card can't be played.");
                     }
                     break;
 
                 case Action.ActivateAssist:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action ActivateAssist shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action ActivateAssist shall have an object of BaseCard as its data.");
                     }
                     else if (!ActivateAssistCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected assist card can't be activated.");
+                        throw new InteractionValidationFailException("Selected assist card can't be activated.");
                     }
                     break;
 
                 case Action.CastSpell:
                     if (!(result.Data is Behaviors.ICastableSpell))
                     {
-                        throw new InvalidDataException("Action CastSpell shall have an object of ICastableSpell as its data.");
+                        throw new InteractionValidationFailException("Action CastSpell shall have an object of ICastableSpell as its data.");
                     }
                     if (!CastSpellCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected spell can't be casted.");
+                        throw new InteractionValidationFailException("Selected spell can't be casted.");
                     }
                     break;
 
                 case Action.Sacrifice:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action Sacrifice shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action Sacrifice shall have an object of BaseCard as its data.");
                     }
                     else if (!SacrificeCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected card can't be sacrificed.");
+                        throw new InteractionValidationFailException("Selected card can't be sacrificed.");
                     }
                     break;
 
                 case Action.Redeem:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action Redeem shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action Redeem shall have an object of BaseCard as its data.");
                     }
                     else if (!RedeemCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected card can't be redeemed.");
+                        throw new InteractionValidationFailException("Selected card can't be redeemed.");
                     }
                     break;
 
@@ -320,15 +320,15 @@ namespace TouhouSpring.Interactions
                         var pair = result.Data as BaseCard[];
                         if (pair == null || pair.Length != 2)
                         {
-                            throw new InvalidDataException("Action AttackCard shall have a pair of BaseCards as its data.");
+                            throw new InteractionValidationFailException("Action AttackCard shall have a pair of BaseCards as its data.");
                         }
                         else if (!AttackerCandidates.Contains(pair[0]))
                         {
-                            throw new InvalidDataException("Attacking card can't attack.");
+                            throw new InteractionValidationFailException("Attacking card can't attack.");
                         }
                         else if (!DefenderCandidates.Contains(pair[1]))
                         {
-                            throw new InvalidDataException("Defending card can't defend.");
+                            throw new InteractionValidationFailException("Defending card can't defend.");
                         }
                     }
                     break;
@@ -338,21 +338,21 @@ namespace TouhouSpring.Interactions
                         var pair = result.Data as object[];
                         if (pair == null || pair.Length != 2 || !(pair[0] is BaseCard) || !(pair[1] is Player))
                         {
-                            throw new InvalidDataException("Action AttackPlayer shall have a pair of BaseCard and Player as its data.");
+                            throw new InteractionValidationFailException("Action AttackPlayer shall have a pair of BaseCard and Player as its data.");
                         }
                         else if (!AttackerCandidates.Contains(pair[0]))
                         {
-                            throw new InvalidDataException("Attacking card can't attack.");
+                            throw new InteractionValidationFailException("Attacking card can't attack.");
                         }
                         else if (pair[1] == Player)
                         {
-                            throw new InvalidDataException("Player can't be attacked.");
+                            throw new InteractionValidationFailException("Player can't be attacked.");
                         }
                     }
                     break;
 
                 default:
-                    throw new InvalidDataException("Invalid action performed.");
+                    throw new InteractionValidationFailException("Invalid action performed.");
             }
         }
 
