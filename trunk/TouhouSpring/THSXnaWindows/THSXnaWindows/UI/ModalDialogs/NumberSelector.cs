@@ -282,6 +282,11 @@ namespace TouhouSpring.UI.ModalDialogs
             {
                 m_digitsDrawOptions[i] = Graphics.TextRenderer.DrawOptions.Default;
 
+                if (MinValue == MaxValue)
+                {
+                    continue;
+                }
+
                 if (i == numDigits)
                 {
                     bool signCanBeToggled = hasMinusSign && MaxValue > 0;

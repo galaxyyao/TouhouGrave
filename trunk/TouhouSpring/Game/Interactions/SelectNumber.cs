@@ -38,9 +38,9 @@ namespace TouhouSpring.Interactions
             {
                 throw new ArgumentNullException("player");
             }
-            else if (max <= min)
+            else if (max < min)
             {
-                throw new ArgumentOutOfRangeException("max", "max must be greater than min.");
+                throw new ArgumentOutOfRangeException("max", "max must be greater than or equal to min.");
             }
 
             Player = player;
