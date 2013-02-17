@@ -19,8 +19,8 @@
         <Key>AvatarBorderInactive</Key>
         <Value>
           <SourceFile>AvatarBorderInactive.png</SourceFile>
-          <Left>0</Left>
-          <Top>270</Top>
+          <Left>270</Left>
+          <Top>0</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -33,7 +33,7 @@
         <Value>
           <SourceFile>Button.png</SourceFile>
           <Left>0</Left>
-          <Top>540</Top>
+          <Top>270</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -46,7 +46,7 @@
         <Value>
           <SourceFile>Up.png</SourceFile>
           <Left>128</Left>
-          <Top>540</Top>
+          <Top>270</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -59,7 +59,7 @@
         <Value>
           <SourceFile>Down.png</SourceFile>
           <Left>176</Left>
-          <Top>540</Top>
+          <Top>270</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -67,9 +67,22 @@
           <SourceHeight>32</SourceHeight>
         </Value>
       </Item>
+      <Item>
+        <Key>ButtonDisable</Key>
+        <Value>
+          <SourceFile>ButtonDisable.png</SourceFile>
+          <Left>224</Left>
+          <Top>270</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>128</SourceWidth>
+          <SourceHeight>32</SourceHeight>
+        </Value>
+      </Item>
     </SubTextures>
-    <Width>512</Width>
-    <Height>1024</Height>
+    <Width>1024</Width>
+    <Height>512</Height>
     <Texture Null="true" />
   </Asset>
 </XnaContent>
