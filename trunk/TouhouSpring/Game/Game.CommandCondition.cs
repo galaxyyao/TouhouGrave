@@ -129,6 +129,7 @@ namespace TouhouSpring
             for (int i = 0; i < Players.Count; ++i)
             {
                 var player = Players[i];
+                m_manaNeeded[i] = player.CalculateFinalManaDelta(m_manaNeeded[i]);
                 if (player.Mana < m_manaNeeded[i]
                     || player.Mana == m_manaNeeded[i] && m_remainingManaNeeded[i])
                 {
@@ -162,11 +163,11 @@ namespace TouhouSpring
                 {
                     if (m_remainingManaNeeded[i])
                     {
-                        IssueCommand(new Commands.UpdateMana(Players[i], -Players[i].Mana, null));
+                        IssueCommand(new Commands.UpdateMana(Players[i], -Players[i].Mana, true, null));
                     }
                     else if (m_manaNeeded[i] != 0)
                     {
-                        IssueCommand(new Commands.UpdateMana(Players[i], -m_manaNeeded[i], null));
+                        IssueCommand(new Commands.UpdateMana(Players[i], -m_manaNeeded[i], true, null));
                     }
                 }
             }

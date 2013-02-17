@@ -17,7 +17,16 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
+        public int FinalDeltaAmount
+        {
+            get; private set;
+        }
+
         public UpdateMana(Player player, int deltaAmount, ICause cause)
+            : this(player, deltaAmount, false, cause)
+        { }
+
+        internal UpdateMana(Player player, int deltaAmount, bool ignoreModifiers, ICause cause)
             : base(cause)
         {
             if (player == null)
@@ -27,6 +36,7 @@ namespace TouhouSpring.Commands
 
             Player = player;
             DeltaAmount = deltaAmount;
+            FinalDeltaAmount = ignoreModifiers ? deltaAmount : player.CalculateFinalManaDelta(deltaAmount);
         }
 
         internal override void ValidateOnIssue()
@@ -36,7 +46,7 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Player.Mana + DeltaAmount < 0)
+            if (Player.Mana + FinalDeltaAmount < 0)
             {
                 FailValidation("Insufficient mana.");
             }
@@ -44,7 +54,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Player.Mana = Math.Min(Player.Mana + DeltaAmount, Player.MaxMana);
+            Player.Mana = Math.Min(Player.Mana + FinalDeltaAmount, Player.MaxMana);
         }
     }
 }

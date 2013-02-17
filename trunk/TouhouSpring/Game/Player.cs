@@ -12,6 +12,9 @@ namespace TouhouSpring
     /// </summary>
     public sealed partial class Player
     {
+        // TODO: command for manipulating this list
+        private List<ValueModifier> m_manaUpdateModifiers = new List<ValueModifier>();
+
         internal List<BaseCard> m_handSet = new List<BaseCard>();
         internal List<BaseCard> m_sacrifices = new List<BaseCard>();
         internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
@@ -89,6 +92,11 @@ namespace TouhouSpring
         public Game Game
         {
             get; private set;
+        }
+
+        public int CalculateFinalManaDelta(int delta)
+        {
+            return Math.Sign(delta) * m_manaUpdateModifiers.Aggregate(Math.Abs(delta), (v, mod) => mod.Process(v));
         }
 
         internal Player(string name, Game game)

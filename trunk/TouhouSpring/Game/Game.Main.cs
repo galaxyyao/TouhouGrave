@@ -40,7 +40,7 @@ namespace TouhouSpring
             {
                 IssueCommands(new Commands.DrawCard(ActingPlayer));
             }
-            IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, this));
+            IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, true, this));
             ActingPlayer.CardsOnBattlefield
                 .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                 .ForEach(card => IssueCommands(
@@ -96,7 +96,7 @@ namespace TouhouSpring
                     var cardToSacrifice = (BaseCard)result.Data;
                     IssueCommandsAndFlush(
                         new Commands.Sacrifice(cardToSacrifice),
-                        new Commands.UpdateMana(ActingPlayer, 1, this));
+                        new Commands.UpdateMana(ActingPlayer, 1, true, this));
                     DidSacrifice = true;
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Redeem)
