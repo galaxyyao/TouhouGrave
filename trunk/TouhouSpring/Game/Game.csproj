@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseCard.Behaviors.cs" />
     <Compile Include="BaseCard.Clone.cs" />
@@ -60,7 +61,6 @@
     <Compile Include="Behaviors\Protector.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
-    <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Commands\ActivateAssist.cs" />

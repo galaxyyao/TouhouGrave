@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.AddBehavior>,
         IPrologTrigger<Commands.RemoveBehavior>
     {
-        private Warrior.ValueModifier m_attackModifier;
+        private ValueModifier m_attackModifier;
 
         public void RunEpilog(Commands.AddBehavior command)
         {
@@ -54,7 +54,7 @@ namespace TouhouSpring.Behaviors
                 throw new ArgumentException("Attack must not be zero.");
             }
 
-            m_attackModifier = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, Model.AttackBoost);
+            m_attackModifier = new ValueModifier(ValueModifierOperator.Add, Model.AttackBoost);
         }
 
         protected override void OnTransferFrom(IBehavior original)

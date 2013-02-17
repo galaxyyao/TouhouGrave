@@ -17,6 +17,8 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.Kill>
     {
+        private List<ValueModifier> m_attackModifiers = new List<ValueModifier>();
+
         public WarriorState State
         {
             get; private set;
@@ -65,7 +67,7 @@ namespace TouhouSpring.Behaviors
             if (command.Target == Host)
             {
                 State = WarriorState.StandingBy;
-                m_attackModifers.Clear();
+                m_attackModifiers.Clear();
                 Attack = Model.Attack;
                 Life = Model.Life;
             }
@@ -86,11 +88,11 @@ namespace TouhouSpring.Behaviors
             Attack = warrior.Attack;
             Life = warrior.Life;
             MaxLife = warrior.MaxLife;
-            for (int i = 0; i < warrior.m_attackModifers.Count; ++i)
+            for (int i = 0; i < warrior.m_attackModifiers.Count; ++i)
             {
                 // modifiers are immutable objects
                 // thus sharing them is safe
-                m_attackModifers.Add(warrior.m_attackModifers[i]);
+                m_attackModifiers.Add(warrior.m_attackModifiers[i]);
             }
         }
 
@@ -124,22 +126,22 @@ namespace TouhouSpring.Behaviors
                 if ((string)args[0] == "add")
                 {
                     var mod = (ValueModifier)args[1];
-                    if (m_attackModifers.Contains(mod))
+                    if (m_attackModifiers.Contains(mod))
                     {
                         throw new ArgumentException("The modifier has already been added.");
                     }
-                    m_attackModifers.Add(mod);
+                    m_attackModifiers.Add(mod);
                 }
                 else if ((string)args[0] == "remove")
                 {
                     var mod = (ValueModifier)args[1];
-                    if (!m_attackModifers.Contains(mod))
+                    if (!m_attackModifiers.Contains(mod))
                     {
                         throw new ArgumentException("The modifier has not been added.");
                     }
-                    m_attackModifers.Remove(mod);
+                    m_attackModifiers.Remove(mod);
                 }
-                Attack = m_attackModifers.Aggregate(InitialAttack, (i, v) => v.Process(i));
+                Attack = m_attackModifiers.Aggregate(InitialAttack, (i, v) => v.Process(i));
             }
         }
 

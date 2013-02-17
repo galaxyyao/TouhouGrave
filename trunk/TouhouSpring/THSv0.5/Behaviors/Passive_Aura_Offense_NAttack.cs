@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IEpilogTrigger<Commands.ActivateAssist>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private Warrior.ValueModifier m_attackMod;
+        private ValueModifier m_attackMod;
 
         public void RunEpilog(Commands.ActivateAssist command)
         {
@@ -57,7 +57,7 @@ namespace TouhouSpring.Behaviors
 
         protected override void OnInitialize()
         {
-            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+            m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
         }
 
         protected override void OnTransferFrom(IBehavior original)
