@@ -101,7 +101,7 @@ namespace TouhouSpring.Services
             var device = GameApp.Instance.GraphicsDevice;
             var resourceMgr = GameApp.Service<ResourceManager>();
 
-            m_buttonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("Textures/Button"));
+            m_buttonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$Button"));
 
             var buttonFmtOptions = new TextRenderer.FormatOptions(new TextRenderer.FontDescriptor("Microsoft YaHei", 16));
             m_buttonTexts[MessageBox.ButtonOK] = GameApp.Service<TextRenderer>().FormatText("确定", buttonFmtOptions);

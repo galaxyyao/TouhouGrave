@@ -93,13 +93,15 @@ namespace TouhouSpring.TextureAtlas
                 throw new ArgumentException(String.Format("Sub-texture with key '{0}' already existed.", id));
             }
 
+            var imgFilePath = source;
+
             if (FileName != null)
             {
                 var relativeUri = new Uri(FileName).MakeRelativeUri(new Uri(source));
                 source = relativeUri.ToString();
             }
 
-            var bmp = new Bitmap(source);
+            var bmp = new Bitmap(imgFilePath);
             var subTexture = new SubTexture(bmp.Width, bmp.Height)
             {
                 SourceFile = source,
