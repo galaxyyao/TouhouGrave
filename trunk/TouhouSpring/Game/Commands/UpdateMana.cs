@@ -29,12 +29,6 @@ namespace TouhouSpring.Commands
             DeltaAmount = deltaAmount;
         }
 
-        public void PatchDeltaAmount(int value)
-        {
-            CheckPatchable("DeltaAmount");
-            DeltaAmount = value;
-        }
-
         internal override void ValidateOnIssue()
         {
             Validate(Player);
