@@ -232,6 +232,13 @@ namespace TouhouSpring.Simulation
             return false;
         }
 
+        [Interactions.MessageHandler(typeof(Interactions.SelectNumber))]
+        private bool OnSelectNumber(Interactions.SelectNumber interactionObj)
+        {
+            OnInteraction(interactionObj, m_simulator.SelectNumber(interactionObj, this));
+            return false;
+        }
+
         #endregion
 
         #region notifications

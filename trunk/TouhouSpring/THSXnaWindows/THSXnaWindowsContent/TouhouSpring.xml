@@ -33,6 +33,7 @@
     <Item>#Resource30</Item>
     <Item>#Resource31</Item>
     <Item>#Resource32</Item>
+    <Item>#Resource33</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
@@ -863,6 +864,32 @@ X等于己方场上本卡的数量
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource33" Type="TouhouSpring.EditorCardModel">
+      <Id>alice_2</Id>
+      <Name>爱丽丝·玛格特罗依德</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>TouhouSpring.Behaviors.Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>5</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>TouhouSpring.Behaviors.ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>TouhouSpring.Behaviors.SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummonByMana+ModelType">
+          <Name>人偶召唤（灵力）</Name>
+          <SummonType>#Resource2</SummonType>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
   </Resources>
 </XnaContent>

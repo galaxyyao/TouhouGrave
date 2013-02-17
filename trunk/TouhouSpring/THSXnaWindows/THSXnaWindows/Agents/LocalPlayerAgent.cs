@@ -105,5 +105,14 @@ namespace TouhouSpring.Agents
                 io.Respond(ibtn);
             });
         }
+
+        public override void OnSelectNumber(Interactions.SelectNumber io)
+        {
+            GameApp.Service<Services.PopupDialog>().PushNumberSelector(io.Message, io.Minimum, io.Maximum,
+            (btn, value) =>
+            {
+                io.Respond(btn == UI.ModalDialogs.NumberSelector.ButtonOK ? (int?)value : null);
+            });
+        }
     }
 }

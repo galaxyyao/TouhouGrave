@@ -130,5 +130,12 @@ namespace TouhouSpring
             m_agents[Game.Players.IndexOf(interactionObj.Player)].OnMessageBox(interactionObj);
             return true;
         }
+
+        [Interactions.MessageHandler(typeof(Interactions.SelectNumber))]
+        private bool OnSelectNumber(Interactions.SelectNumber interactionObj)
+        {
+            m_agents[Game.Players.IndexOf(interactionObj.Player)].OnSelectNumber(interactionObj);
+            return true;
+        }
     }
 }

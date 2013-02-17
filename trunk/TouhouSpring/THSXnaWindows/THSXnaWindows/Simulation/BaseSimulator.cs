@@ -21,5 +21,10 @@ namespace TouhouSpring.Simulation
         {
             return Enumerable.Empty<Choice>();
         }
+
+        public virtual IEnumerable<Choice> SelectNumber(Interactions.SelectNumber io, IContext context)
+        {
+            return Enumerable.Empty<Choice>();
+        }
     }
 }

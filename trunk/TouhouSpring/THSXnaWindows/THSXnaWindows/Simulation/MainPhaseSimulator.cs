@@ -192,5 +192,13 @@ namespace TouhouSpring.Simulation
                 ;
             }
         }
+
+        public override IEnumerable<Choice> SelectNumber(Interactions.SelectNumber io, IContext context)
+        {
+            for (int i = io.Minimum; i <= io.Maximum; ++i)
+            {
+                yield return new SelectNumberChoice(i);
+            }
+        }
     }
 }

@@ -57,6 +57,11 @@ namespace TouhouSpring.Agents
             throw new NotImplementedException();
         }
 
+        public override void OnSelectNumber(Interactions.SelectNumber io)
+        {
+            new Messaging.Message("OnSelectNumber", io).SendTo(m_letterbox);
+        }
+
         public override bool OnTurnStarted(Interactions.NotifyPlayerEvent io)
         {
             new Messaging.Message("BeginSimulation", io.Game.Clone()).SendTo(m_letterbox);
@@ -77,6 +82,7 @@ namespace TouhouSpring.Agents
 
                     case "OnTacticalPhase":
                     case "OnSelectCards":
+                    case "OnSelectNumber":
                         Debug.Assert(m_plan != null);
                         RespondInteraction(msg.Attachment as Interactions.BaseInteraction);
                         break;

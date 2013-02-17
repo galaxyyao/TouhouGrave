@@ -286,7 +286,31 @@ namespace TouhouSpring.Simulation
 
         public override string Print(Interactions.BaseInteraction io)
         {
-            return "Select: " + (io as Interactions.SelectCards).Candidates[CardIndex].Model.Name;
+            return "SelectCard: " + (io as Interactions.SelectCards).Candidates[CardIndex].Model.Name;
+        }
+    }
+
+    class SelectNumberChoice : Choice
+    {
+        public int Selection
+        {
+            get; private set;
+        }
+
+        public SelectNumberChoice(int selection) : base(-1)
+        {
+            Selection = selection;
+        }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            var selectNumber = io as Interactions.SelectNumber;
+            selectNumber.Respond(Selection);
+        }
+
+        public override string Print(Interactions.BaseInteraction io)
+        {
+            return "SelectNumber: " + Selection.ToString();
         }
     }
 }
