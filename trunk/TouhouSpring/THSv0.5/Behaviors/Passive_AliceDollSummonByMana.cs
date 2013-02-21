@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host)
             {
                 var remainingMana = Game.GetRemainingMana(Host.Owner);
-                var dollSummonCost = Host.Owner.CalculateFinalManaDelta(1);
+                var dollSummonCost = Host.Owner.CalculateFinalManaSubtract(1);
                 if (dollSummonCost != 0)
                 {
                     var maxSummon = remainingMana / dollSummonCost;
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
                         chosenNumber.Value.Repeat(i => Game.IssueCommands(
                             new Commands.Summon(Model.SummonType.Target, Host.Owner)));
                     }
-                    Game.IssueCommands(new Commands.UpdateMana(Host.Owner, -1 * chosenNumber.Value, this));
+                    Game.IssueCommands(new Commands.SubtractPlayerMana(Host.Owner, chosenNumber.Value, this));
                 }
             }
         }

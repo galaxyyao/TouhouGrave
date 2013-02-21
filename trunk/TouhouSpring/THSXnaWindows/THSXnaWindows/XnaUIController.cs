@@ -67,8 +67,6 @@ namespace TouhouSpring
         {
             switch (interactionObj.Notification)
             {
-                case "OnPlayerDamaged":
-                    break;
                 case "OnTurnEnded":
                     if (m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnTurnEnded(interactionObj))
                     {

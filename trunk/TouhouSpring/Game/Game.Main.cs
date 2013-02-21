@@ -40,7 +40,7 @@ namespace TouhouSpring
             {
                 IssueCommands(new Commands.DrawCard(ActingPlayer));
             }
-            IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, true, this));
+            IssueCommands(new Commands.AddPlayerMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, true, this));
             ActingPlayer.CardsOnBattlefield
                 .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                 .ForEach(card => IssueCommands(
@@ -96,7 +96,7 @@ namespace TouhouSpring
                     var cardToSacrifice = (BaseCard)result.Data;
                     IssueCommandsAndFlush(
                         new Commands.Sacrifice(cardToSacrifice),
-                        new Commands.UpdateMana(ActingPlayer, 1, true, this));
+                        new Commands.AddPlayerMana(ActingPlayer, 1, true, this));
                     DidSacrifice = true;
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Redeem)
@@ -121,7 +121,7 @@ namespace TouhouSpring
                     var pair = (object[])result.Data;
                     var attackerWarrior = (pair[0] as BaseCard).Behaviors.Get<Behaviors.Warrior>();
                     IssueCommandsAndFlush(
-                        new Commands.DealDamageToPlayer(
+                        new Commands.SubtractPlayerLife(
                             pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
                         new Commands.SendBehaviorMessage(
                             attackerWarrior, "GoCoolingDown", null)

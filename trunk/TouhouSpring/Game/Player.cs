@@ -12,8 +12,11 @@ namespace TouhouSpring
     /// </summary>
     public sealed partial class Player
     {
-        // TODO: command for manipulating this list
-        private List<ValueModifier> m_manaUpdateModifiers = new List<ValueModifier>();
+        // TODO: command for manipulating these lists
+        private List<ValueModifier> m_manaAddModifiers = new List<ValueModifier>();
+        private List<ValueModifier> m_manaSubtractModifiers = new List<ValueModifier>();
+        private List<ValueModifier> m_lifeAddModifiers = new List<ValueModifier>();
+        private List<ValueModifier> m_lifeSubtractModifiers = new List<ValueModifier>();
 
         internal List<BaseCard> m_handSet = new List<BaseCard>();
         internal List<BaseCard> m_sacrifices = new List<BaseCard>();
@@ -94,9 +97,40 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public int CalculateFinalManaDelta(int delta)
+        public int CalculateFinalManaAdd(int amount)
         {
-            return Math.Sign(delta) * m_manaUpdateModifiers.Aggregate(Math.Abs(delta), (v, mod) => mod.Process(v));
+            if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than or equal to zero.");
+            }
+            return m_manaAddModifiers.Aggregate(amount, (v, mod) => mod.Process(v));
+        }
+
+        public int CalculateFinalManaSubtract(int amount)
+        {
+            if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than or equal to zero.");
+            }
+            return m_manaSubtractModifiers.Aggregate(amount, (v, mod) => mod.Process(v));
+        }
+
+        public int CalculateFinalLifeAdd(int amount)
+        {
+            if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than or equal to zero.");
+            }
+            return m_lifeAddModifiers.Aggregate(amount, (v, mod) => mod.Process(v));
+        }
+
+        public int CalculateFinalLifeSubtract(int amount)
+        {
+            if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than or equal to zero.");
+            }
+            return m_lifeSubtractModifiers.Aggregate(amount, (v, mod) => mod.Process(v));
         }
 
         internal Player(string name, Game game)

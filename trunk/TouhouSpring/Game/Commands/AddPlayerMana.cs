@@ -5,38 +5,42 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class UpdateMana : BaseCommand
+    public class AddPlayerMana : BaseCommand
     {
         public Player Player
         {
             get; private set;
         }
 
-        public int DeltaAmount
+        public int Amount
         {
             get; private set;
         }
 
-        public int FinalDeltaAmount
+        public int FinalAmount
         {
             get; private set;
         }
 
-        public UpdateMana(Player player, int deltaAmount, ICause cause)
-            : this(player, deltaAmount, false, cause)
+        public AddPlayerMana(Player player, int amount, ICause cause)
+            : this(player, amount, false, cause)
         { }
 
-        internal UpdateMana(Player player, int deltaAmount, bool ignoreModifiers, ICause cause)
+        internal AddPlayerMana(Player player, int amount, bool ignoreModifiers, ICause cause)
             : base(cause)
         {
             if (player == null)
             {
                 throw new ArgumentNullException("player");
             }
+            else if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than or equal to zero.");
+            }
 
             Player = player;
-            DeltaAmount = deltaAmount;
-            FinalDeltaAmount = ignoreModifiers ? deltaAmount : player.CalculateFinalManaDelta(deltaAmount);
+            Amount = amount;
+            FinalAmount = ignoreModifiers ? amount : player.CalculateFinalManaAdd(amount);
         }
 
         internal override void ValidateOnIssue()
@@ -46,15 +50,11 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Player.Mana + FinalDeltaAmount < 0)
-            {
-                FailValidation("Insufficient mana.");
-            }
         }
 
         internal override void RunMain()
         {
-            Player.Mana = Math.Min(Player.Mana + FinalDeltaAmount, Player.MaxMana);
+            Player.Mana = Math.Min(Player.Mana + FinalAmount, Player.MaxMana);
         }
     }
 }

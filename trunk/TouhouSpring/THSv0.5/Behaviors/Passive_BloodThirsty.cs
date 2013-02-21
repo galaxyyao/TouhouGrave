@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_BloodThirsty.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.DealDamageToCard>,
-        IEpilogTrigger<Commands.DealDamageToPlayer>
+        IEpilogTrigger<Commands.SubtractPlayerLife>
     {
         public void RunEpilog(Commands.DealDamageToCard command)
         {
@@ -22,9 +22,9 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.SubtractPlayerLife command)
         {
-            if (command.DamageToDeal > 0
+            if (command.FinalAmount > 0
                 && Host.IsOnBattlefield
                 && command.Cause == Host.Behaviors.Get<Warrior>())
             {
