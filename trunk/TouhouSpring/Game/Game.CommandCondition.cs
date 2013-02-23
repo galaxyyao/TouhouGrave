@@ -7,7 +7,7 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private struct PlayerResourceConditions
+        private struct ResourceConditions
         {
             // fixed mana and life condition
             public int m_manaNeeded;
@@ -29,54 +29,34 @@ namespace TouhouSpring
             public IIndexable<BaseCard> m_selection;
         }
 
-        private PlayerResourceConditions[] m_resourceConditions;
+        private ResourceConditions m_resourceConditions;
         private List<TargetCondition> m_targetConditions = new List<TargetCondition>();
 
-        public void NeedMana(Player player, int amount)
+        public void NeedMana(int amount)
         {
-            if (player == null)
-            {
-                throw new ArgumentNullException("player");
-            }
-            else if (amount <= 0)
+            if (amount <= 0)
             {
                 throw new ArgumentOutOfRangeException("amount", "Amount must be greater than zero.");
             }
-            else if (player.Game != this)
-            {
-                throw new ArgumentException("Player is invalid.", "player");
-            }
 
             CheckInPrerequisite();
-            m_resourceConditions[Players.IndexOf(player)].m_manaNeeded += amount;
+            m_resourceConditions.m_manaNeeded += amount;
         }
 
-        public void NeedLife(Player player, int amount)
+        public void NeedLife(int amount)
         {
-            if (player == null)
-            {
-                throw new ArgumentNullException("player");
-            }
-            else if (amount <= 0)
+            if (amount <= 0)
             {
                 throw new ArgumentOutOfRangeException("amount", "Amount must be greater than zero.");
             }
-            else if (player.Game != this)
-            {
-                throw new ArgumentException("Player is invalid.", "player");
-            }
 
             CheckInPrerequisite();
-            m_resourceConditions[Players.IndexOf(player)].m_lifeNeeded += amount;
+            m_resourceConditions.m_lifeNeeded += amount;
         }
 
-        public void NeedManaOrLife(Player player, int mana, int life)
+        public void NeedManaOrLife(int mana, int life)
         {
-            if (player == null)
-            {
-                throw new ArgumentNullException("player");
-            }
-            else if (mana <= 0)
+            if (mana <= 0)
             {
                 throw new ArgumentOutOfRangeException("mana", "Mana must be greater than zero.");
             }
@@ -84,20 +64,15 @@ namespace TouhouSpring
             {
                 throw new ArgumentOutOfRangeException("life", "Life must be greater than zero.");
             }
-            else if (player.Game != this)
-            {
-                throw new ArgumentException("Player is invalid.", "player");
-            }
 
             CheckInPrerequisite();
-            var pid = Players.IndexOf(player);
-            if (m_resourceConditions[pid].m_manaOrLifeNeeded)
+            if (m_resourceConditions.m_manaOrLifeNeeded)
             {
                 throw new InvalidOperationException("ManaOrLife has already been claimed.");
             }
-            m_resourceConditions[pid].m_manaOrLifeNeeded = true;
-            m_resourceConditions[pid].m_manaOrLifeMana = mana;
-            m_resourceConditions[pid].m_manaOrLifeLife = life;
+            m_resourceConditions.m_manaOrLifeNeeded = true;
+            m_resourceConditions.m_manaOrLifeMana = mana;
+            m_resourceConditions.m_manaOrLifeLife = life;
         }
 
         public void NeedTarget(Behaviors.IBehavior user, IIndexable<BaseCard> candidates, string message)
@@ -130,34 +105,18 @@ namespace TouhouSpring
             });
         }
 
-        public int GetRemainingMana(Player player)
+        public int GetRemainingMana()
         {
-            if (player == null)
-            {
-                throw new ArgumentNullException("player");
-            }
-            else if (player.Game != this)
-            {
-                throw new ArgumentException("Player is invalid.", "player");
-            }
-
             CheckNotInPrerequisite();
-            return player.Mana - m_resourceConditions[Players.IndexOf(player)].m_manaNeeded;
+            var player = (RunningCommand as Commands.IInitiativeCommand).Initiator;
+            return player.Mana - m_resourceConditions.m_manaNeeded;
         }
 
-        public int GetRemainingLife(Player player)
+        public int GetRemainingLife()
         {
-            if (player == null)
-            {
-                throw new ArgumentNullException("player");
-            }
-            else if (player.Game != this)
-            {
-                throw new ArgumentException("Player is invalid.", "player");
-            }
-
             CheckNotInPrerequisite();
-            return player.Health - m_resourceConditions[Players.IndexOf(player)].m_lifeNeeded;
+            var player = (RunningCommand as Commands.IInitiativeCommand).Initiator;
+            return player.Health - m_resourceConditions.m_lifeNeeded;
         }
 
         public IIndexable<BaseCard> GetTarget(Behaviors.IBehavior user)
@@ -173,50 +132,43 @@ namespace TouhouSpring
 
         internal void ClearConditions()
         {
-            for (int i = 0; i < Players.Count; ++i)
-            {
-                m_resourceConditions[i].m_manaNeeded = 0;
-                m_resourceConditions[i].m_lifeNeeded = 0;
-                m_resourceConditions[i].m_manaOrLifeNeeded = false;
-                m_resourceConditions[i].m_manaOrLifeMana = 0;
-                m_resourceConditions[i].m_manaOrLifeLife = 0;
-            }
+            m_resourceConditions.m_manaNeeded = 0;
+            m_resourceConditions.m_lifeNeeded = 0;
+            m_resourceConditions.m_manaOrLifeNeeded = false;
+            m_resourceConditions.m_manaOrLifeMana = 0;
+            m_resourceConditions.m_manaOrLifeLife = 0;
             m_targetConditions.Clear();
         }
 
         internal CommandResult ResolveConditions(bool prerequisiteOnly)
         {
-            for (int i = 0; i < Players.Count; ++i)
+            var initiator = (RunningCommand as Commands.IInitiativeCommand).Initiator;
+
+            if (m_resourceConditions.m_manaNeeded != 0)
             {
-                var player = Players[i];
-                var resourceConditions = m_resourceConditions[i];
-
-                if (resourceConditions.m_manaNeeded != 0)
+                m_resourceConditions.m_manaNeeded = initiator.CalculateFinalManaSubtract(m_resourceConditions.m_manaNeeded);
+                if (initiator.Mana < m_resourceConditions.m_manaNeeded)
                 {
-                    resourceConditions.m_manaNeeded = player.CalculateFinalManaSubtract(resourceConditions.m_manaNeeded);
-                    if (player.Mana < resourceConditions.m_manaNeeded)
-                    {
-                        return CommandResult.Cancel("Insufficient mana.");
-                    }
+                    return CommandResult.Cancel("Insufficient mana.");
                 }
-                if (resourceConditions.m_lifeNeeded != 0)
+            }
+            if (m_resourceConditions.m_lifeNeeded != 0)
+            {
+                m_resourceConditions.m_lifeNeeded = initiator.CalculateFinalLifeSubtract(m_resourceConditions.m_lifeNeeded);
+                if (initiator.Health < m_resourceConditions.m_lifeNeeded)
                 {
-                    resourceConditions.m_lifeNeeded = player.CalculateFinalLifeSubtract(resourceConditions.m_lifeNeeded);
-                    if (player.Health < resourceConditions.m_lifeNeeded)
-                    {
-                        return CommandResult.Cancel("Insufficient life.");
-                    }
+                    return CommandResult.Cancel("Insufficient life.");
                 }
+            }
 
-                if (resourceConditions.m_manaOrLifeNeeded)
+            if (m_resourceConditions.m_manaOrLifeNeeded)
+            {
+                m_resourceConditions.m_manaOrLifeFinalMana = initiator.CalculateFinalManaSubtract(m_resourceConditions.m_manaOrLifeMana);
+                m_resourceConditions.m_manaOrLifeFinalLife = initiator.CalculateFinalManaSubtract(m_resourceConditions.m_manaOrLifeLife);
+                if (initiator.Mana < m_resourceConditions.m_manaNeeded + m_resourceConditions.m_manaOrLifeFinalMana
+                    && initiator.Health < m_resourceConditions.m_lifeNeeded + m_resourceConditions.m_manaOrLifeFinalLife)
                 {
-                    resourceConditions.m_manaOrLifeFinalMana = player.CalculateFinalManaSubtract(resourceConditions.m_manaOrLifeMana);
-                    resourceConditions.m_manaOrLifeFinalLife = player.CalculateFinalManaSubtract(resourceConditions.m_manaOrLifeLife);
-                    if (player.Mana < resourceConditions.m_manaNeeded + resourceConditions.m_manaOrLifeFinalMana
-                        && player.Health < resourceConditions.m_lifeNeeded + resourceConditions.m_manaOrLifeFinalLife)
-                    {
-                        return CommandResult.Cancel("Insufficient mana or life.");
-                    }
+                    return CommandResult.Cancel("Insufficient mana or life.");
                 }
             }
 
@@ -230,44 +182,38 @@ namespace TouhouSpring
 
             if (!prerequisiteOnly)
             {
-                for (int i = 0; i < Players.Count; ++i)
+                if (m_resourceConditions.m_manaOrLifeNeeded
+                    && initiator.Mana >= m_resourceConditions.m_manaNeeded + m_resourceConditions.m_manaOrLifeFinalMana
+                    && initiator.Health > m_resourceConditions.m_lifeNeeded + m_resourceConditions.m_manaOrLifeFinalLife)
                 {
-                    var player = Players[i];
-                    var resourceConditions = m_resourceConditions[i];
+                    var sb = new StringBuilder();
+                    sb.Append("支付 [color:Red]");
+                    sb.Append(m_resourceConditions.m_manaOrLifeMana.ToString());
+                    sb.Append("[/color]灵力 或 [color:Red]");
+                    sb.Append(m_resourceConditions.m_manaOrLifeLife.ToString());
+                    sb.Append("[/color]生命？");
 
-                    if (resourceConditions.m_manaOrLifeNeeded
-                        && player.Mana >= resourceConditions.m_manaNeeded + resourceConditions.m_manaOrLifeFinalMana
-                        && player.Health > resourceConditions.m_lifeNeeded + resourceConditions.m_manaOrLifeFinalLife)
+                    // TODO: change button text from Yes/No to Mana/Life
+                    var choice = new Interactions.MessageBox(initiator, sb.ToString(),
+                        Interactions.MessageBoxButtons.Yes | Interactions.MessageBoxButtons.No | Interactions.MessageBoxButtons.Cancel).Run();
+                    if (choice == Interactions.MessageBoxButtons.Cancel)
                     {
-                        var sb = new StringBuilder();
-                        sb.Append("支付 [color:Red]");
-                        sb.Append(resourceConditions.m_manaOrLifeMana.ToString());
-                        sb.Append("[/color]灵力 或 [color:Red]");
-                        sb.Append(resourceConditions.m_manaOrLifeLife.ToString());
-                        sb.Append("[/color]生命？");
-
-                        // TODO: change button text from Yes/No to Mana/Life
-                        var choice = new Interactions.MessageBox(player, sb.ToString(),
-                            Interactions.MessageBoxButtons.Yes | Interactions.MessageBoxButtons.No | Interactions.MessageBoxButtons.Cancel).Run();
-                        if (choice == Interactions.MessageBoxButtons.Cancel)
-                        {
-                            return CommandResult.Cancel("Canceled.");
-                        }
-                        else if (choice == Interactions.MessageBoxButtons.Yes)
-                        {
-                            resourceConditions.m_manaNeeded += resourceConditions.m_manaOrLifeFinalMana;
-                        }
-                        else if (choice == Interactions.MessageBoxButtons.No)
-                        {
-                            resourceConditions.m_lifeNeeded += resourceConditions.m_manaOrLifeFinalLife;
-                        }
+                        return CommandResult.Cancel("Canceled.");
+                    }
+                    else if (choice == Interactions.MessageBoxButtons.Yes)
+                    {
+                        m_resourceConditions.m_manaNeeded += m_resourceConditions.m_manaOrLifeFinalMana;
+                    }
+                    else if (choice == Interactions.MessageBoxButtons.No)
+                    {
+                        m_resourceConditions.m_lifeNeeded += m_resourceConditions.m_manaOrLifeFinalLife;
                     }
                 }
 
                 foreach (var tgt in m_targetConditions)
                 {
                     tgt.m_selection = new Interactions.SelectCards(
-                        ActingPlayer,
+                        initiator,
                         tgt.m_candidates,
                         Interactions.SelectCards.SelectMode.Single,
                         tgt.m_message).Run();
@@ -277,17 +223,13 @@ namespace TouhouSpring
                     }
                 }
 
-                for (int i = 0; i < Players.Count; ++i)
+                if (m_resourceConditions.m_manaNeeded != 0)
                 {
-                    var resourceConditions = m_resourceConditions[i];
-                    if (resourceConditions.m_manaNeeded != 0)
-                    {
-                        IssueCommand(new Commands.SubtractPlayerMana(Players[i], resourceConditions.m_manaNeeded, true, null));
-                    }
-                    if (resourceConditions.m_lifeNeeded != 0)
-                    {
-                        IssueCommand(new Commands.SubtractPlayerLife(Players[i], resourceConditions.m_lifeNeeded, true, null));
-                    }
+                    IssueCommand(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, null));
+                }
+                if (m_resourceConditions.m_lifeNeeded != 0)
+                {
+                    IssueCommand(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, null));
                 }
             }
 

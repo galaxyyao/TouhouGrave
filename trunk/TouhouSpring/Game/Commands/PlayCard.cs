@@ -9,12 +9,17 @@ namespace TouhouSpring.Commands
     /// <summary>
     /// Play a card from hand to battlefield.
     /// </summary>
-    public class PlayCard : BaseCommand
+    public class PlayCard : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serializable behavior ID
         public BaseCard CardToPlay
         {
             get; private set;
+        }
+
+        public Player Initiator
+        {
+            get { return CardToPlay.Owner; }
         }
 
         public PlayCard(BaseCard cardToPlay)

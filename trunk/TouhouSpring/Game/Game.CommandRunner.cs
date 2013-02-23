@@ -31,31 +31,34 @@ namespace TouhouSpring
 
                 ////////////////////////////////////////////
 
-                command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-                foreach (var trigger in targets)
+                if (command is Commands.IInitiativeCommand)
                 {
-                    var t = trigger as IPrerequisiteTrigger<TCommand>;
-                    if (t != null)
+                    command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
+                    foreach (var trigger in targets)
                     {
-                        var result = t.RunPrerequisite(command);
-                        if (result.Canceled)
+                        var t = trigger as IPrerequisiteTrigger<TCommand>;
+                        if (t != null)
                         {
-                            command.Game.Controller.OnCommandCanceled(command, result.Reason);
-                            command.Game.ClearConditions();
-                            return;
+                            var result = t.RunPrerequisite(command);
+                            if (result.Canceled)
+                            {
+                                command.Game.Controller.OnCommandCanceled(command, result.Reason);
+                                command.Game.ClearConditions();
+                                return;
+                            }
                         }
                     }
-                }
 
-                ////////////////////////////////////////////
+                    ////////////////////////////////////////////
 
-                command.ExecutionPhase = Commands.CommandPhase.Condition;
-                var conditionResult = command.Game.ResolveConditions(false);
-                if (conditionResult.Canceled)
-                {
-                    command.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
-                    command.Game.ClearConditions();
-                    return;
+                    command.ExecutionPhase = Commands.CommandPhase.Condition;
+                    var conditionResult = command.Game.ResolveConditions(false);
+                    if (conditionResult.Canceled)
+                    {
+                        command.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
+                        command.Game.ClearConditions();
+                        return;
+                    }
                 }
 
                 ////////////////////////////////////////////
@@ -94,6 +97,8 @@ namespace TouhouSpring
 
             public CommandResult RunPrerequisite(Commands.BaseCommand genericCommand)
             {
+                Debug.Assert(genericCommand is Commands.IInitiativeCommand);
+
                 var command = genericCommand as TCommand;
                 command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
                 foreach (var trigger in GenerateTargetList(command))

@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.NeedMana(Host.Owner, 1);
+                Game.NeedMana(1);
                 if (Host.Owner.CalculateFinalManaSubtract(1) == 0)
                 {
                     return CommandResult.Cancel();
@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                var remainingMana = Game.GetRemainingMana(Host.Owner) + 1;
+                var remainingMana = Game.GetRemainingMana() + 1;
                 var dollSummonCost = Host.Owner.CalculateFinalManaSubtract(1);
                 var maxSummon = remainingMana / dollSummonCost;
                 var chosenNumber = new Interactions.SelectNumber(Host.Owner, 1, maxSummon, "召唤人偶的数量？").Run();

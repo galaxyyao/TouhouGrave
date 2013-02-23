@@ -90,7 +90,6 @@ namespace TouhouSpring
             }
 
             m_players = new Player[numPlayers];
-            m_resourceConditions = new PlayerResourceConditions[numPlayers];
 
             for (int i = 0; i < numPlayers; ++i)
             {

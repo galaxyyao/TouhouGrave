@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay.Owner != Host.Owner)
             {
-                Game.NeedMana(command.CardToPlay.Owner, 1);
+                Game.NeedMana(1);
             }
             return CommandResult.Pass;
         }

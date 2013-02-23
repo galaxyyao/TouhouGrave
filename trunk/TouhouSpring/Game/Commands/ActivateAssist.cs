@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class ActivateAssist : BaseCommand
+    public class ActivateAssist : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serialization-friendly ID
         public BaseCard CardToActivate
@@ -16,6 +16,11 @@ namespace TouhouSpring.Commands
         public BaseCard PreviouslyActivatedCard
         {
             get; private set;
+        }
+
+        public Player Initiator
+        {
+            get { return CardToActivate.Owner; }
         }
 
         public ActivateAssist(BaseCard cardToActivate)
