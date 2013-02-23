@@ -19,14 +19,7 @@ namespace TouhouSpring
             int numPlayers = m_players.Length;
 
             clonedGame.m_players = new Player[numPlayers];
-            clonedGame.m_manaNeeded = new int[numPlayers];
-            clonedGame.m_remainingManaNeeded = new bool[numPlayers];
-
-            for (int i = 0; i < numPlayers; ++i)
-            {
-                clonedGame.m_manaNeeded[i] = m_manaNeeded[i];
-                clonedGame.m_remainingManaNeeded[i] = m_remainingManaNeeded[i];
-            }
+            clonedGame.m_resourceConditions = new PlayerResourceConditions[numPlayers];
 
             clonedGame.Players = clonedGame.m_players.ToIndexable();
             clonedGame.Random = new Random(Random);

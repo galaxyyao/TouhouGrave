@@ -7,24 +7,44 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_AliceDollSummonByMana : BaseBehavior<Passive_AliceDollSummonByMana.ModelType>,
         Commands.ICause,
+        IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        {
+            if (command.CardToPlay == Host)
+            {
+                Game.NeedMana(Host.Owner, 1);
+                if (Host.Owner.CalculateFinalManaSubtract(1) == 0)
+                {
+                    return CommandResult.Cancel();
+                }
+            }
+
+            return CommandResult.Pass;
+        }
+
         public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
             {
-                var remainingMana = Game.GetRemainingMana(Host.Owner);
+                var remainingMana = Game.GetRemainingMana(Host.Owner) + 1;
                 var dollSummonCost = Host.Owner.CalculateFinalManaSubtract(1);
-                if (dollSummonCost != 0)
+                var maxSummon = remainingMana / dollSummonCost;
+                var chosenNumber = new Interactions.SelectNumber(Host.Owner, 1, maxSummon, "召唤人偶的数量？").Run();
+                if (chosenNumber != null)
                 {
-                    var maxSummon = remainingMana / dollSummonCost;
-                    var chosenNumber = new Interactions.SelectNumber(Host.Owner, 1, maxSummon, "召唤人偶的数量？").Run();
-                    if (chosenNumber != null)
+                    chosenNumber.Value.Repeat(i => Game.IssueCommands(
+                        new Commands.Summon(Model.SummonType.Target, Host.Owner)));
+                    var extraMana = dollSummonCost * chosenNumber.Value - 1;
+                    if (extraMana != 0)
                     {
-                        chosenNumber.Value.Repeat(i => Game.IssueCommands(
-                            new Commands.Summon(Model.SummonType.Target, Host.Owner)));
+                        Game.IssueCommands(new Commands.SubtractPlayerMana(Host.Owner, extraMana, true, this));
                     }
-                    Game.IssueCommands(new Commands.SubtractPlayerMana(Host.Owner, chosenNumber.Value, this));
+                }
+                else
+                {
+                    Game.IssueCommands(new Commands.AddPlayerMana(Host.Owner, 1, true, this));
                 }
             }
         }

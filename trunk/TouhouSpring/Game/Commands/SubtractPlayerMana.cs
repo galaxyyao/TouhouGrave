@@ -26,7 +26,7 @@ namespace TouhouSpring.Commands
             : this(player, amount, false, cause)
         { }
 
-        internal SubtractPlayerMana(Player player, int amount, bool ignoreModifiers, ICause cause)
+        public SubtractPlayerMana(Player player, int amount, bool ignoreModifiers, ICause cause)
             : base(cause)
         {
             if (player == null)

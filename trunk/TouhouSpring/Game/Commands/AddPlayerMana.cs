@@ -26,7 +26,7 @@ namespace TouhouSpring.Commands
             : this(player, amount, false, cause)
         { }
 
-        internal AddPlayerMana(Player player, int amount, bool ignoreModifiers, ICause cause)
+        public AddPlayerMana(Player player, int amount, bool ignoreModifiers, ICause cause)
             : base(cause)
         {
             if (player == null)
