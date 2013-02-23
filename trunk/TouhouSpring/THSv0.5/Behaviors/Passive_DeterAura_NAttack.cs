@@ -9,6 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_DeterAura_NAttack.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.Summon>,
         IEpilogTrigger<Commands.Kill>
     {
         private ValueModifier m_attackMod;
@@ -20,51 +21,50 @@ namespace TouhouSpring.Behaviors
                 return;
             if (command.CardToPlay == Host)
             {
-                foreach (var card in Game.ActingPlayerEnemies.First().CardsOnBattlefield)
+                foreach (var card in Game.Players.Where(player => player != Host.Owner)
+                    .SelectMany(player => player.CardsOnBattlefield))
                 {
-                    AffectedByAura(card);
+                    AffectByAura(card);
                 }
             }
-            if (command.CardToPlay.Owner != Host.Owner)
+            else if (command.CardToPlay.Owner != Host.Owner)
             {
-                AffectedByAura(command.CardToPlay);
+                AffectByAura(command.CardToPlay);
             }
         }
 
-        private void AffectedByAura(BaseCard card)
+        public void RunEpilog(Commands.Summon command)
         {
-            if (!card.Behaviors.Has<Warrior>())
-                return;
+            if (command.CardSummoned.Owner != Host.Owner)
+            {
+                AffectByAura(command.CardSummoned);
+            }
+        }
+
+        private void AffectByAura(BaseCard card)
+        {
             var warrior = card.Behaviors.Get<Warrior>();
-            Game.IssueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+            if (warrior != null)
+            {
+                Game.IssueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+            }
         }
 
         private void LeaveAura(BaseCard card)
         {
-            if (!card.Behaviors.Has<Warrior>())
-                return;
-            Game.IssueCommands(
-                            new Commands.SendBehaviorMessage(
-                                card.Behaviors.Get<Warrior>(),
-                                "AttackModifiers",
-                                new object[] { "remove", m_attackMod }
-                                ));
+            var warrior = card.Behaviors.Get<Warrior>();
+            if (warrior != null)
+            {
+                Game.IssueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
+            }
         }
 
         public void RunEpilog(Commands.Kill command)
         {
-            if (command.Target != Host)
-                return;
-            if (Game.ActingPlayer == Host.Owner)
+            if (command.Target == Host)
             {
-                foreach (var card in Game.ActingPlayerEnemies.First().CardsOnBattlefield)
-                {
-                    LeaveAura(card);
-                }
-            }
-            else
-            {
-                foreach (var card in Game.ActingPlayer.CardsOnBattlefield)
+                foreach (var card in Game.Players.Where(player => player != Host.Owner)
+                    .SelectMany(player => player.CardsOnBattlefield))
                 {
                     LeaveAura(card);
                 }
