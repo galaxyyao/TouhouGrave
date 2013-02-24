@@ -129,7 +129,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultIndex = PlayCardCandidates.IndexOf(selectedCard);
+            Game.CurrentCommand.ResultSubjectIndex = PlayCardCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -147,7 +147,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultIndex = ActivateAssistCandidates.IndexOf(selectedCard);
+            Game.CurrentCommand.ResultSubjectIndex = ActivateAssistCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -165,7 +165,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultIndex = CastSpellCandidates.IndexOf(selectedSpell);
+            Game.CurrentCommand.ResultSubjectIndex = CastSpellCandidates.IndexOf(selectedSpell);
             RespondBack(result);
         }
 
@@ -183,7 +183,7 @@ namespace TouhouSpring.Interactions
             };
             
             Validate(result);
-            Game.CurrentCommand.ResultIndex = SacrificeCandidates.IndexOf(selectedCard);
+            Game.CurrentCommand.ResultSubjectIndex = SacrificeCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -201,7 +201,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultIndex = RedeemCandidates.IndexOf(selectedCard);
+            Game.CurrentCommand.ResultSubjectIndex = RedeemCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -223,8 +223,9 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultIndex = AttackerCandidates.IndexOf(attacker);
-            Game.CurrentCommand.ResultIndex2 = DefenderCandidates.IndexOf(defender);
+            Game.CurrentCommand.ResultSubjectIndex = AttackerCandidates.IndexOf(attacker);
+            Game.CurrentCommand.ResultParameters = new int[1];
+            Game.CurrentCommand.ResultParameters[0] = DefenderCandidates.IndexOf(defender);
             RespondBack(result);
         }
 
@@ -246,7 +247,7 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultIndex = AttackerCandidates.IndexOf(attacker);
+            Game.CurrentCommand.ResultSubjectIndex = AttackerCandidates.IndexOf(attacker);
             RespondBack(result);
         }
 

@@ -91,6 +91,11 @@ namespace TouhouSpring.Network
                         SendMessage(string.Format("{0} {1}", RoomId, "roomentered"));
                     }
                     break;
+                case "disconnect":
+                    var game = GameApp.Service<Services.GameManager>().Game;
+                    if (game != null)
+                        game.Abort();
+                    break;
                 case "startgame":
                     {
                         RoomStatus = RoomStatusEnum.Starting;
@@ -101,7 +106,6 @@ namespace TouhouSpring.Network
                 case "generateseed":
                     {
                         Seed = Convert.ToInt32(parts[2]);
-                        Debug.Print(string.Format("Seed {0}", Seed));
                     }
                     break;
                 case "switchturn":
@@ -132,7 +136,7 @@ namespace TouhouSpring.Network
                     {
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondAttackPlayer(((Interactions.TacticalPhase)CurrentIo).AttackerCandidates[Convert.ToInt32(parts[2])]
-                            ,CurrentIo.Game.ActingPlayerEnemies.FirstOrDefault());
+                            , CurrentIo.Game.ActingPlayerEnemies.FirstOrDefault());
                     }
                     break;
                 case "activateassist":
@@ -145,6 +149,17 @@ namespace TouhouSpring.Network
                     {
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondCast(((Interactions.TacticalPhase)CurrentIo).CastSpellCandidates[Convert.ToInt32(parts[2])]);
+                    }
+                    break;
+                case "selectcards":
+                    {
+                        List<BaseCard> selectedCards = new List<BaseCard>();
+                        for (int i = 3; i < parts.Count; i++)
+                        {
+                            selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
+                        }
+                        ((Interactions.SelectCards)CurrentIo)
+                            .Respond(selectedCards.ToIndexable());
                     }
                     break;
                 case "redeem":

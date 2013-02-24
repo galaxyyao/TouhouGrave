@@ -51,59 +51,13 @@ namespace TouhouSpring.Agents
 
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
-            Interactions.TacticalPhase.Result currentCommand = new Interactions.TacticalPhase.Result();
-            if (Game.CurrentCommand.Result != null && Game.CurrentCommand.Result != ((object)""))
-            {
-                currentCommand = (Interactions.TacticalPhase.Result)Game.CurrentCommand.Result;
-            }
-            if (currentCommand.Data != null)
-            {
-                switch (currentCommand.ActionType)
-                {
-                    case Interactions.TacticalPhase.Action.Sacrifice:
-                        {
-                            _client.SendMessage(string.Format("{0} sacrifice {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
-                        }
-                        break;
-                    case Interactions.TacticalPhase.Action.PlayCard:
-                        {
-                            _client.SendMessage(string.Format("{0} playcard {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
-                        }
-                        break;
-                    case Interactions.TacticalPhase.Action.AttackCard:
-                        {
-                            _client.SendMessage(string.Format("{0} attackcard {1} {2}", _client.RoomId, Game.CurrentCommand.ResultIndex, Game.CurrentCommand.ResultIndex2));
-                        }
-                        break;
-                    case Interactions.TacticalPhase.Action.AttackPlayer:
-                        {
-                            _client.SendMessage(string.Format("{0} attackplayer {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
-                        }
-                        break;
-                    case Interactions.TacticalPhase.Action.ActivateAssist:
-                        {
-                            _client.SendMessage(string.Format("{0} activateassist {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
-                        }
-                        break;
-                    case Interactions.TacticalPhase.Action.CastSpell:
-                        {
-                            _client.SendMessage(string.Format("{0} castspell {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
-                        }
-                        break;
-                    case Interactions.TacticalPhase.Action.Redeem:
-                        {
-                            _client.SendMessage(string.Format("{0} redeem {1}", _client.RoomId, Game.CurrentCommand.ResultIndex));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
+            SendCommand(io);
             GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.TacticalPhase(), io);
         }
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
+            SendCommand(io);
             GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.SelectCards(), io);
         }
 
@@ -152,9 +106,91 @@ namespace TouhouSpring.Agents
             });
         }
 
-        private bool IsActingPlayer(Interactions.BaseInteraction io)
+        private bool SendCommand(Interactions.BaseInteraction io)
         {
-            return io.Game.Players.IndexOf(io.Game.ActingPlayer) == _client.StartupIndex;
+            var n = io.GetType().Name;
+            switch (io.GetType().Name)
+            {
+                case "TacticalPhase":
+                    {
+                        switch (Game.CurrentCommand.Type)
+                        {
+                            case Game.CurrentCommand.InteractionType.TacticalPhase:
+                                {
+                                    Interactions.TacticalPhase.Result currentCommand = new Interactions.TacticalPhase.Result();
+                                    if (Game.CurrentCommand.Result == null)
+                                        return true;
+                                    currentCommand = (Interactions.TacticalPhase.Result)Game.CurrentCommand.Result;
+                                    //if (currentCommand.Data != null)
+                                    //{
+                                        switch (currentCommand.ActionType)
+                                        {
+                                            case Interactions.TacticalPhase.Action.Sacrifice:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} sacrifice {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
+                                                }
+                                                break;
+                                            case Interactions.TacticalPhase.Action.PlayCard:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} playcard {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
+                                                }
+                                                break;
+                                            case Interactions.TacticalPhase.Action.AttackCard:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} attackcard {1} {2}"
+                                                        , _client.RoomId, Game.CurrentCommand.ResultSubjectIndex
+                                                        , Game.CurrentCommand.ResultParameters[0]));
+                                                }
+                                                break;
+                                            case Interactions.TacticalPhase.Action.AttackPlayer:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} attackplayer {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
+                                                }
+                                                break;
+                                            case Interactions.TacticalPhase.Action.ActivateAssist:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} activateassist {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
+                                                }
+                                                break;
+                                            case Interactions.TacticalPhase.Action.CastSpell:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} castspell {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
+                                                }
+                                                break;
+                                            case Interactions.TacticalPhase.Action.Redeem:
+                                                {
+                                                    _client.SendMessage(string.Format("{0} redeem {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
+                                                }
+                                                break;
+                                            default:
+                                                break;
+                                        //}
+                                    }
+                                }
+                                break;
+                            case Game.CurrentCommand.InteractionType.SelectCards:
+                                {
+                                    int[] selectedCardsIndexs = Game.CurrentCommand.ResultParameters;
+                                    StringBuilder indexes = new StringBuilder();
+                                    for (int i = 0; i < selectedCardsIndexs.Count(); i++)
+                                    {
+                                        indexes.Append(selectedCardsIndexs[i]);
+                                        indexes.Append(" ");
+                                    }
+                                    indexes.Remove(indexes.Length - 1, 1);
+                                    _client.SendMessage(string.Format("{0} selectcards -1 {1}", _client.RoomId, indexes.ToString()));
+                                }
+                                break;
+                            case Game.CurrentCommand.InteractionType.Others:
+                                return true;
+                        }
+                        
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
         }
     }
 }
