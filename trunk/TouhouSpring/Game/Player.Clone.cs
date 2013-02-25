@@ -60,10 +60,11 @@ namespace TouhouSpring
             {
                 clonedPlayer.m_assists.Add(m_assists[i].Clone(clonedPlayer));
             }
-            clonedPlayer.ActivatedAssist = ActivatedAssist != null ? clonedPlayer.m_assists[m_assists.IndexOf(ActivatedAssist)] : null;
-            if (clonedPlayer.ActivatedAssist != null)
+
+            for (int i = 0; i < m_activatedAssists.Count; ++i)
             {
-                clonedPlayer.Game.SubscribeCardToCommands(clonedPlayer.ActivatedAssist);
+                clonedPlayer.m_activatedAssists.Add(clonedPlayer.m_assists[m_assists.IndexOf(m_activatedAssists[i])]);
+                clonedPlayer.Game.SubscribeCardToCommands(clonedPlayer.m_activatedAssists[i]);
             }
 
             for (int i = 0; i < m_library.Count; ++i)

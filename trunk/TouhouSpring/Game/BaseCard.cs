@@ -31,14 +31,14 @@ namespace TouhouSpring
             get { return Owner.CardsOnBattlefield.Contains(this); }
         }
 
+        public bool IsActivatedAssist
+        {
+            get { return Owner.ActivatedAssits.Contains(this); }
+        }
+
         public bool IsHero
         {
             get { return Owner.Hero == this; }
-        }
-
-        public bool IsAssist
-        {
-            get { return Owner.Assists.Contains(this); }
         }
 
         public bool IsDestroyed

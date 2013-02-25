@@ -372,7 +372,7 @@ namespace TouhouSpring.Interactions
         {
             foreach (var card in player.Assists)
             {
-                if (card != player.ActivatedAssist)
+                if (!player.ActivatedAssits.Contains(card))
                 {
                     yield return card;
                 }
@@ -381,9 +381,9 @@ namespace TouhouSpring.Interactions
 
         private static IEnumerable<BaseCard> GetCastSpellBaseSet(Player player)
         {
-            if (player.ActivatedAssist != null)
+            foreach (var card in player.ActivatedAssits)
             {
-                yield return player.ActivatedAssist;
+                yield return card;
             }
             foreach (var card in player.CardsOnBattlefield)
             {

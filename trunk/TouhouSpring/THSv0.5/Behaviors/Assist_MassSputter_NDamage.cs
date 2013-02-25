@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
     {
         public void RunEpilog(Commands.DealDamageToCard command)
         {
-            if (Host.Owner.ActivatedAssist == Host
+            if (Host.IsActivatedAssist
                 && command.Cause is Warrior
                 && ((Warrior)command.Cause).Host.Owner == Host.Owner)
             {
@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
 
         public void RunEpilog(Commands.SubtractPlayerLife command)
         {
-            if (Host.Owner.ActivatedAssist == Host
+            if (Host.IsActivatedAssist
                 && command.FinalAmount > 0
                 && command.Cause is Warrior
                 && ((Warrior)command.Cause).Host.Owner == Host.Owner)

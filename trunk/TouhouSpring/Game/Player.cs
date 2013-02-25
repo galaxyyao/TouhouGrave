@@ -22,6 +22,7 @@ namespace TouhouSpring
         internal List<BaseCard> m_sacrifices = new List<BaseCard>();
         internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
         internal List<BaseCard> m_assists = new List<BaseCard>();
+        internal List<BaseCard> m_activatedAssists = new List<BaseCard>();
         internal List<ICardModel> m_library = new List<ICardModel>();
         internal List<ICardModel> m_graveyard = new List<ICardModel>();
 
@@ -57,9 +58,9 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public BaseCard ActivatedAssist
+        public IIndexable<BaseCard> ActivatedAssits
         {
-            get; internal set;
+            get; private set;
         }
 
         public Pile Library
@@ -148,6 +149,7 @@ namespace TouhouSpring
             CardsSacrificed = m_sacrifices.ToIndexable();
             CardsOnBattlefield = m_battlefieldCards.ToIndexable();
             Assists = m_assists.ToIndexable();
+            ActivatedAssits = m_activatedAssists.ToIndexable();
             Library = new Pile(m_library);
             Graveyard = new Pile(m_graveyard);
 

@@ -13,11 +13,6 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public BaseCard PreviouslyActivatedCard
-        {
-            get; private set;
-        }
-
         public Player Initiator
         {
             get { return CardToActivate.Owner; }
@@ -40,7 +35,7 @@ namespace TouhouSpring.Commands
             {
                 FailValidation("Not a valid assist card.");
             }
-            else if (CardToActivate.Owner.ActivatedAssist == CardToActivate)
+            else if (CardToActivate.Owner.ActivatedAssits.Contains(CardToActivate))
             {
                 FailValidation("Can't activate the card twice.");
             }
@@ -52,12 +47,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            PreviouslyActivatedCard = CardToActivate.Owner.ActivatedAssist;
-            CardToActivate.Owner.ActivatedAssist = CardToActivate;
-            if (PreviouslyActivatedCard != null)
-            {
-                Game.UnsubscribeCardFromCommands(PreviouslyActivatedCard);
-            }
+            CardToActivate.Owner.m_activatedAssists.Add(CardToActivate);
             Game.SubscribeCardToCommands(CardToActivate);
         }
     }

@@ -175,7 +175,7 @@ namespace TouhouSpring
 
         internal void SubscribeBehaviorToCommands(BaseCard card, Behaviors.IBehavior behavior)
         {
-            if (card.Owner.ActivatedAssist == card
+            if (card.Owner.ActivatedAssits.Contains(card)
                 || card.Owner.m_battlefieldCards.Contains(card))
             {
                 if (card.Behaviors.Count > 1)
@@ -191,7 +191,7 @@ namespace TouhouSpring
 
         internal void UnsubscribeBehaviorFromCommands(BaseCard card, Behaviors.IBehavior behavior)
         {
-            if (card.Owner.ActivatedAssist == card
+            if (card.Owner.ActivatedAssits.Contains(card)
                 || card.Owner.m_battlefieldCards.Contains(card))
             {
                 m_commonTargets.Remove(behavior);

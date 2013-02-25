@@ -83,6 +83,10 @@ namespace TouhouSpring
                 {
                     var cardToActivate = (BaseCard)result.Data;
                     Debug.Assert(cardToActivate.Owner == ActingPlayer);
+                    foreach (var card in ActingPlayer.ActivatedAssits)
+                    {
+                        IssueCommands(new Commands.DeactivateAssist(card));
+                    }
                     IssueCommandsAndFlush(new Commands.ActivateAssist(cardToActivate));
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.CastSpell)

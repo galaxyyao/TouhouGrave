@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Commands\AddPlayerLife.cs" />
     <Compile Include="Commands\AddPlayerMana.cs" />
+    <Compile Include="Commands\DeactivateAssist.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
     <Compile Include="ValueModifier.cs" />

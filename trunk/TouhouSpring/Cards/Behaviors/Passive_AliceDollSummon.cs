@@ -11,8 +11,8 @@ namespace TouhouSpring.Behaviors
         public void RunEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Main"
-                && Game.ActingPlayer == Host.Owner 
-                && (Host.IsOnBattlefield || Host.Owner.ActivatedAssist == Host))
+                && Game.ActingPlayer == Host.Owner
+                && (Host.IsOnBattlefield || Host.IsActivatedAssist))
             {
                 1.Repeat(i =>
                 {
