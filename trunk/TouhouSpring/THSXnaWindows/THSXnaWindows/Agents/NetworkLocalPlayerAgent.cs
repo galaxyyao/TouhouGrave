@@ -111,6 +111,7 @@ namespace TouhouSpring.Agents
             var n = io.GetType().Name;
             switch (io.GetType().Name)
             {
+                case "SelectCards":
                 case "TacticalPhase":
                     {
                         switch (Game.CurrentCommand.Type)
