@@ -62,23 +62,27 @@ namespace TouhouSpring.Simulation
                 while (m_pendingCursor < m_pendingBranches.Count)
                 {
                     m_currentBranch = m_pendingBranches[m_pendingCursor++];
+                    bool aborted = false;
 
                     if (m_currentBranch.Root != null)
                     {
                         CurrentBranchDepth = m_currentBranch.Depth;
                         CurrentBranchOrder = m_currentBranch.Order;
                         m_currentBranch.Root.OverrideController(this);
-                        m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
+                        aborted = !m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
                     }
                     else
                     {
                         CurrentBranchDepth = 0;
                         CurrentBranchOrder = 0;
                         m_currentBranch.Root = m_sandbox.RootGame.CloneWithController(this);
-                        m_currentBranch.Root.RunTurn();
+                        aborted = !m_currentBranch.Root.RunTurn();
                     }
 
-                    m_sandbox.AddResult(m_currentBranch.Root, m_currentBranch.ChoicePath);
+                    if (!aborted)
+                    {
+                        m_sandbox.AddResult(m_currentBranch.Root, m_currentBranch.ChoicePath);
+                    }
                 }
             }
 
@@ -101,6 +105,11 @@ namespace TouhouSpring.Simulation
 
                     foreach (var choice in choices)
                     {
+                        if (mainPhase != null && choice is KillBranchChoice)
+                        {
+                            continue;
+                        }
+
                         var branch = ForkBranch(choice);
 
                         if (mainPhase != null)
@@ -147,7 +156,7 @@ namespace TouhouSpring.Simulation
                                     mainPhase.AttackerCandidates[(choice as AttackPlayerChoice).AttackerIndex],
                                     mainPhase.Game.Players[(choice as AttackPlayerChoice).PlayerIndex]);
                             }
-                            else if (choice is PassChoice || choice is KillBranchChoice)
+                            else if (choice is PassChoice)
                             {
                                 branch.Response = mainPhase.CompiledRespondPass();
                             }
@@ -184,7 +193,9 @@ namespace TouhouSpring.Simulation
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    // no choice generated
+                    System.Diagnostics.Debug.Assert(io is Interactions.TacticalPhase);
+                    (io as Interactions.TacticalPhase).RespondAbort();
                 }
             }
 

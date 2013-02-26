@@ -16,7 +16,8 @@ namespace TouhouSpring.Interactions
             Redeem,         // return one card from sacrifice to hand
             AttackCard,     // card attacks a opponent card
             AttackPlayer,   // card attacks the opponent player
-            Pass
+            Pass,
+            Abort
         }
 
         public struct Result
@@ -65,6 +66,11 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
+        public bool CanPass
+        {
+            get; private set;
+        }
+
         internal TacticalPhase(Player player)
             : base(player.Game)
         {
@@ -100,6 +106,8 @@ namespace TouhouSpring.Interactions
             {
                 DefenderCandidates = Indexable.Empty<BaseCard>();
             }
+
+            CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>());
         }
 
         internal Result Run()
@@ -111,7 +119,12 @@ namespace TouhouSpring.Interactions
 
         public void RespondPass()
         {
-            RespondBack(new Result { ActionType = Action.Pass });
+            var result = new Result
+            {
+                ActionType = Action.Pass
+            };
+            Validate(result);
+            RespondBack(result);
         }
 
         public void RespondPlay(BaseCard selectedCard)
@@ -249,12 +262,21 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
+        public void RespondAbort()
+        {
+            RespondBack(new Result { ActionType = Action.Abort });
+        }
+
         protected void Validate(Result result)
         {
             switch (result.ActionType)
             {
                 case Action.Pass:
-                    if (result.Data != null)
+                    if (!CanPass)
+                    {
+                        throw new InteractionValidationFailException("Can't pass.");
+                    }
+                    else if (result.Data != null)
                     {
                         throw new InteractionValidationFailException("Action Pass shall have null data.");
                     }
@@ -349,6 +371,9 @@ namespace TouhouSpring.Interactions
                             throw new InteractionValidationFailException("Player can't be attacked.");
                         }
                     }
+                    break;
+
+                case Action.Abort:
                     break;
 
                 default:

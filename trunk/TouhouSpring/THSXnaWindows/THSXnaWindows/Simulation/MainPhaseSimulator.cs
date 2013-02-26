@@ -178,7 +178,10 @@ namespace TouhouSpring.Simulation
                 }
             }
 
-            yield return new PassChoice();
+            if (io.CanPass)
+            {
+                yield return new PassChoice();
+            }
         }
 
         public override IEnumerable<Choice> SelectCards(Interactions.SelectCards io, IContext context)

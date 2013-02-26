@@ -77,6 +77,9 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ForceAttack+ModelType">
+          <Name>TouhouSpring.Behaviors.ForceAttack</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
@@ -497,7 +500,6 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Protector+ModelType">
           <Name>Protector</Name>
-          <Unique>true</Unique>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>

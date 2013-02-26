@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\ForceAttack.cs" />
     <Compile Include="Commands\AddPlayerLife.cs" />
     <Compile Include="Commands\AddPlayerMana.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />

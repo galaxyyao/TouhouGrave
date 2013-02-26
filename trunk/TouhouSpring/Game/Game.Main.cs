@@ -24,7 +24,7 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public void RunTurn()
+        public bool RunTurn()
         {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
                 || CurrentPhase != "")
@@ -51,15 +51,15 @@ namespace TouhouSpring
             DidRedeem = false;
             IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
-            RunTurnFromMainPhase();
+            return RunTurnFromMainPhase();
         }
 
-        public void RunTurnFromMainPhase()
+        public bool RunTurnFromMainPhase()
         {
-            RunTurnFromMainPhase(null);
+            return RunTurnFromMainPhase(null);
         }
 
-        public void RunTurnFromMainPhase(Interactions.TacticalPhase.CompiledResponse compiledMainPhaseResponse)
+        public bool RunTurnFromMainPhase(Interactions.TacticalPhase.CompiledResponse compiledMainPhaseResponse)
         {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
                 || CurrentPhase != "Main")
@@ -135,6 +135,10 @@ namespace TouhouSpring
                 {
                     break;
                 }
+                else if (result.ActionType == Interactions.TacticalPhase.Action.Abort)
+                {
+                    return false;
+                }
                 else
                 {
                     throw new InvalidDataException();
@@ -146,6 +150,8 @@ namespace TouhouSpring
                 new Commands.StartPhase("Cleanup"),
                 new Commands.EndPhase(),
                 new Commands.EndTurn(ActingPlayer));
+
+            return true;
         }
 
         private void GameFlowMain()
