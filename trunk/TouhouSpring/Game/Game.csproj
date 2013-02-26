@@ -40,6 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\ForceAttack.cs" />
+    <Compile Include="Commands\AddPlayerLife.cs" />
+    <Compile Include="Commands\AddPlayerMana.cs" />
+    <Compile Include="Commands\DeactivateAssist.cs" />
+    <Compile Include="Commands\SubtractPlayerLife.cs" />
+    <Compile Include="Commands\SubtractPlayerMana.cs" />
+    <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseCard.Behaviors.cs" />
     <Compile Include="BaseCard.Clone.cs" />
@@ -60,7 +67,6 @@
     <Compile Include="Behaviors\Protector.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
-    <Compile Include="Behaviors\Warrior.ValueModifier.cs" />
     <Compile Include="CardModel.cs" />
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Commands\ActivateAssist.cs" />
@@ -72,12 +78,10 @@
     <Compile Include="Commands\EndPhase.cs" />
     <Compile Include="Commands\HealCard.cs" />
     <Compile Include="Commands\StartPhase.cs" />
-    <Compile Include="Commands\HealPlayer.cs" />
     <Compile Include="Commands\DealDamageToCard.cs" />
     <Compile Include="Commands\Kill.cs" />
     <Compile Include="Commands\Redeem.cs" />
     <Compile Include="Commands\RemoveBehavior.cs" />
-    <Compile Include="Commands\DealDamageToPlayer.cs" />
     <Compile Include="Commands\Resolve.cs" />
     <Compile Include="Commands\Sacrifice.cs" />
     <Compile Include="Commands\DrawCard.cs" />
@@ -87,7 +91,6 @@
     <Compile Include="Commands\ShuffleLibrary.cs" />
     <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
-    <Compile Include="Commands\UpdateMana.cs" />
     <Compile Include="Game.Clone.cs" />
     <Compile Include="Game.CommandCondition.cs" />
     <Compile Include="Game.CommandQueue.cs" />
@@ -106,6 +109,8 @@
     <Compile Include="Interactions\NotifyPlayerEvent.cs" />
     <Compile Include="Interactions\NotifySpellEvent.cs" />
     <Compile Include="Interactions\SelectCards.cs" />
+    <Compile Include="Interactions\SelectNumber.cs" />
+    <Compile Include="Interactions\TacticalPhase.CompiledResult.cs" />
     <Compile Include="Interactions\TacticalPhase.cs" />
     <Compile Include="Miscs.cs" />
     <Compile Include="Pile.cs" />

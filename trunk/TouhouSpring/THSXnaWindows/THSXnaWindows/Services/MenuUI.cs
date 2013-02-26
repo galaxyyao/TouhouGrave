@@ -184,9 +184,9 @@ namespace TouhouSpring.Services
             deck1.Add(cardDb.GetModel("kaguya"));
             deck1.Add(cardDb.GetModel("kaguya"));
             deck1.Add(cardDb.GetModel("kaguya"));
-            deck1.Add(cardDb.GetModel("flandre"));
-            deck1.Add(cardDb.GetModel("flandre"));
-            deck1.Add(cardDb.GetModel("flandre"));
+            deck1.Add(cardDb.GetModel("alice_2"));
+            deck1.Add(cardDb.GetModel("alice_2"));
+            deck1.Add(cardDb.GetModel("alice_2"));
             deck1.Assists.Add(cardDb.GetModel("eirin"));
             deck1.Assists.Add(cardDb.GetModel("patchouli"));
 
@@ -218,9 +218,12 @@ namespace TouhouSpring.Services
             deck2.Add(cardDb.GetModel("nightbug"));
             deck2.Add(cardDb.GetModel("nightbug"));
             deck2.Add(cardDb.GetModel("nightbug"));
-            deck2.Add(cardDb.GetModel("marisa"));
-            deck2.Add(cardDb.GetModel("marisa"));
-            deck2.Add(cardDb.GetModel("marisa"));
+            //deck2.Add(cardDb.GetModel("marisa"));
+            //deck2.Add(cardDb.GetModel("marisa"));
+            //deck2.Add(cardDb.GetModel("marisa"));
+            deck2.Add(cardDb.GetModel("alice_2"));
+            deck2.Add(cardDb.GetModel("alice_2"));
+            deck2.Add(cardDb.GetModel("alice_2"));
             deck2.Assists.Add(cardDb.GetModel("yakumo"));
             deck2.Assists.Add(cardDb.GetModel("tenshi"));
 

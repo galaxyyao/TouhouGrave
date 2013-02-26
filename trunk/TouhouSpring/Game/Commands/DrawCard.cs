@@ -42,8 +42,9 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            var card = Player.Library.RemoveCardFromTop();
-            Debug.Assert(card != null && card.Owner == Player);
+            var cardModel = Player.Library.RemoveFromTop();
+            Debug.Assert(cardModel != null);
+            var card = new BaseCard(cardModel, Player);
             Player.AddToHandSorted(card);
             CardDrawn = card;
         }

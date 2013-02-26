@@ -12,7 +12,7 @@ namespace TouhouSpring.Behaviors
     {
         public void RunEpilog(Commands.Redeem command)
         {
-            if (Host.Owner.ActivatedAssist == Host)
+            if (Host.IsActivatedAssist)
             {
                 Game.IssueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
             }

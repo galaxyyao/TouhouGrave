@@ -16,8 +16,11 @@ namespace TouhouSpring.Commands
         Epilog
     }
 
-    public interface ICause
+    public interface ICause { }
+
+    public interface IInitiativeCommand
     {
+        Player Initiator { get; }
     }
 
     public abstract partial class BaseCommand

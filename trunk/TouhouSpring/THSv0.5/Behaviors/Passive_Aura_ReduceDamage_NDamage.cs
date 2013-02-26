@@ -12,13 +12,11 @@ namespace TouhouSpring.Behaviors
     {
         public void RunProlog(Commands.DealDamageToCard command)
         {
-            if (Host.Owner.ActivatedAssist == Host)
+            if (Host.IsActivatedAssist
+                && command.Target.Owner == Host.Owner
+                && command.Cause is Warrior)
             {
-                if (command.Target.Owner == Host.Owner
-                    && command.Cause is Warrior)
-                {
-                    command.PatchDamageToDeal(Math.Max(command.DamageToDeal - Model.DamageReduced, 0));
-                }
+                command.PatchDamageToDeal(Math.Max(command.DamageToDeal - Model.DamageReduced, 0));
             }
         }
 

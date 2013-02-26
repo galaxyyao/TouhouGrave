@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -53,6 +54,18 @@ namespace TouhouSpring
 			ServiceContainer.Startup();
 
 			base.BeginRun();
+
+#if WINDOWS
+            // set the existing threads' affinity to the first core
+            if (Environment.ProcessorCount > 1)
+            {
+                var process = Process.GetCurrentProcess();
+                foreach (ProcessThread thread in process.Threads)
+                {
+                    thread.ProcessorAffinity = (IntPtr)1;
+                }
+            }
+#endif
 		}
 
 		protected override void EndRun()

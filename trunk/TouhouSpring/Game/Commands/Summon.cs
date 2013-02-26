@@ -58,6 +58,7 @@ namespace TouhouSpring.Commands
         {
             CardSummoned = new BaseCard(Model, Owner);
             Owner.m_battlefieldCards.Add(CardSummoned);
+            Game.SubscribeCardToCommands(CardSummoned);
         }
     }
 }

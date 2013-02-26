@@ -49,6 +49,7 @@
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxiedCustomTypeConverter.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="Services\Container.cs" />

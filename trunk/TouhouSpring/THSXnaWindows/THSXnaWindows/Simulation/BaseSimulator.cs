@@ -7,17 +7,22 @@ namespace TouhouSpring.Simulation
 {
     class BaseSimulator
     {
-        public virtual IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, int highestOrder)
+        public virtual IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, IContext context)
         {
             return Enumerable.Empty<Choice>();
         }
 
-        public virtual IEnumerable<Choice> SelectCards(Interactions.SelectCards io, int highestOrder)
+        public virtual IEnumerable<Choice> SelectCards(Interactions.SelectCards io, IContext context)
         {
             return Enumerable.Empty<Choice>();
         }
 
-        public virtual IEnumerable<Choice> MessageBox(Interactions.MessageBox io, int highestOrder)
+        public virtual IEnumerable<Choice> MessageBox(Interactions.MessageBox io, IContext context)
+        {
+            return Enumerable.Empty<Choice>();
+        }
+
+        public virtual IEnumerable<Choice> SelectNumber(Interactions.SelectNumber io, IContext context)
         {
             return Enumerable.Empty<Choice>();
         }

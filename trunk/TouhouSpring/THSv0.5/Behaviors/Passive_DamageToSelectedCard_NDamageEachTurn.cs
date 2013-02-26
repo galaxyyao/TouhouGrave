@@ -8,23 +8,29 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DamageToSelectedCard_NDamageEachTurn :
         BaseBehavior<Passive_DamageToSelectedCard_NDamageEachTurn.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DrawCard>
+        IEpilogTrigger<Commands.EndPhase>
     {
-        public void RunEpilog(Commands.DrawCard command)
+        public void RunEpilog(Commands.EndPhase command)
         {
-            //TODO: Need to be modified for 3 or more players' game
-            if (Game.ActingPlayer == Host.Owner
-                && Game.ActingPlayerEnemies.First().CardsOnBattlefield.Count>0)
+            if (command.PreviousPhase == "Upkeep"
+                && Game.ActingPlayer == Host.Owner)
             {
-                var selectedCard = new Interactions.SelectCards(
-                    Host.Owner,
-                    Game.ActingPlayerEnemies.First().CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
-                    Interactions.SelectCards.SelectMode.Single,
-                    "指定1张对手的卡，造成伤害").Run();
-
-                if (selectedCard.Count > 0)
+                var targetCandidates = Game.ActingPlayerEnemies
+                    .SelectMany(p => p.CardsOnBattlefield)
+                    .Where(c => c.Behaviors.Has<Warrior>())
+                    .ToArray();
+                if (targetCandidates.Length > 0)
                 {
-                    Game.IssueCommands(new Commands.DealDamageToCard(selectedCard[0], Model.DamageToDeal, this));
+                    var selectedCard = new Interactions.SelectCards(
+                        Host.Owner,
+                        targetCandidates.ToIndexable(),
+                        Interactions.SelectCards.SelectMode.Single,
+                        "指定1张对手的卡，造成伤害").Run();
+
+                    if (selectedCard.Count > 0)
+                    {
+                        Game.IssueCommands(new Commands.DealDamageToCard(selectedCard[0], Model.DamageToDeal, this));
+                    }
                 }
             }
         }
@@ -34,8 +40,7 @@ namespace TouhouSpring.Behaviors
         {
             public int DamageToDeal
             {
-                get;
-                set;
+                get; set;
             }
         }
     }

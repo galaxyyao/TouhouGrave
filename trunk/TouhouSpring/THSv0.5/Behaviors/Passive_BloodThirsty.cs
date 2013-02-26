@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_BloodThirsty.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.DealDamageToCard>,
-        IEpilogTrigger<Commands.DealDamageToPlayer>
+        IEpilogTrigger<Commands.SubtractPlayerLife>
     {
         public void RunEpilog(Commands.DealDamageToCard command)
         {
@@ -17,18 +17,18 @@ namespace TouhouSpring.Behaviors
                 && Host.IsOnBattlefield
                 && command.Cause==Host.Behaviors.Get<Warrior>())
             {
-                var m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+                var m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }
 
-        public void RunEpilog(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.SubtractPlayerLife command)
         {
-            if (command.DamageToDeal > 0
+            if (command.FinalAmount > 0
                 && Host.IsOnBattlefield
                 && command.Cause == Host.Behaviors.Get<Warrior>())
             {
-                var m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+                var m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
                 Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }

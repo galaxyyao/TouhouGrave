@@ -36,7 +36,7 @@ namespace TouhouSpring.Graphics
 				return (T)(object)new VirtualTexture(texture, texture.Bounds);
 			}
 
-			int sep = uri.LastIndexOf('#');
+			int sep = uri.LastIndexOf('$');
 			string atlasName = uri.Substring(Scheme.Length, (sep != -1 ? sep : uri.Length) - Scheme.Length);
 			string subTextureId = sep != -1 ? uri.Substring(sep + 1) : null;
 

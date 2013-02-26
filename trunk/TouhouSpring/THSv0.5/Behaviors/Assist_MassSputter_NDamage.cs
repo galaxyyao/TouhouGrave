@@ -9,27 +9,26 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Assist_MassSputter_NDamage.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.DealDamageToCard>,
-        IEpilogTrigger<Commands.DealDamageToPlayer>
+        IEpilogTrigger<Commands.SubtractPlayerLife>
     {
         public void RunEpilog(Commands.DealDamageToCard command)
         {
-            if (Host.Owner.ActivatedAssist == Host
-                && Game.ActingPlayer==Host.Owner
+            if (Host.IsActivatedAssist
                 && command.Cause is Warrior
                 && ((Warrior)command.Cause).Host.Owner == Host.Owner)
             {
-                Game.IssueCommands(new Commands.DealDamageToPlayer(Game.ActingPlayerEnemies.First(), Model.DamageToDeal, this));
+                Game.IssueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Model.DamageToDeal, this));
             }
         }
 
-        public void RunEpilog(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.SubtractPlayerLife command)
         {
-            if (Host.Owner.ActivatedAssist == Host
-                && Game.ActingPlayer == Host.Owner
+            if (Host.IsActivatedAssist
+                && command.FinalAmount > 0
                 && command.Cause is Warrior
                 && ((Warrior)command.Cause).Host.Owner == Host.Owner)
             {
-                Game.IssueCommands(new Commands.DealDamageToPlayer(Game.ActingPlayerEnemies.First(), Model.DamageToDeal, this));
+                Game.IssueCommands(new Commands.SubtractPlayerLife(command.Player, Model.DamageToDeal, this));
             }
         }
 

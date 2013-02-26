@@ -14,6 +14,26 @@ namespace TouhouSpring
             clonedPlayer.Health = Health;
             clonedPlayer.Mana = Mana;
 
+            for (int i = 0; i < m_manaAddModifiers.Count; ++i)
+            {
+                clonedPlayer.m_manaAddModifiers.Add(m_manaAddModifiers[i]);
+            }
+
+            for (int i = 0; i < m_manaSubtractModifiers.Count; ++i)
+            {
+                clonedPlayer.m_manaSubtractModifiers.Add(m_manaSubtractModifiers[i]);
+            }
+
+            for (int i = 0; i < m_lifeAddModifiers.Count; ++i)
+            {
+                clonedPlayer.m_lifeAddModifiers.Add(m_lifeAddModifiers[i]);
+            }
+
+            for (int i = 0; i < m_lifeSubtractModifiers.Count; ++i)
+            {
+                clonedPlayer.m_lifeSubtractModifiers.Add(m_lifeSubtractModifiers[i]);
+            }
+
             for (int i = 0; i < m_handSet.Count; ++i)
             {
                 clonedPlayer.m_handSet.Add(m_handSet[i].Clone(clonedPlayer));
@@ -26,7 +46,9 @@ namespace TouhouSpring
 
             for (int i = 0; i < m_battlefieldCards.Count; ++i)
             {
-                clonedPlayer.m_battlefieldCards.Add(m_battlefieldCards[i].Clone(clonedPlayer));
+                var clonedCard = m_battlefieldCards[i].Clone(clonedPlayer);
+                clonedPlayer.m_battlefieldCards.Add(clonedCard);
+                clonedPlayer.Game.SubscribeCardToCommands(clonedCard);
             }
 
             if (Hero != null)
@@ -38,14 +60,22 @@ namespace TouhouSpring
             {
                 clonedPlayer.m_assists.Add(m_assists[i].Clone(clonedPlayer));
             }
-            clonedPlayer.ActivatedAssist = ActivatedAssist != null ? clonedPlayer.m_assists[m_assists.IndexOf(ActivatedAssist)] : null;
+
+            for (int i = 0; i < m_activatedAssists.Count; ++i)
+            {
+                clonedPlayer.m_activatedAssists.Add(clonedPlayer.m_assists[m_assists.IndexOf(m_activatedAssists[i])]);
+                clonedPlayer.Game.SubscribeCardToCommands(clonedPlayer.m_activatedAssists[i]);
+            }
 
             for (int i = 0; i < m_library.Count; ++i)
             {
-                clonedPlayer.m_library.Add(m_library[i].Clone(clonedPlayer));
+                clonedPlayer.m_library.Add(m_library[i]);
             }
 
-            // skip cloning graveyard
+            for (int i = 0; i < m_graveyard.Count; ++i)
+            {
+                clonedPlayer.m_graveyard.Add(m_graveyard[i]);
+            }
 
             return clonedPlayer;
         }
@@ -76,13 +106,6 @@ namespace TouhouSpring
             {
                 m_assists[i].TransferFrom(original.m_assists[i]);
             }
-
-            for (int i = 0; i < m_library.Count; ++i)
-            {
-                m_library[i].TransferFrom(original.m_library[i]);
-            }
-
-            // skip transferring graveyard
         }
     }
 }

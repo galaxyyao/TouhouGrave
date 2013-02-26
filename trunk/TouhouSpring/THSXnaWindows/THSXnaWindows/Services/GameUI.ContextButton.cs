@@ -43,7 +43,7 @@ namespace TouhouSpring.Services
             var content = GameApp.Instance.Content;
 
             var resourceMgr = GameApp.Service<ResourceManager>();
-            var buttonTexture = resourceMgr.Acquire<Graphics.VirtualTexture>("Textures/Button");
+            var buttonTexture = resourceMgr.Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$Button");
             m_buttonFace = new Graphics.TexturedQuad(buttonTexture);
 
             var font = new Graphics.TextRenderer.FontDescriptor("DFKai-SB", 16);

@@ -5,34 +5,42 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class UpdateMana : BaseCommand
+    public class SubtractPlayerMana : BaseCommand
     {
         public Player Player
         {
             get; private set;
         }
 
-        public int DeltaAmount
+        public int Amount
         {
             get; private set;
         }
 
-        public UpdateMana(Player player, int deltaAmount, ICause cause)
+        public int FinalAmount
+        {
+            get; private set;
+        }
+
+        public SubtractPlayerMana(Player player, int amount, ICause cause)
+            : this(player, amount, false, cause)
+        { }
+
+        public SubtractPlayerMana(Player player, int amount, bool ignoreModifiers, ICause cause)
             : base(cause)
         {
             if (player == null)
             {
                 throw new ArgumentNullException("player");
             }
+            else if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than or equal to zero.");
+            }
 
             Player = player;
-            DeltaAmount = deltaAmount;
-        }
-
-        public void PatchDeltaAmount(int value)
-        {
-            CheckPatchable("DeltaAmount");
-            DeltaAmount = value;
+            Amount = amount;
+            FinalAmount = ignoreModifiers ? amount : player.CalculateFinalManaSubtract(amount);
         }
 
         internal override void ValidateOnIssue()
@@ -42,7 +50,7 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Player.Mana + DeltaAmount < 0)
+            if (Player.Mana < FinalAmount)
             {
                 FailValidation("Insufficient mana.");
             }
@@ -50,7 +58,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Player.Mana = Math.Min(Player.Mana + DeltaAmount, Player.MaxMana);
+            Player.Mana -= FinalAmount;
         }
     }
 }

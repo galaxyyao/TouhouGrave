@@ -5,25 +5,10 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Protector : BaseBehavior<Protector.ModelType>,
-        IPrerequisiteTrigger<Commands.PlayCard>
+    public sealed class Protector : BaseBehavior<Protector.ModelType>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
-        {
-            if (command.CardToPlay == Host
-                && Model.Unique
-                && Host.Owner.CardsOnBattlefield.Any(card => card.Model == Host.Model))
-            {
-                return CommandResult.Cancel("Only one protector is allowed on battlefield.");
-            }
-
-            return CommandResult.Pass;
-        }
-
         [BehaviorModel(Category = "Core")]
         public class ModelType : BehaviorModel<Protector>
-        {
-            public bool Unique { get; set; }
-        }
+        { }
     }
 }

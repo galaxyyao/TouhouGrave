@@ -31,7 +31,10 @@ namespace TouhouSpring.Services.UIStates
         {
             m_io = (Interactions.TacticalPhase)io;
             m_gameUI.RemoveAllContextButtons();
-            m_gameUI.AddContextButton("结束", ContextButton_OnPass);
+            if (m_io.CanPass)
+            {
+                m_gameUI.AddContextButton("结束", ContextButton_OnPass);
+            }
             m_castFromCards = m_io.CastSpellCandidates.Select(spell => spell.Host).Distinct().ToArray();
         }
 
@@ -51,7 +54,10 @@ namespace TouhouSpring.Services.UIStates
             var card = SelectedCard != null ? SelectedCard.Card : null;
 
             m_gameUI.RemoveAllContextButtons();
-            m_gameUI.AddContextButton("结束", ContextButton_OnPass);
+            if (m_io.CanPass)
+            {
+                m_gameUI.AddContextButton("结束", ContextButton_OnPass);
+            }
 
             if (m_io.PlayCardCandidates.Contains(card))
             {

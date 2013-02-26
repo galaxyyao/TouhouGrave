@@ -10,7 +10,7 @@ namespace TouhouSpring.Agents
     {
         private struct ScoredBranch : IComparable<ScoredBranch>
         {
-            public Simulation.Context.Branch Branch;
+            public Simulation.Branch Branch;
             public double Score;
 
             public int CompareTo(ScoredBranch other)
@@ -20,7 +20,8 @@ namespace TouhouSpring.Agents
         }
 
         private Messaging.LetterBox m_letterbox = new Messaging.LetterBox();
-        private Simulation.Context.Branch m_plan = null;
+        private Simulation.Branch m_plan = null;
+        private int m_planProgress = 0;
 
         public AIAgent()
         {
@@ -56,6 +57,11 @@ namespace TouhouSpring.Agents
             throw new NotImplementedException();
         }
 
+        public override void OnSelectNumber(Interactions.SelectNumber io)
+        {
+            new Messaging.Message("OnSelectNumber", io).SendTo(m_letterbox);
+        }
+
         public override bool OnTurnStarted(Interactions.NotifyPlayerEvent io)
         {
             new Messaging.Message("BeginSimulation", io.Game.Clone()).SendTo(m_letterbox);
@@ -76,6 +82,7 @@ namespace TouhouSpring.Agents
 
                     case "OnTacticalPhase":
                     case "OnSelectCards":
+                    case "OnSelectNumber":
                         Debug.Assert(m_plan != null);
                         RespondInteraction(msg.Attachment as Interactions.BaseInteraction);
                         break;
@@ -94,27 +101,27 @@ namespace TouhouSpring.Agents
             QueryPerformanceFrequency(out freq);
             QueryPerformanceCounter(out startTime);
 
-            var simulationCtx = new Simulation.Context(game, new Simulation.MainPhaseSimulator());
-            simulationCtx.Start();
+            Simulation.ISandbox simSandbox = new Simulation.StpSandbox(game, new Simulation.MainPhaseSimulator());
+            simSandbox.Run();
 
             var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
-            var scoredBranches = simulationCtx.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+            var scoredBranches = simSandbox.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
             m_plan = scoredBranches.Max().Branch;
+            m_planProgress = 0;
 
             QueryPerformanceCounter(out endTime);
 
-            Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simulationCtx.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
+            Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simSandbox.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
             PrintEvaluate(m_plan.Result.Players[pid]);
         }
 
         private void RespondInteraction(Interactions.BaseInteraction io)
         {
-            Debug.Assert(m_plan != null && m_plan.ChoicePath.Count > 0);
-            Trace.WriteLine("\t" + m_plan.ChoicePath[0].Print(io));
-            m_plan.ChoicePath[0].Make(io);
-            m_plan.ChoicePath.RemoveAt(0);
+            Debug.Assert(m_plan != null && m_plan.ChoicePath.Length > m_planProgress);
+            Trace.WriteLine("\t" + m_plan.ChoicePath[m_planProgress].Print(io));
+            m_plan.ChoicePath[m_planProgress++].Make(io);
 
-            if (m_plan.ChoicePath.Count == 0)
+            if (m_plan.ChoicePath.Length == m_planProgress)
             {
                 m_plan = null;
             }

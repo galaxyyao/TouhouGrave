@@ -11,7 +11,7 @@ namespace TouhouSpring
     public class Pile
     {
         // list start from bottom to top
-        private List<BaseCard> m_orderedCards;
+        private List<ICardModel> m_orderedCardModels;
 
         /// <summary>
         /// Get the number of cards in Pile
@@ -19,82 +19,82 @@ namespace TouhouSpring
         /// <returns>Number of cards in Pile</returns>
         public int Count
         {
-            get { return m_orderedCards.Count; }
+            get { return m_orderedCardModels.Count; }
         }
 
-        public bool Contains(BaseCard card)
+        public bool Contains(ICardModel cardModel)
         {
-            return m_orderedCards.Contains(card);
+            return m_orderedCardModels.Contains(cardModel);
         }
 
         /// <summary>
         /// Get the card at the bottom of the pile.
         /// </summary>
-        public BaseCard Bottom
+        public ICardModel Bottom
         {
             get
             {
-                if (m_orderedCards.Count == 0)
+                if (m_orderedCardModels.Count == 0)
                 {
                     throw new InvalidOperationException("The pile is empty.");
                 }
 
-                return m_orderedCards[0];
+                return m_orderedCardModels[0];
             }
         }
 
         /// <summary>
         /// Get the card at the top of the pile.
         /// </summary>
-        public BaseCard Top
+        public ICardModel Top
         {
             get
             {
-                if (m_orderedCards.Count == 0)
+                if (m_orderedCardModels.Count == 0)
                 {
                     throw new InvalidOperationException("The pile is empty.");
                 }
 
-                return m_orderedCards.Last();
+                return m_orderedCardModels.Last();
             }
         }
 
-        public Pile(List<BaseCard> cardList)
+        public Pile(List<ICardModel> modelList)
         {
-            if (cardList == null)
+            if (modelList == null)
             {
-                throw new ArgumentNullException("cardList");
+                throw new ArgumentNullException("modelList");
             }
 
-            m_orderedCards = cardList;
+            m_orderedCardModels = modelList;
         }
 
         /// <summary>
         /// Add one card to the bottom of the pile.
         /// </summary>
         /// <param name="card">The card to be added.</param>
-        public void AddCardToBottom(BaseCard card)
+        public void AddToBottom(ICardModel cardModel)
         {
-            m_orderedCards.Insert(0, card);
+            m_orderedCardModels.Insert(0, cardModel);
         }
 
         /// <summary>
         /// Add one card to the top of the pile.
         /// </summary>
         /// <param name="card">The card to be added.</param>
-        public void AddCardToTop(BaseCard card)
+        public void AddToTop(ICardModel cardModel)
         {
-            m_orderedCards.Add(card);
+            m_orderedCardModels.Add(cardModel);
         }
 
         /// <summary>
         /// Remove one card from the bottom of the pile.
         /// </summary>
         /// <returns>The card just removed.</returns>
-        public BaseCard RemoveCardFromBottom()
+        public ICardModel RemoveFromBottom()
         {
-            BaseCard bottom = Bottom;
-            m_orderedCards.RemoveAt(0);
+            var bottom = Bottom;
+            m_orderedCardModels.RemoveAt(0);
             return bottom;
         }
 
@@ -102,10 +102,10 @@ namespace TouhouSpring
         /// Remove one card from the top of the pile.
         /// </summary>
         /// <returns>The card just removed.</returns>
-        public BaseCard RemoveCardFromTop()
+        public ICardModel RemoveFromTop()
         {
-            BaseCard top = Top;
-            m_orderedCards.RemoveAt(m_orderedCards.Count - 1);
+            var top = Top;
+            m_orderedCardModels.RemoveAt(m_orderedCardModels.Count - 1);
             return top;
         }
 
@@ -114,26 +114,16 @@ namespace TouhouSpring
         /// </summary>
         public void Shuffle(Random random)
         {
-            for (int i = 0; i < m_orderedCards.Count; ++i)
+            for (int i = 0; i < m_orderedCardModels.Count; ++i)
             {
-                int swapIndex = random.Next(i, m_orderedCards.Count);
+                int swapIndex = random.Next(i, m_orderedCardModels.Count);
                 if (swapIndex != i)
                 {
-                    BaseCard temp = m_orderedCards[i];
-                    m_orderedCards[i] = m_orderedCards[swapIndex];
-                    m_orderedCards[swapIndex] = temp;
+                    var temp = m_orderedCardModels[i];
+                    m_orderedCardModels[i] = m_orderedCardModels[swapIndex];
+                    m_orderedCardModels[swapIndex] = temp;
                 }
             }
-        }
-
-        /// <summary>
-        /// Query cards from the pile meeting the given predication.
-        /// </summary>
-        /// <param name="p">The predication.</param>
-        /// <returns>A collection of the queried cards.</returns>
-        public BaseCard[] QueryCards(Predicate<BaseCard> predicate)
-        {
-            return (from card in m_orderedCards where predicate(card) select card).ToArray();
         }
     }
 }

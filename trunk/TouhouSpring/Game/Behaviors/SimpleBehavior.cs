@@ -6,7 +6,7 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public class SimpleBehavior<T> : BaseBehavior<SimpleBehavior<T>.ModelType>
-        where T : IBehavior, new()
+        where T : class, IBehavior, new()
     {
         public class ModelType : BehaviorModel<T>
         {

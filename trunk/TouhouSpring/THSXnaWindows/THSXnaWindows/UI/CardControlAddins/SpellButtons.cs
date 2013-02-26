@@ -26,7 +26,7 @@ namespace TouhouSpring.UI.CardControlAddins
             // TODO: spell button shall be stylized from cardcontrol's style
             const int IntervalV = 10;
 
-            m_buttonFaceTexture = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/Button");
+            m_buttonFaceTexture = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$Button");
             var buttonFace = new Graphics.TexturedQuad(m_buttonFaceTexture);
             var font = new Graphics.TextRenderer.FontDescriptor("Segoe UI", 16);
 

@@ -7,12 +7,13 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_ManaGainUpWhenAttackedByWarrior
         : BaseBehavior<Passive_ManaGainUpWhenAttackedByWarrior.ModelType>,
-        IEpilogTrigger<Commands.DealDamageToPlayer>,
-        IPrologTrigger<Commands.UpdateMana>
+        Commands.ICause,
+        IEpilogTrigger<Commands.SubtractPlayerLife>,
+        IEpilogTrigger<Commands.EndPhase>
     {
         private bool isAttackedByWarriorLastRound = false;
 
-        public void RunEpilog(Commands.DealDamageToPlayer command)
+        public void RunEpilog(Commands.SubtractPlayerLife command)
         {
             if (command.Player == Host.Owner
                 && command.Cause is Warrior
@@ -22,13 +23,13 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunProlog(Commands.UpdateMana command)
+        public void RunEpilog(Commands.EndPhase command)
         {
-            if (command.Cause is Game && Game.CurrentPhase == "PhaseB"
-                && command.Player == Host.Owner
+            if (command.PreviousPhase == "Upkeep"
+                && Game.ActingPlayer == Host.Owner
                 && isAttackedByWarriorLastRound)
             {
-                command.PatchDeltaAmount(command.DeltaAmount + 1);
+                Game.IssueCommands(new Commands.AddPlayerMana(Host.Owner, 1, this));
                 isAttackedByWarriorLastRound = false;
             }
         }

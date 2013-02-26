@@ -24,10 +24,10 @@ namespace TouhouSpring
                 var spell = (command as Commands.CastSpell).Spell;
                 new Interactions.NotifySpellEvent(Game, "OnSpellCasted", spell as Behaviors.ICastableSpell).Run();
             }
-            else if (command is Commands.DealDamageToPlayer)
+            else if (command is Commands.SubtractPlayerLife)
             {
-                var cmd = command as Commands.DealDamageToPlayer;
-                new Interactions.NotifyPlayerEvent(Game, "OnPlayerDamaged", cmd.Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.DamageToDeal)).Run();
+                var cmd = command as Commands.SubtractPlayerLife;
+                new Interactions.NotifyPlayerEvent(Game, "OnPlayerLifeSubtracted", cmd.Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.FinalAmount)).Run();
             }
             else if (command is Commands.DrawCard)
             {

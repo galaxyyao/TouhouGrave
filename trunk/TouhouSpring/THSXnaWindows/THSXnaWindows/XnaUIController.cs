@@ -67,8 +67,6 @@ namespace TouhouSpring
         {
             switch (interactionObj.Notification)
             {
-                case "OnPlayerDamaged":
-                    break;
                 case "OnTurnEnded":
                     if (m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnTurnEnded(interactionObj))
                     {
@@ -128,6 +126,13 @@ namespace TouhouSpring
         private bool OnMessageBox(Interactions.MessageBox interactionObj)
         {
             m_agents[Game.Players.IndexOf(interactionObj.Player)].OnMessageBox(interactionObj);
+            return true;
+        }
+
+        [Interactions.MessageHandler(typeof(Interactions.SelectNumber))]
+        private bool OnSelectNumber(Interactions.SelectNumber interactionObj)
+        {
+            m_agents[Game.Players.IndexOf(interactionObj.Player)].OnSelectNumber(interactionObj);
             return true;
         }
     }

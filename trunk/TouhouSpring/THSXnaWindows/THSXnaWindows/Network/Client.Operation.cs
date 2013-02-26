@@ -93,8 +93,6 @@ namespace TouhouSpring.Network
                     break;
                 case "disconnect":
                     var game = GameApp.Service<Services.GameManager>().Game;
-                    if (game != null)
-                        game.Abort();
                     break;
                 case "startgame":
                     {

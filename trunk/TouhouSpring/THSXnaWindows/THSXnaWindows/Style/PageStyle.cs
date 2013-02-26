@@ -108,7 +108,7 @@ namespace TouhouSpring.Style
                     break;
                 case "Game.Player0.AvatarBorder":
                     replacement = game.ActingPlayer == game.Players[0]
-                                  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
+                                  ? "atlas:Textures/UI/InGame/Atlas0$AvatarBorderActive" : "atlas:Textures/UI/InGame/Atlas0$AvatarBorderInactive";
                     break;
                 case "Game.Player0.Name":
                     replacement = game.Players[0].Name;
@@ -121,7 +121,7 @@ namespace TouhouSpring.Style
                     break;
                 case "Game.Player1.AvatarBorder":
                     replacement = game.ActingPlayer == game.Players[1]
-                                  ? "Textures/AvatarBorderActive" : "Textures/AvatarBorderInactive";
+                                  ? "atlas:Textures/UI/InGame/Atlas0$AvatarBorderActive" : "atlas:Textures/UI/InGame/Atlas0$AvatarBorderInactive";
                     break;
                 case "Game.Player1.Name":
                     replacement = game.Players[1].Name;

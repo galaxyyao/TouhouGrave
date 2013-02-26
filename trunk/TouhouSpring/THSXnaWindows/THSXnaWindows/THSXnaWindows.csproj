@@ -116,7 +116,7 @@
     <Compile Include="Services\IUIState.cs" />
     <Compile Include="Services\MenuUI.cs" />
     <Compile Include="Services\MenuUI.Page.cs" />
-    <Compile Include="Services\ModalDialog.cs" />
+    <Compile Include="Services\PopupDialog.cs" />
     <Compile Include="Services\ResourceManager.cs" />
     <Compile Include="Services\ResourceManager.IDisposableManager.cs" />
     <Compile Include="Graphics\Scene.cs" />
@@ -130,8 +130,14 @@
     <Compile Include="Services\UIStates\PlayerTransition.cs" />
     <Compile Include="Services\UIStates\SelectCards.cs" />
     <Compile Include="Services\UIStates\TacticalPhase.cs" />
+    <Compile Include="Simulation\BenchmarkSandbox.cs" />
+    <Compile Include="Simulation\IContext.cs" />
+    <Compile Include="Simulation\ISandbox.cs" />
+    <Compile Include="Simulation\ParallelSandbox.cs" />
+    <Compile Include="Simulation\ParallelSandbox.Task.cs" />
+    <Compile Include="Simulation\StpSandbox.cs" />
+    <Compile Include="Simulation\TplSandbox.cs" />
     <Compile Include="Simulation\Choice.cs" />
-    <Compile Include="Simulation\Context.cs" />
     <Compile Include="Simulation\BaseSimulator.cs" />
     <Compile Include="Simulation\MainPhaseSimulator.cs" />
     <Compile Include="Style\BaseStyleContainer.cs" />
@@ -180,7 +186,10 @@
     <Compile Include="UI\ComposedImage.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\MenuItem.cs" />
+    <Compile Include="UI\ModalDialogs\CommonButtons.cs" />
+    <Compile Include="UI\ModalDialogs\MessageBox.cs" />
     <Compile Include="UI\ModalDialog.cs" />
+    <Compile Include="UI\ModalDialogs\NumberSelector.cs" />
     <Compile Include="UI\MouseEventArgs.cs" />
     <Compile Include="UI\MouseEventRelay.cs" />
     <Compile Include="UI\MouseState.cs" />
@@ -221,6 +230,10 @@
     <ProjectReference Include="..\..\..\Third-parties\Lidgren.Network\Lidgren.Network.csproj">
       <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
       <Name>Lidgren.Network %28Third Parties\Lidgren.Network\Lidgren.Network%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Third-parties\SmartThreadPool\SmartThreadPool.csproj">
+      <Project>{74D4C33F-7CC8-4B2A-A7DF-D8B6E63B6EBD}</Project>
+      <Name>SmartThreadPool %28Third Parties\SmartThreadPool\SmartThreadPool%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cards\Cards.csproj">
       <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>

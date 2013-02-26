@@ -24,7 +24,7 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public void RunTurn()
+        public bool RunTurn()
         {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
                 || CurrentPhase != "")
@@ -40,7 +40,7 @@ namespace TouhouSpring
             {
                 IssueCommands(new Commands.DrawCard(ActingPlayer));
             }
-            IssueCommands(new Commands.UpdateMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, this));
+            IssueCommands(new Commands.AddPlayerMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, true, this));
             ActingPlayer.CardsOnBattlefield
                 .Where(card => card.Behaviors.Has<Behaviors.Warrior>())
                 .ForEach(card => IssueCommands(
@@ -51,10 +51,15 @@ namespace TouhouSpring
             DidRedeem = false;
             IssueCommandsAndFlush(new Commands.StartPhase("Main"));
 
-            RunTurnFromMainPhase();
+            return RunTurnFromMainPhase();
         }
 
-        public void RunTurnFromMainPhase()
+        public bool RunTurnFromMainPhase()
+        {
+            return RunTurnFromMainPhase(null);
+        }
+
+        public bool RunTurnFromMainPhase(Interactions.TacticalPhase.CompiledResponse compiledMainPhaseResponse)
         {
             if (m_gameFlowThread != null && System.Threading.Thread.CurrentThread != m_gameFlowThread
                 || CurrentPhase != "Main")
@@ -64,7 +69,10 @@ namespace TouhouSpring
 
             while (true)
             {
-                var result = new Interactions.TacticalPhase(ActingPlayer).Run();
+                var result = compiledMainPhaseResponse != null
+                             ? compiledMainPhaseResponse.Restore(ActingPlayer)
+                             : new Interactions.TacticalPhase(ActingPlayer).Run();
+                compiledMainPhaseResponse = null;
                 if (result.ActionType == Interactions.TacticalPhase.Action.PlayCard)
                 {
                     var cardToPlay = (BaseCard)result.Data;
@@ -75,6 +83,10 @@ namespace TouhouSpring
                 {
                     var cardToActivate = (BaseCard)result.Data;
                     Debug.Assert(cardToActivate.Owner == ActingPlayer);
+                    foreach (var card in ActingPlayer.ActivatedAssits)
+                    {
+                        IssueCommands(new Commands.DeactivateAssist(card));
+                    }
                     IssueCommandsAndFlush(new Commands.ActivateAssist(cardToActivate));
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.CastSpell)
@@ -88,7 +100,7 @@ namespace TouhouSpring
                     var cardToSacrifice = (BaseCard)result.Data;
                     IssueCommandsAndFlush(
                         new Commands.Sacrifice(cardToSacrifice),
-                        new Commands.UpdateMana(ActingPlayer, 1, this));
+                        new Commands.AddPlayerMana(ActingPlayer, 1, true, this));
                     DidSacrifice = true;
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Redeem)
@@ -113,7 +125,7 @@ namespace TouhouSpring
                     var pair = (object[])result.Data;
                     var attackerWarrior = (pair[0] as BaseCard).Behaviors.Get<Behaviors.Warrior>();
                     IssueCommandsAndFlush(
-                        new Commands.DealDamageToPlayer(
+                        new Commands.SubtractPlayerLife(
                             pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
                         new Commands.SendBehaviorMessage(
                             attackerWarrior, "GoCoolingDown", null)
@@ -122,6 +134,10 @@ namespace TouhouSpring
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Pass)
                 {
                     break;
+                }
+                else if (result.ActionType == Interactions.TacticalPhase.Action.Abort)
+                {
+                    return false;
                 }
                 else
                 {
@@ -134,6 +150,8 @@ namespace TouhouSpring
                 new Commands.StartPhase("Cleanup"),
                 new Commands.EndPhase(),
                 new Commands.EndTurn(ActingPlayer));
+
+            return true;
         }
 
         private void GameFlowMain()

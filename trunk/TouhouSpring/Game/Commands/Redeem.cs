@@ -5,12 +5,17 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class Redeem : BaseCommand
+    public class Redeem : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serialization-friendly ID
         public BaseCard Target
         {
             get; private set;
+        }
+
+        public Player Initiator
+        {
+            get { return Target.Owner; }
         }
 
         public Redeem(BaseCard target)

@@ -62,8 +62,8 @@ namespace TouhouSpring
                         Console.WriteLine(">> ---Player {0}'s {1}---", interactionObj.Player.Name, interactionObj.Message);
                     }
                     break;
-                case "OnPlayerDamaged":
-                    Console.WriteLine(">> Player {0} suffers damage {1}.", interactionObj.Player.Name, interactionObj.Message);
+                case "OnPlayerLifeSubtracted":
+                    Console.WriteLine(">> Player {0} suffers {1}.", interactionObj.Player.Name, interactionObj.Message);
                     break;
                 default:
                     break;

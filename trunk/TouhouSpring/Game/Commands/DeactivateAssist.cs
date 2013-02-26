@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace TouhouSpring.Commands
+{
+    public class DeactivateAssist : BaseCommand
+    {
+        // TODO: change to serialization-friendly ID
+        public BaseCard CardToDeactivate
+        {
+            get; private set;
+        }
+
+        public DeactivateAssist(BaseCard cardToDeactivate)
+        {
+            if (cardToDeactivate == null)
+            {
+                throw new ArgumentNullException("cardToDeactivate");
+            }
+
+            CardToDeactivate = cardToDeactivate;
+        }
+
+        internal override void ValidateOnIssue()
+        {
+            Validate(CardToDeactivate);
+            if (!CardToDeactivate.Owner.Assists.Contains(CardToDeactivate))
+            {
+                FailValidation("Not a valid assist card.");
+            }
+            else if (!CardToDeactivate.Owner.ActivatedAssits.Contains(CardToDeactivate))
+            {
+                FailValidation("Card is not activated.");
+            }
+        }
+
+        internal override void ValidateOnRun()
+        {
+        }
+
+        internal override void RunMain()
+        {
+            CardToDeactivate.Owner.m_activatedAssists.Remove(CardToDeactivate);
+            Game.UnsubscribeCardFromCommands(CardToDeactivate);
+        }
+    }
+}

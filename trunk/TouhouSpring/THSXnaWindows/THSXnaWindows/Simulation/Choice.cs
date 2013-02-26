@@ -12,7 +12,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-#if TRACE
+#if DEBUG
         public string DebugName;
 #endif
 
@@ -25,6 +25,17 @@ namespace TouhouSpring.Simulation
         }
     }
 
+    class KillBranchChoice : Choice
+    {
+        public KillBranchChoice() : base(10000)
+        { }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            (io as Interactions.TacticalPhase).RespondPass();
+        }
+    }
+
     class SacrificeChoice : Choice
     {
         public int CardIndex
@@ -32,9 +43,15 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public SacrificeChoice(int cardIndex) : base(2)
+        public ICardModel CardModel
+        {
+            get; private set;
+        }
+
+        public SacrificeChoice(int cardIndex, ICardModel cardModel) : base(1)
         {
             CardIndex = cardIndex;
+            CardModel = cardModel;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -56,9 +73,21 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public PlayCardChoice(int cardIndex) : base(3)
+        public int CardGuid
+        {
+            get; private set;
+        }
+
+        public bool IsWarrior
+        {
+            get; private set;
+        }
+
+        public PlayCardChoice(int cardIndex, int cardGuid, bool isWarrior) : base(4)
         {
             CardIndex = cardIndex;
+            CardGuid = cardGuid;
+            IsWarrior = isWarrior;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -80,9 +109,15 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public RedeemChoice(int cardIndex) : base(1)
+        public int CardGuid
+        {
+            get; private set;
+        }
+
+        public RedeemChoice(int cardIndex, int cardGuid) : base(2)
         {
             CardIndex = cardIndex;
+            CardGuid = cardGuid;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -104,7 +139,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public ActivateAssistChoice(int cardIndex) : base(3)
+        public ActivateAssistChoice(int cardIndex) : base(4)
         {
             CardIndex = cardIndex;
         }
@@ -128,7 +163,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public CastSpellChoice(int spellIndex) : base(3)
+        public CastSpellChoice(int spellIndex) : base(4)
         {
             SpellIndex = spellIndex;
         }
@@ -157,10 +192,16 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackCardChoice(int attackerIndex, int defenderIndex) : base(4)
+        public Int32 DefenderGuid
+        {
+            get; private set;
+        }
+
+        public AttackCardChoice(int attackerIndex, int defenderIndex, int defenderGuid) : base(5)
         {
             AttackerIndex = attackerIndex;
             DefenderIndex = defenderIndex;
+            DefenderGuid = defenderGuid;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -189,7 +230,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public AttackPlayerChoice(int attackerIndex, int playerIndex) : base(4)
+        public AttackPlayerChoice(int attackerIndex, int playerIndex) : base(5)
         {
             AttackerIndex = attackerIndex;
             PlayerIndex = playerIndex;
@@ -211,7 +252,7 @@ namespace TouhouSpring.Simulation
 
     class PassChoice : Choice
     {
-        public PassChoice() : base(5) { }
+        public PassChoice() : base(6) { }
 
         public override void Make(Interactions.BaseInteraction io)
         {
@@ -245,7 +286,31 @@ namespace TouhouSpring.Simulation
 
         public override string Print(Interactions.BaseInteraction io)
         {
-            return "Select: " + (io as Interactions.SelectCards).Candidates[CardIndex].Model.Name;
+            return "SelectCard: " + (io as Interactions.SelectCards).Candidates[CardIndex].Model.Name;
+        }
+    }
+
+    class SelectNumberChoice : Choice
+    {
+        public int Selection
+        {
+            get; private set;
+        }
+
+        public SelectNumberChoice(int selection) : base(-1)
+        {
+            Selection = selection;
+        }
+
+        public override void Make(Interactions.BaseInteraction io)
+        {
+            var selectNumber = io as Interactions.SelectNumber;
+            selectNumber.Respond(Selection);
+        }
+
+        public override string Print(Interactions.BaseInteraction io)
+        {
+            return "SelectNumber: " + Selection.ToString();
         }
     }
 }

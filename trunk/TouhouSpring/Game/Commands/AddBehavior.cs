@@ -58,6 +58,7 @@ namespace TouhouSpring.Commands
         internal override void RunMain()
         {
             Target.Behaviors.Add(Behavior);
+            Game.SubscribeBehaviorToCommands(Target, Behavior);
         }
     }
 }

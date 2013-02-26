@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private Warrior.ValueModifier m_attackMod;
+        private ValueModifier m_attackMod;
 
         public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
@@ -38,7 +38,7 @@ namespace TouhouSpring.Behaviors
 
         protected override void OnInitialize()
         {
-            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 3);
+            m_attackMod = new ValueModifier(ValueModifierOperator.Add, 3);
         }
 
         protected override void OnTransferFrom(IBehavior original)

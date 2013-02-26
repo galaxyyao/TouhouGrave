@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.NeedMana(Host.Owner, Model.Cost);
+                Game.NeedMana(Model.Cost);
             }
 
             return CommandResult.Pass;
@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToActivate == Host)
             {
-                Game.NeedMana(Host.Owner, Model.Cost);
+                Game.NeedMana(Model.Cost);
             }
 
             return CommandResult.Pass;

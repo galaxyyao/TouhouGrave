@@ -16,7 +16,7 @@ namespace TouhouSpring.Services.UIStates
         {
             var onTurnEnded = io as Interactions.NotifyPlayerEvent;
             onTurnEnded.Respond();
-            GameApp.Service<ModalDialog>().Show("", 0, 0, (btn) => { });
+            GameApp.Service<PopupDialog>().PushEmpty(1);
         }
 
         public void OnLeave()
@@ -41,8 +41,8 @@ namespace TouhouSpring.Services.UIStates
         {
             var onTurnStarted = io as Interactions.NotifyPlayerEvent;
 
-            GameApp.Service<ModalDialog>().Hide();
-            GameApp.Service<ModalDialog>().Show(onTurnStarted.Player.Name + "'s turn", ModalDialog.Button.OK, 0, (btn) =>
+            GameApp.Service<PopupDialog>().PopTopDialog();
+            GameApp.Service<PopupDialog>().PushMessageBox(onTurnStarted.Player.Name + "'s turn", UI.ModalDialogs.MessageBox.ButtonFlags.OK, 1, (btn) =>
             {
                 if (onTurnStarted != null && onTurnStarted.Notification == "OnTurnStarted")
                 {

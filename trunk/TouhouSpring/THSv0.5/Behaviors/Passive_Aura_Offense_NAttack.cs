@@ -9,9 +9,10 @@ namespace TouhouSpring.Behaviors
         BaseBehavior<Passive_Aura_Offense_NAttack.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.ActivateAssist>,
+        IEpilogTrigger<Commands.DeactivateAssist>,
         IEpilogTrigger<Commands.PlayCard>
     {
-        private Warrior.ValueModifier m_attackMod;
+        private ValueModifier m_attackMod;
 
         public void RunEpilog(Commands.ActivateAssist command)
         {
@@ -27,7 +28,11 @@ namespace TouhouSpring.Behaviors
                         new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
                 }
             }
-            if (command.PreviouslyActivatedCard == Host)
+        }
+
+        public void RunEpilog(Commands.DeactivateAssist command)
+        {
+            if (command.CardToDeactivate == Host)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
@@ -43,7 +48,7 @@ namespace TouhouSpring.Behaviors
 
         public void RunEpilog(Commands.PlayCard command)
         {
-            if (Host.Owner.ActivatedAssist == Host
+            if (Host.IsActivatedAssist
                 && Host.Owner == command.CardToPlay.Owner)
             {
                 var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
@@ -57,7 +62,7 @@ namespace TouhouSpring.Behaviors
 
         protected override void OnInitialize()
         {
-            m_attackMod = new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, 1);
+            m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
         }
 
         protected override void OnTransferFrom(IBehavior original)

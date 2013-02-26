@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-    public class TacticalPhase : BaseInteraction
+    public partial class TacticalPhase : BaseInteraction
     {
         public enum Action
         {
@@ -16,7 +16,8 @@ namespace TouhouSpring.Interactions
             Redeem,         // return one card from sacrifice to hand
             AttackCard,     // card attacks a opponent card
             AttackPlayer,   // card attacks the opponent player
-            Pass
+            Pass,
+            Abort
         }
 
         public struct Result
@@ -65,6 +66,11 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
+        public bool CanPass
+        {
+            get; private set;
+        }
+
         internal TacticalPhase(Player player)
             : base(player.Game)
         {
@@ -78,22 +84,21 @@ namespace TouhouSpring.Interactions
             }
 
             Player = player;
-            PlayCardCandidates = EnumeratePlayCardCandidates()
+            PlayCardCandidates = GetPlayCardBaseSet(player)
                                     .Where(card => player.Game.IsCardPlayable(card)).ToArray().ToIndexable();
-            ActivateAssistCandidates = EnumerateActivateAssistCandidates()
+            ActivateAssistCandidates = GetActivateAssistBaseSet(player)
                                     .Where(card => player.Game.IsCardActivatable(card)).ToArray().ToIndexable();
-            CastSpellCandidates = EnumerateCastSpellCandidates().SelectMany(card => card.Spells)
+            CastSpellCandidates = GetCastSpellBaseSet(player).SelectMany(card => card.Spells)
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
             SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
             RedeemCandidates = !Game.DidRedeem
                                ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
                                : Indexable.Empty<BaseCard>();
-            AttackerCandidates = EnumerateAttackerCandidates()
+            AttackerCandidates = GetAttackerBaseSet(player)
                                     .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)
             {
-                var defenders = Player.Game.Players.Where(p => p != Player).SelectMany(p => p.CardsOnBattlefield)
-                                .Where(card => card.Behaviors.Has<Behaviors.Warrior>()).ToArray();
+                var defenders = GetDefenderBaseSet(player).ToArray();
                 var protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
                 DefenderCandidates = (protectors.Length != 0 ? protectors : defenders).ToIndexable();
             }
@@ -101,6 +106,8 @@ namespace TouhouSpring.Interactions
             {
                 DefenderCandidates = Indexable.Empty<BaseCard>();
             }
+
+            CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>());
         }
 
         internal Result Run()
@@ -112,7 +119,12 @@ namespace TouhouSpring.Interactions
 
         public void RespondPass()
         {
-            RespondBack(new Result { ActionType = Action.Pass });
+            var result = new Result
+            {
+                ActionType = Action.Pass
+            };
+            Validate(result);
+            RespondBack(result);
         }
 
         public void RespondPlay(BaseCard selectedCard)
@@ -251,69 +263,78 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
+        public void RespondAbort()
+        {
+            RespondBack(new Result { ActionType = Action.Abort });
+        }
+
         protected void Validate(Result result)
         {
             switch (result.ActionType)
             {
                 case Action.Pass:
-                    if (result.Data != null)
+                    if (!CanPass)
                     {
-                        throw new InvalidDataException("Action Pass shall have null data.");
+                        throw new InteractionValidationFailException("Can't pass.");
+                    }
+                    else if (result.Data != null)
+                    {
+                        throw new InteractionValidationFailException("Action Pass shall have null data.");
                     }
                     break;
 
                 case Action.PlayCard:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action PlayCard shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action PlayCard shall have an object of BaseCard as its data.");
                     }
                     else if (!PlayCardCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected card can't be played.");
+                        throw new InteractionValidationFailException("Selected card can't be played.");
                     }
                     break;
 
                 case Action.ActivateAssist:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action ActivateAssist shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action ActivateAssist shall have an object of BaseCard as its data.");
                     }
                     else if (!ActivateAssistCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected assist card can't be activated.");
+                        throw new InteractionValidationFailException("Selected assist card can't be activated.");
                     }
                     break;
 
                 case Action.CastSpell:
                     if (!(result.Data is Behaviors.ICastableSpell))
                     {
-                        throw new InvalidDataException("Action CastSpell shall have an object of ICastableSpell as its data.");
+                        throw new InteractionValidationFailException("Action CastSpell shall have an object of ICastableSpell as its data.");
                     }
                     if (!CastSpellCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected spell can't be casted.");
+                        throw new InteractionValidationFailException("Selected spell can't be casted.");
                     }
                     break;
 
                 case Action.Sacrifice:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action Sacrifice shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action Sacrifice shall have an object of BaseCard as its data.");
                     }
                     else if (!SacrificeCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected card can't be sacrificed.");
+                        throw new InteractionValidationFailException("Selected card can't be sacrificed.");
                     }
                     break;
 
                 case Action.Redeem:
                     if (!(result.Data is BaseCard))
                     {
-                        throw new InvalidDataException("Action Redeem shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action Redeem shall have an object of BaseCard as its data.");
                     }
                     else if (!RedeemCandidates.Contains(result.Data))
                     {
-                        throw new InvalidDataException("Selected card can't be redeemed.");
+                        throw new InteractionValidationFailException("Selected card can't be redeemed.");
                     }
                     break;
 
@@ -322,15 +343,15 @@ namespace TouhouSpring.Interactions
                         var pair = result.Data as BaseCard[];
                         if (pair == null || pair.Length != 2)
                         {
-                            throw new InvalidDataException("Action AttackCard shall have a pair of BaseCards as its data.");
+                            throw new InteractionValidationFailException("Action AttackCard shall have a pair of BaseCards as its data.");
                         }
                         else if (!AttackerCandidates.Contains(pair[0]))
                         {
-                            throw new InvalidDataException("Attacking card can't attack.");
+                            throw new InteractionValidationFailException("Attacking card can't attack.");
                         }
                         else if (!DefenderCandidates.Contains(pair[1]))
                         {
-                            throw new InvalidDataException("Defending card can't defend.");
+                            throw new InteractionValidationFailException("Defending card can't defend.");
                         }
                     }
                     break;
@@ -340,67 +361,87 @@ namespace TouhouSpring.Interactions
                         var pair = result.Data as object[];
                         if (pair == null || pair.Length != 2 || !(pair[0] is BaseCard) || !(pair[1] is Player))
                         {
-                            throw new InvalidDataException("Action AttackPlayer shall have a pair of BaseCard and Player as its data.");
+                            throw new InteractionValidationFailException("Action AttackPlayer shall have a pair of BaseCard and Player as its data.");
                         }
                         else if (!AttackerCandidates.Contains(pair[0]))
                         {
-                            throw new InvalidDataException("Attacking card can't attack.");
+                            throw new InteractionValidationFailException("Attacking card can't attack.");
                         }
                         else if (pair[1] == Player)
                         {
-                            throw new InvalidDataException("Player can't be attacked.");
+                            throw new InteractionValidationFailException("Player can't be attacked.");
                         }
                     }
                     break;
 
+                case Action.Abort:
+                    break;
+
                 default:
-                    throw new InvalidDataException("Invalid action performed.");
+                    throw new InteractionValidationFailException("Invalid action performed.");
             }
         }
 
-        private IEnumerable<BaseCard> EnumeratePlayCardCandidates()
+        private static IEnumerable<BaseCard> GetPlayCardBaseSet(Player player)
         {
-            if (!Player.CardsOnBattlefield.Contains(Player.Hero) && Player.Hero != null)
+            if (!player.CardsOnBattlefield.Contains(player.Hero) && player.Hero != null)
             {
-                yield return Player.Hero;
+                yield return player.Hero;
             }
-            foreach (var card in Player.CardsOnHand)
+            foreach (var card in player.CardsOnHand)
             {
                 yield return card;
             }
         }
 
-        private IEnumerable<BaseCard> EnumerateActivateAssistCandidates()
+        private static IEnumerable<BaseCard> GetActivateAssistBaseSet(Player player)
         {
-            foreach (var card in Player.Assists)
+            foreach (var card in player.Assists)
             {
-                if (card != Player.ActivatedAssist)
+                if (!player.ActivatedAssits.Contains(card))
                 {
                     yield return card;
                 }
             }
         }
 
-        private IEnumerable<BaseCard> EnumerateCastSpellCandidates()
+        private static IEnumerable<BaseCard> GetCastSpellBaseSet(Player player)
         {
-            if (Player.ActivatedAssist != null)
+            foreach (var card in player.ActivatedAssits)
             {
-                yield return Player.ActivatedAssist;
+                yield return card;
             }
-            foreach (var card in Player.CardsOnBattlefield)
+            foreach (var card in player.CardsOnBattlefield)
             {
                 yield return card;
             }
         }
 
-        private IEnumerable<BaseCard> EnumerateAttackerCandidates()
+        private static IEnumerable<BaseCard> GetAttackerBaseSet(Player player)
         {
-            foreach (var card in Player.CardsOnBattlefield)
+            foreach (var card in player.CardsOnBattlefield)
             {
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                 if (warrior != null && warrior.State == Behaviors.WarriorState.StandingBy)
                 {
                     yield return card;
+                }
+            }
+        }
+
+        private static IEnumerable<BaseCard> GetDefenderBaseSet(Player player)
+        {
+            foreach (var p in player.Game.Players)
+            {
+                if (p != player)
+                {
+                    foreach (var card in p.CardsOnBattlefield)
+                    {
+                        if (card.Behaviors.Has<Behaviors.Warrior>())
+                        {
+                            yield return card;
+                        }
+                    }
                 }
             }
         }

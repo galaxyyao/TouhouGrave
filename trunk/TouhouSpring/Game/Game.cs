@@ -12,6 +12,7 @@ namespace TouhouSpring
     /// </summary>
     public partial class Game
     {
+        private Int32 m_nextCardGuid;
         private Thread m_gameFlowThread;
 
         /// <summary>
@@ -100,8 +101,6 @@ namespace TouhouSpring
             }
 
             m_players = new Player[numPlayers];
-            m_manaNeeded = new int[numPlayers];
-            m_remainingManaNeeded = new bool[numPlayers];
 
             for (int i = 0; i < numPlayers; ++i)
             {
@@ -127,7 +126,7 @@ namespace TouhouSpring
             CurrentPhase = "";
 
             Players = m_players.ToIndexable();
-            Random = (startUpParams[0].m_seed == -1) ? new System.Random() : new System.Random(startUpParams[0].m_seed);
+            Random = (startUpParams[0].m_seed == -1) ? new Random() : new Random(startUpParams[0].m_seed);
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
 
@@ -139,9 +138,24 @@ namespace TouhouSpring
             m_gameFlowThread.Start();
         }
 
-        public void Abort()
+        public void OverrideController(BaseController controller)
         {
-            m_gameFlowThread.Abort();
+            if (controller == null)
+            {
+                throw new ArgumentNullException("controller");
+            }
+
+            if (Controller != null)
+            {
+                Controller.Game = null;
+            }
+            Controller = controller;
+            Controller.Game = this;
+        }
+
+        internal Int32 GenerateNextCardGuid()
+        {
+            return Interlocked.Increment(ref m_nextCardGuid);
         }
     }
 }

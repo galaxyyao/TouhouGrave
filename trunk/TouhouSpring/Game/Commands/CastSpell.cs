@@ -6,12 +6,17 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class CastSpell : BaseCommand
+    public class CastSpell : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serialization-friendly ID
         public Behaviors.IBehavior Spell
         {
             get; private set;
+        }
+
+        public Player Initiator
+        {
+            get { return Spell.Host.Owner; }
         }
 
         public CastSpell(Behaviors.IBehavior spell)

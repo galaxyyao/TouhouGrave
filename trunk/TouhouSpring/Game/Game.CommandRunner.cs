@@ -14,25 +14,48 @@ namespace TouhouSpring
             CommandResult RunPrerequisite(Commands.BaseCommand command);
         }
 
+        private List<Behaviors.IBehavior> m_commonTargets = new List<Behaviors.IBehavior>();
+
         private class CommandRunner<TCommand> : ICommandRunner
             where TCommand : Commands.BaseCommand
         {
+            [ThreadStatic]
+            private static List<Behaviors.IBehavior> s_tempBhvContainer;
+
             public void Run(Commands.BaseCommand genericCommand)
             {
                 var command = genericCommand as TCommand;
                 command.ValidateOnRun();
 
+                var targets = GenerateTargetList(command);
+
                 ////////////////////////////////////////////
 
-                command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-                foreach (var trigger in EnumerateCommandTargets(command).SelectMany(card =>
-                                           card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()
-                                           ).ToList())
+                if (command is Commands.IInitiativeCommand)
                 {
-                    var result = trigger.RunPrerequisite(command);
-                    if (result.Canceled)
+                    command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
+                    foreach (var trigger in targets)
                     {
-                        command.Game.Controller.OnCommandCanceled(command, result.Reason);
+                        var t = trigger as IPrerequisiteTrigger<TCommand>;
+                        if (t != null)
+                        {
+                            var result = t.RunPrerequisite(command);
+                            if (result.Canceled)
+                            {
+                                command.Game.Controller.OnCommandCanceled(command, result.Reason);
+                                command.Game.ClearConditions();
+                                return;
+                            }
+                        }
+                    }
+
+                    ////////////////////////////////////////////
+
+                    command.ExecutionPhase = Commands.CommandPhase.Condition;
+                    var conditionResult = command.Game.ResolveConditions(false);
+                    if (conditionResult.Canceled)
+                    {
+                        command.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
                         command.Game.ClearConditions();
                         return;
                     }
@@ -40,21 +63,16 @@ namespace TouhouSpring
 
                 ////////////////////////////////////////////
 
-                command.ExecutionPhase = Commands.CommandPhase.Condition;
-                var conditionResult = command.Game.ResolveConditions(false);
-                if (conditionResult.Canceled)
-                {
-                    command.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
-                    command.Game.ClearConditions();
-                    return;
-                }
-
-                ////////////////////////////////////////////
-
                 command.ExecutionPhase = Commands.CommandPhase.Prolog;
                 command.Game.Controller.OnCommandBegin(command);
-                EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IPrologTrigger<TCommand>>())
-                    .ToList().ForEach(trigger => trigger.RunProlog(command));
+                foreach (var trigger in targets)
+                {
+                    var t = trigger as IPrologTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunProlog(command);
+                    }
+                }
 
                 ////////////////////////////////////////////
 
@@ -64,8 +82,14 @@ namespace TouhouSpring
                 ////////////////////////////////////////////
 
                 command.ExecutionPhase = Commands.CommandPhase.Epilog;
-                EnumerateCommandTargets(command).SelectMany(card => card.Behaviors.OfType<IEpilogTrigger<TCommand>>())
-                    .ToList().ForEach(trigger => trigger.RunEpilog(command));
+                foreach (var trigger in targets)
+                {
+                    var t = trigger as IEpilogTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunEpilog(command);
+                    }
+                }
                 command.Game.Controller.OnCommandEnd(command);
 
                 command.Game.ClearConditions();
@@ -73,16 +97,21 @@ namespace TouhouSpring
 
             public CommandResult RunPrerequisite(Commands.BaseCommand genericCommand)
             {
+                Debug.Assert(genericCommand is Commands.IInitiativeCommand);
+
                 var command = genericCommand as TCommand;
                 command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-                foreach (var trigger in EnumerateCommandTargets(command)
-                    .SelectMany(card => card.Behaviors.OfType<IPrerequisiteTrigger<TCommand>>()).ToList())
+                foreach (var trigger in GenerateTargetList(command))
                 {
-                    var result = trigger.RunPrerequisite(command);
-                    if (result.Canceled)
+                    var t = trigger as IPrerequisiteTrigger<TCommand>;
+                    if (t != null)
                     {
-                        command.Game.ClearConditions();
-                        return result;
+                        var result = t.RunPrerequisite(command);
+                        if (result.Canceled)
+                        {
+                            command.Game.ClearConditions();
+                            return result;
+                        }
                     }
                 }
 
@@ -91,60 +120,81 @@ namespace TouhouSpring
                 return ret;
             }
 
-            private IEnumerable<BaseCard> EnumerateCommandTargets(Commands.BaseCommand command)
+            private List<Behaviors.IBehavior> GenerateTargetList(Commands.BaseCommand command)
             {
-                if (command is Commands.PlayCard && command.ExecutionPhase < Commands.CommandPhase.Epilog)
+                Behaviors.BehaviorList additionalTarget = null;
+
+                if (command is Commands.PlayCard)
                 {
-                    var cardToPlay = (command as Commands.PlayCard).CardToPlay;
-                    if (cardToPlay != null)
-                    {
-                        yield return cardToPlay;
-                    }
+                    additionalTarget = (command as Commands.PlayCard).CardToPlay.Behaviors;
                 }
-                else if (command is Commands.ActivateAssist && command.ExecutionPhase < Commands.CommandPhase.Epilog)
+                else if (command is Commands.ActivateAssist)
                 {
-                    var cardToActivate = (command as Commands.ActivateAssist).CardToActivate;
-                    if (cardToActivate != null)
-                    {
-                        yield return cardToActivate;
-                    }
-                }
-                else if (command is Commands.ActivateAssist && command.ExecutionPhase == Commands.CommandPhase.Epilog)
-                {
-                    var previouslyActivated = (command as Commands.ActivateAssist).PreviouslyActivatedCard;
-                    if (previouslyActivated != null)
-                    {
-                        yield return previouslyActivated;
-                    }
+                    additionalTarget = (command as Commands.ActivateAssist).CardToActivate.Behaviors;
                 }
                 else if (command is Commands.Redeem)
                 {
-                    var cardToRedeem = (command as Commands.Redeem).Target;
-                    if (cardToRedeem != null)
-                    {
-                        yield return cardToRedeem;
-                    }
+                    additionalTarget = (command as Commands.Redeem).Target.Behaviors;
                 }
-                else if (command is Commands.Kill && command.ExecutionPhase == Commands.CommandPhase.Epilog)
+
+                if (s_tempBhvContainer == null)
                 {
-                    var cardKilled = (command as Commands.Kill).Target;
-                    if (cardKilled != null)
+                    s_tempBhvContainer = new List<Behaviors.IBehavior>();
+                }
+
+                s_tempBhvContainer.Clear();
+                var newSize = command.Game.m_commonTargets.Count + (additionalTarget != null ? additionalTarget.Count : 0);
+                s_tempBhvContainer.Capacity = Math.Max(newSize, s_tempBhvContainer.Capacity);
+
+                for (int i = 0; i < command.Game.m_commonTargets.Count; ++i)
+                {
+                    s_tempBhvContainer.Add(command.Game.m_commonTargets[i]);
+                }
+
+                if (additionalTarget != null)
+                {
+                    for (int i = 0; i < additionalTarget.Count; ++i)
                     {
-                        yield return cardKilled;
+                        s_tempBhvContainer.Add(additionalTarget[i]);
                     }
                 }
 
-                foreach (var player in command.Game.Players)
+                return s_tempBhvContainer;
+            }
+        }
+
+        internal void SubscribeCardToCommands(BaseCard card)
+        {
+            m_commonTargets.AddRange(card.Behaviors);
+        }
+
+        internal void UnsubscribeCardFromCommands(BaseCard card)
+        {
+            m_commonTargets.RemoveRange(Math.Max(m_commonTargets.IndexOf(card.Behaviors.FirstOrDefault()), 0), card.Behaviors.Count);
+        }
+
+        internal void SubscribeBehaviorToCommands(BaseCard card, Behaviors.IBehavior behavior)
+        {
+            if (card.Owner.ActivatedAssits.Contains(card)
+                || card.Owner.m_battlefieldCards.Contains(card))
+            {
+                if (card.Behaviors.Count > 1)
                 {
-                    foreach (var card in player.CardsOnBattlefield)
-                    {
-                        yield return card;
-                    }
-                    if (player.ActivatedAssist != null)
-                    {
-                        yield return player.ActivatedAssist;
-                    }
+                    m_commonTargets.Insert(m_commonTargets.IndexOf(card.Behaviors[card.Behaviors.Count - 2]) + 1, behavior);
                 }
+                else
+                {
+                    m_commonTargets.Add(behavior);
+                }
+            }
+        }
+
+        internal void UnsubscribeBehaviorFromCommands(BaseCard card, Behaviors.IBehavior behavior)
+        {
+            if (card.Owner.ActivatedAssits.Contains(card)
+                || card.Owner.m_battlefieldCards.Contains(card))
+            {
+                m_commonTargets.Remove(behavior);
             }
         }
     }

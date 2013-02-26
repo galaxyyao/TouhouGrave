@@ -20,6 +20,8 @@
 /trunk/Third-parties/Lidgren.Network/obj/*
 /trunk/Third-parties/Mapper/bin/*
 /trunk/Third-parties/Mapper/obj/*
+/trunk/Third-parties/SmartThreadPool/bin/*
+/trunk/Third-parties/SmartThreadPool/obj/*
 /trunk/TouhouSpring.suo
 /trunk/TouhouSpring/CardEditor/bin/*
 /trunk/TouhouSpring/CardEditor/obj/*
