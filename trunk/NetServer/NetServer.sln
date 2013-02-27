@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "..\Third
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalBins", "ExternalBins", "{F75BAC3C-F727-413A-B5B8-6531C121A36A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{5D2150B3-83E1-4C1E-A553-E2569484563B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,16 @@ Global
 		{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}.Release|x86.ActiveCfg = Release|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5D2150B3-83E1-4C1E-A553-E2569484563B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

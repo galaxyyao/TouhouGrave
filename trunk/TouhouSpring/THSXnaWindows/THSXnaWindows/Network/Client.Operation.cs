@@ -9,6 +9,8 @@ namespace TouhouSpring.Network
 {
     public partial class Client
     {
+        private List<string> _messageQueue = new List<string>();
+
         public void Connect(string host, int port)
         {
             _client.Start();
@@ -21,14 +23,14 @@ namespace TouhouSpring.Network
             _client.Shutdown("bye");
         }
 
-        public void SendMessage(string text)
+        private void SendMessage(string text)
         {
             NetOutgoingMessage om = _client.CreateMessage(text);
             _client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
             _client.FlushSendQueue();
         }
 
-        public void GotMessage(object peer)
+        private void GotMessage(object peer)
         {
             NetIncomingMessage im;
             while ((im = _client.ReadMessage()) != null)
@@ -170,6 +172,26 @@ namespace TouhouSpring.Network
                     Debug.Print("Invalid argument");
                     break;
             }
+        }
+
+
+        public void EnqueueMessage(string message)
+        {
+            _messageQueue.Add(message);
+        }
+
+        public void DequeueMessage()
+        {
+            foreach (string message in _messageQueue)
+            {
+                SendMessage(message);
+            }
+            _messageQueue.Clear();
+        }
+
+        public void ClearQueue()
+        {
+            _messageQueue.Clear();
         }
     }
 }
