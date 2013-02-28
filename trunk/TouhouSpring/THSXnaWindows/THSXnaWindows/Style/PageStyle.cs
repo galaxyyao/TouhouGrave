@@ -51,7 +51,7 @@ namespace TouhouSpring.Style
                 }
                 else if (childElement.Name == "Layout")
                 {
-                    AddChildAndInitialize(new LayoutGizmo(this, childElement));
+                    AddChildAndInitialize(new LayoutGizmo<UI.TransformNode>(this, childElement));
                 }
                 else if (childElement.Name == "Menu")
                 {

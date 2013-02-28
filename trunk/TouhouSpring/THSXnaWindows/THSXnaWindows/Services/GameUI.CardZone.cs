@@ -219,12 +219,14 @@ namespace TouhouSpring.Services
             {
                 var card = cc.Card;
                 var locationAnim = cc.GetAddin<UI.CardControlAddins.LocationAnimation>();
+                var newDesignName = "Normal";
 
                 var pid = Game.Players.IndexOf(card.Owner);
 
                 if (cc == ZoomedInCard)
                 {
                     locationAnim.SetNextLocation(m_zoomedInZone, 0);
+                    newDesignName = "Full";
                 }
                 else if (card.Owner.CardsOnBattlefield.Contains(card))
                 {
@@ -236,10 +238,12 @@ namespace TouhouSpring.Services
                     {
                         locationAnim.SetNextLocation(m_playerZones[pid].Battlefield, card.Owner.CardsOnBattlefield.IndexOf(card));
                     }
+                    newDesignName = "NoResource";
                 }
                 else if (card.Owner.CardsSacrificed.Contains(card))
                 {
                     locationAnim.SetNextLocation(m_playerZones[pid].Sacrifice, card.Owner.CardsSacrificed.IndexOf(card));
+                    newDesignName = "NoResource";
                 }
                 else if (card.Owner.CardsOnHand.Contains(card) || card.Owner.Hero == card)
                 {
@@ -255,7 +259,10 @@ namespace TouhouSpring.Services
                 else if (card.Owner.Assists.Contains(card))
                 {
                     locationAnim.SetNextLocation(m_playerZones[pid].Assists, card.Owner.Assists.IndexOf(card));
+                    newDesignName = "NoResource";
                 }
+
+                cc.SetCardDesign(newDesignName);
             }
 
             foreach (var pz in m_playerZones)

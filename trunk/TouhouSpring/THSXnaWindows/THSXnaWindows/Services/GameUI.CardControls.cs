@@ -22,7 +22,7 @@ namespace TouhouSpring.Services
                 throw new ArgumentException("The card is already registered.", "card");
             }
 
-            var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("Large"), card);
+            var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("Normal"), card);
             ccStyle.Initialize();
 
             var cardControl = ccStyle.TypedTarget;
