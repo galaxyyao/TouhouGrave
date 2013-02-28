@@ -26,6 +26,7 @@ namespace TouhouSpring.Agents
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
+            _client.CurrentIo = io;
         }
 
         public override void OnMessageBox(Interactions.MessageBox io)

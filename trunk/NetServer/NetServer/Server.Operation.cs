@@ -58,9 +58,13 @@ namespace TouhouSpring.NetServerCore
                                     SendMessage(enteredRoomId, string.Format("{0} generateseed {1}", enteredRoomId, seed));
                                     foreach (var playerConn in _roomList[enteredRoomId].PlayerConns)
                                     {
+                                        //SendMessage(playerConn
+                                        //    , string.Format("{0} startgame {1}", enteredRoomId
+                                        //    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
                                         SendMessage(playerConn
                                             , string.Format("{0} startgame {1}", enteredRoomId
-                                            , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
+                                            , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier)));//Temporarily let playerindex be the same as enter room order
+
                                     }
                                 }
                                 #endregion
@@ -201,6 +205,20 @@ namespace TouhouSpring.NetServerCore
                         int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
                         SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
                             , string.Format("{0} redeem {1}", roomId, parts[2]));
+                    }
+                    break;
+                case "selectcards":
+                    {
+                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
+                        StringBuilder parameters = new StringBuilder();
+                        for (int i = 3; i < parts.Count; i++)
+                        {
+                            parameters.Append(parts[i]);
+                            parameters.Append(" ");
+                        }
+                        parameters.Remove(parameters.Length - 1, 1);
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
+                            , string.Format("{0} selectcards {1} {2}", roomId, -1, parameters.ToString()));
                     }
                     break;
                 default:

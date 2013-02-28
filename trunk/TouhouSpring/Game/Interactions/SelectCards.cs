@@ -65,6 +65,13 @@ namespace TouhouSpring.Interactions
         public virtual void Respond(IIndexable<BaseCard> selectedCards)
         {
             Validate(selectedCards);
+            Game.CurrentCommand.ResultParameters=new int[selectedCards.Count];
+            int i=0;
+            foreach (var selectedCard in selectedCards)
+            {
+                Game.CurrentCommand.ResultParameters[i] = Candidates.IndexOf(selectedCard);
+                i++;
+            }
             RespondBack(selectedCards);
         }
 

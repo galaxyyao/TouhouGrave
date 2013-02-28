@@ -9,6 +9,8 @@ namespace TouhouSpring.Network
 {
     public partial class Client
     {
+        private List<string> _messageQueue = new List<string>();
+
         public void Connect(string host, int port)
         {
             _client.Start();
@@ -21,14 +23,14 @@ namespace TouhouSpring.Network
             _client.Shutdown("bye");
         }
 
-        public void SendMessage(string text)
+        private void SendMessage(string text)
         {
             NetOutgoingMessage om = _client.CreateMessage(text);
             _client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
             _client.FlushSendQueue();
         }
 
-        public void GotMessage(object peer)
+        private void GotMessage(object peer)
         {
             NetIncomingMessage im;
             while ((im = _client.ReadMessage()) != null)
@@ -91,6 +93,9 @@ namespace TouhouSpring.Network
                         SendMessage(string.Format("{0} {1}", RoomId, "roomentered"));
                     }
                     break;
+                case "disconnect":
+                    var game = GameApp.Service<Services.GameManager>().Game;
+                    break;
                 case "startgame":
                     {
                         RoomStatus = RoomStatusEnum.Starting;
@@ -101,7 +106,6 @@ namespace TouhouSpring.Network
                 case "generateseed":
                     {
                         Seed = Convert.ToInt32(parts[2]);
-                        Debug.Print(string.Format("Seed {0}", Seed));
                     }
                     break;
                 case "switchturn":
@@ -132,7 +136,7 @@ namespace TouhouSpring.Network
                     {
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondAttackPlayer(((Interactions.TacticalPhase)CurrentIo).AttackerCandidates[Convert.ToInt32(parts[2])]
-                            ,CurrentIo.Game.ActingPlayerEnemies.FirstOrDefault());
+                            , CurrentIo.Game.ActingPlayerEnemies.FirstOrDefault());
                     }
                     break;
                 case "activateassist":
@@ -147,6 +151,17 @@ namespace TouhouSpring.Network
                             .RespondCast(((Interactions.TacticalPhase)CurrentIo).CastSpellCandidates[Convert.ToInt32(parts[2])]);
                     }
                     break;
+                case "selectcards":
+                    {
+                        List<BaseCard> selectedCards = new List<BaseCard>();
+                        for (int i = 3; i < parts.Count; i++)
+                        {
+                            selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
+                        }
+                        ((Interactions.SelectCards)CurrentIo)
+                            .Respond(selectedCards.ToIndexable());
+                    }
+                    break;
                 case "redeem":
                     {
                         ((Interactions.TacticalPhase)CurrentIo)
@@ -157,6 +172,26 @@ namespace TouhouSpring.Network
                     Debug.Print("Invalid argument");
                     break;
             }
+        }
+
+
+        public void EnqueueMessage(string message)
+        {
+            _messageQueue.Add(message);
+        }
+
+        public void DequeueMessage()
+        {
+            foreach (string message in _messageQueue)
+            {
+                SendMessage(message);
+            }
+            _messageQueue.Clear();
+        }
+
+        public void ClearQueue()
+        {
+            _messageQueue.Clear();
         }
     }
 }

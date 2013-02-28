@@ -38,19 +38,30 @@ namespace TouhouSpring
 
         public static class CurrentCommand
         {
+            public enum InteractionType
+            {
+                TacticalPhase, SelectCards, Others
+            }
+
+            public static InteractionType Type
+            {
+                get;
+                set;
+            }
+
             public static object Result
             {
                 get;
                 set;
             }
 
-            public static int ResultIndex
+            public static int ResultSubjectIndex
             {
                 get;
                 set;
             }
 
-            public static int ResultIndex2
+            public static int[] ResultParameters
             {
                 get;
                 set;
