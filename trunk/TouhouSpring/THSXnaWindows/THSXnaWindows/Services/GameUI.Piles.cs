@@ -45,14 +45,14 @@ namespace TouhouSpring.Services
         private void PutToLibrary(UI.CardControl cardControl)
         {
             cardControl.Style.Apply(); // to solve the default TransformToGlobal matrix
-            var transform = (cardControl.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal.Invert();
+            var transform = cardControl.BodyContainer.TransformToGlobal.Invert();
 
             cardControl.GetAddin<UI.CardControlAddins.Flip>().SetFliped();
             cardControl.Style.Apply(); // to apply initial flipped matrix
 
             var pid = Game.Players.IndexOf(cardControl.Card.Owner);
             var fromZone = m_playerZones[pid].Library.Container;
-            var pileTop = m_playerLibraryPiles[pid].Style.ChildIds["Body"].Target;
+            var pileTop = m_playerLibraryPiles[pid].BodyContainer;
             transform *= UI.TransformNode.GetTransformBetween(pileTop, fromZone);
 
             cardControl.Dispatcher = fromZone;

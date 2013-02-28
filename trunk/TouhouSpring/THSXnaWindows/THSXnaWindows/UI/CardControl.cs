@@ -20,6 +20,11 @@ namespace TouhouSpring.UI
 			get; private set;
 		}
 
+        public TransformNode BodyContainer
+        {
+            get; private set;
+        }
+
 		public List<Addin> Addins
 		{
 			get; private set;
@@ -51,8 +56,10 @@ namespace TouhouSpring.UI
 
 		public void OnStyleInitialized()
 		{
-			MouseTracked = new MouseTracked(this);
-			MouseTracked.Dispatcher = Style.BodyLayout;
+            MouseTracked = new MouseTracked(this);
+            MouseTracked.Dispatcher = this;
+
+            BodyContainer = Style.ChildIds["Body"].Target as TransformNode;
 		}
 
 		public void SetParentAndKeepPosition(EventDispatcher dispatcher)
@@ -91,7 +98,7 @@ namespace TouhouSpring.UI
 
 		bool IMouseTracked.IntersectWith(Ray ray)
 		{
-			return MouseTracked.Intersect(ray, Region, Style.BodyLayout.TransformToGlobal.Invert());
+			return MouseTracked.Intersect(ray, Region, BodyContainer.TransformToGlobal.Invert());
 		}
 
 		void IMouseTracked.OnMouseEnter(MouseEventArgs e) { }

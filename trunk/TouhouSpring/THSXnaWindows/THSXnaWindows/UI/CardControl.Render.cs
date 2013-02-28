@@ -34,7 +34,7 @@ namespace TouhouSpring.UI
         {
             Graphics.RenderManager.BeginPixEvent(0, "Card.Render:" + Card.Model.Name);
 
-            var transform = Style.MainLayout.TransformToGlobal;
+            var transform = BodyContainer.TransformToGlobal;
 
             CreateDepthStencilStates();
 

@@ -28,7 +28,7 @@ namespace TouhouSpring.UI.CardControlAddins
             }
 
             var pileSize = new Vector3(Control.Region.Width, Control.Region.Height, m_pileHeight() * CardThickness);
-            var transform1 = (Control.Style.ChildIds["Body"].Target as UI.ITransformNode).TransformToGlobal;
+            var transform1 = Control.BodyContainer.TransformToGlobal;
             GameApp.Service<Graphics.PileRenderer>().Draw(m_pileBackTexture, pileSize, Matrix.CreateTranslation(0, 0, -pileSize.Z) * transform1);
         }
 

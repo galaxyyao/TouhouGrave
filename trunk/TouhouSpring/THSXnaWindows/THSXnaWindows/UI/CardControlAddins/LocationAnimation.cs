@@ -88,7 +88,7 @@ namespace TouhouSpring.UI.CardControlAddins
 
             var transform = Matrix.CreateTranslation(Control.Region.Width * 0.5f, -Control.Region.Height * 0.5f, 0)
                             * Matrix.CreateScale(1, -1, 1)
-                            * Control.Style.MainLayout.TransformToGlobal;
+                            * Control.BodyContainer.TransformToGlobal;
             m_localFrame.Col0 = new Vector4(transform.M11, transform.M21, transform.M31, transform.M41);
             m_localFrame.Col1 = new Vector4(transform.M12, transform.M22, transform.M32, transform.M42);
             m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);

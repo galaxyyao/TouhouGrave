@@ -30,16 +30,6 @@ namespace TouhouSpring.Style
 			protected set { TypedTarget.Region = value; }
 		}
 
-		public TransformNode BodyLayout
-		{
-			get; private set;
-		}
-
-		public TransformNode MainLayout
-		{
-			get; private set;
-		}
-
 		public CardControlStyle(XElement definition, BaseCard cardToBind)
 			: base(null, definition)
 		{
@@ -92,9 +82,6 @@ namespace TouhouSpring.Style
 					AddChildAndInitialize(new LabelStyle(this, childElement));
 				}
 			}
-
-			MainLayout = ChildIds["Main"].Target as TransformNode;
-			BodyLayout = ChildIds["Body"].Target as TransformNode;
 
 			TypedTarget.OnStyleInitialized();
 		}
