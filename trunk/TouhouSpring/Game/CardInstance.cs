@@ -6,9 +6,6 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    /// <summary>
-    /// Base class for all cards with basic properties like name and type.
-    /// </summary>
     public partial class CardInstance
     {
         public ICardModel Model
