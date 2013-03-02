@@ -114,7 +114,8 @@ namespace TouhouSpring.UI
             {
                 var layoutGizmo = new Style.LayoutGizmo<CardDesignContainer>(Style, GameApp.Service<Services.Styler>().GetCardDesign(designName));
                 layoutGizmo.Initialize();
-                layoutGizmo.Target.Dispatcher = BodyContainer;
+                layoutGizmo.Target.Dispatcher = null;
+                BodyContainer.Listeners.Insert(0, layoutGizmo.Target);
                 layoutGizmo.BindingProvider = this;
                 m_designName = designName;
                 m_cardDesignStyle = layoutGizmo;
@@ -123,10 +124,10 @@ namespace TouhouSpring.UI
 
         public void OnStyleInitialized()
         {
-            MouseTracked = new MouseTracked(this);
-            MouseTracked.Dispatcher = this;
-
             BodyContainer = Style.ChildIds["Body"].Target as TransformNode;
+
+            MouseTracked = new MouseTracked(this);
+            MouseTracked.Dispatcher = BodyContainer;
         }
 
         public void SetParentAndKeepPosition(EventDispatcher dispatcher)

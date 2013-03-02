@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\ForceAttack.cs" />
+    <Compile Include="Behaviors\IStatusEffect.cs" />
     <Compile Include="Commands\AddPlayerLife.cs" />
     <Compile Include="Commands\AddPlayerMana.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />

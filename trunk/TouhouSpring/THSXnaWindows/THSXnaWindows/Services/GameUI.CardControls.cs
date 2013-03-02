@@ -34,6 +34,7 @@ namespace TouhouSpring.Services
             cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));
+            cardControl.Addins.Add(new UI.CardControlAddins.CardIcons(cardControl));
             m_cardControls.Add(cardControl);
 
             if (card.Owner.CardsOnHand.Contains(card))
