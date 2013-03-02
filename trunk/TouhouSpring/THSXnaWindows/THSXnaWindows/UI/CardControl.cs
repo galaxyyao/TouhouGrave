@@ -47,7 +47,7 @@ namespace TouhouSpring.UI
         private string m_designName;
         private Style.IStyleContainer m_cardDesignStyle;
 
-        public BaseCard Card
+        public CardInstance Card
         {
             get; private set;
         }
@@ -77,7 +77,7 @@ namespace TouhouSpring.UI
             get { return m_designName; }
         }
 
-        public CardControl(BaseCard card, Style.CardControlStyle style)
+        public CardControl(CardInstance card, Style.CardControlStyle style)
         {
             if (card == null)
             {

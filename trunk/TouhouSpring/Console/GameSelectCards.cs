@@ -41,7 +41,7 @@ namespace TouhouSpring
                 return;
             }
 
-            BaseCard[] cards = new BaseCard[args.Length];
+            CardInstance[] cards = new CardInstance[args.Length];
             for (int i = 0; i < args.Length; ++i)
             {
                 cards[i] = selectCards.Candidates[int.Parse(args[i]) - 1];

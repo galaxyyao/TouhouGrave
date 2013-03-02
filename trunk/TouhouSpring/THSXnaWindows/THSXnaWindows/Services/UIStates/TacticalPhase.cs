@@ -10,7 +10,7 @@ namespace TouhouSpring.Services.UIStates
     {
         private GameUI m_gameUI = GameApp.Service<GameUI>();
         private Interactions.TacticalPhase m_io;
-        private BaseCard[] m_castFromCards;
+        private CardInstance[] m_castFromCards;
 
         public UI.CardControl SelectedCard
         {

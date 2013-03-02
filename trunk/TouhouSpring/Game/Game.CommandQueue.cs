@@ -59,17 +59,17 @@ namespace TouhouSpring
             }
         }
 
-        internal bool IsCardPlayable(BaseCard card)
+        internal bool IsCardPlayable(CardInstance card)
         {
             return IsCommandRunnable(new Commands.PlayCard(card));
         }
 
-        internal bool IsCardActivatable(BaseCard card)
+        internal bool IsCardActivatable(CardInstance card)
         {
             return IsCommandRunnable(new Commands.ActivateAssist(card));
         }
 
-        internal bool IsCardRedeemable(BaseCard card)
+        internal bool IsCardRedeemable(CardInstance card)
         {
             return IsCommandRunnable(new Commands.Redeem(card));
         }

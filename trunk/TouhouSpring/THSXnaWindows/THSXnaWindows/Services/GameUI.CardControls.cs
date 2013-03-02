@@ -11,7 +11,7 @@ namespace TouhouSpring.Services
     {
         private List<UI.CardControl> m_cardControls = new List<UI.CardControl>();
 
-        public void RegisterCard(BaseCard card)
+        public void RegisterCard(CardInstance card)
         {
             if (card == null)
             {
@@ -43,7 +43,7 @@ namespace TouhouSpring.Services
             }
         }
 
-        public void UnregisterCard(BaseCard card)
+        public void UnregisterCard(CardInstance card)
         {
             if (card == null)
             {
@@ -56,7 +56,7 @@ namespace TouhouSpring.Services
             PutToGraveyard(cardControl);
         }
 
-        public bool TryGetCardControl(BaseCard card, out UI.CardControl cardControl)
+        public bool TryGetCardControl(CardInstance card, out UI.CardControl cardControl)
         {
             if (card == null)
             {

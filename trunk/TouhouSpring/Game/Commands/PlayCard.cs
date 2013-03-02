@@ -12,7 +12,7 @@ namespace TouhouSpring.Commands
     public class PlayCard : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serializable behavior ID
-        public BaseCard CardToPlay
+        public CardInstance CardToPlay
         {
             get; private set;
         }
@@ -22,7 +22,7 @@ namespace TouhouSpring.Commands
             get { return CardToPlay.Owner; }
         }
 
-        public PlayCard(BaseCard cardToPlay)
+        public PlayCard(CardInstance cardToPlay)
         {
             if (cardToPlay == null)
             {

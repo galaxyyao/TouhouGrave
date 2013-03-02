@@ -41,7 +41,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        private void AffectByAura(BaseCard card)
+        private void AffectByAura(CardInstance card)
         {
             var warrior = card.Behaviors.Get<Warrior>();
             if (warrior != null)
@@ -50,7 +50,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        private void LeaveAura(BaseCard card)
+        private void LeaveAura(CardInstance card)
         {
             var warrior = card.Behaviors.Get<Warrior>();
             if (warrior != null)

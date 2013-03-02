@@ -47,9 +47,9 @@ namespace TouhouSpring
             Behaviors = new List<Behaviors.IBehaviorModel>();
         }
 
-        public BaseCard Instantiate(Player owner)
+        public CardInstance Instantiate(Player owner)
         {
-            throw new InvalidOperationException("Can't instantiate BaseCard from EditorCardModel.");
+            throw new InvalidOperationException("Can't instantiate CardInstance from EditorCardModel.");
         }
     }
 

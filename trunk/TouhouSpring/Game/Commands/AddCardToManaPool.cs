@@ -23,7 +23,7 @@ namespace TouhouSpring.Commands
             private set;
         }
 
-        public BaseCard CardAdded
+        public CardInstance CardAdded
         {
             get;
             private set;
@@ -59,7 +59,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            CardAdded = new BaseCard(Model, Owner);
+            CardAdded = new CardInstance(Model, Owner);
             Owner.AddToSacrificeSorted(CardAdded);
         }
     }

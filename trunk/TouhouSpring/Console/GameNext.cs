@@ -20,7 +20,7 @@ namespace TouhouSpring
             }
             else if (Program.ActiveInteraction is Interactions.SelectCards)
 			{
-				((Interactions.SelectCards)Program.ActiveInteraction).Respond(Indexable.Empty<BaseCard>());
+				((Interactions.SelectCards)Program.ActiveInteraction).Respond(Indexable.Empty<CardInstance>());
 			}
             else
             {

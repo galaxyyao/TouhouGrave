@@ -8,12 +8,12 @@ namespace TouhouSpring.Commands
     public class DeactivateAssist : BaseCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard CardToDeactivate
+        public CardInstance CardToDeactivate
         {
             get; private set;
         }
 
-        public DeactivateAssist(BaseCard cardToDeactivate)
+        public DeactivateAssist(CardInstance cardToDeactivate)
         {
             if (cardToDeactivate == null)
             {

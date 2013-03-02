@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TouhouSpring
 {
-	public partial class BaseCard
+	public partial class CardInstance
 	{
 		/// <summary>
 		/// A collection of behaviors boudn to this card

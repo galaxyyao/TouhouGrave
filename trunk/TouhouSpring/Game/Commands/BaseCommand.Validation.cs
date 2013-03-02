@@ -45,7 +45,7 @@ namespace TouhouSpring.Commands
             }
         }
 
-        protected void Validate(BaseCard card)
+        protected void Validate(CardInstance card)
         {
             if (card == null)
             {

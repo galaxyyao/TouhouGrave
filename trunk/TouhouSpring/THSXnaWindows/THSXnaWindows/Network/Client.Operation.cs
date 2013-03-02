@@ -153,7 +153,7 @@ namespace TouhouSpring.Network
                     break;
                 case "selectcards":
                     {
-                        List<BaseCard> selectedCards = new List<BaseCard>();
+                        List<CardInstance> selectedCards = new List<CardInstance>();
                         for (int i = 3; i < parts.Count; i++)
                         {
                             selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);

@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
         /// <summary>
         /// The hosting card i.e. the card to which this behavior is bound
         /// </summary>
-        public BaseCard Host
+        public CardInstance Host
         {
             get; private set;
         }
@@ -77,17 +77,17 @@ namespace TouhouSpring.Behaviors
         }
 
         /// <summary>
-        /// Called by BaseCard for binding this behavior to it.
+        /// Called by CardInstance for binding this behavior to it.
         /// </summary>
         /// <param name="host">The hosting card</param>
-        void IInternalBehavior.Bind(BaseCard host)
+        void IInternalBehavior.Bind(CardInstance host)
         {
             Debug.Assert(Host == null && host != null);
             Host = host;
         }
 
         /// <summary>
-        /// Called by BaseCard for unbinding this behavior from it.
+        /// Called by CardInstance for unbinding this behavior from it.
         /// </summary>
         void IInternalBehavior.Unbind()
         {

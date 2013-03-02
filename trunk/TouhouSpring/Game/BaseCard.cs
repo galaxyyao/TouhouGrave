@@ -9,7 +9,7 @@ namespace TouhouSpring
     /// <summary>
     /// Base class for all cards with basic properties like name and type.
     /// </summary>
-    public partial class BaseCard
+    public partial class CardInstance
     {
         public ICardModel Model
         {
@@ -46,16 +46,16 @@ namespace TouhouSpring
             get; internal set; // set by Kill command
         }
 
-        internal BaseCard(ICardModel model, Player owner)
+        internal CardInstance(ICardModel model, Player owner)
             : this(model, owner, true)
         { }
 
-        private BaseCard()
+        private CardInstance()
         {
             Behaviors = new Behaviors.BehaviorList(this);
         }
 
-        private BaseCard(ICardModel model, Player owner, bool hasGuid) : this()
+        private CardInstance(ICardModel model, Player owner, bool hasGuid) : this()
         {
             if (model == null)
             {
@@ -72,13 +72,13 @@ namespace TouhouSpring
             Model.Behaviors.ForEach(bhv => Behaviors.Add((bhv as Behaviors.IInternalBehaviorModel).CreateInitializedPersistent()));
         }
 
-        public static BaseCard CreateDummyCard(Player owner)
+        public static CardInstance CreateDummyCard(Player owner)
         {
             CardModel dummyModel = new CardModel
             {
                 Behaviors = new List<Behaviors.IBehaviorModel>()
             };
-            return new BaseCard(dummyModel, owner, false);
+            return new CardInstance(dummyModel, owner, false);
         }
     }
 }

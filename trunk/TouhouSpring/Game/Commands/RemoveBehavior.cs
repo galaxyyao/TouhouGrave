@@ -8,7 +8,7 @@ namespace TouhouSpring.Commands
     public class RemoveBehavior : BaseCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard Target
+        public CardInstance Target
         {
             get; private set;
         }
@@ -19,7 +19,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public RemoveBehavior(BaseCard target, Behaviors.IBehavior behavior)
+        public RemoveBehavior(CardInstance target, Behaviors.IBehavior behavior)
         {
             if (target == null)
             {
