@@ -21,15 +21,14 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "毛玉召唤")]
-        public class ModelType : BehaviorModel<Passive_PillSummon>
+        [BehaviorModel(typeof(Passive_PillSummon), Category = "v0.5/Passive", DefaultName = "毛玉召唤")]
+        public class ModelType : BehaviorModel
         {
             public CardModelReference SummonType { get; set; }
 
             public int NumToSummon
             {
-                get;
-                set;
+                get; set;
             }
         }
     }

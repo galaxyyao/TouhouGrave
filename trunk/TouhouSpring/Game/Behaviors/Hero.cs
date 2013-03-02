@@ -12,8 +12,8 @@ namespace TouhouSpring.Behaviors
             get { return Model.Health; }
         }
 
-        [BehaviorModel(Category = "Core", Description = "The card is served as the main character.")]
-        public class ModelType : BehaviorModel<Hero>
+        [BehaviorModel(typeof(Hero), Category = "Core", Description = "The card is served as the main character.")]
+        public class ModelType : BehaviorModel
         {
             public int Health { get; set; }
         }

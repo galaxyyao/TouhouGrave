@@ -56,7 +56,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public class ModelType : BehaviorModel<LastingEffect>
+        [BehaviorModel(typeof(LastingEffect), HideFromEditor = true)]
+        public class ModelType : BehaviorModel
         {
             public int Duration { get; set; }
         }

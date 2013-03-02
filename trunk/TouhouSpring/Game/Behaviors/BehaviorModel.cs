@@ -7,30 +7,73 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class BehaviorModel<T> : IInternalBehaviorModel
-        where T : class, IBehavior, new()
+    public class BehaviorModel : IInternalBehaviorModel
     {
-        private static Func<IBehavior> s_factory;
+        private class BehaviorModelData
+        {
+            public Type BehaviorType;
+            public Func<IBehavior> BhvFactory;
+            public BehaviorModelAttribute BhvModelAttr;
+        }
 
-        private BehaviorModelAttribute m_bhvModelAttr;
+        private static Dictionary<Type, BehaviorModelData> s_data = new Dictionary<Type, BehaviorModelData>();
+
         private string m_name;
+        private BehaviorModelData m_data;
 
         [System.ComponentModel.Category("Basic")]
         public string Name
         {
-            get { return m_name ?? m_bhvModelAttr.DefaultName ?? ModelTypeName; }
+            get { return m_name ?? (m_data.BhvModelAttr != null ? m_data.BhvModelAttr.DefaultName : SupplementBehaviorType.Name); }
             set { m_name = String.IsNullOrEmpty(value) ? null : value; }
         }
 
         [System.ComponentModel.Category("Basic")]
-        public string ModelTypeName
+        public string BehaviorTypeName
         {
-            get { return typeof(T).FullName; }
+            get { return (m_data.BhvModelAttr != null ? m_data.BhvModelAttr.BehaviorType : SupplementBehaviorType).FullName; }
+        }
+
+        // This type only affects if BehaviorModel is not provided
+        [System.ComponentModel.Browsable(false)]
+        protected virtual Type SupplementBehaviorType
+        {
+            get
+            {
+                throw new InvalidOperationException("Shall not be evaluated if BehaviorModelAttribute is provided.");
+            }
         }
 
         public BehaviorModel()
         {
-            m_bhvModelAttr = GetType().GetAttribute<BehaviorModelAttribute>();
+            var modelType = GetType();
+            if (!s_data.TryGetValue(modelType, out m_data))
+            {
+                lock (s_data)
+                {
+                    if (!s_data.TryGetValue(modelType, out m_data))
+                    {
+                        m_data = new BehaviorModelData
+                        {
+                            BhvModelAttr = modelType.GetAttribute<BehaviorModelAttribute>()
+                        };
+                        var bhvType = m_data.BhvModelAttr != null
+                                      ? m_data.BhvModelAttr.BehaviorType
+                                      : SupplementBehaviorType; // virtual function call to get the most derived value
+
+                        var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + bhvType.FullName, bhvType, null, bhvType);
+                        var ilGen = dynMethod.GetILGenerator();
+                        ilGen.Emit(OpCodes.Newobj, bhvType.GetConstructor(Type.EmptyTypes));
+                        ilGen.Emit(OpCodes.Ret);
+
+                        m_data.BehaviorType = bhvType;
+                        m_data.BhvFactory = (Func<IBehavior>)dynMethod.CreateDelegate(typeof(Func<IBehavior>));
+
+                        s_data.Add(modelType, m_data);
+                    }
+                }
+            }
+
             m_name = null;
         }
 
@@ -41,7 +84,7 @@ namespace TouhouSpring.Behaviors
 
         IBehavior IInternalBehaviorModel.Instantiate()
         {
-            return s_factory();
+            return m_data.BhvFactory();
         }
 
         IBehavior IInternalBehaviorModel.CreateInitializedPersistent()
@@ -55,19 +98,9 @@ namespace TouhouSpring.Behaviors
             (bhv as IInternalBehavior).Initialize(this, persistent);
             return bhv;
         }
-
-        static BehaviorModel()
-        {
-            var bhvType = typeof(T);
-            var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + bhvType.FullName, bhvType, null, bhvType);
-            var ilGen = dynMethod.GetILGenerator();
-            ilGen.Emit(OpCodes.Newobj, bhvType.GetConstructor(Type.EmptyTypes));
-            ilGen.Emit(OpCodes.Ret);
-            s_factory = (Func<T>)dynMethod.CreateDelegate(typeof(Func<T>));
-        }
     }
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class BehaviorModelAttribute : Attribute
     {
         private string m_defaultName;
@@ -76,20 +109,45 @@ namespace TouhouSpring.Behaviors
 
         public string DefaultName
         {
-            get { return m_defaultName; }
-            set { m_defaultName = value; }
+            get { return m_defaultName ?? BehaviorType.Name; }
+            set { m_defaultName = String.IsNullOrEmpty(value) ? null : value; }
         }
 
         public string Description
         {
             get { return m_description ?? String.Empty; }
-            set { m_description = value; }
+            set { m_description = String.IsNullOrEmpty(value) ? null : value; }
         }
 
         public string Category
         {
             get { return m_category ?? String.Empty; }
-            set { m_category = value; }
+            set { m_category = String.IsNullOrEmpty(value) ? null : value; }
+        }
+
+        public bool HideFromEditor
+        {
+            get; set;
+        }
+
+        public Type BehaviorType
+        {
+            get; private set;
+        }
+
+        public BehaviorModelAttribute(Type behaviorType)
+        {
+            if (behaviorType == null)
+            {
+                throw new ArgumentNullException("behaviorType");
+            }
+            else if (!behaviorType.HasInterface<IBehavior>())
+            {
+                throw new ArgumentException("Not a valid behavior type.");
+            }
+
+            BehaviorType = behaviorType;
+            HideFromEditor = false;
         }
     }
 }

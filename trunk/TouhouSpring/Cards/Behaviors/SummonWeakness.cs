@@ -37,8 +37,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel]
-        public class ModelType : BehaviorModel<SummonWeakness>
+        [BehaviorModel(typeof(SummonWeakness))]
+        public class ModelType : BehaviorModel
         { }
     }
 }

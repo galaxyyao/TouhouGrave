@@ -39,8 +39,8 @@ namespace TouhouSpring.Behaviors
             isAttackedByWarriorLastRound = (original as Passive_ManaGainUpWhenAttackedByWarrior).isAttackedByWarriorLastRound;
         }
 
-        [BehaviorModel(DefaultName = "M子")]
-        public class ModelType : BehaviorModel<Passive_ManaGainUpWhenAttackedByWarrior>
+        [BehaviorModel(typeof(Passive_ManaGainUpWhenAttackedByWarrior), DefaultName = "M子")]
+        public class ModelType : BehaviorModel
         { }
     }
 }

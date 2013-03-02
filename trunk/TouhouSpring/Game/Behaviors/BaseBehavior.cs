@@ -52,7 +52,7 @@ namespace TouhouSpring.Behaviors
             }
             else if (!(model is T))
             {
-                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Model must be of type {0}.", typeof(T).Name));
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, "Model must be of type {0}.", typeof(T).FullName));
             }
             else if (Model != null)
             {

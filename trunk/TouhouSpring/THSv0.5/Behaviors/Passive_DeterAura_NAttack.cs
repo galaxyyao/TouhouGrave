@@ -81,8 +81,8 @@ namespace TouhouSpring.Behaviors
             m_attackMod = (original as Passive_DeterAura_NAttack).m_attackMod;
         }
 
-        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "灵压")]
-        public class ModelType : BehaviorModel<Passive_DeterAura_NAttack>
+        [BehaviorModel(typeof(Passive_DeterAura_NAttack), Category = "v0.5/Passive", DefaultName = "灵压")]
+        public class ModelType : BehaviorModel
         {
         }
     }

@@ -39,7 +39,7 @@ namespace TouhouSpring.Services
                 return;
             }
 
-            var xnaMouseState = Mouse.GetState();
+            var xnaMouseState = GameApp.Instance.MouseState;
             bool btn1Pressed = xnaMouseState.LeftButton == ButtonState.Pressed;
             bool btn2Pressed = xnaMouseState.RightButton == ButtonState.Pressed;
             var currentState = new UI.MouseState(xnaMouseState.X, xnaMouseState.Y, btn1Pressed, btn2Pressed);

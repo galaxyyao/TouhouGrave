@@ -70,8 +70,8 @@ namespace TouhouSpring.Behaviors
             m_attackMod = (original as Passive_Aura_Offense_NAttack).m_attackMod;
         }
 
-        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "进攻光环")]
-        public class ModelType : BehaviorModel<Passive_Aura_Offense_NAttack>
+        [BehaviorModel(typeof(Passive_Aura_Offense_NAttack), Category = "v0.5/Passive", DefaultName = "进攻光环")]
+        public class ModelType : BehaviorModel
         {
         }
     }

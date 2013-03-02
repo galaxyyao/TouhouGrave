@@ -7,8 +7,8 @@ namespace TouhouSpring.Behaviors
 {
     public class Assist : BaseBehavior<Assist.ModelType>
     {
-        [BehaviorModel(Category = "Core", Description = "The card is served as the assistant to hero.")]
-        public class ModelType : BehaviorModel<Assist>
+        [BehaviorModel(typeof(Assist), Category = "Core", Description = "The card is served as the assistant to hero.")]
+        public class ModelType : BehaviorModel
         { }
     }
 }

@@ -21,13 +21,12 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Spell", DefaultName = "全体治愈")]
-        public class ModelType : BehaviorModel<Spell_HealAllAlly_NLife>
+        [BehaviorModel(typeof(Spell_HealAllAlly_NLife), Category = "v0.5/Spell", DefaultName = "全体治愈")]
+        public class ModelType : BehaviorModel
         {
             public int LifeToHeal
             {
-                get;
-                set;
+                get; set;
             }
         }
     }

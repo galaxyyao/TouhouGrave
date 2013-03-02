@@ -38,8 +38,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(DefaultName = "鬼神")]
-        public class ModelType : BehaviorModel<Assault_SingleWarriorBoostForXRounds>
+        [BehaviorModel(typeof(Assault_SingleWarriorBoostForXRounds), DefaultName = "鬼神")]
+        public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }
             public int Duration { get; set; }

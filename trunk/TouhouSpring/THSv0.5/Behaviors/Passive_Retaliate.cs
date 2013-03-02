@@ -24,8 +24,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "反击")]
-        public class ModelType : BehaviorModel<Passive_Retaliate>
+        [BehaviorModel(typeof(Passive_Retaliate), Category = "v0.5/Passive", DefaultName = "反击")]
+        public class ModelType : BehaviorModel
         {
         }
     }
