@@ -8,7 +8,7 @@ namespace TouhouSpring.Interactions
 {
     public class NotifyCardEvent : NotifyOnly
     {
-        public BaseCard Card
+        public CardInstance Card
         {
             get; private set;
         }
@@ -18,11 +18,11 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        internal NotifyCardEvent(Game game, string notification, BaseCard card)
+        internal NotifyCardEvent(Game game, string notification, CardInstance card)
             : this(game, notification, card, null)
         { }
 
-        internal NotifyCardEvent(Game game, string notification, BaseCard card, string message)
+        internal NotifyCardEvent(Game game, string notification, CardInstance card, string message)
             : base(game, notification)
         {
             Debug.Assert(card != null);

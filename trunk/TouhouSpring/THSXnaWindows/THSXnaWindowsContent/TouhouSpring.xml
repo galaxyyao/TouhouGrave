@@ -852,6 +852,10 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_DeathOnAccumulatedCounter+ModelType">
+          <Name>诱亡</Name>
+          <NumCounters>4</NumCounters>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>

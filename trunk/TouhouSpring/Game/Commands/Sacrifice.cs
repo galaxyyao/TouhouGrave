@@ -8,7 +8,7 @@ namespace TouhouSpring.Commands
     public class Sacrifice : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard Target
+        public CardInstance Target
         {
             get; private set;
         }
@@ -18,7 +18,7 @@ namespace TouhouSpring.Commands
             get { return Target.Owner; }
         }
 
-        public Sacrifice(BaseCard target)
+        public Sacrifice(CardInstance target)
         {
             if (target == null)
             {

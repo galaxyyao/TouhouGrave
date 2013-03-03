@@ -8,7 +8,7 @@ namespace TouhouSpring.Commands
     public class Redeem : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard Target
+        public CardInstance Target
         {
             get; private set;
         }
@@ -18,7 +18,7 @@ namespace TouhouSpring.Commands
             get { return Target.Owner; }
         }
 
-        public Redeem(BaseCard target)
+        public Redeem(CardInstance target)
         {
             if (target == null)
             {

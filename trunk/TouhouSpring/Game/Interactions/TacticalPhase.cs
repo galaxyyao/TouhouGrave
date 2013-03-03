@@ -31,12 +31,12 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public IIndexable<BaseCard> PlayCardCandidates
+        public IIndexable<CardInstance> PlayCardCandidates
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> ActivateAssistCandidates
+        public IIndexable<CardInstance> ActivateAssistCandidates
         {
             get; private set;
         }
@@ -46,22 +46,22 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public IIndexable<BaseCard> SacrificeCandidates
+        public IIndexable<CardInstance> SacrificeCandidates
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> RedeemCandidates
+        public IIndexable<CardInstance> RedeemCandidates
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> AttackerCandidates
+        public IIndexable<CardInstance> AttackerCandidates
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> DefenderCandidates
+        public IIndexable<CardInstance> DefenderCandidates
         {
             get; private set;
         }
@@ -90,10 +90,10 @@ namespace TouhouSpring.Interactions
                                     .Where(card => player.Game.IsCardActivatable(card)).ToArray().ToIndexable();
             CastSpellCandidates = GetCastSpellBaseSet(player).SelectMany(card => card.Spells)
                                     .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
-            SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<BaseCard>();
+            SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<CardInstance>();
             RedeemCandidates = !Game.DidRedeem
                                ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
-                               : Indexable.Empty<BaseCard>();
+                               : Indexable.Empty<CardInstance>();
             AttackerCandidates = GetAttackerBaseSet(player)
                                     .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)
@@ -104,7 +104,7 @@ namespace TouhouSpring.Interactions
             }
             else
             {
-                DefenderCandidates = Indexable.Empty<BaseCard>();
+                DefenderCandidates = Indexable.Empty<CardInstance>();
             }
 
             CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>());
@@ -127,7 +127,7 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
-        public void RespondPlay(BaseCard selectedCard)
+        public void RespondPlay(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -145,7 +145,7 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
-        public void RespondActivate(BaseCard selectedCard)
+        public void RespondActivate(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -181,7 +181,7 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
-        public void RespondSacrifice(BaseCard selectedCard)
+        public void RespondSacrifice(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -199,7 +199,7 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
-        public void RespondRedeem(BaseCard selectedCard)
+        public void RespondRedeem(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -217,7 +217,7 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
-        public void RespondAttackCard(BaseCard attacker, BaseCard defender)
+        public void RespondAttackCard(CardInstance attacker, CardInstance defender)
         {
             if (attacker == null)
             {
@@ -231,7 +231,7 @@ namespace TouhouSpring.Interactions
             var result = new Result
             {
                 ActionType = Action.AttackCard,
-                Data = new BaseCard[] { attacker, defender }
+                Data = new CardInstance[] { attacker, defender }
             };
 
             Validate(result);
@@ -241,7 +241,7 @@ namespace TouhouSpring.Interactions
             RespondBack(result);
         }
 
-        public void RespondAttackPlayer(BaseCard attacker, Player player)
+        public void RespondAttackPlayer(CardInstance attacker, Player player)
         {
             if (attacker == null)
             {
@@ -284,9 +284,9 @@ namespace TouhouSpring.Interactions
                     break;
 
                 case Action.PlayCard:
-                    if (!(result.Data is BaseCard))
+                    if (!(result.Data is CardInstance))
                     {
-                        throw new InteractionValidationFailException("Action PlayCard shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action PlayCard shall have an object of CardInstance as its data.");
                     }
                     else if (!PlayCardCandidates.Contains(result.Data))
                     {
@@ -295,9 +295,9 @@ namespace TouhouSpring.Interactions
                     break;
 
                 case Action.ActivateAssist:
-                    if (!(result.Data is BaseCard))
+                    if (!(result.Data is CardInstance))
                     {
-                        throw new InteractionValidationFailException("Action ActivateAssist shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action ActivateAssist shall have an object of CardInstance as its data.");
                     }
                     else if (!ActivateAssistCandidates.Contains(result.Data))
                     {
@@ -317,9 +317,9 @@ namespace TouhouSpring.Interactions
                     break;
 
                 case Action.Sacrifice:
-                    if (!(result.Data is BaseCard))
+                    if (!(result.Data is CardInstance))
                     {
-                        throw new InteractionValidationFailException("Action Sacrifice shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action Sacrifice shall have an object of CardInstance as its data.");
                     }
                     else if (!SacrificeCandidates.Contains(result.Data))
                     {
@@ -328,9 +328,9 @@ namespace TouhouSpring.Interactions
                     break;
 
                 case Action.Redeem:
-                    if (!(result.Data is BaseCard))
+                    if (!(result.Data is CardInstance))
                     {
-                        throw new InteractionValidationFailException("Action Redeem shall have an object of BaseCard as its data.");
+                        throw new InteractionValidationFailException("Action Redeem shall have an object of CardInstance as its data.");
                     }
                     else if (!RedeemCandidates.Contains(result.Data))
                     {
@@ -340,10 +340,10 @@ namespace TouhouSpring.Interactions
 
                 case Action.AttackCard:
                     {
-                        var pair = result.Data as BaseCard[];
+                        var pair = result.Data as CardInstance[];
                         if (pair == null || pair.Length != 2)
                         {
-                            throw new InteractionValidationFailException("Action AttackCard shall have a pair of BaseCards as its data.");
+                            throw new InteractionValidationFailException("Action AttackCard shall have a pair of CardInstances as its data.");
                         }
                         else if (!AttackerCandidates.Contains(pair[0]))
                         {
@@ -359,9 +359,9 @@ namespace TouhouSpring.Interactions
                 case Action.AttackPlayer:
                     {
                         var pair = result.Data as object[];
-                        if (pair == null || pair.Length != 2 || !(pair[0] is BaseCard) || !(pair[1] is Player))
+                        if (pair == null || pair.Length != 2 || !(pair[0] is CardInstance) || !(pair[1] is Player))
                         {
-                            throw new InteractionValidationFailException("Action AttackPlayer shall have a pair of BaseCard and Player as its data.");
+                            throw new InteractionValidationFailException("Action AttackPlayer shall have a pair of CardInstance and Player as its data.");
                         }
                         else if (!AttackerCandidates.Contains(pair[0]))
                         {
@@ -382,7 +382,7 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> GetPlayCardBaseSet(Player player)
+        private static IEnumerable<CardInstance> GetPlayCardBaseSet(Player player)
         {
             if (!player.CardsOnBattlefield.Contains(player.Hero) && player.Hero != null)
             {
@@ -394,7 +394,7 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> GetActivateAssistBaseSet(Player player)
+        private static IEnumerable<CardInstance> GetActivateAssistBaseSet(Player player)
         {
             foreach (var card in player.Assists)
             {
@@ -405,7 +405,7 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> GetCastSpellBaseSet(Player player)
+        private static IEnumerable<CardInstance> GetCastSpellBaseSet(Player player)
         {
             foreach (var card in player.ActivatedAssits)
             {
@@ -417,7 +417,7 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> GetAttackerBaseSet(Player player)
+        private static IEnumerable<CardInstance> GetAttackerBaseSet(Player player)
         {
             foreach (var card in player.CardsOnBattlefield)
             {
@@ -429,7 +429,7 @@ namespace TouhouSpring.Interactions
             }
         }
 
-        private static IEnumerable<BaseCard> GetDefenderBaseSet(Player player)
+        private static IEnumerable<CardInstance> GetDefenderBaseSet(Player player)
         {
             foreach (var p in player.Game.Players)
             {

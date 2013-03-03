@@ -11,7 +11,7 @@ namespace TouhouSpring.Style
 {
 	class CardControlStyle : BaseStyleContainer, BoundsProperty.IHost
 	{
-		private BaseCard m_card;
+		private CardInstance m_card;
 		private List<IBindingProvider> m_bindingProviders = new List<IBindingProvider>();
 
 		public CardControl TypedTarget
@@ -30,7 +30,7 @@ namespace TouhouSpring.Style
 			protected set { TypedTarget.Region = value; }
 		}
 
-		public CardControlStyle(XElement definition, BaseCard cardToBind)
+		public CardControlStyle(XElement definition, CardInstance cardToBind)
 			: base(null, definition)
 		{
 			if (cardToBind == null)

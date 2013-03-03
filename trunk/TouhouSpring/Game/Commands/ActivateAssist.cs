@@ -8,7 +8,7 @@ namespace TouhouSpring.Commands
     public class ActivateAssist : BaseCommand, IInitiativeCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard CardToActivate
+        public CardInstance CardToActivate
         {
             get; private set;
         }
@@ -18,7 +18,7 @@ namespace TouhouSpring.Commands
             get { return CardToActivate.Owner; }
         }
 
-        public ActivateAssist(BaseCard cardToActivate)
+        public ActivateAssist(CardInstance cardToActivate)
         {
             if (cardToActivate == null)
             {

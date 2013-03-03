@@ -8,7 +8,7 @@ namespace TouhouSpring.Commands
     public class AddBehavior : BaseCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard Target
+        public CardInstance Target
         {
             get; private set;
         }
@@ -19,7 +19,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public AddBehavior(BaseCard target, Behaviors.IBehavior behavior)
+        public AddBehavior(CardInstance target, Behaviors.IBehavior behavior)
         {
             if (target == null)
             {

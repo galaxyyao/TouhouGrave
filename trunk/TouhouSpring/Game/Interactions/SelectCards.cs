@@ -23,7 +23,7 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public IIndexable<BaseCard> Candidates
+        public IIndexable<CardInstance> Candidates
         {
             get; private set;
         }
@@ -33,11 +33,11 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public SelectCards(Player player, IIndexable<BaseCard> candidates, SelectMode mode)
+        public SelectCards(Player player, IIndexable<CardInstance> candidates, SelectMode mode)
             : this(player, candidates, mode, null)
         { }
 
-        public SelectCards(Player player, IIndexable<BaseCard> candidates, SelectMode mode, string message)
+        public SelectCards(Player player, IIndexable<CardInstance> candidates, SelectMode mode, string message)
             : base(player.Game)
         {
             if (player == null)
@@ -55,14 +55,14 @@ namespace TouhouSpring.Interactions
             Mode = mode;
         }
 
-        public virtual IIndexable<BaseCard> Run()
+        public virtual IIndexable<CardInstance> Run()
         {
-            var result = NotifyAndWait<IIndexable<BaseCard>>();
+            var result = NotifyAndWait<IIndexable<CardInstance>>();
             Validate(result);
             return result;
         }
 
-        public virtual void Respond(IIndexable<BaseCard> selectedCards)
+        public virtual void Respond(IIndexable<CardInstance> selectedCards)
         {
             Validate(selectedCards);
             Game.CurrentCommand.ResultParameters=new int[selectedCards.Count];
@@ -75,7 +75,7 @@ namespace TouhouSpring.Interactions
             RespondBack(selectedCards);
         }
 
-        protected void Validate(IIndexable<BaseCard> selectedCards)
+        protected void Validate(IIndexable<CardInstance> selectedCards)
         {
             if (selectedCards == null)
             {

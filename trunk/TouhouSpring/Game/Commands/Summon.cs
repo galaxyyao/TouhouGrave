@@ -21,7 +21,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public BaseCard CardSummoned
+        public CardInstance CardSummoned
         {
             get; private set;
         }
@@ -56,7 +56,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            CardSummoned = new BaseCard(Model, Owner);
+            CardSummoned = new CardInstance(Model, Owner);
             Owner.m_battlefieldCards.Add(CardSummoned);
             Game.SubscribeCardToCommands(CardSummoned);
         }

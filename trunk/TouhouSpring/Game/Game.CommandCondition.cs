@@ -24,9 +24,9 @@ namespace TouhouSpring
         private class TargetCondition
         {
             public Behaviors.IBehavior m_user;
-            public IIndexable<BaseCard> m_candidates;
+            public IIndexable<CardInstance> m_candidates;
             public string m_message;
-            public IIndexable<BaseCard> m_selection;
+            public IIndexable<CardInstance> m_selection;
         }
 
         private ResourceConditions m_resourceConditions;
@@ -75,7 +75,7 @@ namespace TouhouSpring
             m_resourceConditions.m_manaOrLifeLife = life;
         }
 
-        public void NeedTarget(Behaviors.IBehavior user, IIndexable<BaseCard> candidates, string message)
+        public void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
         {
             if (user == null)
             {
@@ -119,7 +119,7 @@ namespace TouhouSpring
             return player.Health - m_resourceConditions.m_lifeNeeded;
         }
 
-        public IIndexable<BaseCard> GetTarget(Behaviors.IBehavior user)
+        public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
         {
             CheckNotInPrerequisite();
             var targetCondition = m_targetConditions.FirstOrDefault(tgt => tgt.m_user == user);

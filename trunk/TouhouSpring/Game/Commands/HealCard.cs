@@ -7,7 +7,7 @@ namespace TouhouSpring.Commands
 {
     public class HealCard : BaseCommand
     {
-        public BaseCard Target
+        public CardInstance Target
         {
             get;
             private set;
@@ -19,7 +19,7 @@ namespace TouhouSpring.Commands
             private set;
         }
 
-        public HealCard(BaseCard target, int lifeToHeal, ICause cause)
+        public HealCard(CardInstance target, int lifeToHeal, ICause cause)
             : base(cause)
         {
             if (target == null)

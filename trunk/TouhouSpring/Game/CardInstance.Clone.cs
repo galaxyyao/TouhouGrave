@@ -5,11 +5,11 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    public partial class BaseCard
+    public partial class CardInstance
     {
-        internal BaseCard Clone(Player owner)
+        internal CardInstance Clone(Player owner)
         {
-            var clonedCard = new BaseCard
+            var clonedCard = new CardInstance
             {
                 Model = Model,
                 Owner = owner,
@@ -22,10 +22,16 @@ namespace TouhouSpring
                 clonedCard.Behaviors.Add((Behaviors[i].Model as Behaviors.IInternalBehaviorModel).Instantiate());
             }
 
+            clonedCard.m_counters.Capacity = m_counters.Capacity;
+            foreach (var item in m_counters)
+            {
+                clonedCard.m_counters.Add(item);
+            }
+
             return clonedCard;
         }
 
-        internal void TransferFrom(BaseCard original)
+        internal void TransferFrom(CardInstance original)
         {
             for (int i = 0; i < Behaviors.Count; ++i)
             {

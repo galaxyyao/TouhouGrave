@@ -25,7 +25,7 @@ namespace TouhouSpring.Services
             m_playerLibraryPiles = new UI.CardControl[Game.Players.Count];
             for (int i = 0; i < Game.Players.Count; ++i)
             {
-                var dummyCard = BaseCard.CreateDummyCard(Game.Players[i]);
+                var dummyCard = CardInstance.CreateDummyCard(Game.Players[i]);
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
                 m_playerLibraryPiles[i] = ccStyle.TypedTarget;

@@ -7,7 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public interface IBehavior
     {
-        BaseCard Host { get; }
+        CardInstance Host { get; }
         bool Persistent { get; }
         IBehaviorModel Model { get; }
     }
@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
     {
         void Initialize(IBehaviorModel model, bool persistent);
         void TransferFrom(IBehavior original);
-        void Bind(BaseCard host);
+        void Bind(CardInstance host);
         void Unbind();
         void ReceiveMessage(string message, object[] args);
     }

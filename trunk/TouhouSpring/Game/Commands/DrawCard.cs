@@ -16,7 +16,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public BaseCard CardDrawn
+        public CardInstance CardDrawn
         {
             get; private set;
         }
@@ -44,7 +44,7 @@ namespace TouhouSpring.Commands
         {
             var cardModel = Player.Library.RemoveFromTop();
             Debug.Assert(cardModel != null);
-            var card = new BaseCard(cardModel, Player);
+            var card = new CardInstance(cardModel, Player);
             Player.AddToHandSorted(card);
             CardDrawn = card;
         }

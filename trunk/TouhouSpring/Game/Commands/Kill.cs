@@ -9,7 +9,7 @@ namespace TouhouSpring.Commands
     public class Kill : BaseCommand
     {
         // TODO: change to serialization-friendly ID
-        public BaseCard Target
+        public CardInstance Target
         {
             get; private set;
         }
@@ -24,7 +24,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public Kill(BaseCard target, ICause cause)
+        public Kill(CardInstance target, ICause cause)
             : base(cause)
         {
             if (target == null)

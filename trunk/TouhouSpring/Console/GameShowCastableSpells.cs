@@ -30,7 +30,7 @@ namespace TouhouSpring
             }
         }
 
-        private string GetLocation(BaseCard card)
+        private string GetLocation(CardInstance card)
         {
             foreach (var player in Program.TouhouSpringGame.Players)
             {

@@ -174,6 +174,7 @@
     <Compile Include="UI\CardControl.cs" />
     <Compile Include="UI\CardControl.Render.cs" />
     <Compile Include="UI\CardControlAddins\CardIcons.cs" />
+    <Compile Include="UI\CardControlAddins\CardIcons.Icon.cs" />
     <Compile Include="UI\CardControlAddins\InstantRotation.cs" />
     <Compile Include="UI\CardControlAddins\DamageIndicator.cs" />
     <Compile Include="UI\CardControlAddins\Flip.cs" />

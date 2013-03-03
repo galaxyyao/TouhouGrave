@@ -32,7 +32,7 @@ namespace TouhouSpring
 			get; set;
 		}
 
-        public static string Print(this BaseCard card)
+        public static string Print(this CardInstance card)
         {
             return "|" + card.Model.Name + "|";
         }

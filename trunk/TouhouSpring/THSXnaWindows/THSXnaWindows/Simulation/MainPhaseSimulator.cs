@@ -10,7 +10,7 @@ namespace TouhouSpring.Simulation
     {
         private struct CardIntPair
         {
-            public BaseCard Card;
+            public CardInstance Card;
             public int Int;
         }
 

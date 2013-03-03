@@ -75,13 +75,13 @@ namespace TouhouSpring
                 compiledMainPhaseResponse = null;
                 if (result.ActionType == Interactions.TacticalPhase.Action.PlayCard)
                 {
-                    var cardToPlay = (BaseCard)result.Data;
+                    var cardToPlay = (CardInstance)result.Data;
                     Debug.Assert(cardToPlay.Owner == ActingPlayer);
                     IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.ActivateAssist)
                 {
-                    var cardToActivate = (BaseCard)result.Data;
+                    var cardToActivate = (CardInstance)result.Data;
                     Debug.Assert(cardToActivate.Owner == ActingPlayer);
                     foreach (var card in ActingPlayer.ActivatedAssits)
                     {
@@ -97,7 +97,7 @@ namespace TouhouSpring
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Sacrifice)
                 {
-                    var cardToSacrifice = (BaseCard)result.Data;
+                    var cardToSacrifice = (CardInstance)result.Data;
                     IssueCommandsAndFlush(
                         new Commands.Sacrifice(cardToSacrifice),
                         new Commands.AddPlayerMana(ActingPlayer, 1, true, this));
@@ -105,13 +105,13 @@ namespace TouhouSpring
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.Redeem)
                 {
-                    var cardToRedeem = (BaseCard)result.Data;
+                    var cardToRedeem = (CardInstance)result.Data;
                     IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
                     DidRedeem = true;
                 }
                 else if (result.ActionType == Interactions.TacticalPhase.Action.AttackCard)
                 {
-                    var pair = (BaseCard[])result.Data;
+                    var pair = (CardInstance[])result.Data;
                     var attackerWarrior = pair[0].Behaviors.Get<Behaviors.Warrior>();
                     IssueCommandsAndFlush(
                         new Commands.DealDamageToCard(
@@ -123,7 +123,7 @@ namespace TouhouSpring
                 else if (result.ActionType == Interactions.TacticalPhase.Action.AttackPlayer)
                 {
                     var pair = (object[])result.Data;
-                    var attackerWarrior = (pair[0] as BaseCard).Behaviors.Get<Behaviors.Warrior>();
+                    var attackerWarrior = (pair[0] as CardInstance).Behaviors.Get<Behaviors.Warrior>();
                     IssueCommandsAndFlush(
                         new Commands.SubtractPlayerLife(
                             pair[1] as Player, attackerWarrior.Attack, attackerWarrior),

@@ -18,23 +18,23 @@ namespace TouhouSpring
         private List<ValueModifier> m_lifeAddModifiers = new List<ValueModifier>();
         private List<ValueModifier> m_lifeSubtractModifiers = new List<ValueModifier>();
 
-        internal List<BaseCard> m_handSet = new List<BaseCard>();
-        internal List<BaseCard> m_sacrifices = new List<BaseCard>();
-        internal List<BaseCard> m_battlefieldCards = new List<BaseCard>();
-        internal List<BaseCard> m_assists = new List<BaseCard>();
-        internal List<BaseCard> m_activatedAssists = new List<BaseCard>();
+        internal List<CardInstance> m_handSet = new List<CardInstance>();
+        internal List<CardInstance> m_sacrifices = new List<CardInstance>();
+        internal List<CardInstance> m_battlefieldCards = new List<CardInstance>();
+        internal List<CardInstance> m_assists = new List<CardInstance>();
+        internal List<CardInstance> m_activatedAssists = new List<CardInstance>();
         internal List<ICardModel> m_library = new List<ICardModel>();
         internal List<ICardModel> m_graveyard = new List<ICardModel>();
 
         /// <summary>
         /// Return a collection of cards on hand.
         /// </summary>
-        public IIndexable<BaseCard> CardsOnHand
+        public IIndexable<CardInstance> CardsOnHand
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> CardsSacrificed
+        public IIndexable<CardInstance> CardsSacrificed
         {
             get; private set;
         }
@@ -42,23 +42,23 @@ namespace TouhouSpring
         /// <summary>
         /// Return a collection of cards on battlefield.
         /// </summary>
-        public IIndexable<BaseCard> CardsOnBattlefield
+        public IIndexable<CardInstance> CardsOnBattlefield
         {
             get; private set;
         }
 
         // summoned hero is in CardsOnBattlefield collection
-        public BaseCard Hero
+        public CardInstance Hero
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> Assists
+        public IIndexable<CardInstance> Assists
         {
             get; private set;
         }
 
-        public IIndexable<BaseCard> ActivatedAssits
+        public IIndexable<CardInstance> ActivatedAssits
         {
             get; private set;
         }
@@ -175,21 +175,21 @@ namespace TouhouSpring
             }
 
             // initialize player's hero
-            //Hero = new BaseCard(deck.Hero, this);
+            //Hero = new CardInstance(deck.Hero, this);
 
             // initialize assists
             foreach (var cardModel in deck.Assists)
             {
-                m_assists.Add(new BaseCard(cardModel, this));
+                m_assists.Add(new CardInstance(cardModel, this));
             }
 
             Health = 20;
             Mana = 0;
         }
 
-        private class HandSorter : IComparer<BaseCard>
+        private class HandSorter : IComparer<CardInstance>
         {
-            public int Compare(BaseCard card1, BaseCard card2)
+            public int Compare(CardInstance card1, CardInstance card2)
             {
                 // Warrior, Spell
                 var isWarrior1 = card1.Behaviors.Has<Behaviors.Warrior>();
@@ -210,17 +210,17 @@ namespace TouhouSpring
             }
         }
 
-        internal void AddToHandSorted(BaseCard card)
+        internal void AddToHandSorted(CardInstance card)
         {
             AddToListSorted(m_handSet, card);
         }
 
-        internal void AddToSacrificeSorted(BaseCard card)
+        internal void AddToSacrificeSorted(CardInstance card)
         {
             AddToListSorted(m_sacrifices, card);
         }
 
-        private static void AddToListSorted(List<BaseCard> list, BaseCard card)
+        private static void AddToListSorted(List<CardInstance> list, CardInstance card)
         {
             var comparer = new HandSorter();
             var index = list.BinarySearch(card, comparer);

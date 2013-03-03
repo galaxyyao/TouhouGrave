@@ -12,7 +12,7 @@ namespace TouhouSpring.Behaviors
     /// </summary>
     public class BehaviorList : IIndexable<IBehavior>
     {
-        private BaseCard m_host;
+        private CardInstance m_host;
         private List<IBehavior> m_behaviors = new List<IBehavior>();
 
         #region IIndexable<T> interface
@@ -57,7 +57,7 @@ namespace TouhouSpring.Behaviors
             return m_behaviors.Any(bhv => bhv is T);
         }
 
-        internal BehaviorList(BaseCard host)
+        internal BehaviorList(CardInstance host)
         {
             if (host == null)
             {

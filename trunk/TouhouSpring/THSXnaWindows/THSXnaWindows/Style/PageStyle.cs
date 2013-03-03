@@ -104,7 +104,7 @@ namespace TouhouSpring.Style
                     replacement = game.CurrentPhase;
                     break;
                 case "Game.Player0.Avatar":
-                    replacement = "Textures/Yozora";
+                    replacement = "Textures/natsukawa";
                     break;
                 case "Game.Player0.AvatarBorder":
                     replacement = game.ActingPlayer == game.Players[0]
@@ -117,7 +117,7 @@ namespace TouhouSpring.Style
                     replacement = game.Players[0].Health.ToString();
                     break;
                 case "Game.Player1.Avatar":
-                    replacement = "Textures/Sena";
+                    replacement = "Textures/fuyumi";
                     break;
                 case "Game.Player1.AvatarBorder":
                     replacement = game.ActingPlayer == game.Players[1]

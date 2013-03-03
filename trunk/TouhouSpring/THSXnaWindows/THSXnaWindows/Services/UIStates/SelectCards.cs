@@ -7,12 +7,12 @@ namespace TouhouSpring.Services.UIStates
 {
     class SelectCards : IUIState
     {
-        private List<BaseCard> m_selectedCards = new List<BaseCard>();
+        private List<CardInstance> m_selectedCards = new List<CardInstance>();
 
         private GameUI m_gameUI = GameApp.Service<GameUI>();
         private Interactions.SelectCards m_io;
 
-        public IIndexable<BaseCard> Selection
+        public IIndexable<CardInstance> Selection
         {
             get { return m_selectedCards.ToIndexable(); }
         }

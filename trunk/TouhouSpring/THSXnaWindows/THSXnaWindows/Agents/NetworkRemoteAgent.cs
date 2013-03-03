@@ -33,7 +33,7 @@ namespace TouhouSpring.Agents
                 return;
             if (remoteCommand.RemoteAction != Client.RemoteCommand.RemoteActionEnum.SelectCards)
                 throw new ArgumentException("Remote Action is wrong");
-            List<BaseCard> selectedCards = new List<BaseCard>();
+            List<CardInstance> selectedCards = new List<CardInstance>();
             foreach (int i in remoteCommand.ResultParameters)
             {
                 selectedCards.Add(io.Candidates[i]);

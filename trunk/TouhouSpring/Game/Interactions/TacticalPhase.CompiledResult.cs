@@ -28,7 +28,7 @@ namespace TouhouSpring.Interactions
         private class CompiledPlayCard : CompiledResponse
         {
             private Int32 m_cardGuid;
-            public CompiledPlayCard(BaseCard card)
+            public CompiledPlayCard(CardInstance card)
             {
                 m_cardGuid = card.Guid;
             }
@@ -51,7 +51,7 @@ namespace TouhouSpring.Interactions
         private class CompiledActivateAssist : CompiledResponse
         {
             private Int32 m_cardGuid;
-            public CompiledActivateAssist(BaseCard card)
+            public CompiledActivateAssist(CardInstance card)
             {
                 m_cardGuid = card.Guid;
             }
@@ -100,7 +100,7 @@ namespace TouhouSpring.Interactions
         private class CompiledSacrifice : CompiledResponse
         {
             private Int32 m_cardGuid;
-            public CompiledSacrifice(BaseCard card)
+            public CompiledSacrifice(CardInstance card)
             {
                 m_cardGuid = card.Guid;
             }
@@ -123,7 +123,7 @@ namespace TouhouSpring.Interactions
         private class CompiledRedeem : CompiledResponse
         {
             private Int32 m_cardGuid;
-            public CompiledRedeem(BaseCard card)
+            public CompiledRedeem(CardInstance card)
             {
                 m_cardGuid = card.Guid;
             }
@@ -147,7 +147,7 @@ namespace TouhouSpring.Interactions
         {
             private Int32 m_attackerGuid;
             private Int32 m_defenderGuid;
-            public CompiledAttackCard(BaseCard attacker, BaseCard defender)
+            public CompiledAttackCard(CardInstance attacker, CardInstance defender)
             {
                 m_attackerGuid = attacker.Guid;
                 m_defenderGuid = defender.Guid;
@@ -163,7 +163,7 @@ namespace TouhouSpring.Interactions
                 return new Result
                 {
                     ActionType = Action.AttackCard,
-                    Data = new BaseCard[]
+                    Data = new CardInstance[]
                     {
                         GetAttackerBaseSet(actingPlayer).First(card => card.Guid == m_attackerGuid),
                         GetDefenderBaseSet(actingPlayer).First(card => card.Guid == m_defenderGuid)
@@ -176,7 +176,7 @@ namespace TouhouSpring.Interactions
         {
             private Int32 m_attackerGuid;
             private int m_playerIndex;
-            public CompiledAttackPlayer(BaseCard attacker, Player player)
+            public CompiledAttackPlayer(CardInstance attacker, Player player)
             {
                 m_attackerGuid = attacker.Guid;
                 m_playerIndex = player.Game.Players.IndexOf(player);
@@ -211,7 +211,7 @@ namespace TouhouSpring.Interactions
             return new CompiledPass();
         }
 
-        public CompiledResponse CompiledRespondPlay(BaseCard selectedCard)
+        public CompiledResponse CompiledRespondPlay(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -227,7 +227,7 @@ namespace TouhouSpring.Interactions
             return new CompiledPlayCard(selectedCard);
         }
 
-        public CompiledResponse CompiledRespondActivate(BaseCard selectedCard)
+        public CompiledResponse CompiledRespondActivate(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -259,7 +259,7 @@ namespace TouhouSpring.Interactions
             return new CompiledCastSpell(selectedSpell);
         }
 
-        public CompiledResponse CompiledRespondSacrifice(BaseCard selectedCard)
+        public CompiledResponse CompiledRespondSacrifice(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -275,7 +275,7 @@ namespace TouhouSpring.Interactions
             return new CompiledSacrifice(selectedCard);
         }
 
-        public CompiledResponse CompiledRespondRedeem(BaseCard selectedCard)
+        public CompiledResponse CompiledRespondRedeem(CardInstance selectedCard)
         {
             if (selectedCard == null)
             {
@@ -291,7 +291,7 @@ namespace TouhouSpring.Interactions
             return new CompiledRedeem(selectedCard);
         }
 
-        public CompiledResponse CompiledRespondAttackCard(BaseCard attacker, BaseCard defender)
+        public CompiledResponse CompiledRespondAttackCard(CardInstance attacker, CardInstance defender)
         {
             if (attacker == null)
             {
@@ -305,13 +305,13 @@ namespace TouhouSpring.Interactions
             Validate(new Result
             {
                 ActionType = Action.AttackCard,
-                Data = new BaseCard[] { attacker, defender }
+                Data = new CardInstance[] { attacker, defender }
             });
 
             return new CompiledAttackCard(attacker, defender);
         }
 
-        public CompiledResponse CompiledRespondAttackPlayer(BaseCard attacker, Player player)
+        public CompiledResponse CompiledRespondAttackPlayer(CardInstance attacker, Player player)
         {
             if (attacker == null)
             {

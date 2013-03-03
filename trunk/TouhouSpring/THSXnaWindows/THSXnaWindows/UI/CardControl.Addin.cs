@@ -15,7 +15,7 @@ namespace TouhouSpring.UI
 				get; private set;
 			}
 
-			public BaseCard Card
+			public CardInstance Card
 			{
 				get { return Control.Card; }
 			}

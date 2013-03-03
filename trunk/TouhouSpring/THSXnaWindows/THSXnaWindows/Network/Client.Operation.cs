@@ -203,12 +203,17 @@ namespace TouhouSpring.Network
                             }
                             command.ResultParameters = parameters.ToArray();
                             RemoteCommandEnqueue(command);
+                            List<CardInstance> selectedCards = new List<CardInstance>();
+                            for (int i = 3; i < parts.Count; i++)
+                            {
+                                selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
+                            }
                         }
                         else
                         {
                             if (!(CurrentIo is Interactions.SelectCards))
                                 throw new Exception("Wrong Phase");
-                            List<BaseCard> selectedCards = new List<BaseCard>();
+                            List<CardInstance> selectedCards = new List<CardInstance>();
                             for (int i = 3; i < parts.Count; i++)
                             {
                                 selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);

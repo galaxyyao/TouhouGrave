@@ -9,7 +9,7 @@ namespace TouhouSpring.Commands
     public class DealDamageToCard : BaseCommand
     {
         // TODO: change to some serializable reference
-        public BaseCard Target
+        public CardInstance Target
         {
             get; private set;
         }
@@ -19,7 +19,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public DealDamageToCard(BaseCard target, int damageToDeal, ICause cause)
+        public DealDamageToCard(CardInstance target, int damageToDeal, ICause cause)
             : base(cause)
         {
             if (target == null)

@@ -281,7 +281,7 @@ namespace TouhouSpring.Simulation
         public override void Make(Interactions.BaseInteraction io)
         {
             var selectCards = io as Interactions.SelectCards;
-            selectCards.Respond(new BaseCard[] { selectCards.Candidates[CardIndex] }.ToIndexable());
+            selectCards.Respond(new CardInstance[] { selectCards.Candidates[CardIndex] }.ToIndexable());
         }
 
         public override string Print(Interactions.BaseInteraction io)

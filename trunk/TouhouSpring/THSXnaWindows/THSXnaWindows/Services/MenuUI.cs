@@ -96,7 +96,8 @@ namespace TouhouSpring.Services
                             GameApp.Service<GameManager>().StartGame(param
                                 , new Agents.BaseAgent[] {
                                     new Agents.LocalPlayerAgent(),
-                                    new Agents.AIAgent()
+                                    new Agents.AIAgent(),
+                                    //new Agents.LocalPlayerAgent()
                                 });
                             break;
                         case "hotseat":
@@ -229,14 +230,14 @@ namespace TouhouSpring.Services
 
             param[0] = new GameStartupParameters()
             {
-                m_profile = new Profile() { Name = "夜空" },
+                m_profile = new Profile() { Name = "真凉" },
                 m_deck = deck1
             };
             param[0].m_profile.Decks.Add(deck1);
 
             param[1] = new GameStartupParameters()
             {
-                m_profile = new Profile() { Name = "星奈" },
+                m_profile = new Profile() { Name = "爱衣" },
                 m_deck = deck2
             };
             param[1].m_profile.Decks.Add(deck2);

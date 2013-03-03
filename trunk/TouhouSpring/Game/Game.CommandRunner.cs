@@ -163,17 +163,17 @@ namespace TouhouSpring
             }
         }
 
-        internal void SubscribeCardToCommands(BaseCard card)
+        internal void SubscribeCardToCommands(CardInstance card)
         {
             m_commonTargets.AddRange(card.Behaviors);
         }
 
-        internal void UnsubscribeCardFromCommands(BaseCard card)
+        internal void UnsubscribeCardFromCommands(CardInstance card)
         {
             m_commonTargets.RemoveRange(Math.Max(m_commonTargets.IndexOf(card.Behaviors.FirstOrDefault()), 0), card.Behaviors.Count);
         }
 
-        internal void SubscribeBehaviorToCommands(BaseCard card, Behaviors.IBehavior behavior)
+        internal void SubscribeBehaviorToCommands(CardInstance card, Behaviors.IBehavior behavior)
         {
             if (card.Owner.ActivatedAssits.Contains(card)
                 || card.Owner.m_battlefieldCards.Contains(card))
@@ -189,7 +189,7 @@ namespace TouhouSpring
             }
         }
 
-        internal void UnsubscribeBehaviorFromCommands(BaseCard card, Behaviors.IBehavior behavior)
+        internal void UnsubscribeBehaviorFromCommands(CardInstance card, Behaviors.IBehavior behavior)
         {
             if (card.Owner.ActivatedAssits.Contains(card)
                 || card.Owner.m_battlefieldCards.Contains(card))
