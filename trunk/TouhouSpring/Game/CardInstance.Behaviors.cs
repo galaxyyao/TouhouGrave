@@ -8,7 +8,7 @@ namespace TouhouSpring
 {
     public partial class CardInstance
     {
-        private class CounterItem
+        private struct CounterItem
         {
             public Behaviors.ICounter Counter;
             public int Count;
@@ -66,7 +66,7 @@ namespace TouhouSpring
             {
                 if (m_counters[i].Counter == counter)
                 {
-                    m_counters[i].Count += num;
+                    m_counters[i] = new CounterItem { Counter = counter, Count = m_counters[i].Count + num };
                     return;
                 }
                 else if (m_counters.GetType() == counter.GetType())
@@ -88,7 +88,7 @@ namespace TouhouSpring
             {
                 if (m_counters[i].Counter == counter)
                 {
-                    m_counters[i].Count -= num;
+                    m_counters[i] = new CounterItem { Counter = counter, Count = m_counters[i].Count - num };
                     if (m_counters[i].Count <= 0)
                     {
                         m_counters.RemoveAt(i);
