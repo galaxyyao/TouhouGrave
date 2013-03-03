@@ -8,7 +8,7 @@ namespace TouhouSpring.Behaviors
     public interface IBehaviorModel
     {
         string Name { get; set; }
-        string ModelTypeName { get; }
+        string BehaviorTypeName { get; }
         IBehavior CreateInitialized();
     }
 

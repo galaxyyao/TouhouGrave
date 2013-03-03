@@ -31,8 +31,8 @@ namespace TouhouSpring.Behaviors
             Game.IssueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Game.GetRemainingMana() + 1, this));
         }
 
-        [BehaviorModel(Category = "v0.5/Spell", DefaultName = "灵力炮")]
-        public class ModelType : BehaviorModel<Spell_ManaCannon>
+        [BehaviorModel(typeof(Spell_ManaCannon), Category = "v0.5/Spell", DefaultName = "灵力炮")]
+        public class ModelType : BehaviorModel
         {
         }
     }

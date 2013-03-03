@@ -35,8 +35,8 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        [BehaviorModel]
-        public class ModelType : BehaviorModel<ManaCost>
+        [BehaviorModel(typeof(ManaCost))]
+        public class ModelType : BehaviorModel
         {
             public int Cost { get; set; }
         }

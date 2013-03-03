@@ -145,8 +145,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "Core", Description = "The card is capable of being engaged into combats.")]
-        public class ModelType : BehaviorModel<Warrior>
+        [BehaviorModel(typeof(Warrior), Category = "Core", Description = "The card is capable of being engaged into combats.")]
+        public class ModelType : BehaviorModel
         {
             public bool Unique { get; set; }
             public int Attack { get; set; }

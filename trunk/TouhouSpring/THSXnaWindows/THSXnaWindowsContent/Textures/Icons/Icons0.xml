@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:TextureAtlas="TouhouSpring.TextureAtlas">
+  <Asset Type="TextureAtlas:Atlas">
+    <SubTextures>
+      <Item>
+        <Key>Freeze</Key>
+        <Value>
+          <SourceFile>Freeze.png</SourceFile>
+          <Left>0</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
+    </SubTextures>
+    <Width>64</Width>
+    <Height>64</Height>
+    <Texture Null="true" />
+  </Asset>
+</XnaContent>

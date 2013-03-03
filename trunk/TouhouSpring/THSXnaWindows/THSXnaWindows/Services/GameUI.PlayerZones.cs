@@ -62,7 +62,7 @@ namespace TouhouSpring.Services
 
             public PlayerZones(Player player, Style.IStyleContainer parent, XElement styleDefinition)
             {
-                var layout = new Style.LayoutGizmo(parent, styleDefinition);
+                var layout = new Style.LayoutGizmo<UI.TransformNode>(parent, styleDefinition);
                 layout.Initialize();
                 layout.Target.Dispatcher = parent.Target;
                 layout.BindingProvider = this;

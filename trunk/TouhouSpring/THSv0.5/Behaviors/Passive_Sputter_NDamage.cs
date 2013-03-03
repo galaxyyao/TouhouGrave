@@ -19,13 +19,12 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "溅射")]
-        public class ModelType:BehaviorModel<Passive_Sputter_NDamage>
+        [BehaviorModel(typeof(Passive_Sputter_NDamage), Category = "v0.5/Passive", DefaultName = "溅射")]
+        public class ModelType : BehaviorModel
         {
             public int DamageToDeal
             {
-                get;
-                set;
+                get; set;
             }
         }
     }

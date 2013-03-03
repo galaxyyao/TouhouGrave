@@ -32,13 +32,12 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Assist", DefaultName = "大规模溅射")]
-        public class ModelType : BehaviorModel<Assist_MassSputter_NDamage>
+        [BehaviorModel(typeof(Assist_MassSputter_NDamage), Category = "v0.5/Assist", DefaultName = "大规模溅射")]
+        public class ModelType : BehaviorModel
         {
             public int DamageToDeal
             {
-                get;
-                set;
+                get; set;
             }
         }
     }

@@ -58,7 +58,7 @@ namespace TouhouSpring.UI.CardControlAddins
             {
                 // get the center position of the card in screen space
                 var pt = new Vector3(Control.Region.Width / 2, Control.Region.Height / 2, 0);
-                pt = (Control.Style.ChildIds["Body"].Target as ITransformNode).TransformToGlobal.TransformCoord(pt);
+                pt = Control.BodyContainer.TransformToGlobal.TransformCoord(pt);
                 var halfVpWidth = GameApp.Instance.GraphicsDevice.Viewport.Width * 0.5f;
                 var halfVpHeight = GameApp.Instance.GraphicsDevice.Viewport.Height * 0.5f;
                 var screenPt = new Vector2(pt.X * halfVpWidth + halfVpWidth, halfVpHeight - pt.Y * halfVpHeight);

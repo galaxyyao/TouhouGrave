@@ -51,8 +51,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Passive", DefaultName = "死后炸弹")]
-        public class ModelType : BehaviorModel<Passive_DeathBomb>
+        [BehaviorModel(typeof(Passive_DeathBomb), Category = "v0.5/Passive", DefaultName = "死后炸弹")]
+        public class ModelType : BehaviorModel
         {
             public int Damage { get; set; }
         }

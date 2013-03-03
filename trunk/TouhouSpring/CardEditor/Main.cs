@@ -32,7 +32,7 @@ namespace TouhouSpring
             foreach (var t in AssemblyReflection.GetTypesImplements<Behaviors.IBehaviorModel>().Where(t => !t.IsAbstract))
             {
                 var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
-                if (bhvAttr == null)
+                if (bhvAttr == null || bhvAttr.HideFromEditor)
                 {
                     continue;
                 }
@@ -55,7 +55,7 @@ namespace TouhouSpring
                     }
                 }
 
-                var item = new ToolStripMenuItem(bhvAttr.DefaultName ?? (t.Assembly.CreateInstance(t.FullName) as Behaviors.IBehaviorModel).ModelTypeName);
+                var item = new ToolStripMenuItem(bhvAttr.DefaultName);
                 item.Tag = t;
                 item.Click += new EventHandler(NewBehavior_Click);
                 rootMenu.Add(item);

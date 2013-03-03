@@ -62,7 +62,8 @@ namespace TouhouSpring.Behaviors
             m_attackModifier = (original as Enhance).m_attackModifier;
         }
 
-        public class ModelType : BehaviorModel<Enhance>
+        [BehaviorModel(typeof(Enhance), HideFromEditor = true)]
+        public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }
         }

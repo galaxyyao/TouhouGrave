@@ -47,6 +47,7 @@ namespace TouhouSpring
 		public void ReleaseAll()
 		{
 			m_resources.ForEach(res => GameApp.Service<Services.ResourceManager>().Release(res));
+            m_resources.Clear();
 		}
 	}
 }

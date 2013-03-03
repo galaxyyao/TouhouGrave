@@ -9,6 +9,15 @@ namespace TouhouSpring.Behaviors
         IPrerequisiteTrigger<Commands.PlayCard>,
         IEpilogTrigger<Commands.PlayCard>
     {
+        private class Effect : Neutralize, IStatusEffect
+        {
+            public string IconUri { get { return "atlas:Textures/Icons/Icons0$Freeze"; } }
+            public string Text { get { return "冰冻\n该角色无法进攻。"; } }
+
+            [BehaviorModel(typeof(Effect), HideFromEditor = true)]
+            new public class ModelType : Neutralize.ModelType { }
+        }
+
         public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host
@@ -30,7 +39,7 @@ namespace TouhouSpring.Behaviors
                                                  .SelectMany(player => player.CardsOnBattlefield))
                 {
                     var lasting = new LastingEffect.ModelType { Duration = 2 }.CreateInitialized();
-                    var neutralize = new Neutralize.ModelType().CreateInitialized();
+                    var neutralize = new Effect.ModelType().CreateInitialized();
                     (lasting as LastingEffect).CleanUps.Add(neutralize);
                     Game.IssueCommands(
                         new Commands.AddBehavior(card, neutralize),
@@ -39,8 +48,8 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(Category = "v0.5/Spell", DefaultName = "冰冻")]
-        public class ModelType : BehaviorModel<Spell_Freeze>
+        [BehaviorModel(typeof(Spell_Freeze), Category = "v0.5/Spell", DefaultName = "冰冻")]
+        public class ModelType : BehaviorModel
         {
         }
     }

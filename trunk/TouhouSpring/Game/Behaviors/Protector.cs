@@ -7,8 +7,8 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Protector : BaseBehavior<Protector.ModelType>
     {
-        [BehaviorModel(Category = "Core")]
-        public class ModelType : BehaviorModel<Protector>
+        [BehaviorModel(typeof(Protector), Category = "Core")]
+        public class ModelType : BehaviorModel
         { }
     }
 }

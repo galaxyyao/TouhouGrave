@@ -119,38 +119,20 @@
       <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
     </Layout>
   </PlayerZones>
-  <Card Id="Large" Width="210" Height="300">
+  <Card Id="Normal" Width="210" Height="300">
     <Transform Matrix="#CardAnimator.LocationTransform#" />
     <Layout Id="Main">
+      <Transform Translation="0,0,#PileBackOffset#" />
       <Transform Matrix="#CardAnimator.InstantRotation#" />
       <Transform Matrix="#CardAnimator.HighlightTransform#" />
       <Transform Scaling="0.0048,-0.0048,0.0048" />
       <Transform Matrix="#CardAnimator.Flip#" />
       <Layout Id="Body">
-        <Transform Translation="0,0,#PileBackOffset#" />
-        <!-- card's artwork -->
-        <Layout Width="192" HorizontalAlignment="Center">
-          <Image Uri="#Card.ImageUri#" Blend="Opaque">
-            <Content Stretch="UniformToFill" VerticalAlignment="Top" />
-            <Bounds Top="28" Width="100%" Height="142" />
-          </Image>
-        </Layout>
-        <!-- frame -->
-        <Image Id="CardFrame" Uri="Textures/CardFrame" />
         <Image Id="CardBack" Uri="Textures/CardBack">
           <Transform Translation="-105" />
           <Transform Scaling="-1,1" />
           <Transform Translation="105" />
         </Image>
-        <!-- name -->
-        <Label Font="DFKai-SB,20" AnsiFont="Constantia,20" Text="#Card.Name#" Color="Black">
-          <Bounds Left="12" Top="12" />
-          <Transform Scaling="0.5,0.5" />
-        </Label>
-        <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
-          <Bounds Top="240" HorizontalAlignment="Center" />
-        </Label>
-        <Label Font="Constantia,28,bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />
       </Layout>
     </Layout>
   </Card>
@@ -165,4 +147,53 @@
       </Layout>
     </Layout>
   </Card>
+  <CardDesign Name="Normal">
+    <!-- card's artwork -->
+    <Layout Width="192" HorizontalAlignment="Center">
+      <Image Uri="#Card.ImageUri#" Blend="Opaque">
+        <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+        <Bounds Top="28" Width="100%" Height="142" />
+      </Image>
+    </Layout>
+    <!-- frame -->
+    <Image Uri="Textures/CardFrame" />
+    <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
+      <Bounds Top="240" HorizontalAlignment="Center" />
+    </Label>
+    <Label Font="Constantia,28,bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />
+  </CardDesign>
+  <CardDesign Name="NoResource">
+    <!-- card's artwork -->
+    <Layout Width="192" HorizontalAlignment="Center">
+      <Image Uri="#Card.ImageUri#" Blend="Opaque">
+        <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+        <Bounds Top="28" Width="100%" Height="142" />
+      </Image>
+    </Layout>
+    <!-- frame -->
+    <Image Uri="Textures/CardFrame" />
+    <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
+      <Bounds Top="240" HorizontalAlignment="Center" />
+    </Label>
+  </CardDesign>
+  <CardDesign Name="Full">
+    <!-- card's artwork -->
+    <Layout Width="192" HorizontalAlignment="Center">
+      <Image Uri="#Card.ImageUri#" Blend="Opaque">
+        <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+        <Bounds Top="28" Width="100%" Height="142" />
+      </Image>
+    </Layout>
+    <!-- frame -->
+    <Image Uri="Textures/CardFrame" />
+    <!-- name -->
+    <Label Font="DFKai-SB,20" AnsiFont="Constantia,20" Text="#Card.Name#" Color="Black">
+      <Bounds Left="12" Top="12" />
+      <Transform Scaling="0.5,0.5" />
+    </Label>
+    <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
+      <Bounds Top="240" HorizontalAlignment="Center" />
+    </Label>
+    <Label Font="Constantia,28,bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />
+  </CardDesign>
 </Style>

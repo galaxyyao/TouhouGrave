@@ -22,7 +22,7 @@ namespace TouhouSpring.Services
                 throw new ArgumentException("The card is already registered.", "card");
             }
 
-            var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("Large"), card);
+            var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("Normal"), card);
             ccStyle.Initialize();
 
             var cardControl = ccStyle.TypedTarget;
@@ -34,6 +34,7 @@ namespace TouhouSpring.Services
             cardControl.Addins.Add(new UI.CardControlAddins.Flip(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.LocationAnimation(cardControl));
             cardControl.Addins.Add(new UI.CardControlAddins.ToneAnimation(cardControl));
+            cardControl.Addins.Add(new UI.CardControlAddins.CardIcons(cardControl));
             m_cardControls.Add(cardControl);
 
             if (card.Owner.CardsOnHand.Contains(card))
