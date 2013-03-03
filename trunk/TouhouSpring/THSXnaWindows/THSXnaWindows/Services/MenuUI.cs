@@ -254,6 +254,9 @@ namespace TouhouSpring.Services
         {
             if (m_networkClient != null && m_networkClient.RoomStatus == Network.Client.RoomStatusEnum.Starting)
             {
+                CurrentPage = null;
+                // detach menu ui
+                Root.Dispatcher = null;
                 if (m_networkClient.Seed != -1)
                 {
                     System.Diagnostics.Debug.Print(string.Format("Seed: {0}", m_networkClient.Seed));
