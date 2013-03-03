@@ -78,7 +78,7 @@ namespace TouhouSpring.Interactions
         /// <param name="result">The result of this interaction</param>
         protected void RespondBack<TResult>(TResult result)
         {
-            var s = this.GetType().Name;
+
             switch (this.GetType().Name)
             {
                 case "TacticalPhase":

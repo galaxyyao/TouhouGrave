@@ -11,6 +11,8 @@ namespace TouhouSpring.Network
     {
         private List<string> _messageQueue = new List<string>();
 
+
+
         public void Connect(string host, int port)
         {
             _client.Start();
@@ -110,62 +112,122 @@ namespace TouhouSpring.Network
                     break;
                 case "switchturn":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo).RespondPass();
+                        CurrentIo = null;
                     }
                     break;
                 case "sacrifice":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondSacrifice(((Interactions.TacticalPhase)CurrentIo).SacrificeCandidates[Convert.ToInt32(parts[2])]);
+                        CurrentIo = null;
                     }
                     break;
                 case "playcard":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondPlay(((Interactions.TacticalPhase)CurrentIo).PlayCardCandidates[Convert.ToInt32(parts[2])]);
+                        CurrentIo = null;
                     }
                     break;
                 case "attackcard":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondAttackCard(((Interactions.TacticalPhase)CurrentIo).AttackerCandidates[Convert.ToInt32(parts[2])]
                             , ((Interactions.TacticalPhase)CurrentIo).DefenderCandidates[Convert.ToInt32(parts[3])]);
+                        CurrentIo = null;
                     }
                     break;
                 case "attackplayer":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondAttackPlayer(((Interactions.TacticalPhase)CurrentIo).AttackerCandidates[Convert.ToInt32(parts[2])]
                             , CurrentIo.Game.ActingPlayerEnemies.FirstOrDefault());
+                        CurrentIo = null;
                     }
                     break;
                 case "activateassist":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondActivate(((Interactions.TacticalPhase)CurrentIo).ActivateAssistCandidates[Convert.ToInt32(parts[2])]);
+                        CurrentIo = null;
                     }
                     break;
                 case "castspell":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondCast(((Interactions.TacticalPhase)CurrentIo).CastSpellCandidates[Convert.ToInt32(parts[2])]);
+                        CurrentIo = null;
                     }
                     break;
                 case "selectcards":
                     {
-                        List<BaseCard> selectedCards = new List<BaseCard>();
-                        for (int i = 3; i < parts.Count; i++)
+                        if (CurrentIo == null)
                         {
-                            selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
+                            RemoteCommand command = new RemoteCommand
+                            {
+                                RemoteAction = RemoteCommand.RemoteActionEnum.SelectCards,
+                            };
+                            List<int> parameters = new List<int>();
+                            for (int i = 3; i < parts.Count; i++)
+                            {
+                                parameters.Add(Convert.ToInt32(parts[i]));
+                            }
+                            command.ResultParameters = parameters.ToArray();
+                            RemoteCommandEnqueue(command);
                         }
-                        ((Interactions.SelectCards)CurrentIo)
-                            .Respond(selectedCards.ToIndexable());
+                        else
+                        {
+                            if (!(CurrentIo is Interactions.SelectCards))
+                                throw new Exception("Wrong Phase");
+                            List<BaseCard> selectedCards = new List<BaseCard>();
+                            for (int i = 3; i < parts.Count; i++)
+                            {
+                                selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
+                            }
+                            ((Interactions.SelectCards)CurrentIo)
+                                .Respond(selectedCards.ToIndexable());
+                            CurrentIo = null;
+                        }
                     }
                     break;
                 case "redeem":
                     {
+                        if (CurrentIo == null)
+                            throw new Exception("current io is null");
+                        if (!(CurrentIo is Interactions.TacticalPhase))
+                            throw new Exception("Wrong Phase");
                         ((Interactions.TacticalPhase)CurrentIo)
                             .RespondRedeem(((Interactions.TacticalPhase)CurrentIo).RedeemCandidates[Convert.ToInt32(parts[2])]);
+                        CurrentIo = null;
                     }
                     break;
                 default:

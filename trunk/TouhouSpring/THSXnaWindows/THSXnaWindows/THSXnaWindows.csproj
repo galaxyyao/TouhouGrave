@@ -101,6 +101,7 @@
     <Compile Include="Graphics\VirtualTexture.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Client.Operation.cs" />
+    <Compile Include="Network\Client.RemoteCommand.cs" />
     <Compile Include="Ray.cs" />
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
