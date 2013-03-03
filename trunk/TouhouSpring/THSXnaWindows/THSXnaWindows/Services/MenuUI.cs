@@ -262,6 +262,10 @@ namespace TouhouSpring.Services
                         playerParam.m_seed = m_networkClient.Seed;
                     }
                 }
+
+                CurrentPage = null;
+                Root.Dispatcher = null;
+
                 if (m_networkClient.StartupIndex == 0)
                 {
                     GameApp.Service<GameManager>().StartGame(param
