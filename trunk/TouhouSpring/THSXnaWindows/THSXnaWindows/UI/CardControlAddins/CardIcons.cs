@@ -43,20 +43,21 @@ namespace TouhouSpring.UI.CardControlAddins
             var statusEffectBhvs = Card.Behaviors.OfType<Behaviors.IStatusEffect>().Take(MaxIcons - counters.Count).ToList();
 
             IconItem[] newArray = new IconItem[MaxIcons];
+            int newIndex = 0;
             for (int i = 0; i < counters.Count; ++i)
             {
                 var counter = counters[i];
                 int oldIndex = m_icons.FindIndex(item => item.m_counter == counter);
                 if (oldIndex >= 0)
                 {
-                    newArray[i] = m_icons[oldIndex];
-                    newArray[i].m_ui.Dispatcher = null;
+                    newArray[newIndex] = m_icons[oldIndex];
+                    newArray[newIndex++].m_ui.Dispatcher = null;
                     m_icons[oldIndex].m_counter = null;
                 }
                 else
                 {
-                    newArray[i].m_counter = counter;
-                    newArray[i].m_ui = new Icon
+                    newArray[newIndex].m_counter = counter;
+                    newArray[newIndex].m_ui = new Icon
                     {
                         Counter = counter,
                         Card = Card,
@@ -66,7 +67,7 @@ namespace TouhouSpring.UI.CardControlAddins
                         CounterNumberFormatOptions = m_counterFmtOptions,
                         LabelTextFormatOptions = m_textFmtOptions
                     };
-                    newArray[i].m_ui.Initialize();
+                    newArray[newIndex++].m_ui.Initialize();
                 }
             }
             for (int i = 0; i < statusEffectBhvs.Count; ++i)
@@ -75,14 +76,14 @@ namespace TouhouSpring.UI.CardControlAddins
                 int oldIndex = m_icons.FindIndex(item => item.m_statusEffect == bhv);
                 if (oldIndex >= 0)
                 {
-                    newArray[i] = m_icons[oldIndex];
-                    newArray[i].m_ui.Dispatcher = null;
+                    newArray[newIndex] = m_icons[oldIndex];
+                    newArray[newIndex++].m_ui.Dispatcher = null;
                     m_icons[oldIndex].m_statusEffect = null;
                 }
                 else
                 {
-                    newArray[i].m_statusEffect = bhv;
-                    newArray[i].m_ui = new Icon
+                    newArray[newIndex].m_statusEffect = bhv;
+                    newArray[newIndex].m_ui = new Icon
                     {
                         StatusEffect = bhv,
                         Card = (bhv as Behaviors.IBehavior).Host,
@@ -92,7 +93,7 @@ namespace TouhouSpring.UI.CardControlAddins
                         CounterNumberFormatOptions = m_counterFmtOptions,
                         LabelTextFormatOptions = m_textFmtOptions
                     };
-                    newArray[i].m_ui.Initialize();
+                    newArray[newIndex++].m_ui.Initialize();
                 }
             }
             
