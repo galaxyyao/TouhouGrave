@@ -22,6 +22,7 @@ namespace TouhouSpring.Agents
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
             _client.CurrentIo = io;
+
         }
 
         public override void OnSelectCards(Interactions.SelectCards io)
