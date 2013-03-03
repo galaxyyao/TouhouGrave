@@ -49,18 +49,26 @@
       <!--This layer is for drawing the in-game UI (e.g. avatars, next button)-->
       <Transform Matrix="#Game.UICamera.Transform#" />
       <!-- 1P -->
-      <Layout Left="20" Top="610" Width="135" Height="135">
-        <Transform Scaling="0.5,0.5" />
-        <Image Uri="#Game.Player0.Avatar#" Left="20" Top="19" />
-        <Image Uri="#Game.Player0.AvatarBorder#" />
+      <Layout Left="20" Top="610" Width="128" Height="128">
+        <Image Uri="#Game.Player0.Avatar#">
+          <Bounds HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="110" />
+          <Content Stretch="Uniform" />
+        </Image>
+        <Image Uri="#Game.Player0.AvatarBorder#" Width="128" Height="128">
+          <Content Stretch="Uniform" />
+        </Image>
       </Layout>
       <Label Font="DFKai-SB,16" AnsiFont="Constantia,16" Text="#Game.Player0.Name#" Color="White" Left="15" Top="570" />
       <Label Font="DFKai-SB,16" AnsiFont="Constantia,16" Text="HP: #Game.Player0.Health#" Color="White" Left="95" Top="570" />
       <!-- 2P -->
-      <Layout Right="20" Top="20" Width="135" Height="135">
-        <Transform Scaling="0.5,0.5" />
-        <Image Uri="#Game.Player1.Avatar#" Left="20" Top="19" />
-        <Image Uri="#Game.Player1.AvatarBorder#" />
+      <Layout Right="20" Top="20" Width="128" Height="128">
+        <Image Uri="#Game.Player1.Avatar#">
+          <Bounds HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="110" />
+          <Content Stretch="Uniform" />
+        </Image>
+        <Image Uri="#Game.Player1.AvatarBorder#" Width="128" Height="128">
+          <Content Stretch="Uniform" />
+        </Image>
       </Layout>
       <Label Font="DFKai-SB,16" AnsiFont="Constantia,16" Text="#Game.Player1.Name#" Color="White" Left="860" Top="160" />
       <Label Font="DFKai-SB,16" AnsiFont="Constantia,16" Text="HP: #Game.Player1.Health#" Color="White" Left="940" Top="160" />
