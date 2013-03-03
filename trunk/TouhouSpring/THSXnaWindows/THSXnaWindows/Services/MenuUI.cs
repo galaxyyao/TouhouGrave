@@ -96,7 +96,8 @@ namespace TouhouSpring.Services
                             GameApp.Service<GameManager>().StartGame(param
                                 , new Agents.BaseAgent[] {
                                     new Agents.LocalPlayerAgent(),
-                                    new Agents.AIAgent()
+                                    new Agents.AIAgent(),
+                                    //new Agents.LocalPlayerAgent()
                                 });
                             break;
                         case "hotseat":

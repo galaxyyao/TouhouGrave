@@ -15,9 +15,22 @@
           <SourceHeight>64</SourceHeight>
         </Value>
       </Item>
+      <Item>
+        <Key>sakura</Key>
+        <Value>
+          <SourceFile>sakura.png</SourceFile>
+          <Left>64</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
     </SubTextures>
-    <Width>64</Width>
-    <Height>64</Height>
+    <Width>128</Width>
+    <Height>128</Height>
     <Texture Null="true" />
   </Asset>
 </XnaContent>

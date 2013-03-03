@@ -22,6 +22,12 @@ namespace TouhouSpring
                 clonedCard.Behaviors.Add((Behaviors[i].Model as Behaviors.IInternalBehaviorModel).Instantiate());
             }
 
+            clonedCard.m_counters.Capacity = m_counters.Capacity;
+            foreach (var item in m_counters)
+            {
+                clonedCard.m_counters.Add(item);
+            }
+
             return clonedCard;
         }
 

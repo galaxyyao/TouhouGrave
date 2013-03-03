@@ -41,13 +41,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\ForceAttack.cs" />
+    <Compile Include="Behaviors\ICounter.cs" />
     <Compile Include="Behaviors\IStatusEffect.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />
     <Compile Include="CardInstance.cs" />
+    <Compile Include="Commands\AddCounter.cs" />
     <Compile Include="Commands\AddPlayerLife.cs" />
     <Compile Include="Commands\AddPlayerMana.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />
+    <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
     <Compile Include="ValueModifier.cs" />
