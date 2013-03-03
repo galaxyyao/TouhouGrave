@@ -46,6 +46,7 @@
     <Compile Include="Commands\DeactivateAssist.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
+    <Compile Include="Game.Command.cs" />
     <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseCard.Behaviors.cs" />
