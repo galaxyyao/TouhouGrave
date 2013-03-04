@@ -187,12 +187,12 @@ namespace TouhouSpring.Graphics
 
                 var batchSize = counter - arrayStart;
                 var bufferOffset = CopyInstanceVertices(vertices, arrayStart, batchSize);
-                device.SetVertexBuffer(m_verticesDraw, bufferOffset);
+                device.SetVertexBuffer(m_verticesDraw);
 
                 foreach (var pass in m_techDraw.Passes)
                 {
                     pass.Apply();
-                    device.DrawPrimitives(PrimitiveType.TriangleList, 0, counter / 3);
+                    device.DrawPrimitives(PrimitiveType.TriangleList, bufferOffset, counter / 3);
                 }
             }
 
