@@ -31,9 +31,9 @@ namespace TouhouSpring.Graphics
             V2DRuntime.ResourceManager.Instance = null;
         }
 
-        public void Render(SwfInstance swfInstance)
+        public void Draw(SwfInstance swfInstance)
         {
-            swfInstance.Render(m_spriteBatch);
+            swfInstance.Draw(m_spriteBatch);
         }
     }
 }

@@ -41,10 +41,10 @@ namespace DDW.Display
             this.SymbolImport = symbolImport;
 
 			EnsureV2DWorld();
-			if (SymbolImport == null || SymbolImport.instanceName == V2DGame.currentRootName)
+			if (SymbolImport == null || SymbolImport.instanceName == CurrentRootName)
 			{
 				instanceDefinition = v2dWorld.RootInstance;
-				instanceName = V2DGame.ROOT_NAME;
+				instanceName = ROOT_NAME;
 			}
 			else
 			{
@@ -113,7 +113,7 @@ namespace DDW.Display
 
 		public override void Activate()
 		{
-			V2DGame.currentRootName = instanceDefinition.InstanceName == null ? V2DGame.ROOT_NAME : instanceDefinition.InstanceName;
+			CurrentRootName = instanceDefinition.InstanceName == null ? ROOT_NAME : instanceDefinition.InstanceName;
             base.Activate();
 		}
 
@@ -128,10 +128,6 @@ namespace DDW.Display
 		{
 			base.Removed(e);
 			Deactivate();
-		}
-		protected override void OnAddToStageComplete()
-		{
-			base.OnAddToStageComplete();
 		}
 
         public SymbolImport SymbolImport
@@ -194,7 +190,7 @@ namespace DDW.Display
                 content = V2DRuntime.ResourceManager.Instance.LoadV2DContent(SymbolImport.assetName);
                 v2dWorld = content.v2dWorld;
                 textures = content.textures;
-				v2dWorld.RootInstance.Definition = v2dWorld.GetDefinitionByName(V2DGame.ROOT_NAME);
+				v2dWorld.RootInstance.Definition = v2dWorld.GetDefinitionByName(ROOT_NAME);
 			}
 		}
 

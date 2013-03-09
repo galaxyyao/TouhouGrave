@@ -16,6 +16,9 @@ namespace DDW.Display
         public static float MillisecondsPerFrame = 1000.0f / 12.0f;
         public static Matrix GlobalTransform = Matrix.Identity;
 
+        public const string ROOT_NAME = V2D.Serialization.V2DWorld.ROOT_NAME;
+        public static string CurrentRootName = V2D.Serialization.V2DWorld.ROOT_NAME;
+
 		protected Texture2D texture; // texture evetually will be a 'graphics' generic class
 		protected V2DInstance instanceDefinition;
 
@@ -27,9 +30,7 @@ namespace DDW.Display
 		public int DepthGroup = 0;
 
         public int id;
-		public bool isInitialized = false;
         private static int idCounter = 0;//int.MinValue;
-		private bool isOnStage = false;
 
 		public DisplayObject()
 		{
@@ -66,11 +67,9 @@ namespace DDW.Display
 
         protected bool visible = true;
         protected DisplayObjectContainer parent;
-		protected Stage stage;
         protected Screen screen;
         public bool isActive = true;
 
-		public bool IsOnStage { get { return isOnStage; } }
         public Texture2D Texture
         {
             get
@@ -306,17 +305,6 @@ namespace DDW.Display
                 parent = value;
             }
         }
-        public Stage Stage
-        {
-            get
-            {
-                return stage;
-            }
-            set
-            {
-                stage = value;
-            }
-        }
 		public Screen Screen 
 		{			
             get
@@ -329,14 +317,7 @@ namespace DDW.Display
             }
 		}
         #endregion
-		public virtual void Initialize()
-        {
-			isInitialized = true;
-        }
-		protected virtual void OnAddToStageComplete()
-		{
-			this.Initialize();
-		}
+
         public virtual DisplayObject Clone()
         {
             DisplayObject result = new DisplayObject();
@@ -354,24 +335,10 @@ namespace DDW.Display
             result.visible = visible;
             result.transforms = (V2DTransform[])transforms.Clone();
             result.parent = parent;
-            result.stage = stage;
             result.id = idCounter++;
             return result;
         }
 
-        protected Stage GetStage()
-        {
-            Stage result = null;
-            if (parent != null)
-            {
-                result = parent.GetStage();
-            }
-            else
-            {
-                result = (this is Stage) ? (Stage)this : null;
-            }
-            return result;
-        }
 		protected Screen GetScreen()
         {
             Screen result = null;
@@ -404,57 +371,22 @@ namespace DDW.Display
 		//    return result;
 		//}
 
-		public virtual void SetStageAndScreen()
+		public virtual void SetScreen()
 		{
-			if (!isOnStage)
-			{
-				stage = GetStage();
-				screen = GetScreen();
-			}
+			screen = GetScreen();
 		}
 		/// <summary>
 		/// When object is added to a parent object. Parent isn't neccesarily on stage.
 		/// </summary>
         public virtual void Added(EventArgs e)
         {
-            if (!isOnStage && stage != null)
-            {
-				stage.ObjectAddedToStage(this);
-            }
         }
 		/// <summary>
 		/// When object is removed to a parent object. Parent isn't neccesarily on stage.
 		/// </summary>
         public virtual void Removed(EventArgs e)
 		{
-            if (isOnStage)
-            {
-                this.RemovedFromStage(e);
-            }
             //this.parent = null;
-        }
-		/// <summary>
-		/// When this object, or a parent object is added to stage.
-		/// </summary>
-        public virtual void AddedToStage(EventArgs e)
-		{
-			isOnStage = true;
-			if (parent.isInitialized)
-			{
-				OnAddToStageComplete();
-			}
-        }
-		/// <summary>
-		/// When this object, or a parent object is removed from stage.
-		/// </summary>
-        public virtual void RemovedFromStage(EventArgs e)
-        {
-            if (stage != null)
-            {
-				stage.ObjectRemovedFromStage(this);
-            }
-			isOnStage = false;
-			stage = null;
         }
 
 		//public void LocalToGlobal(ref float x, ref float y)
@@ -544,7 +476,6 @@ namespace DDW.Display
 
         public virtual void DestroyView()
         {
-            this.isInitialized = false;
         }
         public virtual void CreateView()
         {

@@ -320,8 +320,8 @@ namespace TouhouSpring.Services
 
         public override void Render()
         {
-            GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation);
-            GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation2);
+            GameApp.Service<Graphics.SwfRenderer>().Draw(m_testAnimation);
+            GameApp.Service<Graphics.SwfRenderer>().Draw(m_testAnimation2);
         }
     }
 }
