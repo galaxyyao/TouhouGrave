@@ -14,6 +14,7 @@ namespace DDW.Display
     public class DisplayObject : IDrawable
     {
         public static float MillisecondsPerFrame = 1000.0f / 12.0f;
+        public static Matrix GlobalTransform = Matrix.Identity;
 
 		protected Texture2D texture; // texture evetually will be a 'graphics' generic class
 		protected V2DInstance instanceDefinition;

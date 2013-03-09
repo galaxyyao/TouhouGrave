@@ -11,7 +11,6 @@ namespace DDW.V2D
     public abstract class V2DGame : Microsoft.Xna.Framework.Game
     {
         public static V2DGame instance;
-        public static Stage stage;
         public static ContentManager contentManager;
         public const string ROOT_NAME = V2DWorld.ROOT_NAME;
         public static string currentRootName = V2DWorld.ROOT_NAME;
@@ -34,7 +33,6 @@ namespace DDW.V2D
             graphics = new GraphicsDeviceManager(this);
             contentManager = Content;
             Content.RootDirectory = "Content";
-            stage = new V2DStage();
         }
 
         protected virtual void CreateScreens()
@@ -47,9 +45,7 @@ namespace DDW.V2D
         {
             base.Initialize();
 
-            stage.Initialize();
             CreateScreens();
-            stage.SetScreen(0);
         }
 
         public void SetSize(int width, int height)
@@ -61,7 +57,6 @@ namespace DDW.V2D
                 graphics.PreferredBackBufferHeight = height;
                 graphics.IsFullScreen = this.isFullScreen;
                 graphics.ApplyChanges();
-                stage.SetBounds(0, 0, width, height);
             }
         }
 
@@ -75,19 +70,6 @@ namespace DDW.V2D
         public virtual void ExitGame()
         {
             this.Exit();
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            stage.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
-            base.Update(gameTime);
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            stage.Draw(spriteBatch);
-
-            base.Draw(gameTime);
         }
 
     }

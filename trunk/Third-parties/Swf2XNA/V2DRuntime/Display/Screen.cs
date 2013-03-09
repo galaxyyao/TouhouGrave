@@ -19,7 +19,6 @@ namespace DDW.Display
     public class Screen : DisplayObjectContainer
     {
         public V2DWorld v2dWorld;
-        public float MillisecondsPerFrame = 1000f / 12f;
         public Dictionary<string, Texture2D> textures = new Dictionary<string,Texture2D>();
         private SymbolImport symbolImport;
 
@@ -275,7 +274,7 @@ namespace DDW.Display
                    null, //DepthStencilState.None, 
                    null, //RasterizerState.CullNone, 
                    null,
-                   Stage.SpriteBatchMatrix);
+                   DisplayObject.GlobalTransform);
             }
 
             base.Draw(batch);
@@ -331,7 +330,7 @@ namespace DDW.Display
                          null, //DepthStencilState.None, 
                          null, //RasterizerState.CullNone, 
                          null,
-                         Stage.SpriteBatchMatrix);
+                         DisplayObject.GlobalTransform);
                 }
             }
 

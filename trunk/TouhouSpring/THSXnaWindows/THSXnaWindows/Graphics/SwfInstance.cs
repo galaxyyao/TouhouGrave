@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouSpring.Graphics
@@ -22,6 +23,11 @@ namespace TouhouSpring.Graphics
             get; set;
         }
 
+        public Matrix Transform
+        {
+            get; set;
+        }
+
         public SwfInstance(string assetName)
         {
             m_screen = new DDW.Display.Screen(new DDW.V2D.SymbolImport(assetName));
@@ -29,6 +35,7 @@ namespace TouhouSpring.Graphics
             m_container.AddChild(m_screen);
 
             TimeFactor = 1.0f;
+            Transform = Matrix.Identity;
         }
 
         public void Update(float deltaTime)
@@ -41,7 +48,10 @@ namespace TouhouSpring.Graphics
 
         public void Render(SpriteBatch spriteBatch)
         {
+            var tranformBackup = DDW.Display.DisplayObject.GlobalTransform;
+            DDW.Display.DisplayObject.GlobalTransform = Transform;
             m_screen.Draw(spriteBatch);
+            DDW.Display.DisplayObject.GlobalTransform = tranformBackup;
         }
     }
 }

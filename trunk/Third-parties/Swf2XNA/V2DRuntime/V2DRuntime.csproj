@@ -120,9 +120,6 @@
     <Compile Include="V2D\V2DGame.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V2D\V2DStage.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="V2D\V2DTransform.cs">
       <SubType>Code</SubType>
     </Compile>

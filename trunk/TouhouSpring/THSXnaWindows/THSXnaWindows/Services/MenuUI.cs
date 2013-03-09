@@ -27,6 +27,7 @@ namespace TouhouSpring.Services
         }
 
         private Graphics.SwfInstance m_testAnimation;
+        private Graphics.SwfInstance m_testAnimation2;
 
         public override void Startup()
         {
@@ -155,7 +156,18 @@ namespace TouhouSpring.Services
 
             CurrentPage = m_pages["MainMenu"];
 
-            m_testAnimation = new Graphics.SwfInstance("germs") { IsPlaying = true, TimeFactor = 2.0f };
+            m_testAnimation = new Graphics.SwfInstance("germs")
+            {
+                IsPlaying = true,
+                TimeFactor = 2.0f,
+                Transform = MatrixHelper.RotateZ(MathHelper.Pi / 4) * MatrixHelper.Translate(256f, 256f)
+            };
+
+            m_testAnimation2 = new Graphics.SwfInstance("28835")
+            {
+                IsPlaying = true,
+                Transform = MatrixHelper.Translate(768f, 0f)
+            };
         }
 
         private void PrepareGameStartupParam()
@@ -303,11 +315,13 @@ namespace TouhouSpring.Services
             }
 
             m_testAnimation.Update(deltaTime);
+            m_testAnimation2.Update(deltaTime);
         }
 
         public override void Render()
         {
             GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation);
+            GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation2);
         }
     }
 }

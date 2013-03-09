@@ -11,16 +11,12 @@ namespace DDW.Display
 {
     public class Stage : DisplayObjectContainer
     {
-        public static Matrix SpriteBatchMatrix = Matrix.Identity;
-
         protected List<Screen> screens = new List<Screen>();
         protected int curScreenIndex = 0;
         protected Screen curScreen;
 		protected Screen prevScreen;
 		public bool pause = false;
         public V2DShader defaultEffect;
-
-        public float MillisecondsPerFrame = 1000f / 12f;
 
         private Color clearColor;
 		
