@@ -114,7 +114,7 @@ namespace TouhouSpring
                 this.Exit();
 
             MouseState = Mouse.GetState();
-            GameApp.ServiceContainer.Traverse(TouhouSpring.Services.UpdateDependencyAttribute.Category, false, srv => srv.Update(gameTime.ElapsedGameTime.Milliseconds / 1000.0f));
+            GameApp.ServiceContainer.Traverse(TouhouSpring.Services.UpdateDependencyAttribute.Category, false, srv => srv.Update((float)(gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f)));
 
             base.Update(gameTime);
         }

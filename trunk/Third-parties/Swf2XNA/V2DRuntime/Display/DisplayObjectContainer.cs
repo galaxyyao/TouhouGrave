@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using DDW.Input;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using DDW.V2D;
@@ -241,13 +240,13 @@ namespace DDW.Display
         public virtual void GotoAndPlay(uint frame)
         {
             CurChildFrame = frame < 0 ? 0 : frame > LastChildFrame ? LastChildFrame : frame;
-            CurFrameTime = mspf * CurChildFrame;
+            CurFrameTime = MillisecondsPerFrame * CurChildFrame;
             isPlaying = true;
         }
         public virtual void GotoAndStop(uint frame)
         {
             CurChildFrame = frame < 0 ? 0 : frame > LastChildFrame ? LastChildFrame : frame;
-            CurFrameTime = mspf * CurChildFrame;
+            CurFrameTime = MillisecondsPerFrame * CurChildFrame;
             isPlaying = false;
         }
 
@@ -487,18 +486,7 @@ namespace DDW.Display
 			{
 				Type ft = fi.FieldType;
 
-				if (ft.BaseType.Name == typeof(V2DRuntime.Components.Group<>).Name && // IsSubclassOf etc doesn't work on generics?
-					 ft.BaseType.Namespace == typeof(V2DRuntime.Components.Group<>).Namespace)
-				{ 
-					// eg ButtonTabGroup
-					if (fi.GetValue(this) == null)
-					{
-						ConstructorInfo ci = ft.GetConstructor(new Type[] { typeof(Texture2D), typeof(V2DInstance) });
-                        result = (DisplayObject)ci.Invoke(new object[] { texture, inst }); 
-						fi.SetValue(this, result);
-					}
-				}
-				else if (ft.IsArray)
+				if (ft.IsArray)
 				{
 					object array = fi.GetValue(this);
 					Type elementType = ft.GetElementType();
@@ -644,32 +632,16 @@ namespace DDW.Display
 			return result;
 		}
          
-        public override bool OnPlayerInput(int playerIndex, Move move, TimeSpan time)
-        {
-            bool result = base.OnPlayerInput(playerIndex, move, time);
-			if (result)
-			{
-				foreach (DisplayObject d in children)
-				{
-					result = d.OnPlayerInput(playerIndex, move, time);
-					if (!result)
-					{
-						break;
-					}
-				}
-			}
-			return result;
-        }
-        public override void Update(GameTime gameTime)
+        public override void Update(float deltaTimeMs)
         {
             if (isActive && isPlaying && LastChildFrame > 0)
             {
-                CurFrameTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                CurChildFrame = ((uint)(CurFrameTime / mspf));
+                CurFrameTime += deltaTimeMs;
+                CurChildFrame = ((uint)(CurFrameTime / MillisecondsPerFrame));
                 if (CurChildFrame > LastChildFrame)
                 {
                     CurChildFrame = 0;
-                    CurFrameTime %= (mspf * (LastChildFrame + 1));
+                    CurFrameTime %= (MillisecondsPerFrame * (LastChildFrame + 1));
                     if (PlayheadWrap != null)
                     {
                         PlayheadWrap(this);
@@ -677,7 +649,7 @@ namespace DDW.Display
                 }
             }
 
-            base.Update(gameTime);
+            base.Update(deltaTimeMs);
 
             foreach (DisplayObject d in children)
             {
@@ -685,7 +657,7 @@ namespace DDW.Display
 				{
 					if (CurChildFrame >= d.State.StartFrame && CurChildFrame <= d.State.EndFrame)
 					{
-						d.Update(gameTime);
+                        d.Update(deltaTimeMs);
 					}
 				}
             }

@@ -634,6 +634,18 @@
       <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="28835.swf">
+      <Name>28835</Name>
+      <Importer>SwfImporter</Importer>
+      <Processor>SwfProcessor</Processor>
+    </Compile>
+    <Compile Include="germs.swf">
+      <Name>germs</Name>
+      <Importer>SwfImporter</Importer>
+      <Processor>SwfProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -93,10 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ScreenAttribute.cs" />
-    <Compile Include="Components\Button.cs" />
-    <Compile Include="Components\ButtonTabGroup.cs" />
-    <Compile Include="Components\Group.cs" />
-    <Compile Include="Components\TextBox.cs" />
     <Compile Include="Data\HighScoreDataItem.cs" />
     <Compile Include="Display\Delegates.cs" />
     <Compile Include="Display\DisplayObject.cs" />
@@ -104,7 +100,6 @@
     <Compile Include="Display\FontManager.cs" />
     <Compile Include="Display\IDrawable.cs" />
     <Compile Include="Display\IRenderable.cs" />
-    <Compile Include="Display\Panel.cs" />
     <Compile Include="Display\Screen.cs" />
     <Compile Include="Display\Sprite.cs" />
     <Compile Include="Display\Stage.cs" />
@@ -113,10 +108,6 @@
     <Compile Include="Enums\LivingState.cs" />
     <Compile Include="Enums\PlayerJoinState.cs" />
     <Compile Include="Enums\TransitionKind.cs" />
-    <Compile Include="Input\Direction.cs" />
-    <Compile Include="Input\InputManager.cs" />
-    <Compile Include="Input\Move.cs" />
-    <Compile Include="Input\MoveList.cs" />
     <Compile Include="IResourceManager.cs" />
     <Compile Include="Tween\Easing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

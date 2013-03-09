@@ -55,6 +55,7 @@
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/THSXnaWindows.csproj.Release.cachefile
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/bin/*
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindows/obj/*
+/trunk/TouhouSpring/THSXnaWindows/THSXnaWindowsContent/exports/*
 /trunk/TouhouSpring/THSXnaWindows/THSXnaWindowsContent/obj/*
 *.csproj.user
 *.contentproj.user

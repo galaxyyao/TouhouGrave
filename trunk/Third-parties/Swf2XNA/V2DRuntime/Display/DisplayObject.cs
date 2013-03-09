@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using V2DRuntime.V2D;
 using DDW.V2D;
-using DDW.Input;
 using V2DRuntime.Tween;
 using V2DRuntime.Display;
 
@@ -14,6 +13,8 @@ namespace DDW.Display
 {
     public class DisplayObject : IDrawable
     {
+        public static float MillisecondsPerFrame = 1000.0f / 12.0f;
+
 		protected Texture2D texture; // texture evetually will be a 'graphics' generic class
 		protected V2DInstance instanceDefinition;
 
@@ -23,8 +24,6 @@ namespace DDW.Display
         public static uint DepthCounter;
         public int Index = -1;
 		public int DepthGroup = 0;
-
-        protected float mspf;
 
         public int id;
 		public bool isInitialized = false;
@@ -438,7 +437,6 @@ namespace DDW.Display
 		/// </summary>
         public virtual void AddedToStage(EventArgs e)
 		{
-			mspf = (screen == null) ? stage.MillisecondsPerFrame : screen.MillisecondsPerFrame;
 			isOnStage = true;
 			if (parent.isInitialized)
 			{
@@ -601,17 +599,7 @@ namespace DDW.Display
 				this.State.EndFrame = instanceDefinition.EndFrame;
 			}
 		}
-        /// <summary>
-        /// The input into this element, based on settings and inputManager.
-        /// </summary>
-        /// <param name="playerIndex">PlayerInput based on controller.</param>
-        /// <param name="move">The Move the user made.</param>
-        /// <param name="time">Time of input.</param>
-        /// <returns>Returns true if the event should bubble, false is the move should be consumed.</returns>
-        public virtual bool OnPlayerInput(int playerIndex, Move move, TimeSpan time)
-		{
-			return true;
-        }
+
         protected int transformIndex = 0;
         //Vector2 absPosition;
         //float curRot;
@@ -716,13 +704,13 @@ namespace DDW.Display
 		}
 		protected Rectangle destRect;
 		protected SpriteEffects se = SpriteEffects.None;
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(float deltaTimeMs)
 		{
             if (isActive)
             {
                 if (tweenWorker != null)
                 {
-                    tweenWorker.Update(gameTime);
+                    tweenWorker.Update(deltaTimeMs);
                 }
 
                 SetCurrentState();

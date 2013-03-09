@@ -12,7 +12,7 @@ namespace V2DRuntime.Tween
     {
         public event TweenEvent TweenComplete;
         public DisplayObject target;
-        public TimeSpan duration;
+        public float duration;
         public EasingFormula easingFormula;
 
         private TweenState startState;
@@ -20,7 +20,7 @@ namespace V2DRuntime.Tween
 
         private bool isAnimating = true;
         private float t;
-        private TimeSpan elapsed;
+        private float elapsed;
         
         private bool hasPosition;
         private bool hasScale;
@@ -32,13 +32,13 @@ namespace V2DRuntime.Tween
         {
             this.StartState = startState;
             this.EndState = endState;
-            this.duration = new TimeSpan(0, 0, 0, 0, milliseconds);
+            this.duration = milliseconds;
         }
         public TweenWorker(TweenState startState, TweenState endState,  int milliseconds, EasingFormula easingFormula)
         {
             this.StartState = startState;
             this.EndState = endState;
-            this.duration = new TimeSpan(0, 0, 0, 0, milliseconds);
+            this.duration = milliseconds;
             this.easingFormula = easingFormula;
         }
         public TweenWorker(DisplayObject obj, TweenState endState,  int milliseconds)
@@ -46,14 +46,14 @@ namespace V2DRuntime.Tween
             this.target = obj;
             this.StartState = new TweenState(obj);
             this.EndState = endState;
-            this.duration = new TimeSpan(0, 0, 0, 0, milliseconds);
+            this.duration = milliseconds;
         }
         public TweenWorker(DisplayObject obj, TweenState endState,  int milliseconds, EasingFormula easingFormula)
         {
             this.target = obj;
             this.StartState = new TweenState(obj);
             this.EndState = endState;
-            this.duration = new TimeSpan(0, 0, 0, 0, milliseconds);
+            this.duration = milliseconds;
             this.easingFormula = easingFormula;
         }
 
@@ -103,11 +103,11 @@ namespace V2DRuntime.Tween
             isAnimating = false;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTimeMs)
         {
             if(isAnimating)
             {
-                elapsed += gameTime.ElapsedGameTime;
+                elapsed += deltaTimeMs;
                 if (elapsed > duration)
                 {
                     t = 1;
@@ -115,7 +115,7 @@ namespace V2DRuntime.Tween
                 }
                 else
                 {
-                    t = (float)(elapsed.TotalMilliseconds / duration.TotalMilliseconds);
+                    t = elapsed / duration;
 
                     if (easingFormula != null)
                     {

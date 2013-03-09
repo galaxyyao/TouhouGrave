@@ -6,8 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using DDW.V2D;
 using DDW.V2D.Serialization;
-using DDW.Input;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
 using V2DRuntime.Shaders;
@@ -27,22 +25,13 @@ namespace DDW.Display
 
 		public Vector2 ClientSize = new Vector2(400, 300);
 
-        protected MoveList moveList;
-        public InputManager[] inputManagers;
-        protected Move[] playerMoves;
-        protected TimeSpan[] playerMoveTimes;
-		readonly TimeSpan MoveTimeOut = TimeSpan.FromSeconds(1.0);
 		protected int framesBetweenPackets = 4;
 		protected int framesSinceLastSend;
-		protected bool enablePrediction = true;
-		protected bool enableSmoothing = true;
 		private List<DisplayObject> destructionList = new List<DisplayObject>();
         public Dictionary<int, V2DShader> shaderMap = new Dictionary<int, V2DShader>();
 
         public bool isFinalLevel = false;
         public bool isPersistantScreen = false;
-
-        protected bool allowKeyboardOnly = true;
 
         public Screen()
         {
@@ -127,25 +116,13 @@ namespace DDW.Display
 		{
 			V2DGame.currentRootName = instanceDefinition.InstanceName == null ? V2DGame.ROOT_NAME : instanceDefinition.InstanceName;
             base.Activate();
-            inputManagers = InputManager.Managers;
 		}
-        public override void Deactivate()
-        {
-            inputManagers = null;
-        }
-
-        public override void Initialize()
-        {
-			base.Initialize(); 			
-
-            SetValidInput();
-        }
 
 		public override void Added(EventArgs e)
 		{
             base.Added(e); 
 
-			V2DGame.instance.SetSize(v2dWorld.Width, v2dWorld.Height);
+			//V2DGame.instance.SetSize(v2dWorld.Width, v2dWorld.Height);
 			Activate();
 		}
 		public override void Removed(EventArgs e)
@@ -262,104 +239,17 @@ namespace DDW.Display
 			return result;
 		}
 
-        public virtual void SetValidInput()
-        {
-            inputManagers = InputManager.Managers;
-            moveList = new MoveList(new Move[]
-            {
-                Move.Up,
-                Move.Down,
-                Move.Left,
-                Move.Right,
-                Move.Start,
-                Move.Back,
-                Move.ButtonA,
-                Move.ButtonB,
-                Move.ButtonX,
-                Move.ButtonY,
-                Move.LeftShoulder,
-                Move.RightShoulder,
-                Move.LeftTrigger,
-                Move.RightTrigger,
-            });
-            
-            if (allowKeyboardOnly && this.inputManagers.Length == 0) // keyboard only
-            {
-                InputManager.AddInputManager(0);
-            }
-
-            // Give each player a location to store their most recent move.
-            playerMoves = new Move[inputManagers.Length];
-            playerMoveTimes = new TimeSpan[inputManagers.Length];
-			SetKeyboardController();
-        }
-
-		protected void SetKeyboardController()
-		{
-			bool hasController = false;
-			for (int i = 0; i < inputManagers.Length; i++)
-			{
-				if (inputManagers[i] != null)
-				{
-					inputManagers[i].IsActiveController = !hasController;
-					hasController = true;
-				}
-			}
-		}
-
-        protected void ManageInput(GameTime gameTime)
-        {
-            if (inputManagers != null)
-			{
-                InputManager.Update();
-				for (int i = 0; i < inputManagers.Length; ++i)
-                {
-                    if (inputManagers[i] != null)
-                    {
-                        InputManager inputManager = inputManagers[i];
-
-                        // Expire old moves.
-                        if (gameTime.TotalGameTime - playerMoveTimes[i] > MoveTimeOut)
-                        {
-                            playerMoves[i] = null;
-                        }
-
-                        // Get the updated input manager.
-                        inputManager.Update(gameTime);
-
-                        // Detection and record the current player's most recent move.
-                        Move newMove = moveList.DetectMove(inputManager);
-                        if (inputManager.Releases != 0)
-                        {
-                            //Move m = moveList.MatchButtons(new Buttons[]{inputManager.Releases});
-                            newMove = new Move("");
-                            newMove.Releases = inputManager.Releases;
-                        }
-
-                        if (newMove != null)
-                        {
-                            playerMoves[i] = newMove;
-                            playerMoveTimes[i] = gameTime.TotalGameTime;
-                            OnPlayerInput(i, playerMoves[i], playerMoveTimes[i]);
-                        }
-                    }
-                }
-            }
-		}
-
-		public virtual void SetBounds(float x, float y, float w, float h)
+        public virtual void SetBounds(float x, float y, float w, float h)
 		{
 		}
-		public override void Update(GameTime gameTime)
+		public override void Update(float deltaTimeMs)
         {
-			ManageInput(gameTime);
+            base.Update(deltaTimeMs);
 
-            base.Update(gameTime);
-
-			OnUpdateComplete(gameTime);		
+            OnUpdateComplete();		
 		}
 
-		public virtual void OnUpdateComplete(GameTime gameTime)
+		public virtual void OnUpdateComplete()
 		{
 			if (destructionList.Count > 0)
 			{

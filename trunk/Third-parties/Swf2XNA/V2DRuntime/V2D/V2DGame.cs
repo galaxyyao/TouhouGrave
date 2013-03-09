@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DDW.Display;
-using DDW.Input;
 using DDW.V2D.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -68,7 +67,7 @@ namespace DDW.V2D
 
         protected override void LoadContent()
         {
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
         protected override void UnloadContent()
         {
@@ -80,12 +79,12 @@ namespace DDW.V2D
 
         protected override void Update(GameTime gameTime)
         {
-			stage.Update(gameTime);
+            stage.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
-		{
+        {
             stage.Draw(spriteBatch);
 
             base.Draw(gameTime);

@@ -12,6 +12,7 @@ namespace TouhouSpring.Services
     [LifetimeDependency(typeof(Styler))]
     [LifetimeDependency(typeof(UIManager))]
     [UpdateDependency(typeof(UIManager))]
+    [LifetimeDependency(typeof(Graphics.SwfRenderer))]
     partial class MenuUI : GameService
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
@@ -24,6 +25,8 @@ namespace TouhouSpring.Services
             get;
             private set;
         }
+
+        private Graphics.SwfInstance m_testAnimation;
 
         public override void Startup()
         {
@@ -151,6 +154,8 @@ namespace TouhouSpring.Services
             #endregion
 
             CurrentPage = m_pages["MainMenu"];
+
+            m_testAnimation = new Graphics.SwfInstance("germs") { IsPlaying = true, TimeFactor = 2.0f };
         }
 
         private void PrepareGameStartupParam()
@@ -296,6 +301,13 @@ namespace TouhouSpring.Services
                     page.Update(deltaTime);
                 }
             }
+
+            m_testAnimation.Update(deltaTime);
+        }
+
+        public override void Render()
+        {
+            GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation);
         }
     }
 }
