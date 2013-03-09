@@ -204,6 +204,10 @@
       <Project>{ECBD1428-1581-4E75-9844-FB3D8128625F}</Project>
       <Name>TextureAtlasEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Third-parties\Swf2XNA\VexPipeline\VexPipeline.csproj">
+      <Project>{7118D9A5-616B-4329-831B-C42624D711CE}</Project>
+      <Name>VexPipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CardEditor\CardEditor.csproj">
       <Project>{6BF032FE-86C3-454E-828F-FD6AB7B4132B}</Project>
       <Name>CardEditor</Name>

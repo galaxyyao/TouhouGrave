@@ -1,0 +1,2 @@
+The author Robin ("debreuil") declares this library "Swf2XNA" (https://github.com/debreuil/Swf2XNA/) is distributed under BSD license (http://blog.debreuil.com/?p=152) but doesn't explicitly specify which BSD version.
+Swf2XNA also includes a library called SharpZipLib which is under GPL license; however SharpZipLib is not included in the redistributable package of THS product.

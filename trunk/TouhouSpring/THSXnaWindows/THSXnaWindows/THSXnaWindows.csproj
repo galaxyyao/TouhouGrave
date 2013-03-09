@@ -238,6 +238,14 @@
       <Project>{74D4C33F-7CC8-4B2A-A7DF-D8B6E63B6EBD}</Project>
       <Name>SmartThreadPool %28Third Parties\SmartThreadPool\SmartThreadPool%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Third-parties\Swf2XNA\V2DRuntime\V2DRuntime.csproj">
+      <Project>{269A1048-DA2C-475A-9C10-564A7D8A071D}</Project>
+      <Name>V2DRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Third-parties\Swf2XNA\VexPipelineReader\VexPipelineReader.csproj">
+      <Project>{D5D6310E-2D9D-4931-8D3B-4574F6625C6A}</Project>
+      <Name>VexPipelineReader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Cards\Cards.csproj">
       <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
       <Name>Cards</Name>
