@@ -27,7 +27,7 @@ namespace TouhouSpring.UI.ModalDialogs
         private int m_currentValue = 0;
         private int m_sign = 0;
         private CommonButtons m_commonButtons;
-        private Renderable m_renderable;
+        private RenderableProxy m_renderableProxy;
 
         public event Action<int, int> ButtonClicked;
 
@@ -242,7 +242,7 @@ namespace TouhouSpring.UI.ModalDialogs
                     ButtonClicked(btn, CurrentValue);
                 }
             };
-            m_renderable = new Renderable(this);
+            m_renderableProxy = new RenderableProxy(this);
 
             SetRange(0, 1);
         }

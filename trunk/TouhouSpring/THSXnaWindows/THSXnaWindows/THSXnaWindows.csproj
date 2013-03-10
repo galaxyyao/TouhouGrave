@@ -189,6 +189,10 @@
     <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />
     <Compile Include="UI\CardControlAddins\SpellButtons.cs" />
     <Compile Include="UI\ComposedImage.cs" />
+    <Compile Include="UI\FocusableProxy.cs" />
+    <Compile Include="UI\FocusManager.cs" />
+    <Compile Include="UI\KeyboardEventArgs.cs" />
+    <Compile Include="UI\KeyboardState.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\MenuItem.cs" />
     <Compile Include="UI\ModalDialogs\CommonButtons.cs" />
@@ -202,7 +206,7 @@
     <Compile Include="UI\MouseTrackedControl.cs" />
     <Compile Include="UI\Page.cs" />
     <Compile Include="UI\Panel.cs" />
-    <Compile Include="UI\Renderable.cs" />
+    <Compile Include="UI\RenderableProxy.cs" />
     <Compile Include="UI\RenderEventArgs.cs" />
     <Compile Include="UI\TransformNode.cs" />
     <Compile Include="XnaUIController.cs" />

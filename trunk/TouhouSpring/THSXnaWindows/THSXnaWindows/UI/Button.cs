@@ -91,13 +91,13 @@ namespace TouhouSpring.UI
 
         public Button()
         {
-            m_renderable = new Renderable(this);
+            m_renderableProxy = new RenderableProxy(this);
             TextColor = XnaColor.White;
         }
 
         #region IRenderable interface
 
-        private Renderable m_renderable;
+        private RenderableProxy m_renderableProxy;
 
         public void OnRender(RenderEventArgs e)
         {

@@ -8,7 +8,7 @@ namespace TouhouSpring.UI
 {
     class Label : TransformNode, IRenderable
     {
-        private Renderable m_renderable;
+        private RenderableProxy m_renderableProxy;
 
         public Graphics.TextRenderer.IFormattedText FormattedText
         {
@@ -37,7 +37,7 @@ namespace TouhouSpring.UI
 
         public Label()
         {
-            m_renderable = new Renderable(this);
+            m_renderableProxy = new RenderableProxy(this);
 
             TextColor = XnaColor.Black;
         }

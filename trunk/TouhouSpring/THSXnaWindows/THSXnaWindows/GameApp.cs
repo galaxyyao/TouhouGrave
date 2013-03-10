@@ -24,6 +24,11 @@ namespace TouhouSpring
             get; private set;
         }
 
+        public KeyboardState KeyboardState
+        {
+            get; private set;
+        }
+
         public int MouseY
         {
             get; private set;
@@ -114,6 +119,7 @@ namespace TouhouSpring
                 this.Exit();
 
             MouseState = Mouse.GetState();
+            KeyboardState = Keyboard.GetState();
             GameApp.ServiceContainer.Traverse(TouhouSpring.Services.UpdateDependencyAttribute.Category, false, srv => srv.Update((float)(gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f)));
 
             base.Update(gameTime);
