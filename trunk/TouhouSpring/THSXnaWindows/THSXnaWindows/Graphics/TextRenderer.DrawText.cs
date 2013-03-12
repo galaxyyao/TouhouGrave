@@ -53,6 +53,7 @@ namespace TouhouSpring.Graphics
             public bool OffsetByHalfPixel;
             public int SubstringStart;
             public int SubstringLength;
+            public int BaseIndex;
 
             public static readonly DrawOptions Default = new DrawOptions
             {
@@ -62,7 +63,8 @@ namespace TouhouSpring.Graphics
                 TransformToClipSpace = false,
                 OffsetByHalfPixel = true,
                 SubstringStart = 0,
-                SubstringLength = -1
+                SubstringLength = -1,
+                BaseIndex = 0
             };
         }
 
@@ -92,7 +94,7 @@ namespace TouhouSpring.Graphics
 
             var typedFormattedText = (FormattedText)formattedText;
             if ((typedFormattedText.ContainRTF || typedFormattedText.m_lines.Length > 1 || typedFormattedText.FormatOptions.Alignment != Alignment.LeftTop)
-                && (drawOptions.SubstringStart != 0 || drawOptions.SubstringLength != -1))
+                && (drawOptions.SubstringStart != 0 || drawOptions.SubstringLength != -1 || drawOptions.BaseIndex != 0))
             {
                 throw new InvalidOperationException("Drawing substring can only be performed on non-RTF text.");
             }
@@ -126,7 +128,7 @@ namespace TouhouSpring.Graphics
                         for (int y = 0; y <= pagesInY; ++y)
                         {
                             var glyphPos = glyph.m_pos + line.m_offset + globalOffset;
-                            glyphPos.X -= line.m_glyphs[drawOptions.SubstringStart].m_pos.X;
+                            glyphPos.X -= line.m_glyphs[drawOptions.BaseIndex].m_pos.X;
                             glyphPages.Add(new PositionedGlyphPage
                             {
                                 m_pos = glyphPos + new Vector2(x * PageSize, y * PageSize),

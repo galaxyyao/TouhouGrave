@@ -42,11 +42,6 @@ namespace TouhouSpring.UI
             }
         }
 
-        public Color BackColor
-        {
-            get; set;
-        }
-
         public Color ForeColor
         {
             get; set;
@@ -79,7 +74,6 @@ namespace TouhouSpring.UI
 
             m_renderableProxy = new RenderableProxy(this);
 
-            BackColor = Color.Black;
             ForeColor = Color.White;
             SelectionBackColor = Color.Navy;
             SelectionForeColor = Color.White;
@@ -94,40 +88,49 @@ namespace TouhouSpring.UI
         public void OnRender(RenderEventArgs e)
         {
             var transform = TransformToGlobal;
-            var caretPosition = m_allText.MeasureWidth(m_scrollPosition, m_caretPosition);
             var drawOptions = TextRenderer.DrawOptions.Default;
             drawOptions.ColorScaling = ForeColor.ToVector4();
+            drawOptions.BaseIndex = m_scrollPosition;
 
-            // background
-            e.RenderManager.Draw(new Graphics.TexturedQuad
+            if (m_selectionLength != 0)
             {
-                ColorToModulate = BackColor
-            }, Region, transform);
+                var selectionBegin = m_selectionLength < 0 ? m_caretPosition + m_selectionLength : m_caretPosition;
+                var selectionEnd = m_selectionLength > 0 ? m_caretPosition + m_selectionLength : m_caretPosition;
 
-            //if (m_selectionLength > 0)
-            //{
-            //    var selectionWidth = m_allText.MeasureWidth(m_caretPosition,
-            //        Math.Min(m_caretPosition + m_selectionLength, m_scrollPosition + m_scrollWindow));
+                // clamp selection into window
+                selectionBegin = Math.Max(selectionBegin, m_scrollPosition);
+                selectionEnd = Math.Min(selectionEnd, m_scrollPosition + m_scrollWindow);
 
-            //    // selection background
-            //    e.RenderManager.Draw(new Graphics.TexturedQuad
-            //    {
-            //        ColorToModulate = SelectionBackColor
-            //    }, new Rectangle(caretPosition, 0, selectionWidth, Height), transform);
+                // selection background
+                var selectionLeft = m_allText.MeasureWidth(m_scrollPosition, selectionBegin);
+                var selectionWidth = m_allText.MeasureWidth(selectionBegin, selectionEnd);
+                e.RenderManager.Draw(new Graphics.TexturedQuad
+                {
+                    ColorToModulate = SelectionBackColor
+                }, new Rectangle(selectionLeft, 0, selectionWidth, Height), transform);
 
-            //    // draw the text before selection
-            //    if (m_caretPosition > m_scrollPosition)
-            //    {
-            //        drawOptions.SubstringStart = m_scrollPosition;
-            //        drawOptions.SubstringLength = m_caretPosition - m_scrollPosition;
-            //        e.TextRenderer.DrawText(m_allText, transform, drawOptions);
-            //    }
-            //    // draw the selected text
-            //    drawOptions.SubstringStart = m_caretPosition;
-            //    drawOptions.SubstringLength = m_selectionLength;
-            //    // draw the text after selection
-            //}
-            //else
+                // draw the text before selection
+                if (selectionBegin > m_scrollPosition)
+                {
+                    drawOptions.SubstringStart = m_scrollPosition;
+                    drawOptions.SubstringLength = selectionBegin - m_scrollPosition;
+                    e.TextRenderer.DrawText(m_allText, transform, drawOptions);
+                }
+                // draw the selected text
+                drawOptions.ColorScaling = SelectionForeColor.ToVector4();
+                drawOptions.SubstringStart = selectionBegin;
+                drawOptions.SubstringLength = selectionEnd - selectionBegin;
+                e.TextRenderer.DrawText(m_allText, transform, drawOptions);
+                // draw the text after selection
+                if (selectionEnd < m_scrollPosition + m_scrollWindow)
+                {
+                    drawOptions.ColorScaling = ForeColor.ToVector4();
+                    drawOptions.SubstringStart = selectionEnd;
+                    drawOptions.SubstringLength = m_scrollPosition + m_scrollWindow - selectionEnd;
+                    e.TextRenderer.DrawText(m_allText, transform, drawOptions);
+                }
+            }
+            else
             {
                 // text
                 drawOptions.SubstringStart = m_scrollPosition;
@@ -139,6 +142,7 @@ namespace TouhouSpring.UI
             m_caretBlinkTimer += GameApp.Instance.TargetElapsedTime.Milliseconds;
             if (m_isFocused && ((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
             {
+                var caretPosition = m_allText.MeasureWidth(m_scrollPosition, m_caretPosition);
                 e.RenderManager.Draw(new Graphics.TexturedQuad { ColorToModulate = ForeColor },
                     new Rectangle(caretPosition - 1, 0, 2, Height), transform);
             }
@@ -147,53 +151,86 @@ namespace TouhouSpring.UI
         public void OnGotFocus()
         {
             m_isFocused = true;
+            m_caretPosition = m_text.Length;
+            m_selectionLength = -m_caretPosition;
+            MakeVisible();
         }
 
         public void OnLostFocus()
         {
+            m_caretPosition = 0;
+            m_selectionLength = 0;
+            MakeVisible();
             m_isFocused = false;
         }
 
         public void OnFocusedKeyPressed(KeyPressedEventArgs e)
         {
+            bool shiftPressed = e.KeyboardState.KeyPressed[(int)Keys.LeftShift]
+                || e.KeyboardState.KeyPressed[(int)Keys.RightShift];
+
             if (e.KeyPressed[(int)Keys.Left])
             {
-                --m_caretPosition;
-                MakeVisible();
+                if (m_caretPosition == 0)
+                {
+                    m_selectionLength = shiftPressed ? m_selectionLength : 0;
+                }
+                else
+                {
+                    m_selectionLength = shiftPressed ? m_selectionLength + 1 : 0;
+                    --m_caretPosition;
+                }
             }
 
             if (e.KeyPressed[(int)Keys.Right])
             {
-                ++m_caretPosition;
-                MakeVisible();
+                if (m_caretPosition == m_text.Length)
+                {
+                    m_selectionLength = shiftPressed ? m_selectionLength : 0;
+                }
+                else
+                {
+                    m_selectionLength = shiftPressed ? m_selectionLength - 1 : 0;
+                    ++m_caretPosition;
+                }
             }
 
             if (e.KeyPressed[(int)Keys.Home])
             {
+                m_selectionLength = shiftPressed ? m_caretPosition : 0;
                 m_caretPosition = 0;
-                MakeVisible();
             }
 
             if (e.KeyPressed[(int)Keys.End])
             {
+                m_selectionLength = shiftPressed ? m_caretPosition - m_text.Length: 0;
                 m_caretPosition = m_text.Length;
-                MakeVisible();
             }
 
-            if (e.KeyPressed[(int)Keys.Back]
-                && m_caretPosition != 0)
+            if (e.KeyPressed[(int)Keys.Back])
             {
-                m_text.Remove(--m_caretPosition, 1);
+                if (m_selectionLength != 0)
+                {
+                    DeleteSelection();
+                }
+                else if (m_caretPosition != 0)
+                {
+                    m_text.Remove(--m_caretPosition, 1);
+                }
             }
 
-            if (e.KeyPressed[(int)Keys.Delete]
-                && m_caretPosition < m_text.Length)
+            if (e.KeyPressed[(int)Keys.Delete])
             {
-                m_text.Remove(m_caretPosition, 1);
+                if (m_selectionLength != 0)
+                {
+                    DeleteSelection();
+                }
+                else if (m_caretPosition < m_text.Length)
+                {
+                    m_text.Remove(m_caretPosition, 1);
+                }
             }
 
-            bool shiftPressed = e.KeyboardState.KeyPressed[(int)Keys.LeftShift]
-                || e.KeyboardState.KeyPressed[(int)Keys.RightShift];
             bool capslock = (PInvokes.User32.GetKeyState(0x14) & 1) != 0;
             bool numlock = (PInvokes.User32.GetKeyState(0x90) & 1) != 0;
             for (int i = 0; i < e.KeyPressed.Count; ++i)
@@ -203,6 +240,10 @@ namespace TouhouSpring.UI
                     char ch = TranslateChar((Keys)i, shiftPressed, capslock, numlock);
                     if (ch != 0)
                     {
+                        if (m_selectionLength != 0)
+                        {
+                            DeleteSelection();
+                        }
                         m_text.Insert(m_caretPosition++, ch);
                     }
                 }
@@ -214,7 +255,6 @@ namespace TouhouSpring.UI
 
         public void OnFocusedKeyReleased(KeyReleasedEventArgs e)
         {
-            
         }
 
         private void OnTextChanged()
@@ -223,17 +263,15 @@ namespace TouhouSpring.UI
             MakeVisible();
         }
 
+        private void DeleteSelection()
+        {
+            m_text.Remove(Math.Min(m_caretPosition, m_caretPosition + m_selectionLength), Math.Abs(m_selectionLength));
+            m_caretPosition = Math.Min(m_caretPosition, m_caretPosition + m_selectionLength);
+            m_selectionLength = 0;
+        }
+
         private void MakeVisible()
         {
-            if (m_caretPosition < 0)
-            {
-                m_caretPosition = 0;
-            }
-            else if (m_caretPosition > Text.Length)
-            {
-                m_caretPosition = Text.Length;
-            }
-
             if (m_caretPosition < m_scrollPosition)
             {
                 m_scrollPosition = m_caretPosition;
