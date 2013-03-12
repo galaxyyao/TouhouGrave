@@ -30,6 +30,7 @@ namespace TouhouSpring.Graphics
             public float CharSpacing;
             public float LineSpacing;
             public int TabSpaces;
+            public bool DisableRTF;
 
             public FormatOptions(FontDescriptor font) : this(font, font)
             { }
@@ -42,6 +43,7 @@ namespace TouhouSpring.Graphics
                 CharSpacing = 0;
                 LineSpacing = 0;
                 TabSpaces = 4;
+                DisableRTF = false;
             }
         }
 
@@ -51,7 +53,7 @@ namespace TouhouSpring.Graphics
             FormatOptions FormatOptions { get; }
             Point Offset { get; set; }
             Size Size { get; }
-            bool ContainRTF { get; }
+            bool RichTextFormat { get; }
             float MeasureWidth(int begin, int end);
         }
 
@@ -75,7 +77,7 @@ namespace TouhouSpring.Graphics
             public FormatOptions FormatOptions { get; set; }
             public Point Offset { get; set; }
             public Size Size { get; set; }
-            public bool ContainRTF { get; set; }
+            public bool RichTextFormat { get; set; }
             public FormattedLine[] m_lines;
 
             public float MeasureWidth(int begin, int end)
@@ -84,7 +86,7 @@ namespace TouhouSpring.Graphics
                 {
                     throw new InvalidOperationException("MeasureWidth can't be called on multi-line text.");
                 }
-                else if (ContainRTF)
+                else if (RichTextFormat)
                 {
                     throw new InvalidOperationException("MeasureWidth can't be called on RTF text.");
                 }
@@ -120,7 +122,6 @@ namespace TouhouSpring.Graphics
 
             float currentX = 0;
             float currentY = 0;
-            bool containRTF = false;
 
             // ensures the last line
             string textCopy = text.EndsWith("\n") ? text : text + "\n";
@@ -200,7 +201,7 @@ namespace TouhouSpring.Graphics
                 }
                 else
                 {
-                    if (ch == '[' && i + 1 < charArray.Length)
+                    if (!formatOptions.DisableRTF && ch == '[' && i + 1 < charArray.Length)
                     {
                         if (charArray[i + 1] != '[')
                         {
@@ -226,7 +227,6 @@ namespace TouhouSpring.Graphics
                             }
 
                             i = j;
-                            containRTF = true;
                             continue;
                         }
                         else
@@ -271,7 +271,7 @@ namespace TouhouSpring.Graphics
                 FormatOptions = formatOptions,
                 Offset = new Point(0, offsetY),
                 Size = new Size(maxLineWidth, textHeight),
-                ContainRTF = containRTF,
+                RichTextFormat = !formatOptions.DisableRTF,
                 m_lines = lines.ToArray()
             };
         }

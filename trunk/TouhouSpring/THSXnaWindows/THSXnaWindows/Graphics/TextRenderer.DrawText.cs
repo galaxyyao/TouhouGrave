@@ -93,7 +93,7 @@ namespace TouhouSpring.Graphics
             PInvokes.D3d9.BeginPixEvent(0, "DrawText: " + formattedText.Text);
 
             var typedFormattedText = (FormattedText)formattedText;
-            if ((typedFormattedText.ContainRTF || typedFormattedText.m_lines.Length > 1 || typedFormattedText.FormatOptions.Alignment != Alignment.LeftTop)
+            if ((typedFormattedText.RichTextFormat || typedFormattedText.m_lines.Length > 1 || typedFormattedText.FormatOptions.Alignment != Alignment.LeftTop)
                 && (drawOptions.SubstringStart != 0 || drawOptions.SubstringLength != -1 || drawOptions.BaseIndex != 0))
             {
                 throw new InvalidOperationException("Drawing substring can only be performed on non-RTF text.");

@@ -18,6 +18,7 @@ namespace TouhouSpring.UI
         private RenderableProxy m_renderableProxy;
 
         private StringBuilder m_text = new StringBuilder();
+        private char? m_passwordChar = null;
         private int m_caretPosition = 0;
         private float m_caretBlinkTimer = 0;
         private int m_scrollPosition = 0;
@@ -37,7 +38,20 @@ namespace TouhouSpring.UI
                 {
                     m_text.Clear();
                     m_text.Append(newValue);
-                    OnTextChanged();
+                    TextChanged();
+                }
+            }
+        }
+
+        public char? PasswordChar
+        {
+            get { return m_passwordChar; }
+            set
+            {
+                if (value != m_passwordChar)
+                {
+                    m_passwordChar = value;
+                    TextChanged();
                 }
             }
         }
@@ -71,6 +85,7 @@ namespace TouhouSpring.UI
         {
             m_focusableProxy = new FocusableProxy(this);
             m_textFormatOptions = textFormatOptions;
+            m_textFormatOptions.DisableRTF = true;
 
             m_renderableProxy = new RenderableProxy(this);
 
@@ -82,7 +97,7 @@ namespace TouhouSpring.UI
             Height = height;
             Region = new Rectangle(0, 0, Width, Height);
 
-            OnTextChanged();
+            TextChanged();
         }
 
         public void OnRender(RenderEventArgs e)
@@ -168,6 +183,7 @@ namespace TouhouSpring.UI
         {
             bool shiftPressed = e.KeyboardState.KeyPressed[(int)Keys.LeftShift]
                 || e.KeyboardState.KeyPressed[(int)Keys.RightShift];
+            var oldText = m_text.ToString();
 
             if (e.KeyPressed[(int)Keys.Left])
             {
@@ -249,7 +265,10 @@ namespace TouhouSpring.UI
                 }
             }
 
-            OnTextChanged();
+            if (oldText != m_text.ToString())
+            {
+                TextChanged();
+            }
             m_caretBlinkTimer = 0;
         }
 
@@ -257,9 +276,11 @@ namespace TouhouSpring.UI
         {
         }
 
-        private void OnTextChanged()
+        private void TextChanged()
         {
-            m_allText = GameApp.Service<TextRenderer>().FormatText(m_text.ToString(), m_textFormatOptions);
+            m_allText = GameApp.Service<TextRenderer>().FormatText(
+                m_passwordChar != null ? new String(m_passwordChar.Value, m_text.Length) : m_text.ToString(),
+                m_textFormatOptions);
             MakeVisible();
         }
 
