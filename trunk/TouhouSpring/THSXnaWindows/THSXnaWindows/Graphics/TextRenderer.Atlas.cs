@@ -53,7 +53,7 @@ namespace TouhouSpring.Graphics
         // load one single glyph into the cache
         private GlyphData Load(char glyph, FormatOptions formatOptions)
         {
-            int fontId = GetFontId(glyph >= 0 && glyph <= 127 ? formatOptions.AnsiFont : formatOptions.Font);
+            int fontId = GetFontId(IsAnsiChar(glyph) ? formatOptions.AnsiFont : formatOptions.Font);
             uint glyphId = ((uint)fontId << 16) + glyph;
 
             GlyphData glyphData;

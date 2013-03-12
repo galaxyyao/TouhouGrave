@@ -10,7 +10,7 @@ namespace TouhouSpring.UI
         void OnGotFocus();
         void OnLostFocus();
         void OnFocusedKeyPressed(KeyPressedEventArgs e);
-        void OnFocusedKeyReleased(KeyPressedEventArgs e);
+        void OnFocusedKeyReleased(KeyReleasedEventArgs e);
     }
 
     class FocusableProxy : EventListener,

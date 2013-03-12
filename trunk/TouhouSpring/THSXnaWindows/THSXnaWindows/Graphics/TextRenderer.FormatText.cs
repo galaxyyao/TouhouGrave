@@ -51,11 +51,14 @@ namespace TouhouSpring.Graphics
             FormatOptions FormatOptions { get; }
             Point Offset { get; set; }
             Size Size { get; }
+            bool ContainRTF { get; }
+            float MeasureWidth(int begin, int end);
         }
 
         private class FormattedGlyph
         {
             public Vector2 m_pos;
+            public float m_width;
             public Color m_color;
             public char m_glyph;
         }
@@ -72,17 +75,37 @@ namespace TouhouSpring.Graphics
             public FormatOptions FormatOptions { get; set; }
             public Point Offset { get; set; }
             public Size Size { get; set; }
+            public bool ContainRTF { get; set; }
             public FormattedLine[] m_lines;
 
-            public IEnumerable<FormattedGlyph> Glyphs()
+            public float MeasureWidth(int begin, int end)
             {
-                foreach (var line in m_lines)
+                if (m_lines.Length > 1)
                 {
-                    foreach (var glyph in line.m_glyphs)
-                    {
-                        yield return glyph;
-                    }
+                    throw new InvalidOperationException("MeasureWidth can't be called on multi-line text.");
                 }
+                else if (ContainRTF)
+                {
+                    throw new InvalidOperationException("MeasureWidth can't be called on RTF text.");
+                }
+                else if (begin < 0)
+                {
+                    throw new ArgumentOutOfRangeException("begin");
+                }
+                else if (end > Text.Length)
+                {
+                    throw new ArgumentOutOfRangeException("end");
+                }
+                else if (end < begin)
+                {
+                    throw new ArgumentException("End can't be less than begin.");
+                }
+                else if (end == begin)
+                {
+                    return 0;
+                }
+
+                return m_lines[0].m_glyphs[end - 1].m_pos.X + m_lines[0].m_glyphs[end - 1].m_width - m_lines[0].m_glyphs[begin].m_pos.X;
             }
         }
 
@@ -97,6 +120,7 @@ namespace TouhouSpring.Graphics
 
             float currentX = 0;
             float currentY = 0;
+            bool containRTF = false;
 
             // ensures the last line
             string textCopy = text.EndsWith("\n") ? text : text + "\n";
@@ -113,15 +137,39 @@ namespace TouhouSpring.Graphics
                 var ch = charArray[i];
                 if (ch == ' ')
                 {
-                    currentX += ansiFontMetrics.m_spaceWidth;
+                    var fg = new FormattedGlyph
+                    {
+                        m_pos = new Vector2(currentX, IsAnsiChar(ch) ? ansiAscentOffset : ascentOffset),
+                        m_width = ansiFontMetrics.m_spaceWidth,
+                        m_color = colorStack.Peek(),
+                        m_glyph = ch,
+                    };
+                    glyphs.Add(fg);
+                    currentX += fg.m_width;
                 }
                 else if (ch == '\x3000')
                 {
-                    currentX += fontMetrics.m_fullWidthSpaceWidth;
+                    var fg = new FormattedGlyph
+                    {
+                        m_pos = new Vector2(currentX, IsAnsiChar(ch) ? ansiAscentOffset : ascentOffset),
+                        m_width = ansiFontMetrics.m_fullWidthSpaceWidth,
+                        m_color = colorStack.Peek(),
+                        m_glyph = ch,
+                    };
+                    glyphs.Add(fg);
+                    currentX += fg.m_width;
                 }
                 else if (ch == '\t')
                 {
-                    currentX += ansiFontMetrics.m_spaceWidth * formatOptions.TabSpaces;
+                    var fg = new FormattedGlyph
+                    {
+                        m_pos = new Vector2(currentX, IsAnsiChar(ch) ? ansiAscentOffset : ascentOffset),
+                        m_width = ansiFontMetrics.m_spaceWidth * formatOptions.TabSpaces,
+                        m_color = colorStack.Peek(),
+                        m_glyph = ch,
+                    };
+                    glyphs.Add(fg);
+                    currentX += fg.m_width;;
                 }
                 else if (ch == '\n')
                 {
@@ -178,6 +226,7 @@ namespace TouhouSpring.Graphics
                             }
 
                             i = j;
+                            containRTF = true;
                             continue;
                         }
                         else
@@ -189,12 +238,13 @@ namespace TouhouSpring.Graphics
                     var glyphData = Load(ch, formatOptions);
                     var fg = new FormattedGlyph
                     {
-                        m_pos = new Vector2(currentX, ch >= 0 && ch <= 127 ? ansiAscentOffset : ascentOffset),
+                        m_pos = new Vector2(currentX, IsAnsiChar(ch) ? ansiAscentOffset : ascentOffset),
+                        m_width = glyphData.m_glyphSize.Width,
                         m_color = colorStack.Peek(),
                         m_glyph = ch,
                     };
                     glyphs.Add(fg);
-                    currentX += glyphData.m_glyphSize.Width + formatOptions.CharSpacing;
+                    currentX += fg.m_width + formatOptions.CharSpacing;
                 }
             }
 
@@ -221,6 +271,7 @@ namespace TouhouSpring.Graphics
                 FormatOptions = formatOptions,
                 Offset = new Point(0, offsetY),
                 Size = new Size(maxLineWidth, textHeight),
+                ContainRTF = containRTF,
                 m_lines = lines.ToArray()
             };
         }

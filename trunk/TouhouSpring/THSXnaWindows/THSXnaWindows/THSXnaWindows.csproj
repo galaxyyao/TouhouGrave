@@ -104,6 +104,9 @@
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Client.Operation.cs" />
     <Compile Include="Network\Client.RemoteCommand.cs" />
+    <Compile Include="PInvokes\D3d9.cs" />
+    <Compile Include="PInvokes\Kernel.cs" />
+    <Compile Include="PInvokes\User32.cs" />
     <Compile Include="Ray.cs" />
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
@@ -208,6 +211,8 @@
     <Compile Include="UI\Panel.cs" />
     <Compile Include="UI\RenderableProxy.cs" />
     <Compile Include="UI\RenderEventArgs.cs" />
+    <Compile Include="UI\TextBox.cs" />
+    <Compile Include="UI\TextBox.TranslateChar.cs" />
     <Compile Include="UI\TransformNode.cs" />
     <Compile Include="XnaUIController.cs" />
   </ItemGroup>

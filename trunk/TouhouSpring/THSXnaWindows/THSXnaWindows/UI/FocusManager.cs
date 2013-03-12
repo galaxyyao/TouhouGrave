@@ -18,11 +18,6 @@ namespace TouhouSpring.UI
 
         public void RaiseEvent(KeyPressedEventArgs e)
         {
-            m_focusableItems.Clear();
-        }
-
-        public void RaiseEvent(KeyReleasedEventArgs e)
-        {
             int focusIndex = m_focusableItems.IndexOf(Focus);
 
             if (Focus != null && focusIndex == -1)
@@ -31,7 +26,7 @@ namespace TouhouSpring.UI
                 Focus = null;
             }
 
-            if (e.KeyReleased[(int)Microsoft.Xna.Framework.Input.Keys.Tab])
+            if (e.KeyPressed[(int)Microsoft.Xna.Framework.Input.Keys.Tab])
             {
                 if (focusIndex != -1)
                 {
@@ -60,6 +55,29 @@ namespace TouhouSpring.UI
                     Focus = m_focusableItems[0];
                     Focus.OnGotFocus();
                 }
+            }
+
+            if (Focus != null)
+            {
+                Focus.OnFocusedKeyPressed(e);
+            }
+
+            m_focusableItems.Clear();
+        }
+
+        public void RaiseEvent(KeyReleasedEventArgs e)
+        {
+            int focusIndex = m_focusableItems.IndexOf(Focus);
+
+            if (Focus != null && focusIndex == -1)
+            {
+                Focus.OnLostFocus();
+                Focus = null;
+            }
+
+            if (Focus != null)
+            {
+                Focus.OnFocusedKeyReleased(e);
             }
 
             m_focusableItems.Clear();

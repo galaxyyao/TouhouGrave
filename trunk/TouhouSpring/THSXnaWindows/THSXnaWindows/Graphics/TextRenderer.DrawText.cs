@@ -51,6 +51,8 @@ namespace TouhouSpring.Graphics
             public Point Offset;
             public bool TransformToClipSpace;
             public bool OffsetByHalfPixel;
+            public int SubstringStart;
+            public int SubstringLength;
 
             public static readonly DrawOptions Default = new DrawOptions
             {
@@ -58,7 +60,9 @@ namespace TouhouSpring.Graphics
                 ColorScaling = Vector4.UnitW,
                 Offset = new Point(0, 0),
                 TransformToClipSpace = false,
-                OffsetByHalfPixel = true
+                OffsetByHalfPixel = true,
+                SubstringStart = 0,
+                SubstringLength = -1
             };
         }
 
@@ -84,12 +88,14 @@ namespace TouhouSpring.Graphics
                 throw new ArgumentException("Argument formattedText is not an object returned by FormatText() method.");
             }
 
-            RenderManager.BeginPixEvent(0, "DrawText: " + formattedText.Text);
+            PInvokes.D3d9.BeginPixEvent(0, "DrawText: " + formattedText.Text);
 
             var typedFormattedText = (FormattedText)formattedText;
-            var glyphDatas = typedFormattedText.Glyphs().Select(glyph => Load(glyph.m_glyph, typedFormattedText.FormatOptions)).ToArray();
-            int totalPages = glyphDatas.Sum(glyph => glyph.m_pageIndices.Length);
-            var glyphPages = new PositionedGlyphPage[totalPages];
+            if ((typedFormattedText.ContainRTF || typedFormattedText.m_lines.Length > 1 || typedFormattedText.FormatOptions.Alignment != Alignment.LeftTop)
+                && (drawOptions.SubstringStart != 0 || drawOptions.SubstringLength != -1))
+            {
+                throw new InvalidOperationException("Drawing substring can only be performed on non-RTF text.");
+            }
 
             var globalOffset = Vector2.Zero;
             globalOffset.X = typedFormattedText.Offset.X + drawOptions.Offset.X;
@@ -99,27 +105,36 @@ namespace TouhouSpring.Graphics
                 globalOffset += new Vector2(-0.5f, -0.5f);
             }
 
-            int pageCounter = 0, glyphCounter = 0;
+            List<PositionedGlyphPage> glyphPages = new List<PositionedGlyphPage>();
             foreach (var line in typedFormattedText.m_lines)
             {
-                foreach (var glyph in line.m_glyphs)
+                for (int i = 0; i < (drawOptions.SubstringLength == -1 ? line.m_glyphs.Length : drawOptions.SubstringLength); ++i)
                 {
-                    var pagesInX = glyphDatas[glyphCounter].m_pageIndices.GetUpperBound(0);
-                    var pagesInY = glyphDatas[glyphCounter].m_pageIndices.GetUpperBound(1);
+                    var glyph = line.m_glyphs[i + drawOptions.SubstringStart];
 
-                    for (int i = 0; i <= pagesInX; ++i)
+                    if (IsWhitespaceChar(glyph.m_glyph))
                     {
-                        for (int j = 0; j <= pagesInY; ++j)
+                        continue;
+                    }
+
+                    var glyphData = Load(glyph.m_glyph, typedFormattedText.FormatOptions);
+                    var pagesInX = glyphData.m_pageIndices.GetUpperBound(0);
+                    var pagesInY = glyphData.m_pageIndices.GetUpperBound(1);
+
+                    for (int x = 0; x <= pagesInX; ++x)
+                    {
+                        for (int y = 0; y <= pagesInY; ++y)
                         {
                             var glyphPos = glyph.m_pos + line.m_offset + globalOffset;
-                            glyphPages[pageCounter].m_pos.X = glyphPos.X + i * PageSize;
-                            glyphPages[pageCounter].m_pos.Y = glyphPos.Y + j * PageSize;
-                            glyphPages[pageCounter].m_color = drawOptions.ForcedColor == Color.Transparent ? glyph.m_color : drawOptions.ForcedColor;
-                            glyphPages[pageCounter].m_pageIndex = glyphDatas[glyphCounter].m_pageIndices[i, j];
-                            ++pageCounter;
+                            glyphPos.X -= line.m_glyphs[drawOptions.SubstringStart].m_pos.X;
+                            glyphPages.Add(new PositionedGlyphPage
+                            {
+                                m_pos = glyphPos + new Vector2(x * PageSize, y * PageSize),
+                                m_color = drawOptions.ForcedColor == Color.Transparent ? glyph.m_color : drawOptions.ForcedColor,
+                                m_pageIndex = glyphData.m_pageIndices[x, y]
+                            });
                         }
                     }
-                    ++glyphCounter;
                 }
             }
 
@@ -154,7 +169,7 @@ namespace TouhouSpring.Graphics
             premultipliedColorScaling.Z *= premultipliedColorScaling.W;
             m_paramColorScaling.SetValue(premultipliedColorScaling);
 
-            var vertices = new VertexDataDraw[totalPages * 6];
+            var vertices = new VertexDataDraw[glyphPages.Count * 6];
 
             foreach (var batch in glyphPages.GroupBy(batchCriteria))
             {
@@ -196,7 +211,7 @@ namespace TouhouSpring.Graphics
                 }
             }
 
-            RenderManager.EndPixEvent();
+            PInvokes.D3d9.EndPixEvent();
         }
 
         private int CopyInstanceVertices(VertexDataDraw[] vertices, int startIndex, int numElements)

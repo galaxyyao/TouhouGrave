@@ -30,11 +30,5 @@ namespace TouhouSpring.Graphics
 		{
 			DestroyQuadRenderer();
 		}
-
-        [DllImport("d3d9.dll", EntryPoint = "D3DPERF_BeginEvent", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern int BeginPixEvent(uint col, string wszName);
-
-        [DllImport("d3d9.dll", EntryPoint = "D3DPERF_EndEvent", CallingConvention = CallingConvention.Winapi)]
-        public static extern int EndPixEvent();
 	}
 }
