@@ -139,6 +139,17 @@ namespace TouhouSpring.Agents
                 || io is Interactions.MessageBox)
             {
                 // queue
+                if (io is Interactions.SelectCards)
+                {
+                    var selectCardsResult = (IIndexable<CardInstance>)result;
+                    m_NetworkClient.ProcessRespond(Interactions.BaseInteraction.PlayerAction.SelectCards, io, result);
+                }
+
+                if (io is Interactions.SelectNumber)
+                {
+                    var selectCardsResult = (int?)result;
+                    m_NetworkClient.ProcessRespond(Interactions.BaseInteraction.PlayerAction.SelectNumber, io, result);
+                }
 
                 if (io.Game.RunningCommand.ExecutionPhase != Commands.CommandPhase.Condition)
                 {

@@ -37,6 +37,13 @@ namespace TouhouSpring.Network
         {
             m_outboxActionloopups.Add(BaseInteraction.PlayerAction.Pass, ProcessRespondPass);
             m_outboxActionloopups.Add(BaseInteraction.PlayerAction.Sacrifice, ProcessRespondSacrifice);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.PlayCard, ProcessRespondPlayCard);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.AttackCard, ProcessRespondAttackCard);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.AttackPlayer, ProcessRespondAttackPlayer);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.ActivateAssist, ProcessRespondActivateAssist);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.CastSpell, ProcessRespondCastSpell);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.Redeem, ProcessRespondRedeem);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.SelectCards, ProcessSelectCards);
         }
 
         public void ProcessRespond(Interactions.BaseInteraction.PlayerAction action, Interactions.BaseInteraction io, object result)
@@ -73,105 +80,62 @@ namespace TouhouSpring.Network
             var index = tacticalPhaseIo.PlayCardCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
             OutboxQueue.Queue(string.Format("{0} playcard {1}", RoomId, index));
         }
-        #endregion
 
-        public void ProcessRespond()
+        private void ProcessRespondAttackCard(Interactions.BaseInteraction io, object result)
         {
-            //Game.InteractionRespond respond = Game.RespondQueue.FirstOrDefault();
-            //if (respond == null)
-            //    throw new Exception("null respond");
-            //if (respond.RespondType == Game.InteractionRespond.RespondEnum.TacticalPhase)
-            //{
-            //    Interactions.TacticalPhase.Result result = (Interactions.TacticalPhase.Result)respond.Result;
-            //    switch (result.ActionType)
-            //    {
-            //        case Interactions.TacticalPhase.Action.Sacrifice:
-            //            {
-            //                SendMessage(string.Format("{0} sacrifice {1}", RoomId, respond.ResultSubjectIndex));
-            //            }
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //}
-            //else if (respond.RespondType == Game.InteractionRespond.RespondEnum.SelectCards)
-            //{
-            //}
-            //else
-            //{
-            //    throw new Exception("Unhandled respond type");
-            //}
-            //    switch (Game.CurrentCommand.Type)
-            //    {
-            //        case Game.CurrentCommand.InteractionType.TacticalPhase:
-            //            {
-            //                Interactions.TacticalPhase.Result currentCommand = new Interactions.TacticalPhase.Result();
-            //                if (Game.CurrentCommand.Result == null)
-            //                    return true;
-            //                currentCommand = (Interactions.TacticalPhase.Result)Game.CurrentCommand.Result;
-            //                switch (currentCommand.ActionType)
-            //                {
-            //                    case Interactions.TacticalPhase.Action.Sacrifice:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} sacrifice {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
-            //                        }
-            //                        break;
-            //                    case Interactions.TacticalPhase.Action.PlayCard:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} playcard {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
-            //                        }
-            //                        break;
-            //                    case Interactions.TacticalPhase.Action.AttackCard:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} attackcard {1} {2}"
-            //                                , _client.RoomId, Game.CurrentCommand.ResultSubjectIndex
-            //                                , Game.CurrentCommand.ResultParameters[0]));
-            //                        }
-            //                        break;
-            //                    case Interactions.TacticalPhase.Action.AttackPlayer:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} attackplayer {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
-            //                        }
-            //                        break;
-            //                    case Interactions.TacticalPhase.Action.ActivateAssist:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} activateassist {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
-            //                        }
-            //                        break;
-            //                    case Interactions.TacticalPhase.Action.CastSpell:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} castspell {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
-            //                        }
-            //                        break;
-            //                    case Interactions.TacticalPhase.Action.Redeem:
-            //                        {
-            //                            _client.EnqueueMessage(string.Format("{0} redeem {1}", _client.RoomId, Game.CurrentCommand.ResultSubjectIndex));
-            //                        }
-            //                        break;
-            //                    default:
-            //                        break;
-            //                }
-            //            }
-            //            break;
-            //        case Game.CurrentCommand.InteractionType.SelectCards:
-            //            {
-            //                int[] selectedCardsIndexs = Game.CurrentCommand.ResultParameters;
-            //                if (selectedCardsIndexs.Count() == 0)
-            //                    return true;
-            //                StringBuilder indexes = new StringBuilder();
-            //                for (int i = 0; i < selectedCardsIndexs.Count(); i++)
-            //                {
-            //                    indexes.Append(selectedCardsIndexs[i]);
-            //                    indexes.Append(" ");
-            //                }
-            //                indexes.Remove(indexes.Length - 1, 1);
-            //                _client.EnqueueMessage(string.Format("{0} selectcards -1 {1}", _client.RoomId, indexes.ToString()));
-            //            }
-            //            break;
-            //        case Game.CurrentCommand.InteractionType.Others:
-            //            return true;
-            //    }
-            //    return true;
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var attackCardObjs = (CardInstance[])tacticalPhaseResult.Data;
+            var attackerIndex = tacticalPhaseIo.AttackerCandidates.IndexOf(attackCardObjs[0]);
+            var defenserIndex = tacticalPhaseIo.DefenderCandidates.IndexOf(attackCardObjs[1]);
+            OutboxQueue.Queue(string.Format("{0} attackcard {1} {2}", RoomId, attackerIndex, defenserIndex));
         }
+
+        private void ProcessRespondAttackPlayer(Interactions.BaseInteraction io, object result)
+        {
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var attackPlayerObjs = (object[])tacticalPhaseResult.Data;
+            var attackerIndex = tacticalPhaseIo.AttackerCandidates.IndexOf((CardInstance)attackPlayerObjs[0]);
+            OutboxQueue.Queue(string.Format("{0} attackplayer {1}", RoomId, attackerIndex));
+        }
+
+        private void ProcessRespondActivateAssist(Interactions.BaseInteraction io, object result)
+        {
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var index = tacticalPhaseIo.ActivateAssistCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
+            OutboxQueue.Queue(string.Format("{0} activateassist {1}", RoomId, index));
+        }
+
+        private void ProcessRespondCastSpell(Interactions.BaseInteraction io, object result)
+        {
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var index = tacticalPhaseIo.CastSpellCandidates.IndexOf((Behaviors.ICastableSpell)tacticalPhaseResult.Data);
+            OutboxQueue.Queue(string.Format("{0} castspell {1}", RoomId, index));
+        }
+
+        private void ProcessRespondRedeem(Interactions.BaseInteraction io, object result)
+        {
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var index = tacticalPhaseIo.RedeemCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
+            OutboxQueue.Queue(string.Format("{0} redeem {1}", RoomId, index));
+        }
+
+        private void ProcessSelectCards(Interactions.BaseInteraction io, object result)
+        {
+            var selectCardsIo = (Interactions.SelectCards)io;
+            var selectCardsResult = (IIndexable<CardInstance>)result;
+            List<int> indexes = new List<int>();
+            foreach (CardInstance selectedCard in selectCardsResult)
+            {
+                indexes.Add(selectCardsIo.Candidates.IndexOf(selectedCard));
+            }
+            OutboxQueue.Queue(string.Format("{0} selectcards -1 {1}", RoomId, string.Join(" ", indexes)));
+        }
+
+        #endregion
     }
 }
