@@ -9,7 +9,24 @@ namespace TouhouSpring.Network
 {
     public partial class Client
     {
-        private void InterpretMessage(string message)
+        public class InboxMessageQueue : MessageQueue
+        {
+            public InboxMessageQueue(Client client)
+                : base(client)
+            {
+            }
+
+            public override void Flush()
+            {
+                foreach (var message in m_messageQueue)
+                {
+                    m_client.InterpretMessage(message);
+                }
+                Clear();
+            }
+        }
+
+        public void InterpretMessage(string message)
         {
             List<string> parts = message.Split(' ').ToList();
             switch (parts[1])
@@ -38,23 +55,34 @@ namespace TouhouSpring.Network
                 case "switchturn":
                     {
                         if (CurrentGame.CurrentInteraction == null)
-                            throw new Exception("current io is null");
-                        if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
-                            throw new Exception("Wrong Phase");
-                        ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).RespondPass();
+                        {
+                            InboxQueue.Queue(message);
+                        }
+                        else
+                        {
+                            if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
+                                throw new Exception("Wrong Phase");
+                            ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).RespondPass();
+                            CurrentGame.CurrentInteraction = null;
+                        }
                     }
                     break;
-                //case "sacrifice":
-                //    {
-                //        if (CurrentIo == null)
-                //            throw new Exception("current io is null");
-                //        if (!(CurrentIo is Interactions.TacticalPhase))
-                //            throw new Exception("Wrong Phase");
-                //        ((Interactions.TacticalPhase)CurrentIo)
-                //            .RespondSacrifice(((Interactions.TacticalPhase)CurrentIo).SacrificeCandidates[Convert.ToInt32(parts[2])]);
-                //        CurrentIo = null;
-                //    }
-                //    break;
+                case "sacrifice":
+                    {
+                        if (CurrentGame.CurrentInteraction == null)
+                        {
+                            InboxQueue.Queue(message);
+                        }
+                        else
+                        {
+                            if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
+                                throw new Exception("Wrong Phase");
+                            ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
+                            .RespondSacrifice(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).SacrificeCandidates[Convert.ToInt32(parts[2])]);
+                            CurrentGame.CurrentInteraction = null;
+                        }
+                    }
+                    break;
                 //case "playcard":
                 //    {
                 //        if (CurrentIo == null)

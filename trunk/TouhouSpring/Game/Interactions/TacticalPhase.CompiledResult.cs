@@ -21,7 +21,7 @@ namespace TouhouSpring.Interactions
                     throw new ArgumentNullException("actingPlayer");
                 }
 
-                return new Result { ActionType = Action.Pass };
+                return new Result { ActionType = Interactions.BaseInteraction.PlayerAction.Pass };
             }
         }
 
@@ -42,7 +42,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.PlayCard,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.PlayCard,
                     Data = GetPlayCardBaseSet(actingPlayer).First(card => card.Guid == m_cardGuid)
                 };
             }
@@ -65,7 +65,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.ActivateAssist,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.ActivateAssist,
                     Data = GetActivateAssistBaseSet(actingPlayer).First(card => card.Guid == m_cardGuid)
                 };
             }
@@ -90,7 +90,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.CastSpell,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.CastSpell,
                     Data = GetCastSpellBaseSet(actingPlayer).First(card => card.Guid == m_hostGuid)
                            .Behaviors[m_bhvIndex]
                 };
@@ -114,7 +114,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.Sacrifice,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.Sacrifice,
                     Data = actingPlayer.CardsOnHand.First(card => card.Guid == m_cardGuid)
                 };
             }
@@ -137,7 +137,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.Redeem,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.Redeem,
                     Data = actingPlayer.CardsSacrificed.First(card => card.Guid == m_cardGuid)
                 };
             }
@@ -162,7 +162,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.AttackCard,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.AttackCard,
                     Data = new CardInstance[]
                     {
                         GetAttackerBaseSet(actingPlayer).First(card => card.Guid == m_attackerGuid),
@@ -191,7 +191,7 @@ namespace TouhouSpring.Interactions
 
                 return new Result
                 {
-                    ActionType = Action.AttackPlayer,
+                    ActionType = Interactions.BaseInteraction.PlayerAction.AttackPlayer,
                     Data = new object[]
                     {
                         GetAttackerBaseSet(actingPlayer).First(card => card.Guid == m_attackerGuid),
@@ -205,7 +205,7 @@ namespace TouhouSpring.Interactions
         {
             Validate(new Result
             {
-                ActionType = Action.Pass
+                ActionType = Interactions.BaseInteraction.PlayerAction.Pass
             });
 
             return new CompiledPass();
@@ -220,7 +220,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.PlayCard,
+                ActionType = Interactions.BaseInteraction.PlayerAction.PlayCard,
                 Data = selectedCard
             });
 
@@ -236,7 +236,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.ActivateAssist,
+                ActionType = Interactions.BaseInteraction.PlayerAction.ActivateAssist,
                 Data = selectedCard
             });
 
@@ -252,7 +252,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.CastSpell,
+                ActionType = Interactions.BaseInteraction.PlayerAction.CastSpell,
                 Data = selectedSpell
             });
 
@@ -268,7 +268,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.Sacrifice,
+                ActionType = Interactions.BaseInteraction.PlayerAction.Sacrifice,
                 Data = selectedCard
             });
 
@@ -284,7 +284,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.Redeem,
+                ActionType = Interactions.BaseInteraction.PlayerAction.Redeem,
                 Data = selectedCard
             });
 
@@ -304,7 +304,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.AttackCard,
+                ActionType = Interactions.BaseInteraction.PlayerAction.AttackCard,
                 Data = new CardInstance[] { attacker, defender }
             });
 
@@ -324,7 +324,7 @@ namespace TouhouSpring.Interactions
 
             Validate(new Result
             {
-                ActionType = Action.AttackPlayer,
+                ActionType = Interactions.BaseInteraction.PlayerAction.AttackPlayer,
                 Data = new object[] { attacker, player }
             });
 

@@ -73,13 +73,13 @@ namespace TouhouSpring
                              ? compiledMainPhaseResponse.Restore(ActingPlayer)
                              : new Interactions.TacticalPhase(ActingPlayer).Run();
                 compiledMainPhaseResponse = null;
-                if (result.ActionType == Interactions.TacticalPhase.Action.PlayCard)
+                if (result.ActionType == Interactions.BaseInteraction.PlayerAction.PlayCard)
                 {
                     var cardToPlay = (CardInstance)result.Data;
                     Debug.Assert(cardToPlay.Owner == ActingPlayer);
                     IssueCommandsAndFlush(new Commands.PlayCard(cardToPlay));
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.ActivateAssist)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.ActivateAssist)
                 {
                     var cardToActivate = (CardInstance)result.Data;
                     Debug.Assert(cardToActivate.Owner == ActingPlayer);
@@ -89,13 +89,13 @@ namespace TouhouSpring
                     }
                     IssueCommandsAndFlush(new Commands.ActivateAssist(cardToActivate));
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.CastSpell)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.CastSpell)
                 {
                     var spellToCast = (Behaviors.ICastableSpell)result.Data;
                     Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
                     IssueCommandsAndFlush(new Commands.CastSpell(spellToCast));
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.Sacrifice)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Sacrifice)
                 {
                     var cardToSacrifice = (CardInstance)result.Data;
                     IssueCommandsAndFlush(
@@ -103,13 +103,13 @@ namespace TouhouSpring
                         new Commands.AddPlayerMana(ActingPlayer, 1, true, this));
                     DidSacrifice = true;
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.Redeem)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Redeem)
                 {
                     var cardToRedeem = (CardInstance)result.Data;
                     IssueCommandsAndFlush(new Commands.Redeem(cardToRedeem));
                     DidRedeem = true;
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.AttackCard)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.AttackCard)
                 {
                     var pair = (CardInstance[])result.Data;
                     var attackerWarrior = pair[0].Behaviors.Get<Behaviors.Warrior>();
@@ -120,7 +120,7 @@ namespace TouhouSpring
                             attackerWarrior, "GoCoolingDown", null)
                         );
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.AttackPlayer)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.AttackPlayer)
                 {
                     var pair = (object[])result.Data;
                     var attackerWarrior = (pair[0] as CardInstance).Behaviors.Get<Behaviors.Warrior>();
@@ -131,11 +131,11 @@ namespace TouhouSpring
                             attackerWarrior, "GoCoolingDown", null)
                         );
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.Pass)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Pass)
                 {
                     break;
                 }
-                else if (result.ActionType == Interactions.TacticalPhase.Action.Abort)
+                else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Abort)
                 {
                     return false;
                 }

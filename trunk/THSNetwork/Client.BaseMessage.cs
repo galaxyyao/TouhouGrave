@@ -30,7 +30,7 @@ namespace TouhouSpring.Network
             _client.Shutdown("bye");
         }
 
-        private void SendMessage(string text)
+        public void SendMessage(string text)
         {
             NetOutgoingMessage om = _client.CreateMessage(text);
             _client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
