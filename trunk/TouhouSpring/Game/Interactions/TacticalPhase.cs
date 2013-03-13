@@ -7,22 +7,9 @@ namespace TouhouSpring.Interactions
 {
     public partial class TacticalPhase : BaseInteraction
     {
-        public enum Action
-        {
-            PlayCard,       // play a card (hero, warrior or spell card)
-            ActivateAssist, // activate an assist
-            CastSpell,      // cast a spell from a warrior on battlefield
-            Sacrifice,      // put one hand card to sacrifice zone
-            Redeem,         // return one card from sacrifice to hand
-            AttackCard,     // card attacks a opponent card
-            AttackPlayer,   // card attacks the opponent player
-            Pass,
-            Abort
-        }
-
         public struct Result
         {
-            public Action ActionType;
+            public BaseInteraction.PlayerAction ActionType;
             public object Data;
         }
 
@@ -122,7 +109,7 @@ namespace TouhouSpring.Interactions
         {
             var result = new Result
             {
-                ActionType = Action.Pass
+                ActionType = Interactions.BaseInteraction.PlayerAction.Pass
             };
             Validate(result);
             RespondBack(result);
@@ -137,7 +124,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.PlayCard,
+                ActionType = Interactions.BaseInteraction.PlayerAction.PlayCard,
                 Data = selectedCard
             };
 
@@ -154,7 +141,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.ActivateAssist,
+                ActionType = Interactions.BaseInteraction.PlayerAction.ActivateAssist,
                 Data = selectedCard
             };
 
@@ -171,7 +158,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.CastSpell,
+                ActionType = Interactions.BaseInteraction.PlayerAction.CastSpell,
                 Data = selectedSpell
             };
 
@@ -188,7 +175,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.Sacrifice,
+                ActionType = Interactions.BaseInteraction.PlayerAction.Sacrifice,
                 Data = selectedCard
             };
             
@@ -205,7 +192,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.Redeem,
+                ActionType = Interactions.BaseInteraction.PlayerAction.Redeem,
                 Data = selectedCard
             };
 
@@ -226,7 +213,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.AttackCard,
+                ActionType = Interactions.BaseInteraction.PlayerAction.AttackCard,
                 Data = new CardInstance[] { attacker, defender }
             };
 
@@ -247,7 +234,7 @@ namespace TouhouSpring.Interactions
 
             var result = new Result
             {
-                ActionType = Action.AttackPlayer,
+                ActionType = Interactions.BaseInteraction.PlayerAction.AttackPlayer,
                 Data = new object[] { attacker, player }
             };
 
@@ -257,14 +244,14 @@ namespace TouhouSpring.Interactions
 
         public void RespondAbort()
         {
-            RespondBack(new Result { ActionType = Action.Abort });
+            RespondBack(new Result { ActionType = Interactions.BaseInteraction.PlayerAction.Abort });
         }
 
         protected void Validate(Result result)
         {
             switch (result.ActionType)
             {
-                case Action.Pass:
+                case Interactions.BaseInteraction.PlayerAction.Pass:
                     if (!CanPass)
                     {
                         throw new InteractionValidationFailException("Can't pass.");
@@ -275,7 +262,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.PlayCard:
+                case Interactions.BaseInteraction.PlayerAction.PlayCard:
                     if (!(result.Data is CardInstance))
                     {
                         throw new InteractionValidationFailException("Action PlayCard shall have an object of CardInstance as its data.");
@@ -286,7 +273,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.ActivateAssist:
+                case Interactions.BaseInteraction.PlayerAction.ActivateAssist:
                     if (!(result.Data is CardInstance))
                     {
                         throw new InteractionValidationFailException("Action ActivateAssist shall have an object of CardInstance as its data.");
@@ -297,7 +284,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.CastSpell:
+                case Interactions.BaseInteraction.PlayerAction.CastSpell:
                     if (!(result.Data is Behaviors.ICastableSpell))
                     {
                         throw new InteractionValidationFailException("Action CastSpell shall have an object of ICastableSpell as its data.");
@@ -308,7 +295,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.Sacrifice:
+                case Interactions.BaseInteraction.PlayerAction.Sacrifice:
                     if (!(result.Data is CardInstance))
                     {
                         throw new InteractionValidationFailException("Action Sacrifice shall have an object of CardInstance as its data.");
@@ -319,7 +306,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.Redeem:
+                case Interactions.BaseInteraction.PlayerAction.Redeem:
                     if (!(result.Data is CardInstance))
                     {
                         throw new InteractionValidationFailException("Action Redeem shall have an object of CardInstance as its data.");
@@ -330,7 +317,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.AttackCard:
+                case Interactions.BaseInteraction.PlayerAction.AttackCard:
                     {
                         var pair = result.Data as CardInstance[];
                         if (pair == null || pair.Length != 2)
@@ -348,7 +335,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.AttackPlayer:
+                case Interactions.BaseInteraction.PlayerAction.AttackPlayer:
                     {
                         var pair = result.Data as object[];
                         if (pair == null || pair.Length != 2 || !(pair[0] is CardInstance) || !(pair[1] is Player))
@@ -366,7 +353,7 @@ namespace TouhouSpring.Interactions
                     }
                     break;
 
-                case Action.Abort:
+                case Interactions.BaseInteraction.PlayerAction.Abort:
                     break;
 
                 default:

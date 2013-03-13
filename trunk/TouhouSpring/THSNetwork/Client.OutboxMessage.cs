@@ -2,30 +2,78 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Interactions;
 
 namespace TouhouSpring.Network
 {
     public partial class Client
     {
-        private List<string> _localMessageQueue = new List<string>();
-
-        public void QueueLocalMessage(string message)
+        public class OutboxMessageQueue : MessageQueue
         {
-            _localMessageQueue.Add(string.Format("{0} {1}", RoomId, message));
-        }
-
-        public void FlushLocalMessage()
-        {
-            foreach (var message in _localMessageQueue)
+            public OutboxMessageQueue(Client client)
+                : base(client)
             {
-                SendMessage(message);
+            }
+
+            public override void Flush()
+            {
+                foreach (var message in m_messageQueue)
+                {
+                    SendMessage(message);
+                }
+                Clear();
+            }
+
+            public void SendMessage(string message)
+            {
+                m_client.SendMessage(message);
             }
         }
 
-        public void ClearLocalMessage()
+        private Dictionary<Interactions.BaseInteraction.PlayerAction, Action<Interactions.BaseInteraction, object>> m_outboxActionloopups
+            = new Dictionary<BaseInteraction.PlayerAction, Action<Interactions.BaseInteraction, object>>();
+
+        private void InitializeOutboxActionLookups()
         {
-            _localMessageQueue.Clear();
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.Pass, ProcessRespondPass);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.Sacrifice, ProcessRespondSacrifice);
         }
+
+        public void ProcessRespond(Interactions.BaseInteraction.PlayerAction action, Interactions.BaseInteraction io, object result)
+        {
+            Action<Interactions.BaseInteraction, object> processRespondAction;
+            if (m_outboxActionloopups.TryGetValue(action, out processRespondAction))
+            {
+                processRespondAction.Invoke(io, result);
+            }
+            else
+            {
+                throw new NotImplementedException("The method for {0} has not been implemented.");
+            }
+        }
+
+        #region Process Respond List
+        private void ProcessRespondPass(Interactions.BaseInteraction io, object result)
+        {
+            OutboxQueue.Queue(string.Format("{0} switchturn", RoomId));
+        }
+
+        private void ProcessRespondSacrifice(Interactions.BaseInteraction io, object result)
+        {
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var index = tacticalPhaseIo.SacrificeCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
+            OutboxQueue.Queue(string.Format("{0} sacrifice {1}", RoomId, index));
+        }
+
+        private void ProcessRespondPlayCard(Interactions.BaseInteraction io, object result)
+        {
+            var tacticalPhaseIo = (Interactions.TacticalPhase)io;
+            var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
+            var index = tacticalPhaseIo.PlayCardCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
+            OutboxQueue.Queue(string.Format("{0} playcard {1}", RoomId, index));
+        }
+        #endregion
 
         public void ProcessRespond()
         {

@@ -49,7 +49,6 @@ namespace TouhouSpring.Agents
             return false;
         }
 
-
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
             GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.TacticalPhase(), io);
@@ -108,33 +107,31 @@ namespace TouhouSpring.Agents
         public override void OnInitiativeCommandEnd()
         {
             // flush the response queue thru network interface
+            m_NetworkClient.OutboxQueue.Flush();
         }
 
         public override void OnInitiativeCommandCanceled()
         {
             // clear the response queue
+            m_NetworkClient.OutboxQueue.Clear();
         }
 
         public override void OnRespondBack(Interactions.BaseInteraction io, object result)
         {
             if (io is Interactions.TacticalPhase)
             {
-                var tacticalPhaseIo = (io as Interactions.TacticalPhase);
                 var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
-                if (tacticalPhaseResult.ActionType == Interactions.TacticalPhase.Action.Pass)
-                {
-                    m_NetworkClient.QueueLocalMessage("switchturn");
-                }
-                // queue
 
+                // queue
+                m_NetworkClient.ProcessRespond(tacticalPhaseResult.ActionType, io, result);
 
                 // if the response is AttackCard, AttackPlayer, Pass
-                // flush
-                if (tacticalPhaseResult.ActionType == Interactions.TacticalPhase.Action.AttackCard
-                    || tacticalPhaseResult.ActionType == Interactions.TacticalPhase.Action.AttackPlayer
-                    || tacticalPhaseResult.ActionType == Interactions.TacticalPhase.Action.Pass
+                // Flush Outbox message queue
+                if (tacticalPhaseResult.ActionType == Interactions.BaseInteraction.PlayerAction.AttackCard
+                    || tacticalPhaseResult.ActionType == Interactions.BaseInteraction.PlayerAction.AttackPlayer
+                    || tacticalPhaseResult.ActionType == Interactions.BaseInteraction.PlayerAction.Pass
                     )
-                    m_NetworkClient.FlushLocalMessage();
+                    m_NetworkClient.OutboxQueue.Flush();
 
             }
             else if (io is Interactions.SelectCards
@@ -147,9 +144,12 @@ namespace TouhouSpring.Agents
                 {
                     // means the command will never be canceled
                     // flush
+                    m_NetworkClient.OutboxQueue.Flush();
                 }
             }
         }
+
+
 
     }
 }

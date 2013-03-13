@@ -12,6 +12,19 @@ namespace TouhouSpring.Interactions
         // This member is only used when the interaction is run in sync mode
         private Messaging.Message m_syncModeMessage;
 
+        public enum PlayerAction
+        {
+            PlayCard,       // play a card (hero, warrior or spell card)
+            ActivateAssist, // activate an assist
+            CastSpell,      // cast a spell from a warrior on battlefield
+            Sacrifice,      // put one hand card to sacrifice zone
+            Redeem,         // return one card from sacrifice to hand
+            AttackCard,     // card attacks a opponent card
+            AttackPlayer,   // card attacks the opponent player
+            Pass,
+            Abort
+        }
+
         public Game Game
         {
             get;

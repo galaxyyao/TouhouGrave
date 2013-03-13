@@ -24,12 +24,27 @@ namespace TouhouSpring.Network
             set;
         }
 
+        public OutboxMessageQueue OutboxQueue
+        {
+            get;
+            private set;
+        }
+
+        public InboxMessageQueue InboxQueue
+        {
+            get;
+            private set;
+        }
+
         public Client()
         {
             NetPeerConfiguration config = new NetPeerConfiguration("ths");
             config.AutoFlushSendQueue = false;
             _client = new NetClient(config);
             _client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
+            InitializeOutboxActionLookups();
+            OutboxQueue = new OutboxMessageQueue(this);
+            InboxQueue = new InboxMessageQueue(this);
         }
 
         public Game CurrentGame

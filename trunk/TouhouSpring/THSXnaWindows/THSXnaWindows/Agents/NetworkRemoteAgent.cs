@@ -9,7 +9,6 @@ namespace TouhouSpring.Agents
     class NetworkRemoteAgent : BaseAgent
     {
         Network.Client m_NetworkClient = null;
-        private Game m_currentGame = null;
 
         public NetworkRemoteAgent()
         {
@@ -24,24 +23,19 @@ namespace TouhouSpring.Agents
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
             m_NetworkClient.CurrentGame.CurrentInteraction = io;
-            //_client.CurrentIo = io;
+            if (!m_NetworkClient.InboxQueue.IsEmpty)
+            {
+                m_NetworkClient.InboxQueue.Flush();
+            }
         }
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
-            //_client.CurrentIo = io;
-            //Client.RemoteCommand remoteCommand = _client.RemoteCommandDequeue();
-            //if (remoteCommand == null)
-            //    return;
-            //if (remoteCommand.RemoteAction != Client.RemoteCommand.RemoteActionEnum.SelectCards)
-            //    throw new ArgumentException("Remote Action is wrong");
-            //List<CardInstance> selectedCards = new List<CardInstance>();
-            //foreach (int i in remoteCommand.ResultParameters)
-            //{
-            //    selectedCards.Add(io.Candidates[i]);
-            //}
-            //io.Respond(selectedCards.ToIndexable());
-            //_client.CurrentIo = null;
+            m_NetworkClient.CurrentGame.CurrentInteraction = io;
+            if (!m_NetworkClient.InboxQueue.IsEmpty)
+            {
+                m_NetworkClient.InboxQueue.Flush();
+            }
         }
 
         public override void OnMessageBox(Interactions.MessageBox io)
