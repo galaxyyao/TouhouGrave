@@ -26,7 +26,7 @@ namespace TouhouSpring.UI.ModalDialogs
 
         private TextRenderer.IFormattedText m_text;
         private CommonButtons m_commonButtons;
-        private Renderable m_renderable;
+        private RenderableProxy m_renderableProxy;
 
         public event Action<int> ButtonClicked;
 
@@ -66,7 +66,7 @@ namespace TouhouSpring.UI.ModalDialogs
                     ButtonClicked(btn);
                 }
             };
-            m_renderable = new Renderable(this);
+            m_renderableProxy = new RenderableProxy(this);
         }
 
         public void OnRender(RenderEventArgs e)

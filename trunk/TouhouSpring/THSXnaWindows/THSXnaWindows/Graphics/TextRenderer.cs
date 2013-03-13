@@ -45,5 +45,15 @@ namespace TouhouSpring.Graphics
         {
             PreDeviceReset_Atlas();
         }
+
+        private static bool IsAnsiChar(char theChar)
+        {
+            return theChar >= 0 && theChar <= 127;
+        }
+
+        private static bool IsWhitespaceChar(char theChar)
+        {
+            return theChar == ' ' || theChar == '\t' || theChar == '\x3000';
+        }
     }
 }

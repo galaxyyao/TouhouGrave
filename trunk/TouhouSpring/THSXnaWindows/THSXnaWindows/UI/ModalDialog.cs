@@ -9,7 +9,7 @@ namespace TouhouSpring.UI
 	class ModalDialog : MouseTrackedControl, IRenderable
 	{
 		private MouseEventRelay m_eventRelay;
-		private Renderable m_renderable;
+		private RenderableProxy m_renderableProxy;
 
         public const float DefaultOpacity = 0.75f;
 
@@ -33,7 +33,7 @@ namespace TouhouSpring.UI
 		{
 			m_eventRelay = new MouseEventRelay(this);
 			m_eventRelay.SetHandledAfterRelay = true;
-			m_renderable = new Renderable(this);
+			m_renderableProxy = new RenderableProxy(this);
 
             Opacity = DefaultOpacity;
 		}

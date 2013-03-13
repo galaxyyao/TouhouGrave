@@ -93,36 +93,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ScreenAttribute.cs" />
-    <Compile Include="Data\HighScoreDataItem.cs" />
     <Compile Include="Display\Delegates.cs" />
     <Compile Include="Display\DisplayObject.cs" />
     <Compile Include="Display\DisplayObjectContainer.cs" />
-    <Compile Include="Display\FontManager.cs" />
     <Compile Include="Display\IDrawable.cs" />
     <Compile Include="Display\IRenderable.cs" />
     <Compile Include="Display\Screen.cs" />
     <Compile Include="Display\Sprite.cs" />
-    <Compile Include="Display\Stage.cs" />
-    <Compile Include="Display\TextAtom.cs" />
-    <Compile Include="Enums\EdgeName.cs" />
-    <Compile Include="Enums\LivingState.cs" />
-    <Compile Include="Enums\PlayerJoinState.cs" />
-    <Compile Include="Enums\TransitionKind.cs" />
     <Compile Include="IResourceManager.cs" />
     <Compile Include="Tween\Easing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shaders\V2DShader.cs" />
     <Compile Include="Shaders\V2DShaderAttribute.cs" />
-    <Compile Include="State\StateManager.cs" />
     <Compile Include="Attributes\SpriteAttribute.cs" />
     <Compile Include="Tween\TweenState.cs" />
     <Compile Include="Tween\TweenWorker.cs" />
-    <Compile Include="V2D\V2DGame.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="V2D\V2DTransform.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="V2D\V2DTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">

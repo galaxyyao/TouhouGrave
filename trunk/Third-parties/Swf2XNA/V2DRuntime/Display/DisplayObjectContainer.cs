@@ -82,7 +82,7 @@ namespace DDW.Display
             }
             children.Sort(DisplayObject.CompareTo);
 
-			o.SetStageAndScreen();
+			o.SetScreen();
 
 			if(o is DisplayObjectContainer)
 			{
@@ -93,15 +93,12 @@ namespace DDW.Display
 	    }
 		private void EnsureInstancesCreated()
 		{
-			if (!isInitialized)
+			V2DDefinition def = screen.v2dWorld.GetDefinitionByName(definitionName);
+			if (def != null)
 			{
-				V2DDefinition def = screen.v2dWorld.GetDefinitionByName(definitionName);
-				if (def != null)
+				for (int i = 0; i < def.Instances.Count; i++)
 				{
-					for (int i = 0; i < def.Instances.Count; i++)
-					{
-						AddInstance(def.Instances[i], this);
-					}
+					AddInstance(def.Instances[i], this);
 				}
 			}
 		}
@@ -254,21 +251,6 @@ namespace DDW.Display
         public uint CurChildFrame;
         public uint LastChildFrame;
 
-		protected override void OnAddToStageComplete()
-		{
-			base.OnAddToStageComplete();
-			foreach (DisplayObject d in children)
-			{
-				if (d is DisplayObjectContainer)
-				{
-					((DisplayObjectContainer)d).OnAddToStageComplete();
-				}
-				else
-				{
-					d.Initialize();
-				}
-			}
-		}
 		//public override void Initialize()
 		//{
 		//    base.Initialize();
@@ -293,14 +275,6 @@ namespace DDW.Display
                 d.Removed(e);
             }
             //children.Clear();
-        }
-        public override void RemovedFromStage(EventArgs e)
-        {
-            base.RemovedFromStage(e);
-            for (int i = 0; i < children.Count; i++)
-            {
-                children[i].RemovedFromStage(e);
-            }
         }
 
 		#region Instance Management
@@ -375,7 +349,7 @@ namespace DDW.Display
 					Texture2D namedTexture = screen.GetTexture(def.LinkageName);
 					inst.Definition = def;
 
-					if (inst.InstanceName == V2DGame.currentRootName)
+					if (inst.InstanceName == CurrentRootName)
 					{
 						result = this;
 					}
@@ -452,7 +426,7 @@ namespace DDW.Display
         public override void CreateView()
         {
             base.CreateView();
-            SetStageAndScreen();
+            SetScreen();
             EnsureInstancesCreated();
         }
 		/// <summary>

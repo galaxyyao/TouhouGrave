@@ -10,14 +10,14 @@ namespace TouhouSpring.UI
 		void OnRender(RenderEventArgs e);
 	}
 
-	class Renderable : EventListener, IEventListener<RenderEventArgs>
+	class RenderableProxy : EventListener, IEventListener<RenderEventArgs>
 	{
 		private IRenderable TypedDispatcher
 		{
 			get { return Dispatcher as IRenderable; }
 		}
 
-		public Renderable(EventDispatcher dispatcher)
+		public RenderableProxy(EventDispatcher dispatcher)
 		{
 			if (dispatcher == null)
 			{

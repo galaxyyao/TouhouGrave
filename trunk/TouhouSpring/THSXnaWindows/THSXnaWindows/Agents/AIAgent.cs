@@ -98,8 +98,8 @@ namespace TouhouSpring.Agents
             Debug.Assert(m_plan == null);
             long startTime, endTime, freq;
 
-            QueryPerformanceFrequency(out freq);
-            QueryPerformanceCounter(out startTime);
+            PInvokes.Kernel.QueryPerformanceFrequency(out freq);
+            PInvokes.Kernel.QueryPerformanceCounter(out startTime);
 
             Simulation.ISandbox simSandbox = new Simulation.StpSandbox(game, new Simulation.MainPhaseSimulator());
             simSandbox.Run();
@@ -109,7 +109,7 @@ namespace TouhouSpring.Agents
             m_plan = scoredBranches.Max().Branch;
             m_planProgress = 0;
 
-            QueryPerformanceCounter(out endTime);
+            PInvokes.Kernel.QueryPerformanceCounter(out endTime);
 
             Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simSandbox.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
             PrintEvaluate(m_plan.Result.Players[pid]);
@@ -126,11 +126,5 @@ namespace TouhouSpring.Agents
                 m_plan = null;
             }
         }
-
-        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
-        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
-
-        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
-        private static extern bool QueryPerformanceFrequency(out long lpFrequency);
     }
 }

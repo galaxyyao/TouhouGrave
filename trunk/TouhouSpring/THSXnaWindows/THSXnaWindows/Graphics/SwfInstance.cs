@@ -46,7 +46,7 @@ namespace TouhouSpring.Graphics
             DDW.Display.DisplayObject.MillisecondsPerFrame = mspfBackup;
         }
 
-        public void Render(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             var tranformBackup = DDW.Display.DisplayObject.GlobalTransform;
             DDW.Display.DisplayObject.GlobalTransform = Transform;

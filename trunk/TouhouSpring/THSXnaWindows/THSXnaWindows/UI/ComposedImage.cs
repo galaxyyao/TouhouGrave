@@ -7,7 +7,7 @@ namespace TouhouSpring.UI
 {
 	class ComposedImage : TransformNode, IRenderable
 	{
-		private Renderable m_renderable;
+		private RenderableProxy m_renderableProxy;
 
 		public struct Quad
 		{
@@ -22,7 +22,7 @@ namespace TouhouSpring.UI
 
 		public ComposedImage()
 		{
-			m_renderable = new Renderable(this);
+			m_renderableProxy = new RenderableProxy(this);
 			Quads = new List<Quad>();
 		}
 

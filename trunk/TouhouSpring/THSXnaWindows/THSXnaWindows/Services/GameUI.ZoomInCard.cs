@@ -14,7 +14,7 @@ namespace TouhouSpring.Services
 			UI.IEventListener<UI.MouseButton2EventArgs>
 		{
 			private Matrix m_toScreenSpace;
-			private UI.Renderable m_renderable;
+			private UI.RenderableProxy m_renderableProxy;
 
 			public ZoomBackground()
 			{
@@ -24,7 +24,7 @@ namespace TouhouSpring.Services
 				m_toScreenSpace.M41 = -1.0f;
 				m_toScreenSpace.M42 = 1.0f;
 
-				m_renderable = new UI.Renderable(this);
+				m_renderableProxy = new UI.RenderableProxy(this);
 			}
 
 			public void OnRender(UI.RenderEventArgs e)

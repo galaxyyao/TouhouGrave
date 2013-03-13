@@ -8,7 +8,7 @@ namespace TouhouSpring.UI
 {
     class Panel : MouseTrackedControl, IRenderable
     {
-        private Renderable m_renderable;
+        private RenderableProxy m_renderableProxy;
 
         public Color Color
         {
@@ -17,7 +17,7 @@ namespace TouhouSpring.UI
 
         public Panel()
         {
-            m_renderable = new Renderable(this);
+            m_renderableProxy = new RenderableProxy(this);
 
             Color = Color.Black;
         }

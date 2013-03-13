@@ -41,7 +41,7 @@ namespace TouhouSpring.Graphics
                 throw new ArgumentNullException("cardFrameTexture");
             }
 
-            RenderManager.BeginPixEvent(0, "PileRenderer.Draw");
+            PInvokes.D3d9.BeginPixEvent(0, "PileRenderer.Draw");
 
             var device = GameApp.Instance.GraphicsDevice;
 
@@ -78,7 +78,7 @@ namespace TouhouSpring.Graphics
             device.DepthStencilState = oldDepthState;
             device.RasterizerState = oldRasterizerState;
 
-            RenderManager.EndPixEvent();
+            PInvokes.D3d9.EndPixEvent();
         }
 
         public override void Startup()
