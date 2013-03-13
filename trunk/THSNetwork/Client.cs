@@ -12,42 +12,13 @@ namespace TouhouSpring.Network
     {
         private NetClient _client;
 
-        public object Command
+        public string RemoteServerIp
         {
             get;
             set;
         }
 
-        public int RoomId
-        {
-            get;
-            private set;
-        }
-
-        public enum RoomStatusEnum
-        {
-            Waiting, Starting, Started, End
-        }
-
-        public RoomStatusEnum RoomStatus
-        {
-            get;
-            set;
-        }
-
-        public int Seed
-        {
-            get;
-            private set;
-        }
-
-        public int StartupIndex
-        {
-            get;
-            private set;
-        }
-
-        public Interactions.BaseInteraction CurrentIo
+        public int RemoteServerPort
         {
             get;
             set;
@@ -59,6 +30,12 @@ namespace TouhouSpring.Network
             config.AutoFlushSendQueue = false;
             _client = new NetClient(config);
             _client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
+        }
+
+        public Game CurrentGame
+        {
+            get;
+            set;
         }
     }
 }

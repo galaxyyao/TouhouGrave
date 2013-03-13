@@ -74,7 +74,8 @@ namespace TouhouSpring.NetServerCore
                                 #region user disconnect
                                 long disconnectedPlayerUid = im.SenderConnection.RemoteUniqueIdentifier;
                                 int disconnectedRoomId = GetRoomIdByUid(disconnectedPlayerUid);
-                                if (_roomList.ContainsKey(disconnectedRoomId))
+                                if (_roomList.ContainsKey(disconnectedRoomId)
+                                    && _roomList[disconnectedRoomId].Status == Room.RoomStatus.Full)
                                 {
                                     SendMessage(_roomList[disconnectedRoomId].GetOpponentPlayerConnection(disconnectedPlayerUid)
                                         , string.Format("{0} disconnect", disconnectedRoomId));

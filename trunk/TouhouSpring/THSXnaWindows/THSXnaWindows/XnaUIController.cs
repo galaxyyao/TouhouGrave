@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TouhouSpring.Services;
 using TouhouSpring.UI;
+using THSNetwork = TouhouSpring.Network;
 
 namespace TouhouSpring
 {
@@ -13,7 +14,8 @@ namespace TouhouSpring
 
         public IIndexable<Agents.BaseAgent> Agents
         {
-            get; private set;
+            get;
+            private set;
         }
 
         public XnaUIController(Agents.BaseAgent[] agents)
@@ -58,6 +60,18 @@ namespace TouhouSpring
         [Interactions.MessageHandler(typeof(Interactions.NotifyGameEvent))]
         private bool OnNotified(Interactions.NotifyGameEvent interactionObj)
         {
+            switch (interactionObj.Notification)
+            {
+                case "OnInitiativeCommandEnd":
+                    m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnInitiativeCommandEnd();
+                    break;
+                case "OnInitiativeCommandCanceled":
+                    m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnInitiativeCommandCanceled();
+                    break;
+                default:
+                    break;
+            }
+
             interactionObj.Respond();
             return false;
         }
@@ -134,6 +148,31 @@ namespace TouhouSpring
         {
             m_agents[Game.Players.IndexOf(interactionObj.Player)].OnSelectNumber(interactionObj);
             return true;
+        }
+
+        public override void OnRespondBack(Interactions.BaseInteraction io, object result)
+        {
+            if (io is Interactions.TacticalPhase)
+            {
+                m_agents[Game.Players.IndexOf((io as Interactions.TacticalPhase).Player)].OnRespondBack(io, result);
+            }
+            else if (io is Interactions.SelectCards)
+            {
+                m_agents[Game.Players.IndexOf((io as Interactions.SelectCards).Player)].OnRespondBack(io, result);
+            }
+            else if (io is Interactions.NotifyOnly
+                ||io is Interactions.NotifyCardEvent
+                || io is Interactions.NotifyPlayerEvent
+                || io is Interactions.NotifyGameEvent
+                || io is Interactions.NotifySpellEvent
+                )
+            {
+                //let notifyonly be
+            }
+            else
+            {
+                throw new Exception("Unhandled Response back Interation type.");
+            }
         }
     }
 }

@@ -20,7 +20,8 @@ namespace TouhouSpring
         /// </summary>
         public Random Random
         {
-            get; private set;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -28,22 +29,32 @@ namespace TouhouSpring
         /// </summary>
         public string CurrentPhase
         {
-            get; internal set;
+            get;
+            internal set;
         }
 
         public int Round
         {
-            get; private set;
+            get;
+            private set;
         }
 
         public BaseController Controller
         {
-            get; private set;
+            get;
+            private set;
         }
 
         internal Messaging.LetterBox LetterBox
         {
-            get; private set;
+            get;
+            private set;
+        }
+
+        public Interactions.BaseInteraction CurrentInteraction
+        {
+            get;
+            set;
         }
 
         public Game(IIndexable<GameStartupParameters> startUpParams, BaseController controller)

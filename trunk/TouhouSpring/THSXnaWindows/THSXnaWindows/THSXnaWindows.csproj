@@ -101,9 +101,6 @@
     <Compile Include="Graphics\TextRenderer.FormatText.cs" />
     <Compile Include="Graphics\TextureAtlasManager.cs" />
     <Compile Include="Graphics\VirtualTexture.cs" />
-    <Compile Include="Network\Client.cs" />
-    <Compile Include="Network\Client.Operation.cs" />
-    <Compile Include="Network\Client.RemoteCommand.cs" />
     <Compile Include="Ray.cs" />
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
@@ -119,6 +116,7 @@
     <Compile Include="Services\IUIState.cs" />
     <Compile Include="Services\MenuUI.cs" />
     <Compile Include="Services\MenuUI.Page.cs" />
+    <Compile Include="Services\Network.cs" />
     <Compile Include="Services\PopupDialog.cs" />
     <Compile Include="Services\ResourceManager.cs" />
     <Compile Include="Services\ResourceManager.IDisposableManager.cs" />
@@ -248,6 +246,10 @@
       <Project>{D5D6310E-2D9D-4931-8D3B-4574F6625C6A}</Project>
       <Name>VexPipelineReader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\THSNetwork\THSNetwork.csproj">
+      <Project>{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}</Project>
+      <Name>THSNetwork</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Cards\Cards.csproj">
       <Project>{3AB1B190-1237-4798-A5B3-45F341A58BDD}</Project>
       <Name>Cards</Name>
@@ -294,7 +296,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -57,6 +57,11 @@ namespace TouhouSpring
                 var card = (command as Commands.Summon).CardSummoned;
                 new Interactions.NotifyCardEvent(Game, "OnCardSummoned", card).Run();
             }
+
+            if (command is Commands.IInitiativeCommand)
+            {
+                new Interactions.NotifyGameEvent(Game, "OnInitiativeCommandEnd", null).Run();
+            }
         }
 
         internal void OnCommandCanceled(Commands.BaseCommand command, string reason)
@@ -71,6 +76,13 @@ namespace TouhouSpring
                 var card = (command as Commands.PlayCard).CardToPlay;
                 new Interactions.NotifyCardEvent(Game, "OnCardPlayCanceled", card, reason).Run();
             }
+
+            if (command is Commands.IInitiativeCommand)
+            {
+                new Interactions.NotifyGameEvent(Game, "OnInitiativeCommandCanceled", null).Run();
+            }
         }
+
+        public virtual void OnRespondBack(Interactions.BaseInteraction io, object result) { }
     }
 }

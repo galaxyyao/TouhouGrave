@@ -14,7 +14,8 @@ namespace TouhouSpring.Interactions
 
         public Game Game
         {
-            get; private set;
+            get;
+            private set;
         }
 
         internal static string GetMessageText(Type interactionType)
@@ -67,6 +68,7 @@ namespace TouhouSpring.Interactions
             {
                 throw new Messaging.UnexpectedMessageException(msgText, inboxMsg.Text);
             }
+
             return (TResult)inboxMsg.Attachment;
         }
 
@@ -78,27 +80,9 @@ namespace TouhouSpring.Interactions
         /// <param name="result">The result of this interaction</param>
         protected void RespondBack<TResult>(TResult result)
         {
+            //Respond for network handling
+            Game.Controller.OnRespondBack(this, result);
 
-            switch (this.GetType().Name)
-            {
-                case "TacticalPhase":
-                    Game.CurrentCommand.Type = Game.CurrentCommand.InteractionType.TacticalPhase;
-                    Game.CurrentCommand.Result = result;
-                    break;
-                case "SelectCards":
-                    Game.CurrentCommand.Type = Game.CurrentCommand.InteractionType.SelectCards;
-                    Game.CurrentCommand.Result = result;
-                    break;
-                case "NotifyCardEvent":
-                case "NotifyGameEvent":
-                case "NotifyOnly":
-                case "NotifyPlayerEvent":
-                case "NotifySpellEvent":
-                    break;
-                default:
-                    Game.CurrentCommand.Type = Game.CurrentCommand.InteractionType.Others;
-                    break;
-            }
             string msgText = GetMessageText(GetType());
             var msg = new Messaging.Message(msgText, result);
 

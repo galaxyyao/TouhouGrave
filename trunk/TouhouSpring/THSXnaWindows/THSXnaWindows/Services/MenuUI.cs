@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using System.Threading;
+using THSNetwork = TouhouSpring.Network;
 
 namespace TouhouSpring.Services
 {
@@ -16,7 +17,8 @@ namespace TouhouSpring.Services
     partial class MenuUI : GameService
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
-        private Network.Client m_networkClient = null;
+
+        private THSNetwork.Client m_networkClient = null;
 
         GameStartupParameters[] param = new GameStartupParameters[2];
 
@@ -119,9 +121,8 @@ namespace TouhouSpring.Services
                 {
                     CurrentPage = m_pages["Network"];
 
-                    m_networkClient = new Network.Client();
-                    m_networkClient.Connect(System.Configuration.ConfigurationManager.AppSettings["RemoteServerIp"]
-                        , Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RemoteServerPort"]));
+                    m_networkClient = GameApp.Service<Network>().THSClient;
+                    m_networkClient.Connect();
                 }
                 else if (id == "back")
                 {
@@ -156,18 +157,18 @@ namespace TouhouSpring.Services
 
             CurrentPage = m_pages["MainMenu"];
 
-            m_testAnimation = new Graphics.SwfInstance("germs")
-            {
-                IsPlaying = true,
-                TimeFactor = 2.0f,
-                Transform = MatrixHelper.RotateZ(MathHelper.Pi / 4) * MatrixHelper.Translate(256f, 256f)
-            };
+            //m_testAnimation = new Graphics.SwfInstance("germs")
+            //{
+            //    IsPlaying = true,
+            //    TimeFactor = 2.0f,
+            //    Transform = MatrixHelper.RotateZ(MathHelper.Pi / 4) * MatrixHelper.Translate(256f, 256f)
+            //};
 
-            m_testAnimation2 = new Graphics.SwfInstance("28835")
-            {
-                IsPlaying = true,
-                Transform = MatrixHelper.Translate(768f, 0f)
-            };
+            //m_testAnimation2 = new Graphics.SwfInstance("28835")
+            //{
+            //    IsPlaying = true,
+            //    Transform = MatrixHelper.Translate(768f, 0f)
+            //};
         }
 
         private void PrepareGameStartupParam()
@@ -269,7 +270,16 @@ namespace TouhouSpring.Services
 
         public override void Update(float deltaTime)
         {
-            if (m_networkClient != null && m_networkClient.RoomStatus == Network.Client.RoomStatusEnum.Starting)
+            if (m_networkClient == null)
+            {
+                if (GameApp.Service<Network>().THSClient == null)
+                {
+                    throw new Exception("Network Service is not started correctly. Network Client is null.");
+                }
+                m_networkClient = GameApp.Service<Network>().THSClient;
+            }
+
+            if (m_networkClient != null && m_networkClient.RoomStatus == THSNetwork.Client.RoomStatusEnum.Starting)
             {
                 CurrentPage = null;
                 // detach menu ui
@@ -290,19 +300,20 @@ namespace TouhouSpring.Services
                 {
                     GameApp.Service<GameManager>().StartGame(param
                             , new Agents.BaseAgent[] {
-                                    new Agents.NetworkLocalPlayerAgent(m_networkClient),
-                                    new Agents.NetworkRemoteAgent(m_networkClient)
+                                    new Agents.NetworkLocalPlayerAgent(),
+                                    new Agents.NetworkRemoteAgent()
                                 });
                 }
                 else
                 {
                     GameApp.Service<GameManager>().StartGame(param
                             , new Agents.BaseAgent[] {
-                                new Agents.NetworkRemoteAgent(m_networkClient),
-                                    new Agents.NetworkLocalPlayerAgent(m_networkClient)
+                                new Agents.NetworkRemoteAgent(),
+                                    new Agents.NetworkLocalPlayerAgent()
                                 });
                 }
-                m_networkClient.RoomStatus = Network.Client.RoomStatusEnum.Started;
+                m_networkClient.RoomStatus = THSNetwork.Client.RoomStatusEnum.Started;
+                m_networkClient.CurrentGame = GameApp.Service<GameManager>().Game;
             }
 
             foreach (var page in m_pages.Values)
@@ -314,14 +325,14 @@ namespace TouhouSpring.Services
                 }
             }
 
-            m_testAnimation.Update(deltaTime);
-            m_testAnimation2.Update(deltaTime);
+            //m_testAnimation.Update(deltaTime);
+            //m_testAnimation2.Update(deltaTime);
         }
 
         public override void Render()
         {
-            GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation);
-            GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation2);
+            //GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation);
+            //GameApp.Service<Graphics.SwfRenderer>().Render(m_testAnimation2);
         }
     }
 }

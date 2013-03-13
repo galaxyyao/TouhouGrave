@@ -108,6 +108,7 @@ namespace TouhouSpring.Interactions
             }
 
             CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>());
+            Game.CurrentInteraction = this;
         }
 
         internal Result Run()
@@ -141,7 +142,6 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = PlayCardCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -159,7 +159,6 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = ActivateAssistCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -177,7 +176,6 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = CastSpellCandidates.IndexOf(selectedSpell);
             RespondBack(result);
         }
 
@@ -195,7 +193,6 @@ namespace TouhouSpring.Interactions
             };
             
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = SacrificeCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -213,7 +210,6 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = RedeemCandidates.IndexOf(selectedCard);
             RespondBack(result);
         }
 
@@ -235,9 +231,6 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = AttackerCandidates.IndexOf(attacker);
-            Game.CurrentCommand.ResultParameters = new int[1];
-            Game.CurrentCommand.ResultParameters[0] = DefenderCandidates.IndexOf(defender);
             RespondBack(result);
         }
 
@@ -259,7 +252,6 @@ namespace TouhouSpring.Interactions
             };
 
             Validate(result);
-            Game.CurrentCommand.ResultSubjectIndex = AttackerCandidates.IndexOf(attacker);
             RespondBack(result);
         }
 

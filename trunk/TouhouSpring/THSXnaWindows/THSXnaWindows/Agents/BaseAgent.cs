@@ -17,5 +17,8 @@ namespace TouhouSpring.Agents
         public virtual void OnSelectCards(Interactions.SelectCards io) { }
         public virtual void OnMessageBox(Interactions.MessageBox io) { }
         public virtual void OnSelectNumber(Interactions.SelectNumber io) { }
+        public virtual void OnRespondBack(Interactions.BaseInteraction io, object result) { }
+        public virtual void OnInitiativeCommandEnd() { }
+        public virtual void OnInitiativeCommandCanceled() { }
     }
 }
