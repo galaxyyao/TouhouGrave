@@ -35,10 +35,17 @@ namespace TouhouSpring.Graphics
             public bool[] m_pageOccupied = new bool[PagesInOneCacheTexture];
         }
 
-        private struct VertexDataBlit
+        private struct VertexDataBlit : IVertexType
         {
             public Vector2 pos;
             public Vector2 uv;
+
+            private static readonly VertexDeclaration s_vertDecl = new VertexDeclaration(
+                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
+                new VertexElement(8, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0)
+            );
+
+            VertexDeclaration IVertexType.VertexDeclaration { get { return s_vertDecl; } }
         }
 
         private Dictionary<uint, GlyphData> m_loadedGlyphs = new Dictionary<uint, GlyphData>();
@@ -46,7 +53,6 @@ namespace TouhouSpring.Graphics
 
         private SystemDrawing.Graphics m_measureContext;
         private SystemDrawing.StringFormat m_measureFormat;
-        private VertexDeclaration m_vertDeclBlit;
         private EffectTechnique m_techBlit;
         private BlendState[] m_channelMasks;
 
@@ -140,7 +146,7 @@ namespace TouhouSpring.Graphics
                         foreach (var pass in m_techBlit.Passes)
                         {
                             pass.Apply();
-                            device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, pagesInBatch.Length * 2, m_vertDeclBlit);
+                            device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, pagesInBatch.Length * 2);
                         }
                     }
 
@@ -243,10 +249,6 @@ namespace TouhouSpring.Graphics
             m_measureFormat.SetMeasurableCharacterRanges(new SystemDrawing.CharacterRange[] { new SystemDrawing.CharacterRange(0, 1) });
 
             m_techBlit = m_effect.Techniques["BlitToRT"];
-            m_vertDeclBlit = new VertexDeclaration(
-                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
-                new VertexElement(8, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0)
-            );
 
             m_channelMasks = new BlendState[]
             {
@@ -260,7 +262,6 @@ namespace TouhouSpring.Graphics
         private void Destroy_Atlas()
         {
             m_channelMasks.ForEach(channel => channel.Dispose());
-            m_vertDeclBlit.Dispose();
             m_measureContext.Dispose();
         }
 

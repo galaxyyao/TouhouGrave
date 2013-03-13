@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Byte4 = Microsoft.Xna.Framework.Graphics.PackedVector.Byte4;
+using Short2N = Microsoft.Xna.Framework.Graphics.PackedVector.NormalizedShort2;
 using SystemColor = System.Drawing.Color;
 using SystemFont = System.Drawing.Font;
 using SystemSolidBrush = System.Drawing.SolidBrush;
@@ -24,7 +25,7 @@ namespace TouhouSpring.Graphics
 
         private struct VertexDataDraw
         {
-            public Byte4 m_corner;
+            public Short2N m_corner;
             public Vector2 m_leftTopPos;
             public Byte4 m_localPageXY_mask;
             public Color m_color;
@@ -44,27 +45,35 @@ namespace TouhouSpring.Graphics
         private EffectParameter m_paramInvNumPages;
         private EffectParameter m_paramColorScaling;
 
+        [Flags]
+        public enum DrawFlags
+        {
+            TransformToClipSpace    = 0x01,
+            OffsetByHalfPixel       = 0x02,
+            BoundedByBox            = 0x04
+        }
+
         public struct DrawOptions
         {
             public Color ForcedColor;
             public Vector4 ColorScaling;
             public Point Offset;
-            public bool TransformToClipSpace;
-            public bool OffsetByHalfPixel;
+            public DrawFlags DrawFlags;
             public int SubstringStart;
             public int SubstringLength;
             public int BaseIndex;
+            public Rectangle BoundingBox;
 
             public static readonly DrawOptions Default = new DrawOptions
             {
                 ForcedColor = Color.Transparent,
                 ColorScaling = Vector4.UnitW,
                 Offset = new Point(0, 0),
-                TransformToClipSpace = false,
-                OffsetByHalfPixel = true,
+                DrawFlags = TextRenderer.DrawFlags.OffsetByHalfPixel,
                 SubstringStart = 0,
                 SubstringLength = -1,
-                BaseIndex = 0
+                BaseIndex = 0,
+                BoundingBox = new Rectangle(0, 0, 0, 0)
             };
         }
 
@@ -102,7 +111,7 @@ namespace TouhouSpring.Graphics
             var globalOffset = Vector2.Zero;
             globalOffset.X = typedFormattedText.Offset.X + drawOptions.Offset.X;
             globalOffset.Y = typedFormattedText.Offset.Y + drawOptions.Offset.Y;
-            if (drawOptions.OffsetByHalfPixel)
+            if ((drawOptions.DrawFlags & DrawFlags.OffsetByHalfPixel) != 0)
             {
                 globalOffset += new Vector2(-0.5f, -0.5f);
             }
@@ -141,6 +150,7 @@ namespace TouhouSpring.Graphics
             }
 
             Func<PositionedGlyphPage, int> batchCriteria = page => page.m_pageIndex / PagesInOneCacheTexture / 4;
+            bool useBoundingBox = (drawOptions.DrawFlags & DrawFlags.BoundedByBox) != 0;
             int counter = 0;
 
             var device = GameApp.Instance.GraphicsDevice;
@@ -149,7 +159,7 @@ namespace TouhouSpring.Graphics
             device.DepthStencilState = DepthStencilState.None;
             device.RasterizerState = RasterizerState.CullCounterClockwise;
             m_effect.CurrentTechnique = m_techDraw;
-            if (drawOptions.TransformToClipSpace)
+            if ((drawOptions.DrawFlags & DrawFlags.TransformToClipSpace) != 0)
             {
                 var mtx = Matrix.Identity;
                 mtx.M11 = 2.0f / device.Viewport.Width;
@@ -182,6 +192,29 @@ namespace TouhouSpring.Graphics
 
                 foreach (var glyphPage in batch)
                 {
+                    float boundedLeft, boundedTop, boundedWidth, boundedHeight;
+                    if (useBoundingBox)
+                    {
+                        boundedLeft = (drawOptions.BoundingBox.Left - glyphPage.m_pos.X) / PageSize;
+                        boundedTop = (drawOptions.BoundingBox.Top - glyphPage.m_pos.Y) / PageSize;
+                        boundedWidth = (drawOptions.BoundingBox.Right - glyphPage.m_pos.X) / PageSize;
+                        boundedHeight = (drawOptions.BoundingBox.Bottom - glyphPage.m_pos.Y) / PageSize;
+
+                        if (boundedLeft >= 1.0f || boundedTop >= 1.0f || boundedWidth <= 0.0f || boundedHeight <= 0.0f)
+                        {
+                            continue;
+                        }
+                        boundedLeft = Math.Max(boundedLeft, 0.0f);
+                        boundedTop = Math.Max(boundedTop, 0.0f);
+                        boundedWidth = Math.Min(boundedWidth, 1.0f);
+                        boundedHeight = Math.Min(boundedHeight, 1.0f);
+                    }
+                    else
+                    {
+                        boundedLeft = boundedTop = 0;
+                        boundedWidth = boundedHeight = 1;
+                    }
+
                     var localPageIndex = glyphPage.m_pageIndex % PagesInOneCacheTexture;
                     var pageX = localPageIndex % PagesInOneRow;
                     var pageY = localPageIndex / PagesInOneRow;
@@ -194,22 +227,27 @@ namespace TouhouSpring.Graphics
                         vertices[counter + i].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
                         vertices[counter + i].m_color = glyphPage.m_color;
                     }
-                    vertices[counter + 0].m_corner = new Byte4(0, 0, 0, 0);
-                    vertices[counter + 1].m_corner = vertices[counter + 4].m_corner = new Byte4(1, 0, 0, 0);
-                    vertices[counter + 2].m_corner = vertices[counter + 3].m_corner = new Byte4(0, 1, 0, 0);
-                    vertices[counter + 5].m_corner = new Byte4(1, 1, 0, 0);
+                    vertices[counter + 0].m_corner = new Short2N(boundedLeft, boundedTop);
+                    vertices[counter + 1].m_corner = vertices[counter + 4].m_corner = new Short2N(boundedWidth, boundedTop);
+                    vertices[counter + 2].m_corner = vertices[counter + 3].m_corner = new Short2N(boundedLeft, boundedHeight);
+                    vertices[counter + 5].m_corner = new Short2N(boundedWidth, boundedHeight);
 
                     counter += 6;
                 }
 
+                if (counter == 0)
+                {
+                    break;
+                }
+
                 var batchSize = counter - arrayStart;
                 var bufferOffset = CopyInstanceVertices(vertices, arrayStart, batchSize);
-                device.SetVertexBuffer(m_verticesDraw, bufferOffset);
+                device.SetVertexBuffer(m_verticesDraw);
 
                 foreach (var pass in m_techDraw.Passes)
                 {
                     pass.Apply();
-                    device.DrawPrimitives(PrimitiveType.TriangleList, 0, counter / 3);
+                    device.DrawPrimitives(PrimitiveType.TriangleList, bufferOffset, counter / 3);
                 }
             }
 
@@ -249,7 +287,7 @@ namespace TouhouSpring.Graphics
             m_whiteBrush = new SystemSolidBrush(SystemColor.White);
 
             m_vertDeclDraw = new VertexDeclaration(
-                new VertexElement(0, VertexElementFormat.Byte4, VertexElementUsage.Position, 0),
+                new VertexElement(0, VertexElementFormat.NormalizedShort2, VertexElementUsage.Position, 0),
                 new VertexElement(4, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
                 new VertexElement(12, VertexElementFormat.Byte4, VertexElementUsage.Color, 0),
                 new VertexElement(16, VertexElementFormat.Color, VertexElementUsage.Color, 1)
