@@ -104,6 +104,8 @@ namespace TouhouSpring.UI
         {
             var transform = TransformToGlobal;
             var drawOptions = TextRenderer.DrawOptions.Default;
+            drawOptions.DrawFlags |= TextRenderer.DrawFlags.BoundedByBox;
+            drawOptions.BoundingBox = Region;
             drawOptions.ColorScaling = ForeColor.ToVector4();
             drawOptions.BaseIndex = m_scrollPosition;
 
@@ -149,7 +151,7 @@ namespace TouhouSpring.UI
             {
                 // text
                 drawOptions.SubstringStart = m_scrollPosition;
-                drawOptions.SubstringLength = m_scrollWindow;
+                drawOptions.SubstringLength = Math.Min(m_scrollWindow + 1, m_text.Length - m_scrollPosition);
                 e.TextRenderer.DrawText(m_allText, transform, drawOptions);
             }
 
@@ -268,6 +270,10 @@ namespace TouhouSpring.UI
             if (oldText != m_text.ToString())
             {
                 TextChanged();
+            }
+            else
+            {
+                MakeVisible();
             }
             m_caretBlinkTimer = 0;
         }
