@@ -86,7 +86,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VexTo2DPhysics", "Third-par
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{B8F635BB-56A9-4BBB-AE49-C25E86C5A6AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THSNetwork", "THSNetwork\THSNetwork.csproj", "{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THSNetwork", "TouhouSpring\THSNetwork\THSNetwork.csproj", "{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -230,7 +230,6 @@ Global
 		{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}.Debug|x86.Build.0 = Debug|Any CPU
 		{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}.Release|x86.ActiveCfg = Release|Any CPU
-		{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

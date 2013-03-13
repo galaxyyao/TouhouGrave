@@ -49,15 +49,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fountain\Common\Common.csproj">
+    <ProjectReference Include="..\..\Fountain\Common\Common.csproj">
       <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Third-parties\Lidgren.Network\Lidgren.Network.csproj">
+    <ProjectReference Include="..\..\Third-parties\Lidgren.Network\Lidgren.Network.csproj">
       <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
       <Name>Lidgren.Network %28Third Parties\Lidgren.Network\Lidgren.Network%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TouhouSpring\Game\Game.csproj">
+    <ProjectReference Include="..\Game\Game.csproj">
       <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
       <Name>Game</Name>
     </ProjectReference>
