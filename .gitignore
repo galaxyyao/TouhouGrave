@@ -12,6 +12,12 @@
 /trunk/Fountain/TextureAtlasEditor/obj/*
 /trunk/Fountain/ToolCommon/bin/*
 /trunk/Fountain/ToolCommon/obj/*
+/trunk/NetServer/_ReSharper.NetServer
+/trunk/NetServer/Common/bin/*
+/trunk/NetServer/Common/obj/*
+/trunk/NetServer/NetServer/bin/*
+/trunk/NetServer/NetServer/obj/*
+/trunk/NetServer/NetServer.suo
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/bin/*
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/obj/*
 /trunk/Third-parties/CurveEditor_4_0/CurveEditor/bin/*
@@ -36,6 +42,8 @@
 /trunk/Third-parties/Swf2XNA/VexPipelineReader/obj/*
 /trunk/Third-parties/Swf2XNA/VexTo2DPhysics/bin/*
 /trunk/Third-parties/Swf2XNA/VexTo2DPhysics/obj/*
+/trunk/THSNetwork/bin/*
+/trunk/THSNetwork/obj/*
 /trunk/TouhouSpring.suo
 /trunk/TouhouSpring/CardEditor/bin/*
 /trunk/TouhouSpring/CardEditor/obj/*
