@@ -192,11 +192,6 @@ namespace TouhouSpring.Graphics
 
                 foreach (var glyphPage in batch)
                 {
-                    var localPageIndex = glyphPage.m_pageIndex % PagesInOneCacheTexture;
-                    var pageX = localPageIndex % PagesInOneRow;
-                    var pageY = localPageIndex / PagesInOneRow;
-                    int channel = glyphPage.m_pageIndex / PagesInOneCacheTexture % 4;
-
                     float boundedLeft, boundedTop, boundedWidth, boundedHeight;
                     if (useBoundingBox)
                     {
@@ -220,6 +215,11 @@ namespace TouhouSpring.Graphics
                         boundedWidth = boundedHeight = 1;
                     }
 
+                    var localPageIndex = glyphPage.m_pageIndex % PagesInOneCacheTexture;
+                    var pageX = localPageIndex % PagesInOneRow;
+                    var pageY = localPageIndex / PagesInOneRow;
+                    int channel = glyphPage.m_pageIndex / PagesInOneCacheTexture % 4;
+
                     for (int i = 0; i < 6; ++i)
                     {
                         vertices[counter + i].m_leftTopPos.X = glyphPage.m_pos.X;
@@ -233,6 +233,11 @@ namespace TouhouSpring.Graphics
                     vertices[counter + 5].m_corner = new Short2N(boundedWidth, boundedHeight);
 
                     counter += 6;
+                }
+
+                if (counter == 0)
+                {
+                    break;
                 }
 
                 var batchSize = counter - arrayStart;
