@@ -115,8 +115,10 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var sacrificedCard = ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).SacrificeCandidates[Convert.ToInt32(parts[2])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondSacrifice(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).SacrificeCandidates[Convert.ToInt32(parts[2])]);
+                    .RespondSacrifice(sacrificedCard);
+                Debug.Print(string.Format("Sacrificed {0}", sacrificedCard.Guid));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -131,8 +133,10 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var playedCard = ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).PlayCardCandidates[Convert.ToInt32(parts[2])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondPlay(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).PlayCardCandidates[Convert.ToInt32(parts[2])]);
+                    .RespondPlay(playedCard);
+                Debug.Print(string.Format("Played {0}", playedCard.Guid));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -147,9 +151,11 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var attackerCard=((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).AttackerCandidates[Convert.ToInt32(parts[2])];
+                var defenderCard=((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).DefenderCandidates[Convert.ToInt32(parts[3])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondAttackCard(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).AttackerCandidates[Convert.ToInt32(parts[2])]
-                    , ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).DefenderCandidates[Convert.ToInt32(parts[3])]);
+                    .RespondAttackCard(attackerCard, defenderCard);
+                Debug.Print(string.Format("{0} attacked {1}", attackerCard.Guid, defenderCard.Guid));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -164,9 +170,11 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var attackerCard=((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).AttackerCandidates[Convert.ToInt32(parts[2])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondAttackPlayer(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).AttackerCandidates[Convert.ToInt32(parts[2])]
+                    .RespondAttackPlayer(attackerCard
                     , CurrentGame.CurrentInteraction.Game.ActingPlayerEnemies.FirstOrDefault());
+                Debug.Print(string.Format("{0} attacked player", attackerCard.Guid));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -181,8 +189,10 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var assistCard = ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).ActivateAssistCandidates[Convert.ToInt32(parts[2])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondActivate(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).ActivateAssistCandidates[Convert.ToInt32(parts[2])]);
+                    .RespondActivate(assistCard);
+                Debug.Print(string.Format("Activated {0}", assistCard.Guid));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -197,8 +207,10 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var spell = ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).CastSpellCandidates[Convert.ToInt32(parts[2])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondCast(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).CastSpellCandidates[Convert.ToInt32(parts[2])]);
+                    .RespondCast(spell);
+                Debug.Print(string.Format("Casted {0}", spell.ToString()));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -213,8 +225,10 @@ namespace TouhouSpring.Network
             {
                 if (!(CurrentGame.CurrentInteraction is Interactions.TacticalPhase))
                     throw new Exception("Wrong Phase");
+                var redeemedCard = ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).RedeemCandidates[Convert.ToInt32(parts[2])];
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
-                    .RespondRedeem(((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).RedeemCandidates[Convert.ToInt32(parts[2])]);
+                    .RespondRedeem(redeemedCard);
+                Debug.Print(string.Format("Redeemed {0}", redeemedCard.Guid));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -232,7 +246,9 @@ namespace TouhouSpring.Network
                 List<CardInstance> selectedCards = new List<CardInstance>();
                 for (int i = 3; i < parts.Count; i++)
                 {
-                    selectedCards.Add(((Interactions.SelectCards)CurrentGame.CurrentInteraction).Candidates[Convert.ToInt32(parts[i])]);
+                    var selectedCard=((Interactions.SelectCards)CurrentGame.CurrentInteraction).Candidates[Convert.ToInt32(parts[i])];
+                    selectedCards.Add(selectedCard);
+                    Debug.Print(string.Format("Selected {0}", selectedCard.Guid));
                 }
                 ((Interactions.SelectCards)CurrentGame.CurrentInteraction)
                     .Respond(selectedCards.ToIndexable());
@@ -240,58 +256,5 @@ namespace TouhouSpring.Network
             }
         }
         #endregion
-
-
-        //case "selectcards":
-        //    {
-        //        if (CurrentIo == null)
-        //        {
-        //            RemoteCommand command = new RemoteCommand
-        //            {
-        //                RemoteAction = RemoteCommand.RemoteActionEnum.SelectCards,
-        //            };
-        //            List<int> parameters = new List<int>();
-        //            for (int i = 3; i < parts.Count; i++)
-        //            {
-        //                parameters.Add(Convert.ToInt32(parts[i]));
-        //            }
-        //            command.ResultParameters = parameters.ToArray();
-        //            RemoteCommandEnqueue(command);
-        //            List<CardInstance> selectedCards = new List<CardInstance>();
-        //            for (int i = 3; i < parts.Count; i++)
-        //            {
-        //                selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (!(CurrentIo is Interactions.SelectCards))
-        //                throw new Exception("Wrong Phase");
-        //            List<CardInstance> selectedCards = new List<CardInstance>();
-        //            for (int i = 3; i < parts.Count; i++)
-        //            {
-        //                selectedCards.Add(((Interactions.SelectCards)CurrentIo).Candidates[Convert.ToInt32(parts[i])]);
-        //            }
-        //            ((Interactions.SelectCards)CurrentIo)
-        //                .Respond(selectedCards.ToIndexable());
-        //            CurrentIo = null;
-        //        }
-        //    }
-        //    break;
-        //case "redeem":
-        //    {
-        //        if (CurrentIo == null)
-        //            throw new Exception("current io is null");
-        //        if (!(CurrentIo is Interactions.TacticalPhase))
-        //            throw new Exception("Wrong Phase");
-        //        ((Interactions.TacticalPhase)CurrentIo)
-        //            .RespondRedeem(((Interactions.TacticalPhase)CurrentIo).RedeemCandidates[Convert.ToInt32(parts[2])]);
-        //        CurrentIo = null;
-        //    }
-        //    break;
-        //    default:
-        //        Debug.Print("Invalid argument");
-        //        break;
-        //}
     }
 }

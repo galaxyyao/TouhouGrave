@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TouhouSpring.Interactions;
+using System.Diagnostics;
 
 namespace TouhouSpring.Network
 {
@@ -27,7 +28,7 @@ namespace TouhouSpring.Network
             public void SendMessage(string message)
             {
                 m_client.SendMessage(message);
-                System.Diagnostics.Debug.Print(string.Format("{0} Sent:{1}", m_client._client.UniqueIdentifier, message));
+                Debug.Print(string.Format("{0} Sent:{1}", m_client._client.UniqueIdentifier, message));
             }
         }
 
@@ -72,6 +73,7 @@ namespace TouhouSpring.Network
             var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
             var index = tacticalPhaseIo.SacrificeCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
             OutboxQueue.Queue(string.Format("{0} sacrifice {1}", RoomId, index));
+            Debug.Print(string.Format("Sacrificed:{0}", ((CardInstance)tacticalPhaseResult.Data).Guid));
         }
 
         private void ProcessRespondPlayCard(Interactions.BaseInteraction io, object result)
@@ -80,6 +82,7 @@ namespace TouhouSpring.Network
             var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
             var index = tacticalPhaseIo.PlayCardCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
             OutboxQueue.Queue(string.Format("{0} playcard {1}", RoomId, index));
+            Debug.Print(string.Format("Played:{0}", ((CardInstance)tacticalPhaseResult.Data).Guid));
         }
 
         private void ProcessRespondAttackCard(Interactions.BaseInteraction io, object result)
@@ -90,6 +93,7 @@ namespace TouhouSpring.Network
             var attackerIndex = tacticalPhaseIo.AttackerCandidates.IndexOf(attackCardObjs[0]);
             var defenserIndex = tacticalPhaseIo.DefenderCandidates.IndexOf(attackCardObjs[1]);
             OutboxQueue.Queue(string.Format("{0} attackcard {1} {2}", RoomId, attackerIndex, defenserIndex));
+            Debug.Print(string.Format("{0} attacked {1}", (attackCardObjs[0]).Guid, (attackCardObjs[1]).Guid));
         }
 
         private void ProcessRespondAttackPlayer(Interactions.BaseInteraction io, object result)
@@ -99,6 +103,7 @@ namespace TouhouSpring.Network
             var attackPlayerObjs = (object[])tacticalPhaseResult.Data;
             var attackerIndex = tacticalPhaseIo.AttackerCandidates.IndexOf((CardInstance)attackPlayerObjs[0]);
             OutboxQueue.Queue(string.Format("{0} attackplayer {1}", RoomId, attackerIndex));
+            Debug.Print(string.Format("{0} attackedPlayer", ((CardInstance)attackPlayerObjs[0]).Guid));
         }
 
         private void ProcessRespondActivateAssist(Interactions.BaseInteraction io, object result)
@@ -107,6 +112,7 @@ namespace TouhouSpring.Network
             var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
             var index = tacticalPhaseIo.ActivateAssistCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
             OutboxQueue.Queue(string.Format("{0} activateassist {1}", RoomId, index));
+            Debug.Print(string.Format("Activated:{0}", ((CardInstance)tacticalPhaseResult.Data).Guid));
         }
 
         private void ProcessRespondCastSpell(Interactions.BaseInteraction io, object result)
@@ -115,6 +121,7 @@ namespace TouhouSpring.Network
             var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
             var index = tacticalPhaseIo.CastSpellCandidates.IndexOf((Behaviors.ICastableSpell)tacticalPhaseResult.Data);
             OutboxQueue.Queue(string.Format("{0} castspell {1}", RoomId, index));
+            Debug.Print(string.Format("castspell:{0}", (Behaviors.ICastableSpell)tacticalPhaseResult.Data).ToString());
         }
 
         private void ProcessRespondRedeem(Interactions.BaseInteraction io, object result)
@@ -123,6 +130,7 @@ namespace TouhouSpring.Network
             var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
             var index = tacticalPhaseIo.RedeemCandidates.IndexOf((CardInstance)tacticalPhaseResult.Data);
             OutboxQueue.Queue(string.Format("{0} redeem {1}", RoomId, index));
+            Debug.Print(string.Format("Redeemed:{0}", ((CardInstance)tacticalPhaseResult.Data).Guid));
         }
 
         private void ProcessSelectCards(Interactions.BaseInteraction io, object result)
@@ -133,6 +141,7 @@ namespace TouhouSpring.Network
             foreach (CardInstance selectedCard in selectCardsResult)
             {
                 indexes.Add(selectCardsIo.Candidates.IndexOf(selectedCard));
+                Debug.Print(string.Format("Selected:{0}", ((CardInstance)selectedCard).Guid));
             }
             OutboxQueue.Queue(string.Format("{0} selectcards -1 {1}", RoomId, string.Join(" ", indexes)));
         }
