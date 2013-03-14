@@ -14,7 +14,7 @@ namespace TouhouSpring.Network
         public void Connect()
         {
             _client.Start();
-            _client.Connect(RemoteServerIp,RemoteServerPort);
+            _client.Connect(RemoteServerIp, RemoteServerPort);
         }
 
         public void Connect(string host, int port)
@@ -77,7 +77,7 @@ namespace TouhouSpring.Network
                     case NetIncomingMessageType.Data:
                         {
                             string text = im.ReadString();
-                            Debug.Print(text);
+                            Debug.Print(string.Format("{0} Received:{1}", _client.UniqueIdentifier, text));
                             IntepretMessage(text);
                         }
                         break;

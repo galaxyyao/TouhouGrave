@@ -27,6 +27,7 @@ namespace TouhouSpring.Network
             public void SendMessage(string message)
             {
                 m_client.SendMessage(message);
+                System.Diagnostics.Debug.Print(string.Format("{0} Sent:{1}", m_client._client.UniqueIdentifier, message));
             }
         }
 
