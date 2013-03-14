@@ -23,10 +23,10 @@ namespace TouhouSpring.UI
         private float m_caretBlinkTimer = 0;
         private int m_selectionLength = 0;
         private float m_scrollPosition = 0;
-        private int m_scrollBaseIndex = 0;
         private TextRenderer.IFormattedText m_allText;
 
         private Animation.CurveTrack m_scrollSlideTrack;
+        private Action<float> m_onTrackElapsed;
         private float m_lastScrollPosition;
         private float m_nextScrollPosition;
 
@@ -85,11 +85,30 @@ namespace TouhouSpring.UI
             get; private set;
         }
 
-        public TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions)
-            : this(width, height, textFormatOptions, null)
-        { }
+        public Curve SlidingCurve
+        {
+            get { return m_scrollSlideTrack != null ? m_scrollSlideTrack.Curve : null; }
+            set
+            {
+                if (value != SlidingCurve)
+                {
+                    if (m_scrollSlideTrack != null && m_scrollSlideTrack.IsPlaying)
+                    {
+                        m_scrollSlideTrack.Stop();
+                        m_scrollSlideTrack = null;
+                        m_scrollPosition = m_nextScrollPosition;
+                    }
 
-        public TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions, Curve scrollSlideCurve)
+                    if (value != null)
+                    {
+                        m_scrollSlideTrack = new Animation.CurveTrack(value);
+                        m_scrollSlideTrack.Elapsed += m_onTrackElapsed;
+                    }
+                }
+            }
+        }
+
+        public TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions)
         {
             m_focusableProxy = new FocusableProxy(this);
             m_textFormatOptions = textFormatOptions;
@@ -105,16 +124,9 @@ namespace TouhouSpring.UI
             Height = height;
             Region = new Rectangle(0, 0, Width, Height);
 
-            TextChanged();
+            m_onTrackElapsed = w => m_scrollPosition = MathHelper.Lerp(m_lastScrollPosition, m_nextScrollPosition, w);
 
-            if (scrollSlideCurve != null)
-            {
-                m_scrollSlideTrack = new Animation.CurveTrack(scrollSlideCurve);
-                m_scrollSlideTrack.Elapsed += w =>
-                {
-                    m_scrollPosition = MathHelper.Lerp(m_lastScrollPosition, m_nextScrollPosition, w);
-                };
-            }
+            TextChanged();
         }
 
         public void OnRender(RenderEventArgs e)
@@ -334,15 +346,6 @@ namespace TouhouSpring.UI
             {
                 SetScrollPosition(Math.Max(caretOffset + Width / 3.0f - Width, 0));
             }
-
-            for (m_scrollBaseIndex = 0; m_scrollBaseIndex < m_text.Length; ++m_scrollBaseIndex)
-            {
-                if (m_allText.MeasureWidth(0, m_scrollBaseIndex) > m_scrollPosition)
-                {
-                    break;
-                }
-            }
-            --m_scrollBaseIndex;
         }
 
         private void SetScrollPosition(float nextValue)
