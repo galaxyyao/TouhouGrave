@@ -22,6 +22,9 @@ namespace TouhouSpring.Interactions
             AttackCard,     // card attacks a opponent card
             AttackPlayer,   // card attacks the opponent player
             Pass,
+            SelectCards,
+            SelectNumber,
+            MessageBox,
             Abort
         }
 

@@ -78,7 +78,7 @@ namespace TouhouSpring.Network
                         {
                             string text = im.ReadString();
                             Debug.Print(text);
-                            InterpretMessage(text);
+                            IntepretMessage(text);
                         }
                         break;
                     default:

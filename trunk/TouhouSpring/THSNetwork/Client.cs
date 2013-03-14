@@ -42,6 +42,7 @@ namespace TouhouSpring.Network
             config.AutoFlushSendQueue = false;
             _client = new NetClient(config);
             _client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
+            InitializeInboxActionLookups();
             InitializeOutboxActionLookups();
             OutboxQueue = new OutboxMessageQueue(this);
             InboxQueue = new InboxMessageQueue(this);
