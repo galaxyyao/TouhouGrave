@@ -119,6 +119,8 @@ namespace TouhouSpring.Network
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
                     .RespondSacrifice(sacrificedCard);
                 Debug.Print(string.Format("Sacrificed {0}", sacrificedCard.Guid));
+                Debug.Print(string.Format("SelectCardsCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).SacrificeCandidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -137,6 +139,8 @@ namespace TouhouSpring.Network
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
                     .RespondPlay(playedCard);
                 Debug.Print(string.Format("Played {0}", playedCard.Guid));
+                Debug.Print(string.Format("PlayCardsCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).PlayCardCandidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -156,6 +160,10 @@ namespace TouhouSpring.Network
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
                     .RespondAttackCard(attackerCard, defenderCard);
                 Debug.Print(string.Format("{0} attacked {1}", attackerCard.Guid, defenderCard.Guid));
+                Debug.Print(string.Format("AttackerCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).AttackerCandidates.Select(candidate => candidate.Guid.ToString()))));
+                Debug.Print(string.Format("DefenderCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).DefenderCandidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -175,6 +183,8 @@ namespace TouhouSpring.Network
                     .RespondAttackPlayer(attackerCard
                     , CurrentGame.CurrentInteraction.Game.ActingPlayerEnemies.FirstOrDefault());
                 Debug.Print(string.Format("{0} attacked player", attackerCard.Guid));
+                Debug.Print(string.Format("AttackerCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).AttackerCandidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -193,6 +203,8 @@ namespace TouhouSpring.Network
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
                     .RespondActivate(assistCard);
                 Debug.Print(string.Format("Activated {0}", assistCard.Guid));
+                Debug.Print(string.Format("AssistCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).ActivateAssistCandidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -211,6 +223,8 @@ namespace TouhouSpring.Network
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
                     .RespondCast(spell);
                 Debug.Print(string.Format("Casted {0}", spell.ToString()));
+                Debug.Print(string.Format("SpellCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).CastSpellCandidates.Select(candidate => candidate.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -229,6 +243,8 @@ namespace TouhouSpring.Network
                 ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction)
                     .RespondRedeem(redeemedCard);
                 Debug.Print(string.Format("Redeemed {0}", redeemedCard.Guid));
+                Debug.Print(string.Format("RedeemCandidates:{0}"
+                    , string.Join(",", ((Interactions.TacticalPhase)CurrentGame.CurrentInteraction).RedeemCandidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
@@ -252,6 +268,8 @@ namespace TouhouSpring.Network
                 }
                 ((Interactions.SelectCards)CurrentGame.CurrentInteraction)
                     .Respond(selectedCards.ToIndexable());
+                Debug.Print(string.Format("SelectCandidates:{0}"
+                    , string.Join(",", ((Interactions.SelectCards)CurrentGame.CurrentInteraction).Candidates.Select(candidate => candidate.Guid.ToString()))));
                 CurrentGame.CurrentInteraction = null;
             }
         }
