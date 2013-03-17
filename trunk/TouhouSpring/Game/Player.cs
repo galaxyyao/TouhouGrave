@@ -206,7 +206,8 @@ namespace TouhouSpring
                     return isSpell1 ? -1 : 1;
                 }
 
-                return card1.Model.Name.CompareTo(card2.Model.Name);
+                // The comparison must ensure culture neutral-ness
+                return String.Compare(card1.Model.Name, card2.Model.Name, false, CultureInfo.InvariantCulture);
             }
         }
 
