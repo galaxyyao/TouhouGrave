@@ -71,53 +71,7 @@ namespace TouhouSpring.Services
                 // detach menu ui
                 Root.Dispatcher = null;
 
-                GameStartupParameters[] param = new GameStartupParameters[2];
-                var cardDb = GameApp.Service<CardDatabase>();
-
-                Deck deck = new Deck("MikoUnion");
-                //Unused ConversationUI
-                //deck.Add(cardDb.GetModel("alice"));
-                //deck.Add(cardDb.GetModel("alice"));
-                //deck.Add(cardDb.GetModel("alice"));
-                //deck.Add(cardDb.GetModel("cirno"));
-                //deck.Add(cardDb.GetModel("cirno"));
-                //deck.Add(cardDb.GetModel("cirno"));
-                //deck.Add(cardDb.GetModel("cirno"));
-                //deck.Add(cardDb.GetModel("cirno"));
-                //deck.Add(cardDb.GetModel("sakuya"));
-                //deck.Add(cardDb.GetModel("sakuya"));
-                //deck.Add(cardDb.GetModel("sakuya"));
-                //deck.Add(cardDb.GetModel("gungnir"));
-                //deck.Add(cardDb.GetModel("gungnir"));
-                //deck.Add(cardDb.GetModel("kusanagi"));
-                //deck.Add(cardDb.GetModel("kusanagi"));
-                //deck.Add(cardDb.GetModel("redfog"));
-                //deck.Add(cardDb.GetModel("redfog"));
-                //deck.Add(cardDb.GetModel("ripples"));
-                //deck.Add(cardDb.GetModel("ripples"));
-                //deck.Add(cardDb.GetModel("cautionaryborder"));
-                //deck.Add(cardDb.GetModel("cautionaryborder"));
-                //deck.Hero = cardDb.GetModel("marisa");
-
-                param[0] = new GameStartupParameters()
-                {
-                    m_profile = new Profile() { Name = "夜空" },
-                    m_deck = deck
-                };
-                param[0].m_profile.Decks.Add(deck);
-
-                param[1] = new GameStartupParameters()
-                {
-                    m_profile = new Profile() { Name = "星奈" },
-                    m_deck = deck
-                };
-                param[1].m_profile.Decks.Add(deck);
-
-                GameApp.Service<GameManager>().StartGame(param,
-                    new Agents.BaseAgent[] {
-                        new Agents.LocalPlayerAgent(),
-                        new Agents.LocalPlayerAgent()
-                    });
+               //startgame
             }
         }
 

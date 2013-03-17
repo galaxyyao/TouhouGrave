@@ -46,5 +46,10 @@ namespace TouhouSpring.Services
         {
             GameApp.Service<ConversationUI>().StartConversation();
         }
+
+        public void EnterNetworkUI()
+        {
+            GameApp.Service<NetworkUI>().Enter();
+        }
     }
 }

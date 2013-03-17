@@ -18,8 +18,6 @@ namespace TouhouSpring.Services
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
 
-        private THSNetwork.Client m_networkClient = null;
-
         GameStartupParameters[] param = new GameStartupParameters[2];
 
         public UI.TransformNode Root
@@ -119,10 +117,11 @@ namespace TouhouSpring.Services
                 }
                 else if (id == "vsnetwork")
                 {
-                    CurrentPage = m_pages["Network"];
+                    //CurrentPage = m_pages["Network"];
 
-                    m_networkClient = GameApp.Service<Network>().THSClient;
-                    m_networkClient.Connect();
+                    CurrentPage = null;
+                    Root.Dispatcher = null;
+                    GameApp.Service<GameManager>().EnterNetworkUI();
                 }
                 else if (id == "back")
                 {
@@ -136,7 +135,7 @@ namespace TouhouSpring.Services
             {
                 if (id == "backtofreemode")
                 {
-                    CurrentPage = m_pages["FreeMode"];
+                    //CurrentPage = m_pages["FreeMode"];
                 }
             };
             #endregion
@@ -265,57 +264,12 @@ namespace TouhouSpring.Services
         {
             var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle(id));
             pageStyle.Initialize();
-            m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
+            if(!m_pages.ContainsKey(id))
+                m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
         }
 
         public override void Update(float deltaTime)
         {
-            if (m_networkClient == null)
-            {
-                if (GameApp.Service<Network>().THSClient == null)
-                {
-                    throw new Exception("Network Service is not started correctly. Network Client is null.");
-                }
-                m_networkClient = GameApp.Service<Network>().THSClient;
-            }
-
-            if (m_networkClient != null && m_networkClient.RoomStatus == THSNetwork.Client.RoomStatusEnum.Starting)
-            {
-                CurrentPage = null;
-                // detach menu ui
-                Root.Dispatcher = null;
-                if (m_networkClient.Seed != -1)
-                {
-                    System.Diagnostics.Debug.Print(string.Format("Seed: {0}", m_networkClient.Seed));
-                    foreach (var playerParam in param)
-                    {
-                        playerParam.m_seed = m_networkClient.Seed;
-                    }
-                }
-
-                CurrentPage = null;
-                Root.Dispatcher = null;
-
-                if (m_networkClient.StartupIndex == 0)
-                {
-                    GameApp.Service<GameManager>().StartGame(param
-                            , new Agents.BaseAgent[] {
-                                    new Agents.NetworkLocalPlayerAgent(),
-                                    new Agents.NetworkRemoteAgent()
-                                });
-                }
-                else
-                {
-                    GameApp.Service<GameManager>().StartGame(param
-                            , new Agents.BaseAgent[] {
-                                new Agents.NetworkRemoteAgent(),
-                                    new Agents.NetworkLocalPlayerAgent()
-                                });
-                }
-                m_networkClient.RoomStatus = THSNetwork.Client.RoomStatusEnum.Started;
-                m_networkClient.CurrentGame = GameApp.Service<GameManager>().Game;
-            }
-
             foreach (var page in m_pages.Values)
             {
                 if (page.Page.Dispatcher != null)

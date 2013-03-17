@@ -46,12 +46,24 @@ namespace TouhouSpring.Network
             InitializeOutboxActionLookups();
             OutboxQueue = new OutboxMessageQueue(this);
             InboxQueue = new InboxMessageQueue(this);
+            NetworkStatus = NetworkStatusEnum.Disconnected;
         }
 
         public Game CurrentGame
         {
             get;
             set;
+        }
+
+        public enum NetworkStatusEnum
+        {
+            Connecting, ResendingConnect, Connected, Disconnected, ConnectFailed
+        }
+
+        public NetworkStatusEnum NetworkStatus
+        {
+            get;
+            private set;
         }
     }
 }

@@ -22,12 +22,14 @@ namespace TouhouSpring.Network
             RemoteServerIp = host;
             RemoteServerPort = port;
             Connect();
+            NetworkStatus = NetworkStatusEnum.Connecting;
         }
 
         public void Disconnect()
         {
             _client.Disconnect("Disconnect request by user");
             _client.Shutdown("bye");
+            NetworkStatus = NetworkStatusEnum.Disconnected;
         }
 
         public void SendMessage(string text)
@@ -52,25 +54,26 @@ namespace TouhouSpring.Network
                         {
                             string text = im.ReadString();
                             //Output(text);
-                            Debug.Print(text);
+                            Debug.Print(im.MessageType.ToString() + "-" + text);
+                            if (text == "Resending Connect...")
+                                NetworkStatus = NetworkStatusEnum.ResendingConnect;
                         }
                         break;
                     case NetIncomingMessageType.StatusChanged:
                         {
                             NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
                             string text = status.ToString() + im.ReadString();
-                            Debug.Print(text);
+                            Debug.Print(im.MessageType.ToString() + "-" + text);
 
                             if (status == NetConnectionStatus.Connected)
                             {
-                                //TODO: Show "Connected" information on UI
-                                ;
+                                NetworkStatus = NetworkStatusEnum.Connected;
                             }
                             else if (status == NetConnectionStatus.Disconnected)
                             {
                                 //TODO: Show "Lost Connection" Information on UI
                                 //TODO: Abort Game Thread and return to Main Menu
-                                ;
+                                NetworkStatus = NetworkStatusEnum.ConnectFailed;
                             }
                         }
                         break;
