@@ -90,8 +90,11 @@
     <Panel Id="ConversationPanel" Left="0" Top="540" Width="1024" Height="270"></Panel>
     <Label Font="Segoe UI, 16" Text="#Conversation.CurrentText#" Color="Black" Left="20" Top="570" />
   </Page>
+  <Page Id="NetworkLogin">
+    <Panel Id="UIPanel" Left="0" Top="540" Width="1024" Height="270" Color="White"></Panel>
+  </Page>
   <Page Id="Network">
-    <Panel Id="ConversationPanel" Left="0" Top="540" Width="1024" Height="270" Color="White"></Panel>
+    <Panel Id="UIPanel" Left="0" Top="540" Width="1024" Height="270" Color="White"></Panel>
   </Page>
   <PlayerZones Id="/">
     <Layout Id="Battlefield" Left="-1" Top="-0.2">

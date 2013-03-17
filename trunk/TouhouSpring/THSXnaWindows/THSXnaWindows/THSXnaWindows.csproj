@@ -121,6 +121,7 @@
     <Compile Include="Services\MenuUI.Page.cs" />
     <Compile Include="Services\Network.cs" />
     <Compile Include="Services\NetworkUI.cs" />
+    <Compile Include="Services\NetworkLoginUI.cs" />
     <Compile Include="Services\PopupDialog.cs" />
     <Compile Include="Services\ResourceManager.cs" />
     <Compile Include="Services\ResourceManager.IDisposableManager.cs" />

@@ -49,7 +49,7 @@ namespace TouhouSpring.Services
 
         public void EnterNetworkUI()
         {
-            GameApp.Service<NetworkUI>().Enter();
+            GameApp.Service<NetworkLoginUI>().Enter();
         }
     }
 }

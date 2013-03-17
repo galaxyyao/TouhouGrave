@@ -44,30 +44,8 @@ namespace TouhouSpring.NetServerCore
 
                             if (status == NetConnectionStatus.Connected)
                             {
-                                #region user connect
-                                //Ask user to wait for another player, if there's no idle room
-                                int enteredRoomId = UserEnter(im.SenderConnection);
-                                SendMessage(im.SenderConnection, string.Format("{0} enterroom", enteredRoomId));
-                                if (_roomList[enteredRoomId].Status == Room.RoomStatus.Idle)
-                                {
-                                    SendMessage(im.SenderConnection, string.Format("{0} waiting", enteredRoomId));
-                                }
-                                else
-                                {
-                                    int seed = gameStartSeed.Next();
-                                    SendMessage(enteredRoomId, string.Format("{0} generateseed {1}", enteredRoomId, seed));
-                                    foreach (var playerConn in _roomList[enteredRoomId].PlayerConns)
-                                    {
-                                        //SendMessage(playerConn
-                                        //    , string.Format("{0} startgame {1}", enteredRoomId
-                                        //    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
-                                        SendMessage(playerConn
-                                            , string.Format("{0} startgame {1}", enteredRoomId
-                                            , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier)));//Temporarily let playerindex be the same as enter room order
-
-                                    }
-                                }
-                                #endregion
+                                //add user to connection list
+                                //update his friend's info
                             }
                             else if (status == NetConnectionStatus.Disconnected)
                             {
@@ -158,6 +136,31 @@ namespace TouhouSpring.NetServerCore
             {
                 case "roomentered":
                 case "gamestarted":
+                    break;
+                case "startrandomgame":
+                    {
+                        int enteredRoomId = UserEnter(senderConn);
+                        SendMessage(senderConn, string.Format("{0} enterroom", enteredRoomId));
+                        if (_roomList[enteredRoomId].Status == Room.RoomStatus.Idle)
+                        {
+                            SendMessage(senderConn, string.Format("{0} waiting", enteredRoomId));
+                        }
+                        else
+                        {
+                            int seed = gameStartSeed.Next();
+                            SendMessage(enteredRoomId, string.Format("{0} generateseed {1}", enteredRoomId, seed));
+                            foreach (var playerConn in _roomList[enteredRoomId].PlayerConns)
+                            {
+                                //SendMessage(playerConn
+                                //    , string.Format("{0} startgame {1}", enteredRoomId
+                                //    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
+                                SendMessage(playerConn
+                                    , string.Format("{0} startgame {1}", enteredRoomId
+                                    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier)));//Temporarily let playerindex be the same as enter room order
+
+                            }
+                        }
+                    }
                     break;
                 case "switchturn":
                     {
