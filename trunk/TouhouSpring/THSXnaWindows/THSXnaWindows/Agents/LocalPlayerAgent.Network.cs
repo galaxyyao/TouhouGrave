@@ -11,7 +11,7 @@ namespace TouhouSpring.Agents
     {
         private Network.Client m_NetworkClient = null;
 
-        public LocalPlayerAgent()
+        public LocalPlayerAgent(int pid) : base(pid)
         {
             m_NetworkClient = GameApp.Service<Services.Network>().THSClient;
         }

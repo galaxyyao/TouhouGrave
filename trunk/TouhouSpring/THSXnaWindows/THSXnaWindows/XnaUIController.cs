@@ -44,7 +44,7 @@ namespace TouhouSpring
                     GameApp.Service<GameUI>().UnregisterCard(interactionObj.Card);
                     break;
                 case "OnCardPlayCanceled":
-                    if (m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnCardPlayCanceled(interactionObj))
+                    if (m_agents[Game.ActingPlayer.Index].OnCardPlayCanceled(interactionObj))
                     {
                         return true;
                     }
@@ -63,10 +63,10 @@ namespace TouhouSpring
             switch (interactionObj.Notification)
             {
                 case "OnInitiativeCommandEnd":
-                    m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnInitiativeCommandEnd();
+                    m_agents[Game.ActingPlayer.Index].OnInitiativeCommandEnd();
                     break;
                 case "OnInitiativeCommandCanceled":
-                    m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnInitiativeCommandCanceled();
+                    m_agents[Game.ActingPlayer.Index].OnInitiativeCommandCanceled();
                     break;
                 default:
                     break;
@@ -82,13 +82,13 @@ namespace TouhouSpring
             switch (interactionObj.Notification)
             {
                 case "OnTurnEnded":
-                    if (m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnTurnEnded(interactionObj))
+                    if (m_agents[Game.ActingPlayer.Index].OnTurnEnded(interactionObj))
                     {
                         return true;
                     }
                     break;
                 case "OnTurnStarted":
-                    if (m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnTurnStarted(interactionObj))
+                    if (m_agents[Game.ActingPlayer.Index].OnTurnStarted(interactionObj))
                     {
                         return true;
                     }
@@ -109,7 +109,7 @@ namespace TouhouSpring
                 case "OnSpellCasted":
                     break;
                 case "OnSpellCastCanceled":
-                    if (m_agents[Game.Players.IndexOf(Game.ActingPlayer)].OnSpellCastCanceled(interactionObj))
+                    if (m_agents[Game.ActingPlayer.Index].OnSpellCastCanceled(interactionObj))
                     {
                         return true;
                     }
@@ -125,28 +125,28 @@ namespace TouhouSpring
         [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
         private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
         {
-            m_agents[Game.Players.IndexOf(interactionObj.Player)].OnTacticalPhase(interactionObj);
+            m_agents[interactionObj.Player.Index].OnTacticalPhase(interactionObj);
             return true;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.SelectCards))]
         private bool OnSelectCards(Interactions.SelectCards interactionObj)
         {
-            m_agents[Game.Players.IndexOf(interactionObj.Player)].OnSelectCards(interactionObj);
+            m_agents[interactionObj.Player.Index].OnSelectCards(interactionObj);
             return true;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.MessageBox))]
         private bool OnMessageBox(Interactions.MessageBox interactionObj)
         {
-            m_agents[Game.Players.IndexOf(interactionObj.Player)].OnMessageBox(interactionObj);
+            m_agents[interactionObj.Player.Index].OnMessageBox(interactionObj);
             return true;
         }
 
         [Interactions.MessageHandler(typeof(Interactions.SelectNumber))]
         private bool OnSelectNumber(Interactions.SelectNumber interactionObj)
         {
-            m_agents[Game.Players.IndexOf(interactionObj.Player)].OnSelectNumber(interactionObj);
+            m_agents[interactionObj.Player.Index].OnSelectNumber(interactionObj);
             return true;
         }
 
@@ -154,15 +154,15 @@ namespace TouhouSpring
         {
             if (io is Interactions.TacticalPhase)
             {
-                m_agents[Game.Players.IndexOf((io as Interactions.TacticalPhase).Player)].OnRespondBack(io, result);
+                m_agents[(io as Interactions.TacticalPhase).Player.Index].OnRespondBack(io, result);
             }
             else if (io is Interactions.SelectCards)
             {
-                m_agents[Game.Players.IndexOf((io as Interactions.SelectCards).Player)].OnRespondBack(io, result);
+                m_agents[(io as Interactions.SelectCards).Player.Index].OnRespondBack(io, result);
             }
             else if (io is Interactions.SelectNumber)
             {
-                m_agents[Game.Players.IndexOf((io as Interactions.SelectNumber).Player)].OnRespondBack(io, result);
+                m_agents[(io as Interactions.SelectNumber).Player.Index].OnRespondBack(io, result);
             }
             else if (io is Interactions.NotifyOnly
                 || io is Interactions.NotifyCardEvent

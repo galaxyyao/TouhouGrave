@@ -116,16 +116,16 @@ namespace TouhouSpring.Services
                 {
                     GameApp.Service<GameManager>().StartGame(param
                             , new Agents.BaseAgent[] {
-                                    new Agents.LocalPlayerAgent(),
-                                    new Agents.RemoteAgent()
+                                    new Agents.LocalPlayerAgent(0),
+                                    new Agents.RemoteAgent(1)
                                 });
                 }
                 else
                 {
                     GameApp.Service<GameManager>().StartGame(param
                             , new Agents.BaseAgent[] {
-                                new Agents.RemoteAgent(),
-                                    new Agents.LocalPlayerAgent()
+                                new Agents.RemoteAgent(0),
+                                    new Agents.LocalPlayerAgent(1)
                                 });
                 }
                 m_networkClient.RoomStatus = THSNetwork.Client.RoomStatusEnum.Started;

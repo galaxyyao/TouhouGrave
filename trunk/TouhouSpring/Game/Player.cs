@@ -93,6 +93,11 @@ namespace TouhouSpring
             get { return CardsSacrificed.Count; }
         }
 
+        public int Index
+        {
+            get; private set;
+        }
+
         public Game Game
         {
             get; private set;
@@ -134,7 +139,7 @@ namespace TouhouSpring
             return m_lifeSubtractModifiers.Aggregate(amount, (v, mod) => mod.Process(v));
         }
 
-        internal Player(string name, Game game)
+        internal Player(string name, int playerIndex, Game game)
         {
             if (String.IsNullOrEmpty(name))
             {
@@ -143,6 +148,10 @@ namespace TouhouSpring
             else if (game == null)
             {
                 throw new ArgumentNullException("game");
+            }
+            else if (playerIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("playerIndex", "PlayerIndex shall be greater than or equal to zero.");
             }
 
             CardsOnHand = m_handSet.ToIndexable();
@@ -155,6 +164,7 @@ namespace TouhouSpring
 
             Name = name;
             Game = game;
+            Index = playerIndex;
         }
 
         /// <summary>

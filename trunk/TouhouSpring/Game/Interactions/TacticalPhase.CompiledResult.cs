@@ -179,7 +179,7 @@ namespace TouhouSpring.Interactions
             public CompiledAttackPlayer(CardInstance attacker, Player player)
             {
                 m_attackerGuid = attacker.Guid;
-                m_playerIndex = player.Game.Players.IndexOf(player);
+                m_playerIndex = player.Index;
             }
 
             public override Result Restore(Player actingPlayer)

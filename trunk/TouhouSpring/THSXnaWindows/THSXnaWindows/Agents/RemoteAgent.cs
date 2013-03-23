@@ -10,7 +10,7 @@ namespace TouhouSpring.Agents
     {
         Network.Client m_NetworkClient = null;
 
-        public RemoteAgent()
+        public RemoteAgent(int pid) : base(pid)
         {
             m_NetworkClient = GameApp.Service<Services.Network>().THSClient;
         }

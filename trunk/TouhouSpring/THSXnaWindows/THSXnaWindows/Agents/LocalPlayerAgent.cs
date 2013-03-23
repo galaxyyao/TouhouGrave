@@ -42,7 +42,7 @@ namespace TouhouSpring.Agents
 
         public override bool OnTurnEnded(Interactions.NotifyPlayerEvent io)
         {
-            var nextPid = io.Game.Players.IndexOf(io.Game.NextActingPlayer);
+            var nextPid = io.Game.NextActingPlayer.Index;
             if ((io.Game.Controller as XnaUIController).Agents[nextPid] is LocalPlayerAgent)
             {
                 GameApp.Service<Services.GameUI>().EnterState(new Services.UIStates.PlayerTransition(), io);

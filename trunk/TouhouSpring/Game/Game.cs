@@ -90,7 +90,7 @@ namespace TouhouSpring
                         "The deck {0} is invalid: {1}", deck.Name, validationResult));
                 }
 
-                m_players[i] = new Player(startUpParams[i].m_profile.Name, this);
+                m_players[i] = new Player(startUpParams[i].m_profile.Name, i, this);
                 m_players[i].Initialize(deck);
             }
 

@@ -106,7 +106,7 @@ namespace TouhouSpring.Network
             var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
             var attackPlayerObjs = (object[])tacticalPhaseResult.Data;
             var attackerIndex = tacticalPhaseIo.AttackerCandidates.IndexOf((CardInstance)attackPlayerObjs[0]);
-            var playerIndex = tacticalPhaseIo.Game.Players.IndexOf((Player)attackPlayerObjs[1]);
+            var playerIndex = ((Player)attackPlayerObjs[1]).Index;
             EnqueueOutboxMessage("attackplayer {0} {1}", attackerIndex, playerIndex);
             Debug.Print(string.Format("{0} attackedPlayer", ((CardInstance)attackPlayerObjs[0]).Guid));
             Debug.Print(string.Format("AttackerCandidates:{0}", string.Join(",", tacticalPhaseIo.AttackerCandidates.Select(candidate => candidate.Guid.ToString()))));

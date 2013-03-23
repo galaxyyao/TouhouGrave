@@ -50,9 +50,8 @@ namespace TouhouSpring.Services
             cardControl.GetAddin<UI.CardControlAddins.Flip>().SetFliped();
             cardControl.Style.Apply(); // to apply initial flipped matrix
 
-            var pid = Game.Players.IndexOf(cardControl.Card.Owner);
-            var fromZone = m_playerZones[pid].Library.Container;
-            var pileTop = m_playerLibraryPiles[pid].BodyContainer;
+            var fromZone = m_playerZones[cardControl.Card.Owner.Index].Library.Container;
+            var pileTop = m_playerLibraryPiles[cardControl.Card.Owner.Index].BodyContainer;
             transform *= UI.TransformNode.GetTransformBetween(pileTop, fromZone);
 
             cardControl.Dispatcher = fromZone;
@@ -61,16 +60,17 @@ namespace TouhouSpring.Services
 
         private void PutToGraveyard(UI.CardControl cardControl)
         {
-            var pid = Game.Players.IndexOf(cardControl.Card.Owner);
             var locationAnim = cardControl.GetAddin<UI.CardControlAddins.LocationAnimation>();
-            locationAnim.SetNextLocation(m_playerZones[pid].Graveyard, m_graveyardCounters[pid].nextCounter++);
+            locationAnim.SetNextLocation(
+                m_playerZones[cardControl.Card.Owner.Index].Graveyard,
+                m_graveyardCounters[cardControl.Card.Owner.Index].nextCounter++);
             locationAnim.Update(0); // make sure InTransition returns true
             m_cardEnteringGraveyard.Add(cardControl);
         }
 
         private void EnteredGraveyard(UI.CardControl cardControl)
         {
-            var pid = Game.Players.IndexOf(cardControl.Card.Owner);
+            var pid = cardControl.Card.Owner.Index;
             if (m_playerGraveyardPiles[pid] != null)
             {
                 m_playerGraveyardPiles[pid].Dispose();

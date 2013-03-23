@@ -7,6 +7,16 @@ namespace TouhouSpring.Agents
 {
     class BaseAgent
     {
+        public int PlayerIndex
+        {
+            get; private set;
+        }
+
+        public BaseAgent(int playerIndex)
+        {
+            PlayerIndex = playerIndex;
+        }
+
         // return true to indicate the agent has taken over the interaction
         // false by default.
         public virtual bool OnCardPlayCanceled(Interactions.NotifyCardEvent io) { return false; }

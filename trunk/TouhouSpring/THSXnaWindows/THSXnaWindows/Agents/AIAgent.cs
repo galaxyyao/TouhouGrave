@@ -23,7 +23,7 @@ namespace TouhouSpring.Agents
         private Simulation.Branch m_plan = null;
         private int m_planProgress = 0;
 
-        public AIAgent()
+        public AIAgent(int pid) : base(pid)
         {
             var thread = new System.Threading.Thread(AIThread)
             {
@@ -104,15 +104,14 @@ namespace TouhouSpring.Agents
             Simulation.ISandbox simSandbox = new Simulation.StpSandbox(game, new Simulation.MainPhaseSimulator());
             simSandbox.Run();
 
-            var pid = (GameApp.Service<Services.GameManager>().Game.Controller as XnaUIController).Agents.IndexOf(this);
-            var scoredBranches = simSandbox.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, pid) });
+            var scoredBranches = simSandbox.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, PlayerIndex) });
             m_plan = scoredBranches.Max().Branch;
             m_planProgress = 0;
 
             PInvokes.Kernel.QueryPerformanceCounter(out endTime);
 
             Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simSandbox.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
-            PrintEvaluate(m_plan.Result.Players[pid]);
+            PrintEvaluate(m_plan.Result.Players[PlayerIndex]);
         }
 
         private void RespondInteraction(Interactions.BaseInteraction io)

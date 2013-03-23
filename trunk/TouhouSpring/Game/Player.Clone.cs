@@ -9,7 +9,7 @@ namespace TouhouSpring
     {
         internal Player Clone(Game game)
         {
-            var clonedPlayer = new Player(Name, game);
+            var clonedPlayer = new Player(Name, Index, game);
 
             clonedPlayer.Health = Health;
             clonedPlayer.Mana = Mana;

@@ -49,8 +49,8 @@ namespace TouhouSpring.Behaviors
         {
             var other = original as Spell_PreventAllDamageInOneRound;
             m_isProtected = other.m_isProtected;
-            m_currentPlayer = m_currentPlayer != null ? Host.Owner.Game.Players[other.Host.Owner.Game.Players.IndexOf(other.m_currentPlayer)] : null;
-            m_spellCaster = m_currentPlayer != null ? Host.Owner.Game.Players[other.Host.Owner.Game.Players.IndexOf(other.m_spellCaster)] : null;
+            m_currentPlayer = m_currentPlayer != null ? Host.Owner.Game.Players[other.m_currentPlayer.Index] : null;
+            m_spellCaster = m_currentPlayer != null ? Host.Owner.Game.Players[other.m_spellCaster.Index] : null;
         }
 
         [BehaviorModel(DefaultName = "梦想封印")]

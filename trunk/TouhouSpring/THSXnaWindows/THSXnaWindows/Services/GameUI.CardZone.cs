@@ -221,7 +221,7 @@ namespace TouhouSpring.Services
                 var locationAnim = cc.GetAddin<UI.CardControlAddins.LocationAnimation>();
                 var newDesignName = "Normal";
 
-                var pid = Game.Players.IndexOf(card.Owner);
+                var pid = card.Owner.Index;
 
                 if (cc == ZoomedInCard)
                 {

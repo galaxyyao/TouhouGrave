@@ -99,16 +99,15 @@ namespace TouhouSpring.Services
                         case "vsai":
                             GameApp.Service<GameManager>().StartGame(param
                                 , new Agents.BaseAgent[] {
-                                    new Agents.LocalPlayerAgent(),
-                                    new Agents.AIAgent(),
-                                    //new Agents.LocalPlayerAgent()
+                                    new Agents.LocalPlayerAgent(0),
+                                    new Agents.AIAgent(1)
                                 });
                             break;
                         case "hotseat":
                             GameApp.Service<GameManager>().StartGame(param
                                 , new Agents.BaseAgent[] {
-                                    new Agents.LocalPlayerAgent(),
-                                    new Agents.LocalPlayerAgent()
+                                    new Agents.LocalPlayerAgent(0),
+                                    new Agents.LocalPlayerAgent(1)
                                 });
                             break;
                         default:
