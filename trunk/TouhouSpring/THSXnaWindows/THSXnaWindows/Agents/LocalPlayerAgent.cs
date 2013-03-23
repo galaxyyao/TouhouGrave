@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Agents
 {
-    class LocalPlayerAgent : BaseAgent
+    partial class LocalPlayerAgent : BaseAgent
     {
         public override bool OnCardPlayCanceled(Interactions.NotifyCardEvent io)
         {

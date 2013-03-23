@@ -126,8 +126,7 @@ namespace TouhouSpring.Services
         {
             var pid = Game.Players.IndexOf(Game.ActingPlayer);
             bool actingPlayerIsLocalPlayer = pid != -1 &&
-                ((Game.Controller as XnaUIController).Agents[pid] is Agents.LocalPlayerAgent
-                || (Game.Controller as XnaUIController).Agents[pid] is Agents.NetworkLocalPlayerAgent);
+                (Game.Controller as XnaUIController).Agents[pid] is Agents.LocalPlayerAgent;
             return actingPlayerIsLocalPlayer ? (player == Game.ActingPlayer) : (player != Game.ActingPlayer);
         }
 

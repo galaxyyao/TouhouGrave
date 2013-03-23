@@ -7,29 +7,40 @@ using Network = TouhouSpring.Network;
 
 namespace TouhouSpring.Agents
 {
-    class NetworkLocalPlayerAgent : LocalPlayerAgent
+    partial class LocalPlayerAgent
     {
         private Network.Client m_NetworkClient = null;
 
-        public NetworkLocalPlayerAgent()
+        public LocalPlayerAgent()
         {
             m_NetworkClient = GameApp.Service<Services.Network>().THSClient;
         }
 
         public override void OnInitiativeCommandEnd()
         {
-            // flush the response queue thru network interface
-            m_NetworkClient.OutboxQueue.Flush();
+            if (m_NetworkClient != null)
+            {
+                // flush the response queue thru network interface
+                m_NetworkClient.OutboxQueue.Flush();
+            }
         }
 
         public override void OnInitiativeCommandCanceled()
         {
-            // clear the response queue
-            m_NetworkClient.OutboxQueue.Clear();
+            if (m_NetworkClient != null)
+            {
+                // clear the response queue
+                m_NetworkClient.OutboxQueue.Clear();
+            }
         }
 
         public override void OnRespondBack(Interactions.BaseInteraction io, object result)
         {
+            if (m_NetworkClient == null)
+            {
+                return;
+            }
+
             if (io is Interactions.TacticalPhase)
             {
                 var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;

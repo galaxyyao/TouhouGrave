@@ -6,11 +6,11 @@ using TouhouSpring.Network;
 
 namespace TouhouSpring.Agents
 {
-    class NetworkRemoteAgent : BaseAgent
+    class RemoteAgent : BaseAgent
     {
         Network.Client m_NetworkClient = null;
 
-        public NetworkRemoteAgent()
+        public RemoteAgent()
         {
             m_NetworkClient = GameApp.Service<Services.Network>().THSClient;
         }
