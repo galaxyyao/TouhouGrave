@@ -131,7 +131,7 @@ namespace TouhouSpring.NetServerCore
         private void InterpretMessage(NetConnection senderConn, string message)
         {
             List<string> parts = message.Split(' ').ToList();
-            switch (parts[1])
+            switch (parts[0])
             {
                 case "roomentered":
                 case "gamestarted":
@@ -139,22 +139,22 @@ namespace TouhouSpring.NetServerCore
                 case "startrandomgame":
                     {
                         int enteredRoomId = UserEnter(senderConn);
-                        SendMessage(senderConn, string.Format("{0} enterroom", enteredRoomId));
+                        SendMessage(senderConn, string.Format("enterroom {0}", enteredRoomId));
                         if (_roomList[enteredRoomId].Status == Room.RoomStatus.Idle)
                         {
-                            SendMessage(senderConn, string.Format("{0} waiting", enteredRoomId));
+                            SendMessage(senderConn, string.Format("waiting {0}", enteredRoomId));
                         }
                         else
                         {
                             int seed = gameStartSeed.Next();
-                            SendMessage(enteredRoomId, string.Format("{0} generateseed {1}", enteredRoomId, seed));
+                            SendMessage(enteredRoomId, string.Format("generateseed {0} {1}", enteredRoomId, seed));
                             foreach (var playerConn in _roomList[enteredRoomId].PlayerConns)
                             {
                                 //SendMessage(playerConn
                                 //    , string.Format("{0} startgame {1}", enteredRoomId
                                 //    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
                                 SendMessage(playerConn
-                                    , string.Format("{0} startgame {1}", enteredRoomId
+                                    , string.Format("startgame {0} {1}", enteredRoomId
                                     , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier)));//Temporarily let playerindex be the same as enter room order
 
                             }

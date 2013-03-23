@@ -54,7 +54,7 @@ namespace TouhouSpring.Network
         private void ProcessInteractionMessage(string[] parts)
         {
             Action<string[]> action;
-            if (m_interactionActions.TryGetValue(parts[1], out action))
+            if (m_interactionActions.TryGetValue(parts[0], out action))
             {
                 action(parts);
             }
@@ -86,7 +86,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var sacrificedCard = tacticalPhase.SacrificeCandidates[Convert.ToInt32(parts[2])];
+            var sacrificedCard = tacticalPhase.SacrificeCandidates[Convert.ToInt32(parts[1])];
             tacticalPhase.RespondSacrifice(sacrificedCard);
             Debug.Print(string.Format("Sacrificed {0}", sacrificedCard.Guid));
             Debug.Print(string.Format("SelectCardsCandidates:{0}"
@@ -102,7 +102,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var playedCard = tacticalPhase.PlayCardCandidates[Convert.ToInt32(parts[2])];
+            var playedCard = tacticalPhase.PlayCardCandidates[Convert.ToInt32(parts[1])];
             tacticalPhase.RespondPlay(playedCard);
             Debug.Print(string.Format("Played {0}", playedCard.Guid));
             Debug.Print(string.Format("PlayCardsCandidates:{0}"
@@ -118,8 +118,8 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var attackerCard = tacticalPhase.AttackerCandidates[Convert.ToInt32(parts[2])];
-            var defenderCard = tacticalPhase.DefenderCandidates[Convert.ToInt32(parts[3])];
+            var attackerCard = tacticalPhase.AttackerCandidates[Convert.ToInt32(parts[1])];
+            var defenderCard = tacticalPhase.DefenderCandidates[Convert.ToInt32(parts[2])];
             tacticalPhase.RespondAttackCard(attackerCard, defenderCard);
             Debug.Print(string.Format("{0} attacked {1}", attackerCard.Guid, defenderCard.Guid));
             Debug.Print(string.Format("AttackerCandidates:{0}"
@@ -137,8 +137,8 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var attackerCard = tacticalPhase.AttackerCandidates[Convert.ToInt32(parts[2])];
-            var playerBeingAttacked = tacticalPhase.Game.Players[Convert.ToInt32(parts[3])];
+            var attackerCard = tacticalPhase.AttackerCandidates[Convert.ToInt32(parts[1])];
+            var playerBeingAttacked = tacticalPhase.Game.Players[Convert.ToInt32(parts[2])];
             tacticalPhase.RespondAttackPlayer(attackerCard, playerBeingAttacked);
             Debug.Print(string.Format("{0} attacked player {1}", attackerCard.Guid, playerBeingAttacked.Name));
             Debug.Print(string.Format("AttackerCandidates:{0}"
@@ -154,7 +154,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var assistCard = tacticalPhase.ActivateAssistCandidates[Convert.ToInt32(parts[2])];
+            var assistCard = tacticalPhase.ActivateAssistCandidates[Convert.ToInt32(parts[1])];
             tacticalPhase.RespondActivate(assistCard);
             Debug.Print(string.Format("Activated {0}", assistCard.Guid));
             Debug.Print(string.Format("AssistCandidates:{0}"
@@ -170,7 +170,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var spell = tacticalPhase.CastSpellCandidates[Convert.ToInt32(parts[2])];
+            var spell = tacticalPhase.CastSpellCandidates[Convert.ToInt32(parts[1])];
             tacticalPhase.RespondCast(spell);
             Debug.Print(string.Format("Casted {0}", spell.ToString()));
             Debug.Print(string.Format("SpellCandidates:{0}"
@@ -186,7 +186,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var redeemedCard = tacticalPhase.RedeemCandidates[Convert.ToInt32(parts[2])];
+            var redeemedCard = tacticalPhase.RedeemCandidates[Convert.ToInt32(parts[1])];
             tacticalPhase.RespondRedeem(redeemedCard);
             Debug.Print(string.Format("Activated {0}", redeemedCard.Guid));
             Debug.Print(string.Format("AssistCandidates:{0}"
@@ -202,7 +202,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            if (parts.Length == 2)
+            if (parts.Length == 1)
             {
                 selectCards.Respond(Indexable.Empty<CardInstance>());
                 Debug.Print("Selected nothing");
@@ -210,7 +210,7 @@ namespace TouhouSpring.Network
             else
             {
                 var selectedCards = new List<CardInstance>();
-                for (int i = 2; i < parts.Length; i++)
+                for (int i = 1; i < parts.Length; i++)
                 {
                     var selectedCard = selectCards.Candidates[Convert.ToInt32(parts[i])];
                     selectedCards.Add(selectedCard);
@@ -232,15 +232,15 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            if (parts[2] == "null")
+            if (parts[1] == "null")
             {
                 selectNumber.Respond(null);
                 Debug.Print("SelectNumber: null");
             }
             else
             {
-                selectNumber.Respond(Int32.Parse(parts[2]));
-                Debug.Print(string.Format("SelectNumber: {0}", parts[2]));
+                selectNumber.Respond(Int32.Parse(parts[1]));
+                Debug.Print(string.Format("SelectNumber: {0}", parts[1]));
             }
             m_remoteInteraction = null;
         }

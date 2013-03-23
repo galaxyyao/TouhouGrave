@@ -83,25 +83,25 @@ namespace TouhouSpring.Network
                             string text = im.ReadString();
                             Debug.Print(string.Format("{0} Received:{1}", _client.UniqueIdentifier, text));
                             var parts = text.Split(' ');
-                            if (parts[1] == "enterroom")
+                            if (parts[0] == "enterroom")
                             {
-                                RoomId = Convert.ToInt32(parts[0]);
+                                RoomId = Convert.ToInt32(parts[1]);
                                 Seed = -1;
-                                SendMessage(string.Format("{0} {1}", RoomId, "roomentered"));
+                                SendMessage(string.Format("{0} {1}", "roomentered", RoomId));
                             }
-                            else if (parts[1] == "waiting")
+                            else if (parts[0] == "waiting")
                             {
                             }
-                            else if (parts[1] == "disconnect")
+                            else if (parts[0] == "disconnect")
                             {
                             }
-                            else if (parts[1] == "startgame")
+                            else if (parts[0] == "startgame")
                             {
                                 RoomStatus = RoomStatusEnum.Starting;
                                 StartupIndex = Convert.ToInt32(parts[2]);
-                                SendMessage(string.Format("{0} {1}", RoomId, "gamestarted"));
+                                SendMessage(string.Format("{0} {1}", "gamestarted", RoomId));
                             }
-                            else if (parts[1] == "generateseed")
+                            else if (parts[0] == "generateseed")
                             {
                                 Seed = Convert.ToInt32(parts[2]);
                             }
