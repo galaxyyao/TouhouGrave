@@ -69,7 +69,6 @@ namespace TouhouSpring.NetServerCore
                             string text = im.ReadString();
                             Console.WriteLine(text);
                             InterpretMessage(im.SenderConnection, text);
-
                         }
                         break;
                     default:
@@ -163,66 +162,17 @@ namespace TouhouSpring.NetServerCore
                     }
                     break;
                 case "switchturn":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} switchturn", roomId));
-                    }
-                    break;
                 case "sacrifice":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} sacrifice {1}", roomId, parts[2]));
-                    }
-                    break;
                 case "playcard":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} playcard {1}", roomId, parts[2]));
-                    }
-                    break;
                 case "attackcard":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} attackcard {1} {2}", roomId, parts[2], parts[3]));
-                    }
-                    break;
                 case "attackplayer":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} attackplayer {1}", roomId, parts[2]));
-                    }
-                    break;
                 case "activateassist":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} activateassist {1}", roomId, parts[2]));
-                    }
-                    break;
                 case "redeem":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} redeem {1}", roomId, parts[2]));
-                    }
-                    break;
                 case "selectcards":
+                case "selectnumber":
                     {
                         int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        StringBuilder parameters = new StringBuilder();
-                        for (int i = 3; i < parts.Count; i++)
-                        {
-                            parameters.Append(parts[i]);
-                            parameters.Append(" ");
-                        }
-                        parameters.Remove(parameters.Length - 1, 1);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier)
-                            , string.Format("{0} selectcards {1} {2}", roomId, -1, parameters.ToString()));
+                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier) , message);
                     }
                     break;
                 default:

@@ -15,11 +15,6 @@ namespace TouhouSpring.Agents
             m_NetworkClient = GameApp.Service<Services.Network>().THSClient;
         }
 
-        public override bool OnCardPlayCanceled(Interactions.NotifyCardEvent io)
-        {
-            return false;
-        }
-
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
             m_NetworkClient.CurrentGame.CurrentInteraction = io;
@@ -30,6 +25,15 @@ namespace TouhouSpring.Agents
         }
 
         public override void OnSelectCards(Interactions.SelectCards io)
+        {
+            m_NetworkClient.CurrentGame.CurrentInteraction = io;
+            if (!m_NetworkClient.InboxQueue.IsEmpty)
+            {
+                m_NetworkClient.InboxQueue.Flush();
+            }
+        }
+
+        public override void OnSelectNumber(Interactions.SelectNumber io)
         {
             m_NetworkClient.CurrentGame.CurrentInteraction = io;
             if (!m_NetworkClient.InboxQueue.IsEmpty)

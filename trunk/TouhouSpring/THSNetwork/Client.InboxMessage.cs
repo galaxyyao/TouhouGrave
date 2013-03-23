@@ -20,7 +20,7 @@ namespace TouhouSpring.Network
             {
                 foreach (var message in m_messageQueue)
                 {
-                    m_client.IntepretMessage(message);
+                    m_client.InterpretMessage(message);
                 }
                 Clear();
             }
@@ -30,23 +30,24 @@ namespace TouhouSpring.Network
 
         private void InitializeInboxActionLookups()
         {
-            m_inboxActionloopups.Add("enterroom", IntepretMessageEnterRoom);
-            m_inboxActionloopups.Add("waiting", IntepretMessageWaiting);
-            m_inboxActionloopups.Add("disconnect", IntepretMessageDisconnect);
-            m_inboxActionloopups.Add("startgame", IntepretMessageStartGame);
-            m_inboxActionloopups.Add("generateseed", IntepretMessageGenerateSeed);
-            m_inboxActionloopups.Add("switchturn", IntepretMessageSwitchTurn);
-            m_inboxActionloopups.Add("sacrifice", IntepretMessageSacrifice);
-            m_inboxActionloopups.Add("playcard", IntepretMessagePlayCard);
-            m_inboxActionloopups.Add("attackcard", IntepretMessageAttackCard);
-            m_inboxActionloopups.Add("attackplayer", IntepretMessageAttackPlayer);
-            m_inboxActionloopups.Add("activateassist", IntepretMessageActivateAssist);
-            m_inboxActionloopups.Add("castspell", IntepretMessageCastSpell);
-            m_inboxActionloopups.Add("redeem", IntepretMessageRedeem);
-            m_inboxActionloopups.Add("selectcards", IntepretMessageSelectCards);
+            m_inboxActionloopups.Add("enterroom", InterpretMessageEnterRoom);
+            m_inboxActionloopups.Add("waiting", InterpretMessageWaiting);
+            m_inboxActionloopups.Add("disconnect", InterpretMessageDisconnect);
+            m_inboxActionloopups.Add("startgame", InterpretMessageStartGame);
+            m_inboxActionloopups.Add("generateseed", InterpretMessageGenerateSeed);
+            m_inboxActionloopups.Add("switchturn", InterpretMessageSwitchTurn);
+            m_inboxActionloopups.Add("sacrifice", InterpretMessageSacrifice);
+            m_inboxActionloopups.Add("playcard", InterpretMessagePlayCard);
+            m_inboxActionloopups.Add("attackcard", InterpretMessageAttackCard);
+            m_inboxActionloopups.Add("attackplayer", InterpretMessageAttackPlayer);
+            m_inboxActionloopups.Add("activateassist", InterpretMessageActivateAssist);
+            m_inboxActionloopups.Add("castspell", InterpretMessageCastSpell);
+            m_inboxActionloopups.Add("redeem", InterpretMessageRedeem);
+            m_inboxActionloopups.Add("selectcards", InterpretMessageSelectCards);
+            m_inboxActionloopups.Add("selectnumber", InterpretMessageSelectNumber);
         }
 
-        public void IntepretMessage(string message)
+        public void InterpretMessage(string message)
         {
             List<string> parts = message.Split(' ').ToList();
             Action<List<string>> intepretMessageAction;
@@ -60,37 +61,37 @@ namespace TouhouSpring.Network
             }
         }
 
-        #region Message Intepret List
-        private void IntepretMessageEnterRoom(List<string> parts)
+        #region Message Interpret List
+        private void InterpretMessageEnterRoom(List<string> parts)
         {
             RoomId = Convert.ToInt32(parts[0]);
             Seed = -1;
             SendMessage(string.Format("{0} {1}", RoomId, "roomentered"));
         }
 
-        private void IntepretMessageWaiting(List<string> parts)
+        private void InterpretMessageWaiting(List<string> parts)
         {
 
         }
 
-        private void IntepretMessageDisconnect(List<string> parts)
+        private void InterpretMessageDisconnect(List<string> parts)
         {
 
         }
 
-        private void IntepretMessageStartGame(List<string> parts)
+        private void InterpretMessageStartGame(List<string> parts)
         {
             RoomStatus = RoomStatusEnum.Starting;
             StartupIndex = Convert.ToInt32(parts[2]);
             SendMessage(string.Format("{0} {1}", RoomId, "gamestarted"));
         }
 
-        private void IntepretMessageGenerateSeed(List<string> parts)
+        private void InterpretMessageGenerateSeed(List<string> parts)
         {
             Seed = Convert.ToInt32(parts[2]);
         }
 
-        private void IntepretMessageSwitchTurn(List<string> parts)
+        private void InterpretMessageSwitchTurn(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -105,7 +106,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageSacrifice(List<string> parts)
+        private void InterpretMessageSacrifice(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -125,7 +126,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessagePlayCard(List<string> parts)
+        private void InterpretMessagePlayCard(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -145,7 +146,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageAttackCard(List<string> parts)
+        private void InterpretMessageAttackCard(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -168,7 +169,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageAttackPlayer(List<string> parts)
+        private void InterpretMessageAttackPlayer(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -189,7 +190,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageActivateAssist(List<string> parts)
+        private void InterpretMessageActivateAssist(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -209,7 +210,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageCastSpell(List<string> parts)
+        private void InterpretMessageCastSpell(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -229,7 +230,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageRedeem(List<string> parts)
+        private void InterpretMessageRedeem(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -249,7 +250,7 @@ namespace TouhouSpring.Network
             }
         }
 
-        private void IntepretMessageSelectCards(List<string> parts)
+        private void InterpretMessageSelectCards(List<string> parts)
         {
             if (CurrentGame.CurrentInteraction == null)
             {
@@ -270,6 +271,32 @@ namespace TouhouSpring.Network
                     .Respond(selectedCards.ToIndexable());
                 Debug.Print(string.Format("SelectCandidates:{0}"
                     , string.Join(",", ((Interactions.SelectCards)CurrentGame.CurrentInteraction).Candidates.Select(candidate => candidate.Guid.ToString()))));
+                CurrentGame.CurrentInteraction = null;
+            }
+        }
+
+        private void InterpretMessageSelectNumber(List<string> parts)
+        {
+            if (CurrentGame.CurrentInteraction == null)
+            {
+                InboxQueue.Queue(string.Join(" ", parts));
+            }
+            else
+            {
+                var selectNumber = CurrentGame.CurrentInteraction as Interactions.SelectNumber;
+                if (selectNumber == null)
+                {
+                    throw new Exception("Wrong Phase");
+                }
+
+                if (parts[2] == "null")
+                {
+                    selectNumber.Respond(null);
+                }
+                else
+                {
+                    selectNumber.Respond(Int32.Parse(parts[2]));
+                }
                 CurrentGame.CurrentInteraction = null;
             }
         }

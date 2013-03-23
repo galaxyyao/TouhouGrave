@@ -46,6 +46,7 @@ namespace TouhouSpring.Network
             m_outboxActionloopups.Add(BaseInteraction.PlayerAction.CastSpell, ProcessRespondCastSpell);
             m_outboxActionloopups.Add(BaseInteraction.PlayerAction.Redeem, ProcessRespondRedeem);
             m_outboxActionloopups.Add(BaseInteraction.PlayerAction.SelectCards, ProcessSelectCards);
+            m_outboxActionloopups.Add(BaseInteraction.PlayerAction.SelectNumber, ProcessSelectNumber);
         }
 
         public void ProcessRespond(Interactions.BaseInteraction.PlayerAction action, Interactions.BaseInteraction io, object result)
@@ -153,6 +154,13 @@ namespace TouhouSpring.Network
             }
             OutboxQueue.Queue(string.Format("{0} selectcards -1 {1}", RoomId, string.Join(" ", indexes)));
             Debug.Print(string.Format("SelectCardsCandidates:{0}", string.Join(",", selectCardsIo.Candidates.Select(candidate => candidate.Guid.ToString()))));
+        }
+
+        private void ProcessSelectNumber(Interactions.BaseInteraction io, object result)
+        {
+            var selectNumberIo = (Interactions.SelectNumber)io;
+            var selectNumberResult = (int?)result;
+            OutboxQueue.Queue(string.Format("{0} selectnumber {1}", RoomId, selectNumberResult == null ? "null" : selectNumberResult.Value.ToString()));
         }
 
         #endregion

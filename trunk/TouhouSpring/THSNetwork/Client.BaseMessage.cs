@@ -81,7 +81,7 @@ namespace TouhouSpring.Network
                         {
                             string text = im.ReadString();
                             Debug.Print(string.Format("{0} Received:{1}", _client.UniqueIdentifier, text));
-                            IntepretMessage(text);
+                            InterpretMessage(text);
                         }
                         break;
                     default:
