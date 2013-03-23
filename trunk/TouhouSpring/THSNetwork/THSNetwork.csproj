@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageQueue.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Client.OutboxMessage.cs" />
     <Compile Include="Client.BaseMessage.cs" />

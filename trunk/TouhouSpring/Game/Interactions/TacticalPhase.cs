@@ -95,7 +95,6 @@ namespace TouhouSpring.Interactions
             }
 
             CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>());
-            Game.CurrentInteraction = this;
         }
 
         internal Result Run()

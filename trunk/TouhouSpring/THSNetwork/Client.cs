@@ -24,35 +24,15 @@ namespace TouhouSpring.Network
             set;
         }
 
-        public OutboxMessageQueue OutboxQueue
-        {
-            get;
-            private set;
-        }
-
-        public InboxMessageQueue InboxQueue
-        {
-            get;
-            private set;
-        }
-
         public Client()
         {
             NetPeerConfiguration config = new NetPeerConfiguration("ths");
             config.AutoFlushSendQueue = false;
             _client = new NetClient(config);
             _client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
-            InitializeInboxActionLookups();
-            InitializeOutboxActionLookups();
-            OutboxQueue = new OutboxMessageQueue(this);
-            InboxQueue = new InboxMessageQueue(this);
+            InitializeInteractionActionsTable();
+            InitializeOutboxActionTable();
             NetworkStatus = NetworkStatusEnum.Disconnected;
-        }
-
-        public Game CurrentGame
-        {
-            get;
-            set;
         }
 
         public enum NetworkStatusEnum

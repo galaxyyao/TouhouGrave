@@ -129,7 +129,6 @@ namespace TouhouSpring.Services
                                 });
                 }
                 m_networkClient.RoomStatus = THSNetwork.Client.RoomStatusEnum.Started;
-                m_networkClient.CurrentGame = GameApp.Service<GameManager>().Game;
             }
 
 

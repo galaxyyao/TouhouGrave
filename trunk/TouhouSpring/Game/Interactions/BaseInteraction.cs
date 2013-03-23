@@ -96,7 +96,6 @@ namespace TouhouSpring.Interactions
         /// <param name="result">The result of this interaction</param>
         protected void RespondBack<TResult>(TResult result)
         {
-            //Respond for network handling
             Game.Controller.OnRespondBack(this, result);
 
             string msgText = GetMessageText(GetType());

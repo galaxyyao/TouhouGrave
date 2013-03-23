@@ -51,12 +51,6 @@ namespace TouhouSpring
             private set;
         }
 
-        public Interactions.BaseInteraction CurrentInteraction
-        {
-            get;
-            set;
-        }
-
         public Game(IIndexable<GameStartupParameters> startUpParams, BaseController controller)
         {
             if (startUpParams == null)

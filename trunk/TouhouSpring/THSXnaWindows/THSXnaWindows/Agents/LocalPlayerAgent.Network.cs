@@ -21,7 +21,7 @@ namespace TouhouSpring.Agents
             if (m_NetworkClient != null)
             {
                 // flush the response queue thru network interface
-                m_NetworkClient.OutboxQueue.Flush();
+                m_NetworkClient.FlushOutboxQueue();
             }
         }
 
@@ -30,7 +30,7 @@ namespace TouhouSpring.Agents
             if (m_NetworkClient != null)
             {
                 // clear the response queue
-                m_NetworkClient.OutboxQueue.Clear();
+                m_NetworkClient.DiscardOutboxQueue();
             }
         }
 
@@ -46,7 +46,7 @@ namespace TouhouSpring.Agents
                 var tacticalPhaseResult = (Interactions.TacticalPhase.Result)result;
 
                 // queue
-                m_NetworkClient.ProcessRespond(tacticalPhaseResult.ActionType, io, result);
+                m_NetworkClient.LocalLeaveInteraction(tacticalPhaseResult.ActionType, io, result);
 
                 // if the response is AttackCard, AttackPlayer, Pass
                 // Flush Outbox message queue
@@ -54,7 +54,7 @@ namespace TouhouSpring.Agents
                     || tacticalPhaseResult.ActionType == Interactions.BaseInteraction.PlayerAction.AttackPlayer
                     || tacticalPhaseResult.ActionType == Interactions.BaseInteraction.PlayerAction.Pass
                     )
-                    m_NetworkClient.OutboxQueue.Flush();
+                    m_NetworkClient.FlushOutboxQueue();
 
             }
             else if (io is Interactions.SelectCards
@@ -65,20 +65,23 @@ namespace TouhouSpring.Agents
                 if (io is Interactions.SelectCards)
                 {
                     var selectCardsResult = (IIndexable<CardInstance>)result;
-                    m_NetworkClient.ProcessRespond(Interactions.BaseInteraction.PlayerAction.SelectCards, io, result);
+                    m_NetworkClient.LocalLeaveInteraction(Interactions.BaseInteraction.PlayerAction.SelectCards, io, result);
                 }
-
-                if (io is Interactions.SelectNumber)
+                else if (io is Interactions.SelectNumber)
                 {
                     var selectCardsResult = (int?)result;
-                    m_NetworkClient.ProcessRespond(Interactions.BaseInteraction.PlayerAction.SelectNumber, io, result);
+                    m_NetworkClient.LocalLeaveInteraction(Interactions.BaseInteraction.PlayerAction.SelectNumber, io, result);
+                }
+                else
+                {
+                    throw new NotImplementedException();
                 }
 
                 if (io.Game.RunningCommand.ExecutionPhase != Commands.CommandPhase.Condition)
                 {
                     // means the command will never be canceled
                     // flush
-                    m_NetworkClient.OutboxQueue.Flush();
+                    m_NetworkClient.FlushOutboxQueue();
                 }
             }
         }

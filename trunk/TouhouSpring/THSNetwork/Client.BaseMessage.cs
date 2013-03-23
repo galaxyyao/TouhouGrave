@@ -37,6 +37,7 @@ namespace TouhouSpring.Network
             NetOutgoingMessage om = _client.CreateMessage(text);
             _client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
             _client.FlushSendQueue();
+            Debug.Print(string.Format("{0} Sent:{1}", _client.UniqueIdentifier, text));
         }
 
         private void GotMessage(object peer)
@@ -81,7 +82,33 @@ namespace TouhouSpring.Network
                         {
                             string text = im.ReadString();
                             Debug.Print(string.Format("{0} Received:{1}", _client.UniqueIdentifier, text));
-                            InterpretMessage(text);
+                            var parts = text.Split(' ');
+                            if (parts[1] == "enterroom")
+                            {
+                                RoomId = Convert.ToInt32(parts[0]);
+                                Seed = -1;
+                                SendMessage(string.Format("{0} {1}", RoomId, "roomentered"));
+                            }
+                            else if (parts[1] == "waiting")
+                            {
+                            }
+                            else if (parts[1] == "disconnect")
+                            {
+                            }
+                            else if (parts[1] == "startgame")
+                            {
+                                RoomStatus = RoomStatusEnum.Starting;
+                                StartupIndex = Convert.ToInt32(parts[2]);
+                                SendMessage(string.Format("{0} {1}", RoomId, "gamestarted"));
+                            }
+                            else if (parts[1] == "generateseed")
+                            {
+                                Seed = Convert.ToInt32(parts[2]);
+                            }
+                            else
+                            {
+                                OnInteractionMessageArrive(parts);
+                            }
                         }
                         break;
                     default:

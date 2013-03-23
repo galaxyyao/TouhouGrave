@@ -17,29 +17,17 @@ namespace TouhouSpring.Agents
 
         public override void OnTacticalPhase(Interactions.TacticalPhase io)
         {
-            m_NetworkClient.CurrentGame.CurrentInteraction = io;
-            if (!m_NetworkClient.InboxQueue.IsEmpty)
-            {
-                m_NetworkClient.InboxQueue.Flush();
-            }
+            m_NetworkClient.RemoteEnterInteraction(io);
         }
 
         public override void OnSelectCards(Interactions.SelectCards io)
         {
-            m_NetworkClient.CurrentGame.CurrentInteraction = io;
-            if (!m_NetworkClient.InboxQueue.IsEmpty)
-            {
-                m_NetworkClient.InboxQueue.Flush();
-            }
+            m_NetworkClient.RemoteEnterInteraction(io);
         }
 
         public override void OnSelectNumber(Interactions.SelectNumber io)
         {
-            m_NetworkClient.CurrentGame.CurrentInteraction = io;
-            if (!m_NetworkClient.InboxQueue.IsEmpty)
-            {
-                m_NetworkClient.InboxQueue.Flush();
-            }
+            m_NetworkClient.RemoteEnterInteraction(io);
         }
 
         public override void OnMessageBox(Interactions.MessageBox io)
