@@ -28,24 +28,24 @@ namespace TouhouSpring.Services
                     break;
                 case "Game.DetailText1":
                     replacement = ZoomedInCard != null
-                                  ? ZoomedInCard.Card.Model.Name : "";
+                                  ? ZoomedInCard.CardData.ModelName : "";
                     break;
                 case "Game.DetailText2":
                     if (ZoomedInCard != null)
                     {
                         StringBuilder sb = new StringBuilder();
                         sb.Append("【#Card.SystemClass#】\n");
-                        if (ZoomedInCard.Card.Behaviors.Has<Behaviors.ManaCost>())
+                        if (ZoomedInCard.CardData.SummonCost >= 0)
                         {
                             sb.Append("召唤消耗　【[color:Red]#Card.SummonCost#[/color]】 灵力\n");
                         }
-                        if (ZoomedInCard.Card.Behaviors.Has<Behaviors.Warrior>())
+                        if (ZoomedInCard.CardData.SystemClass == UI.CardControl.CardClass.Warrior)
                         {
                             sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
                             sb.Append("体力　　　【[color:Red]#Card.InitialLife#[/color]】\n");
                         }
                         sb.Append("\n");
-                        sb.Append(ZoomedInCard.Card.Model.Description);
+                        sb.Append(ZoomedInCard.CardData.Description);
                         replacement = sb.ToString();
                     }
                     else
@@ -102,7 +102,7 @@ namespace TouhouSpring.Services
                 default:
                     if (id.StartsWith("Card.") && ZoomedInCard != null)
                     {
-                        return ZoomedInCard.EvaluateBinding(id, out replacement);
+                        return (ZoomedInCard as Style.IBindingProvider).EvaluateBinding(id, out replacement);
                     }
                     replacement = null;
                     return false;

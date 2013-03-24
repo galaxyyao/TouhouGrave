@@ -138,6 +138,7 @@
     <Compile Include="Services\UIStates\PlayerTransition.cs" />
     <Compile Include="Services\UIStates\SelectCards.cs" />
     <Compile Include="Services\UIStates\TacticalPhase.cs" />
+    <Compile Include="Services\UIStates\Utils.cs" />
     <Compile Include="Simulation\BenchmarkSandbox.cs" />
     <Compile Include="Simulation\IContext.cs" />
     <Compile Include="Simulation\ISandbox.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\CardControl.Addin.cs" />
     <Compile Include="UI\CardControl.Binding.cs" />
+    <Compile Include="UI\CardControl.CardData.cs" />
     <Compile Include="UI\CardControl.cs" />
     <Compile Include="UI\CardControl.Render.cs" />
     <Compile Include="UI\CardControlAddins\CardIcons.cs" />

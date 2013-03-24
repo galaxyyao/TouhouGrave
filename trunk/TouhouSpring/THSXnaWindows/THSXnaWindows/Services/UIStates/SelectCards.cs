@@ -7,12 +7,12 @@ namespace TouhouSpring.Services.UIStates
 {
     class SelectCards : IUIState
     {
-        private List<CardInstance> m_selectedCards = new List<CardInstance>();
+        private List<int> m_selectedCards = new List<int>();
 
         private GameUI m_gameUI = GameApp.Service<GameUI>();
         private Interactions.SelectCards m_io;
 
-        public IIndexable<CardInstance> Selection
+        public IIndexable<int> Selection
         {
             get { return m_selectedCards.ToIndexable(); }
         }
@@ -41,13 +41,13 @@ namespace TouhouSpring.Services.UIStates
 
         public void OnCardClicked(UI.CardControl cardControl)
         {
-            var card = cardControl.Card;
+            var cardGuid = cardControl.CardGuid;
 
-            if (m_io.Candidates.Contains(card))
+            if (m_io.Candidates.Contains(cardGuid))
             {
-                if (m_selectedCards.Contains(card))
+                if (m_selectedCards.Contains(cardGuid))
                 {
-                    m_selectedCards.Remove(card);
+                    m_selectedCards.Remove(cardGuid);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace TouhouSpring.Services.UIStates
                     {
                         m_selectedCards.Clear();
                     }
-                    m_selectedCards.Add(card);
+                    m_selectedCards.Add(cardGuid);
                 }
 
                 m_gameUI.RemoveAllContextButtons();
@@ -65,17 +65,17 @@ namespace TouhouSpring.Services.UIStates
 
         public bool IsCardClickable(UI.CardControl cardControl)
         {
-            return m_io.Candidates.Contains(cardControl.Card);
+            return m_io.Candidates.Contains(cardControl.CardGuid);
         }
 
         public bool IsCardSelected(UI.CardControl cardControl)
         {
-            return m_selectedCards.Contains(cardControl.Card);
+            return m_selectedCards.Contains(cardControl.CardGuid);
         }
 
         private void ContextButton_OnSkip(string text)
         {
-            m_io.Respond(m_selectedCards.ToIndexable().Clone());
+            m_io.Respond(m_selectedCards.MapToCards(m_io.Candidates).ToIndexable());
             m_gameUI.LeaveState();
         }
     }

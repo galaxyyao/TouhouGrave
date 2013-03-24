@@ -32,7 +32,7 @@ namespace TouhouSpring.UI
 
         void IEventListener<RenderEventArgs>.RaiseEvent(RenderEventArgs e)
         {
-            PInvokes.D3d9.BeginPixEvent(0, "Card.Render:" + Card.Model.Name);
+            PInvokes.D3d9.BeginPixEvent(0, "Card.Render:" + CardData.ModelName);
 
             var transform = BodyContainer.TransformToGlobal;
 

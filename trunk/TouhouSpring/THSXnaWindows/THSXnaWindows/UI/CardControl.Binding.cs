@@ -7,78 +7,50 @@ namespace TouhouSpring.UI
 {
     partial class CardControl : Style.IBindingProvider
     {
-        public bool EvaluateBinding(string id, out string replacement)
+        bool Style.IBindingProvider.EvaluateBinding(string id, out string replacement)
         {
-            var warrior = Card.Behaviors.Get<Behaviors.Warrior>();
             switch (id)
             {
                 case "Card.Description":
-                    replacement = Card.Model.Description;
+                    replacement = CardData.Description;
                     break;
                 case "Card.ImageUri":
-                    replacement = String.IsNullOrEmpty(Card.Model.ArtworkUri) ? "Textures/DefaultArtwork" : Card.Model.ArtworkUri;
+                    replacement = !String.IsNullOrEmpty(CardData.ArtworkUri) ? CardData.ArtworkUri : "Textures/DefaultArtwork";
                     break;
                 case "Card.InitialAttack":
-                    if (warrior != null)
-                    {
-                        replacement = warrior.InitialAttack.ToString();
-                    }
-                    else
-                    {
-                        replacement = "";
-                    }
+                    replacement = CardData.AttackAndInitialAttack.Item2 >= 0 ? CardData.AttackAndInitialAttack.Item2.ToString() : "";
                     break;
                 case "Card.InitialLife":
-                    if (warrior != null)
-                    {
-                        replacement = warrior.InitialLife.ToString();
-                    }
-                    else
-                    {
-                        replacement = "";
-                    }
+                    replacement = CardData.LifeAndInitialLife.Item2 >= 0 ? CardData.LifeAndInitialLife.Item2.ToString() : "";
                     break;
                 case "Card.Name":
-                    replacement = Card.Model.Name;
+                    replacement = CardData.ModelName;
                     break;
                 case "Card.SummonCost":
-                    var manaCost = Card.Behaviors.Get<Behaviors.ManaCost>();
-                    replacement = manaCost != null ? manaCost.Cost.ToString() : "";
+                    replacement = CardData.SummonCost >= 0 ? CardData.SummonCost.ToString() : "";
                     break;
                 case "Card.SystemClass":
-                    if (Card.Behaviors.Has<Behaviors.Hero>())
+                    switch (CardData.SystemClass)
                     {
-                        replacement = "主角";
-                    }
-                    else if (Card.Behaviors.Has<Behaviors.Warrior>())
-                    {
-                        replacement = "战士";
-                    }
-                    else if (Card.Behaviors.Has<Behaviors.Assist>())
-                    {
-                        replacement = "支援";
-                    }
-                    else if (Card.Behaviors.Has<Behaviors.Instant>())
-                    {
-                        replacement = "突袭";
-                    }
-                    else
-                    {
-                        replacement = "迷";
+                        case CardClass.Hero: replacement = "主角"; break;
+                        case CardClass.Warrior: replacement = "战士"; break;
+                        case CardClass.Assist: replacement = "支援"; break;
+                        case CardClass.Instant: replacement = "突袭"; break;
+                        default: replacement = "迷"; break;
                     }
                     break;
                 case "Card.Values":
-                    if (warrior != null)
+                    if (CardData.SystemClass == CardClass.Warrior)
                     {
-                        var attackColor = warrior.Attack > warrior.InitialAttack
-                                          ? "Green" : warrior.Attack < warrior.InitialAttack ? "Red" : "Black";
+                        int sign = Math.Sign(CardData.AttackAndInitialAttack.Item1 - CardData.AttackAndInitialAttack.Item2);
+                        var attackColor = sign > 0 ? "Green" : sign < 0 ? "Red" : "Black";
                         var sb = new StringBuilder();
                         sb.Append("[color:");
                         sb.Append(attackColor);
                         sb.Append("]");
-                        sb.Append(warrior.Attack.ToString());
+                        sb.Append(CardData.AttackAndInitialAttack.Item1.ToString());
                         sb.Append("[/color] [color:Black]| ");
-                        sb.Append(warrior.Life.ToString());
+                        sb.Append(CardData.LifeAndInitialLife.Item1.ToString());
                         replacement = sb.ToString();
                     }
                     else

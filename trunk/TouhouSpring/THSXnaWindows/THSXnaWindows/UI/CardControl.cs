@@ -52,6 +52,11 @@ namespace TouhouSpring.UI
             get; private set;
         }
 
+        public int CardGuid
+        {
+            get { return Card.Guid; }
+        }
+
         public Style.CardControlStyle Style
         {
             get; private set;

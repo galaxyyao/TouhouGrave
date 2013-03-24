@@ -30,7 +30,7 @@ namespace TouhouSpring.UI.CardControlAddins
         {
             var gameUI = GameApp.Service<Services.GameUI>();
             bool darken = gameUI.ZoomedInCard != Control
-                          && (Card.Behaviors.Has<Behaviors.Warrior>() && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown
+                          && (Control.CardData.IsCoolingDown
                               || Card.Owner.Assists.Contains(Card) && !Card.IsActivatedAssist
                               || Card.Owner.CardsSacrificed.Contains(Card));
 
