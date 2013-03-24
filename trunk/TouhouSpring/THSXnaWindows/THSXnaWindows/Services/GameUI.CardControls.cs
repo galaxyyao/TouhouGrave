@@ -10,7 +10,6 @@ namespace TouhouSpring.Services
     partial class GameUI
     {
         private List<UI.CardControl> m_cardControls = new List<UI.CardControl>();
-        private GameEvaluator m_cardControlEvaluator;
 
         public void RegisterCard(CardInstance card)
         {
@@ -93,19 +92,6 @@ namespace TouhouSpring.Services
             return m_cardControls.IndexOf(cardControl);
         }
 
-        private void InitializeCardControls()
-        {
-            m_cardControlEvaluator = GameApp.Service<GameManager>().CreateGameEvaluator(game => CardControlOnGameEvaluate(game));
-        }
-
-        private void CardControlOnGameEvaluate(Game game)
-        {
-            foreach (var cc in m_cardControls)
-            {
-                cc.OnEvaluate(cc.Card);
-            }
-        }
-
         private void UnregisterAllCards()
         {
             m_cardControls.ForEach(cc => cc.Dispose());
@@ -121,7 +107,7 @@ namespace TouhouSpring.Services
         private void CardControl_MouseButton1Up(object sender, UI.MouseEventArgs e)
         {
             var control = (sender as UI.MouseTracked).EventTarget as UI.CardControl;
-            Debug.Assert(control != null && control.Card != null);
+            Debug.Assert(control != null);
             if (IsCardClickable(control))
             {
                 UIState.OnCardClicked(control);

@@ -114,6 +114,7 @@
     <Compile Include="Services\GameUI.CardZone.cs" />
     <Compile Include="Services\GameUI.ContextButton.cs" />
     <Compile Include="Services\GameUI.cs" />
+    <Compile Include="Services\GameUI.Evaluator.cs" />
     <Compile Include="Services\GameUI.InGamePageBinding.cs" />
     <Compile Include="Services\GameUI.Piles.cs" />
     <Compile Include="Services\GameUI.PlayerZones.cs" />
