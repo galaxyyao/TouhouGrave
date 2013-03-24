@@ -185,14 +185,14 @@ namespace TouhouSpring.Services
         private CardZone m_actingLocalPlayerHandZone;
         private CardZone m_zoomedInZone;
 
-        private void InitializeCardZonesOnGameCreated(Game game)
+        private void InitializeCardZonesOnGameCreated(int numPlayers)
         {
             var world3D = InGameUIPage.Style.ChildIds["World3D"];
 
-            m_playerZones = new PlayerZones[game.Players.Count];
-            for (int i = 0; i < game.Players.Count; ++i)
+            m_playerZones = new PlayerZones[numPlayers];
+            for (int i = 0; i < numPlayers; ++i)
             {
-                m_playerZones[i] = new PlayerZones(game.Players[i], world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
+                m_playerZones[i] = new PlayerZones(i, world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
             }
 
             m_actingLocalPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingLocalPlayer.Hand"]);

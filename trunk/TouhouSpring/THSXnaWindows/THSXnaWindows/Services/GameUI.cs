@@ -140,7 +140,7 @@ namespace TouhouSpring.Services
 
             InGame = true;
 
-            InitializeCardZonesOnGameCreated(game);
+            InitializeCardZonesOnGameCreated(game.Players.Count);
             InitializePilesOnGameCreated(game);
 
             foreach (var player in game.Players)

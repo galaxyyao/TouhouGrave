@@ -10,6 +10,8 @@ namespace TouhouSpring.Services
     {
         private class PlayerZones : Style.IBindingProvider
         {
+            private GameEvaluator<string> m_manaTextEvaluator;
+
             public Style.IStyleContainer UIStyle
             {
                 get; private set;
@@ -20,7 +22,7 @@ namespace TouhouSpring.Services
                 get { return UIStyle.Target; }
             }
 
-            public Player Player
+            public int PlayerIndex
             {
                 get; private set;
             }
@@ -60,14 +62,22 @@ namespace TouhouSpring.Services
                 get; private set;
             }
 
-            public PlayerZones(Player player, Style.IStyleContainer parent, XElement styleDefinition)
+            public PlayerZones(int playerIndex, Style.IStyleContainer parent, XElement styleDefinition)
             {
                 var layout = new Style.LayoutGizmo<UI.TransformNode>(parent, styleDefinition);
                 layout.Initialize();
                 layout.Target.Dispatcher = parent.Target;
                 layout.BindingProvider = this;
                 UIStyle = layout;
-                Player = player;
+                PlayerIndex = playerIndex;
+
+                m_manaTextEvaluator = GameApp.Service<GameManager>().CreateGameEvaluator(game =>
+                {
+                    var player = game.Players[PlayerIndex];
+                    return player.Mana != 0 || player.MaxMana != 0
+                           ? player.Mana.ToString() + "/" + player.MaxMana.ToString()
+                           : "0";
+                }, "-");
 
                 Library = new CardZone(UIStyle.ChildIds["Library"]);
                 Hand = new CardZone(UIStyle.ChildIds["Hand"]);
@@ -83,14 +93,7 @@ namespace TouhouSpring.Services
                 switch (id)
                 {
                     case "Player.ManaPoolText":
-                        if (Player.Mana == 0 && Player.MaxMana == 0)
-                        {
-                            replacement = "0";
-                        }
-                        else
-                        {
-                            replacement = Player.Mana.ToString() + "/" + Player.MaxMana.ToString();
-                        }
+                        replacement = m_manaTextEvaluator.Value;
                         break;
 
                     default:
