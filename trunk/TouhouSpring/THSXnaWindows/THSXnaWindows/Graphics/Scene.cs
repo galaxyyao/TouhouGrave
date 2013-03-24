@@ -128,7 +128,7 @@ namespace TouhouSpring.Graphics
             GameApp.Service<ParticleRenderer>().Draw(m_beamMeUp, m_transform, 1.0f, 1.333f);
         }
 
-        internal void GameStarted()
+        internal void GameCreated()
         {
             float vw = GameApp.Instance.GraphicsDevice.Viewport.Width;
             float vh = GameApp.Instance.GraphicsDevice.Viewport.Height;

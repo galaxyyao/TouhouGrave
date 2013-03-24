@@ -170,7 +170,7 @@ namespace TouhouSpring.Services
             public override Matrix ResolveLocationTransform(UI.CardControl control, int thisIndex)
             {
                 Matrix mat = base.ResolveLocationTransform(control, thisIndex);
-                if (!GameApp.Service<GameUI>().ShallPlayerBeRevealed(control.Card.Owner))
+                if (!GameApp.Service<GameUI>().ShallPlayerBeRevealed(control.Card.Owner.Index))
                 {
                     mat = Matrix.CreateTranslation(-0.5f, control.Region.Height / control.Region.Width * 0.5f, 0)
                           * Matrix.CreateRotationZ(MathHelper.Pi)
@@ -185,14 +185,14 @@ namespace TouhouSpring.Services
         private CardZone m_actingLocalPlayerHandZone;
         private CardZone m_zoomedInZone;
 
-        private void InitializeCardZones()
+        private void InitializeCardZonesOnGameCreated(Game game)
         {
             var world3D = InGameUIPage.Style.ChildIds["World3D"];
 
-            m_playerZones = new PlayerZones[Game.Players.Count];
-            for (int i = 0; i < Game.Players.Count; ++i)
+            m_playerZones = new PlayerZones[game.Players.Count];
+            for (int i = 0; i < game.Players.Count; ++i)
             {
-                m_playerZones[i] = new PlayerZones(Game.Players[i], world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
+                m_playerZones[i] = new PlayerZones(game.Players[i], world3D, GameApp.Service<Styler>().GetPlayerZonesStyle());
             }
 
             m_actingLocalPlayerHandZone = new CardZone(InGameUIPage.Style.ChildIds["Game.ActingLocalPlayer.Hand"]);
@@ -209,7 +209,7 @@ namespace TouhouSpring.Services
             for (int i = 0; i < m_playerZones.Length; ++i)
             {
                 var pzTransform = m_playerZones[i].UIRoot as UI.ITransformNode;
-                pzTransform.Transform = ShallPlayerBeRevealed(Game.Players[i]) ? Matrix.Identity : Matrix.CreateRotationZ(MathHelper.Pi);
+                pzTransform.Transform = ShallPlayerBeRevealed(i) ? Matrix.Identity : Matrix.CreateRotationZ(MathHelper.Pi);
             }
         }
 
@@ -247,7 +247,7 @@ namespace TouhouSpring.Services
                 }
                 else if (card.Owner.CardsOnHand.Contains(card) || card.Owner.Hero == card)
                 {
-                    if (ShallPlayerBeRevealed(card.Owner))
+                    if (ShallPlayerBeRevealed(card.Owner.Index))
                     {
                         locationAnim.SetNextLocation(m_actingLocalPlayerHandZone, card.IsHero ? 0 : card.Owner.CardsOnHand.IndexOf(card) + 1);
                     }

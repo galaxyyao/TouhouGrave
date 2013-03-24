@@ -20,17 +20,17 @@ namespace TouhouSpring.Services
         private List<UI.CardControl> m_cardEnteringGraveyard = new List<UI.CardControl>();
         private GraveyardCounters[] m_graveyardCounters;
 
-        private void InitializePiles()
+        private void InitializePilesOnGameCreated(Game game)
         {
-            m_playerLibraryPiles = new UI.CardControl[Game.Players.Count];
-            for (int i = 0; i < Game.Players.Count; ++i)
+            m_playerLibraryPiles = new UI.CardControl[game.Players.Count];
+            for (int i = 0; i < game.Players.Count; ++i)
             {
-                var dummyCard = CardInstance.CreateDummyCard(Game.Players[i]);
+                var dummyCard = CardInstance.CreateDummyCard(game.Players[i]);
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
                 m_playerLibraryPiles[i] = ccStyle.TypedTarget;
                 m_playerLibraryPiles[i].EnableDepth = true;
-                var pile = Game.Players[i].Library;
+                var pile = game.Players[i].Library;
                 m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.InstantRotation(m_playerLibraryPiles[i]));
                 m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], () => pile.Count));
                 m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].Library.Container;
@@ -38,8 +38,8 @@ namespace TouhouSpring.Services
 
             // graveyard piles are created only when there are more than 1 cards in the graveyard
             // the last card entering graveyard will be displayed on the top
-            m_playerGraveyardPiles = new UI.CardControl[Game.Players.Count];
-            m_graveyardCounters = new GraveyardCounters[Game.Players.Count];
+            m_playerGraveyardPiles = new UI.CardControl[game.Players.Count];
+            m_graveyardCounters = new GraveyardCounters[game.Players.Count];
         }
 
         private void PutToLibrary(UI.CardControl cardControl)

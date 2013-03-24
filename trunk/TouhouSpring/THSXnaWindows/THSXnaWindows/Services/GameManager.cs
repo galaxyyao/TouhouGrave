@@ -47,8 +47,9 @@ namespace TouhouSpring.Services
             Agents = agents.ToIndexable();
 
             Game = new Game(parameters.ToIndexable(), new XnaUIController(agents));
-            GameApp.Service<GameUI>().GameStarted();
-            GameApp.Service<Graphics.Scene>().GameStarted();
+
+            GameApp.Service<GameUI>().GameCreated(Game);
+            GameApp.Service<Graphics.Scene>().GameCreated();
 
             Game.StartGameFlowThread();
         }

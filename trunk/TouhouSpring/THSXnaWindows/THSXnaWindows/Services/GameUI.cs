@@ -28,11 +28,6 @@ namespace TouhouSpring.Services
             get; private set;
         }
 
-        public Game Game
-        {
-            get { return GameApp.Service<GameManager>().Game; }
-        }
-
         public IUIState UIState
         {
             get; private set;
@@ -129,25 +124,26 @@ namespace TouhouSpring.Services
             UIState = null;
         }
 
-        public bool ShallPlayerBeRevealed(Player player)
+        public bool ShallPlayerBeRevealed(int playerIndex)
         {
             var gameManager = GameApp.Service<GameManager>();
             var pid = gameManager.ActingPlayerIndex;
             bool actingPlayerIsLocalPlayer = pid != -1 && gameManager.Agents[pid] is Agents.LocalPlayerAgent;
-            return actingPlayerIsLocalPlayer == (player.Index == pid);
+            return actingPlayerIsLocalPlayer == (playerIndex == pid);
         }
 
-        internal void GameStarted()
+        // Called by GameManager
+        internal void GameCreated(Game game)
         {
             InGameUIPage.Dispatcher = GameApp.Service<UIManager>().Root;
             InGameUIPage.Style.Apply();
 
             InGame = true;
 
-            InitializeCardZones();
-            InitializePiles();
+            InitializeCardZonesOnGameCreated(game);
+            InitializePilesOnGameCreated(game);
 
-            foreach (var player in Game.Players)
+            foreach (var player in game.Players)
             {
                 player.Assists.ForEach(card => RegisterCard(card));
                 if (player.Hero != null)
