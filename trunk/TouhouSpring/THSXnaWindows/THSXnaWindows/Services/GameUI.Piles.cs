@@ -20,26 +20,33 @@ namespace TouhouSpring.Services
         private List<UI.CardControl> m_cardEnteringGraveyard = new List<UI.CardControl>();
         private GraveyardCounters[] m_graveyardCounters;
 
+        private GameEvaluator<int>[] m_playerLibraryPileCountEvaluators;
+
         private void InitializePilesOnGameCreated(Game game)
         {
-            m_playerLibraryPiles = new UI.CardControl[game.Players.Count];
-            for (int i = 0; i < game.Players.Count; ++i)
+            var numPlayers = game.Players.Count;
+            m_playerLibraryPiles = new UI.CardControl[numPlayers];
+            m_playerLibraryPileCountEvaluators = new GameEvaluator<int>[numPlayers];
+            for (int i = 0; i < numPlayers; ++i)
             {
                 var dummyCard = CardInstance.CreateDummyCard(game.Players[i]);
                 var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
                 ccStyle.Initialize();
                 m_playerLibraryPiles[i] = ccStyle.TypedTarget;
                 m_playerLibraryPiles[i].EnableDepth = true;
-                var pile = game.Players[i].Library;
+
+                int pid = i; // to force creating new lambdas based on the current value of i
+                m_playerLibraryPileCountEvaluators[i] = GameApp.Service<GameManager>().CreateGameEvaluator(g => g.Players[pid].Library.Count, 0);
                 m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.InstantRotation(m_playerLibraryPiles[i]));
-                m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i], () => pile.Count));
+                m_playerLibraryPiles[i].Addins.Add(new UI.CardControlAddins.Pile(m_playerLibraryPiles[i],
+                    () => m_playerLibraryPileCountEvaluators[pid].Value));
                 m_playerLibraryPiles[i].Dispatcher = m_playerZones[i].Library.Container;
             }
 
             // graveyard piles are created only when there are more than 1 cards in the graveyard
             // the last card entering graveyard will be displayed on the top
-            m_playerGraveyardPiles = new UI.CardControl[game.Players.Count];
-            m_graveyardCounters = new GraveyardCounters[game.Players.Count];
+            m_playerGraveyardPiles = new UI.CardControl[numPlayers];
+            m_graveyardCounters = new GraveyardCounters[numPlayers];
         }
 
         private void PutToLibrary(UI.CardControl cardControl)
