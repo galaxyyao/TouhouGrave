@@ -10,7 +10,6 @@ namespace TouhouSpring.Services
         private class CachedGameValues
         {
             public string m_currentPhase = "";
-            public int m_actingPlayerIndex = -1;
             public string m_player0Name = "-";
             public string m_player0Health = "-";
             public string m_player1Name = "-";
@@ -61,7 +60,7 @@ namespace TouhouSpring.Services
                     replacement = "Textures/natsukawa";
                     break;
                 case "Game.Player0.AvatarBorder":
-                    replacement = m_cachedGameValues.m_actingPlayerIndex == 0
+                    replacement = GameApp.Service<GameManager>().ActingPlayerIndex == 0
                                   ? "atlas:Textures/UI/InGame/Atlas0$AvatarBorderActive"
                                   : "atlas:Textures/UI/InGame/Atlas0$AvatarBorderInactive";
                     break;
@@ -75,7 +74,7 @@ namespace TouhouSpring.Services
                     replacement = "Textures/fuyumi";
                     break;
                 case "Game.Player1.AvatarBorder":
-                    replacement = m_cachedGameValues.m_actingPlayerIndex == 1
+                    replacement = GameApp.Service<GameManager>().ActingPlayerIndex == 1
                                   ? "atlas:Textures/UI/InGame/Atlas0$AvatarBorderActive"
                                   : "atlas:Textures/UI/InGame/Atlas0$AvatarBorderInactive";
                     break;
@@ -117,7 +116,6 @@ namespace TouhouSpring.Services
             m_evaluator = GameApp.Service<Services.GameManager>().CreateGameEvaluator(game =>
             {
                 m_cachedGameValues.m_currentPhase = game.CurrentPhase;
-                m_cachedGameValues.m_actingPlayerIndex = game.ActingPlayer != null ? game.ActingPlayer.Index : -1;
                 m_cachedGameValues.m_player0Name = game.Players.Count > 0 ? game.Players[0].Name : "-";
                 m_cachedGameValues.m_player0Health = game.Players.Count > 0 ? game.Players[0].Health.ToString() : "-";
                 m_cachedGameValues.m_player1Name = game.Players.Count > 1 ? game.Players[1].Name : "-";

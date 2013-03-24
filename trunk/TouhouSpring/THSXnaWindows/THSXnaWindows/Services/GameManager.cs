@@ -12,6 +12,23 @@ namespace TouhouSpring.Services
             get; private set;
         }
 
+        private GameEvaluator<int> m_actingPlayerIndexEvaluator;
+
+        public int ActingPlayerIndex
+        {
+            get { return m_actingPlayerIndexEvaluator.Value; }
+        }
+
+        public IIndexable<Agents.BaseAgent> Agents
+        {
+            get; private set;
+        }
+
+        public override void Startup()
+        {
+            m_actingPlayerIndexEvaluator = CreateGameEvaluator(game => game.ActingPlayer != null ? game.ActingPlayer.Index : -1, -1);
+        }
+
         public void StartGame(GameStartupParameters[] parameters, Agents.BaseAgent[] agents)
         {
             if (parameters == null)
@@ -27,9 +44,13 @@ namespace TouhouSpring.Services
                 throw new InvalidOperationException("Parameters and agents shall have the same length.");
             }
 
+            Agents = agents.ToIndexable();
+
             Game = new Game(parameters.ToIndexable(), new XnaUIController(agents));
             GameApp.Service<GameUI>().GameStarted();
             GameApp.Service<Graphics.Scene>().GameStarted();
+
+            Game.StartGameFlowThread();
         }
 
         public override void Update(float deltaTime)

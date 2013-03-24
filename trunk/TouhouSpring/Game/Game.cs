@@ -102,6 +102,14 @@ namespace TouhouSpring
             Random = (startUpParams[0].m_seed == -1) ? new Random() : new Random(startUpParams[0].m_seed);
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
+        }
+
+        public void StartGameFlowThread()
+        {
+            if (m_gameFlowThread != null)
+            {
+                throw new InvalidOperationException("Game flow thread is running.");
+            }
 
             // run the game flow in another thread
             m_gameFlowThread = new Thread(GameFlowMain)

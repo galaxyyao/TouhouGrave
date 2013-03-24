@@ -99,11 +99,6 @@ namespace TouhouSpring.Services
 
         private void UpdateCardControls(float deltaTime)
         {
-            if (Game == null)
-            {
-                return;
-            }
-
             UpdateCardLocations();
             m_cardControls.ForEach(cc => cc.Update(deltaTime));
         }

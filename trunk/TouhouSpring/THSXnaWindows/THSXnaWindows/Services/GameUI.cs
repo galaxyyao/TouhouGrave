@@ -38,6 +38,11 @@ namespace TouhouSpring.Services
             get; private set;
         }
 
+        public bool InGame
+        {
+            get; private set;
+        }
+
         public override void Startup()
         {
             Matrix toScreenSpace = Matrix.Identity;
@@ -87,7 +92,7 @@ namespace TouhouSpring.Services
 
         public override void Update(float deltaTime)
         {
-            if (Game != null)
+            if (InGame)
             {
                 InGameUIPage.Style.Apply();
                 UpdateCardZones();
@@ -126,16 +131,18 @@ namespace TouhouSpring.Services
 
         public bool ShallPlayerBeRevealed(Player player)
         {
-            var pid = Game.ActingPlayer != null ? Game.ActingPlayer.Index : -1;
-            bool actingPlayerIsLocalPlayer = pid != -1 &&
-                (Game.Controller as XnaUIController).Agents[pid] is Agents.LocalPlayerAgent;
-            return actingPlayerIsLocalPlayer ? (player == Game.ActingPlayer) : (player != Game.ActingPlayer);
+            var gameManager = GameApp.Service<GameManager>();
+            var pid = gameManager.ActingPlayerIndex;
+            bool actingPlayerIsLocalPlayer = pid != -1 && gameManager.Agents[pid] is Agents.LocalPlayerAgent;
+            return actingPlayerIsLocalPlayer == (player.Index == pid);
         }
 
         internal void GameStarted()
         {
             InGameUIPage.Dispatcher = GameApp.Service<UIManager>().Root;
             InGameUIPage.Style.Apply();
+
+            InGame = true;
 
             InitializeCardZones();
             InitializePiles();

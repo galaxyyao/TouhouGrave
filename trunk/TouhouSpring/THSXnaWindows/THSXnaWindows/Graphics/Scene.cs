@@ -33,7 +33,7 @@ namespace TouhouSpring.Graphics
         {
             m_envImageUriEvaluator = GameApp.Service<Services.GameManager>().CreateGameEvaluator(game =>
             {
-                foreach (var player in GameApp.Service<Services.GameManager>().Game.Players)
+                foreach (var player in game.Players)
                 {
                     var envCard = player.CardsOnBattlefield.FirstOrDefault(card => card.Behaviors.Has<Behaviors.Environment>());
                     if (envCard != null)
