@@ -7,11 +7,7 @@ namespace TouhouSpring.Services
 {
     partial class GameManager : GameService
     {
-        public Game Game
-        {
-            get; private set;
-        }
-
+        private Game m_game;
         private GameEvaluator<int> m_actingPlayerIndexEvaluator;
 
         public int ActingPlayerIndex
@@ -46,22 +42,20 @@ namespace TouhouSpring.Services
 
             Agents = agents.ToIndexable();
 
-            Game = new Game(parameters.ToIndexable(), new XnaUIController(agents));
+            m_game = new Game(parameters.ToIndexable(), new XnaUIController(agents));
 
-            GameApp.Service<GameUI>().GameCreated(Game);
+            GameApp.Service<GameUI>().GameCreated(m_game);
             GameApp.Service<Graphics.Scene>().GameCreated();
 
-            Game.StartGameFlowThread();
+            m_game.StartGameFlowThread();
         }
 
         public override void Update(float deltaTime)
         {
-            if (Game == null)
+            if (m_game != null)
             {
-                return;
+                m_game.Controller.ProcessMessage();
             }
-
-            Game.Controller.ProcessMessage();
         }
 
         public void EnterConversation()

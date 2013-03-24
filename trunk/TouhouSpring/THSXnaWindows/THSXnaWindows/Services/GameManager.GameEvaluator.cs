@@ -71,7 +71,7 @@ namespace TouhouSpring.Services
                 var wr = m_evaluators[i];
                 if (wr != null && wr.IsAlive)
                 {
-                    (wr.Target as IGameEvaluator).Reevaluate(Game);
+                    (wr.Target as IGameEvaluator).Reevaluate(m_game);
                 }
                 else
                 {
