@@ -178,5 +178,10 @@ namespace TouhouSpring
                 throw new Exception("Unhandled Response back Interation type.");
             }
         }
+
+        public override void OnCommandFlushed()
+        {
+            GameApp.Service<GameManager>().RefreshGameEvaluators();
+        }
     }
 }

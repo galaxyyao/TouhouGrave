@@ -42,8 +42,10 @@ namespace TouhouSpring
         {
             Debug.Assert(RunningCommand == null);
 
+            bool commandFlushed = false;
             while (m_pendingCommands.Count != 0)
             {
+                commandFlushed = true;
                 while (m_pendingCommands.Count != 0)
                 {
                     var cmd = m_pendingCommands.Dequeue();
@@ -56,6 +58,11 @@ namespace TouhouSpring
                 RunningCommand = m_pendingCommands.Dequeue();
                 RunCommandGeneric(RunningCommand);
                 RunningCommand = null;
+            }
+
+            if (commandFlushed)
+            {
+                Controller.OnCommandFlushed();
             }
         }
 

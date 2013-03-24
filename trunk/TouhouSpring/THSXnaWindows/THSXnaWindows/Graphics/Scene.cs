@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouSpring.Graphics
 {
+    [Services.LifetimeDependency(typeof(Services.GameManager))]
     class Scene : Services.GameService
     {
         private bool m_loaded = false;
@@ -26,6 +27,24 @@ namespace TouhouSpring.Graphics
         private Matrix m_transform;
         private Matrix m_toScreenSpace;
 
+        private Services.GameEvaluator<string> m_envImageUriEvaluator;
+
+        public override void Startup()
+        {
+            m_envImageUriEvaluator = GameApp.Service<Services.GameManager>().CreateGameEvaluator(game =>
+            {
+                foreach (var player in GameApp.Service<Services.GameManager>().Game.Players)
+                {
+                    var envCard = player.CardsOnBattlefield.FirstOrDefault(card => card.Behaviors.Has<Behaviors.Environment>());
+                    if (envCard != null)
+                    {
+                        return envCard.Behaviors.Get<Behaviors.Environment>().VisualId;
+                    }
+                }
+                return null;
+            }, null);
+        }
+
         public override void Update(float deltaTime)
         {
             if (!m_loaded)
@@ -33,20 +52,8 @@ namespace TouhouSpring.Graphics
                 return;
             }
 
-            // find the environment image
-            string envImageUri = null;
-            foreach (var player in GameApp.Service<Services.GameManager>().Game.Players)
-            {
-                var envCard = player.CardsOnBattlefield.FirstOrDefault(card => card.Behaviors.Has<Behaviors.Environment>());
-                if (envCard != null)
-                {
-                    envImageUri = envCard.Behaviors.Get<Behaviors.Environment>().VisualId;
-                    break;
-                }
-            }
-
             // switch the environment image
-            if (envImageUri != m_currentEnvImageUri)
+            if (m_envImageUriEvaluator.Value != m_currentEnvImageUri)
             {
                 var resourceMgr = GameApp.Service<Services.ResourceManager>();
                 int otherIndex = 1 - m_currentEnvImageIndex;
@@ -54,12 +61,12 @@ namespace TouhouSpring.Graphics
                 {
                     resourceMgr.Release(m_envImages[otherIndex].Texture);
                 }
-                m_envImages[otherIndex] = envImageUri != null
-                                          ? new TexturedQuad(resourceMgr.Acquire<VirtualTexture>(envImageUri))
+                m_envImages[otherIndex] = m_envImageUriEvaluator.Value != null
+                                          ? new TexturedQuad(resourceMgr.Acquire<VirtualTexture>(m_envImageUriEvaluator.Value))
                                           : m_backgroundImage;
                 m_envImages[otherIndex].ColorScale.W = 0f;
                 m_currentEnvImageIndex = otherIndex;
-                m_currentEnvImageUri = envImageUri;
+                m_currentEnvImageUri = m_envImageUriEvaluator.Value;
             }
 
             m_envImages[m_currentEnvImageIndex].ColorScale.W += deltaTime / 2f;

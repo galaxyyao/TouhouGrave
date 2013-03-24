@@ -70,9 +70,11 @@ namespace TouhouSpring.Services
             UICamera.Dirty();
 
             InitializeContextButton();
+            CreateBindingEvaluator();
 
             var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle("InGame"));
             pageStyle.Initialize();
+            pageStyle.BindingProvider = this;
             InGameUIPage = pageStyle.TypedTarget;
         }
 

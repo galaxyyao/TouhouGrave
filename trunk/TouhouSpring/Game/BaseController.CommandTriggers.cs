@@ -84,5 +84,6 @@ namespace TouhouSpring
         }
 
         public virtual void OnRespondBack(Interactions.BaseInteraction io, object result) { }
+        public virtual void OnCommandFlushed() { }
     }
 }

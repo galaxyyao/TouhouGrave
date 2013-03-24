@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Services
 {
-    class GameManager : GameService
+    partial class GameManager : GameService
     {
         public Game Game
         {

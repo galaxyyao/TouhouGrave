@@ -13,7 +13,11 @@ namespace TouhouSpring.Agents
 
         public LocalPlayerAgent(int pid) : base(pid)
         {
-            m_NetworkClient = GameApp.Service<Services.Network>().THSClient;
+            var client = GameApp.Service<Services.Network>().THSClient;
+            if (client.NetworkStatus == Network.Client.NetworkStatusEnum.Connected)
+            {
+                m_NetworkClient = client;
+            }
         }
 
         public override void OnInitiativeCommandEnd()
