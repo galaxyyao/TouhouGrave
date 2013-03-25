@@ -31,11 +31,6 @@ namespace TouhouSpring.Services
             m_cachedGameValues.m_player0Health = game.Players.Count > 0 ? game.Players[0].Health.ToString() : "-";
             m_cachedGameValues.m_player1Name = game.Players.Count > 1 ? game.Players[1].Name : "-";
             m_cachedGameValues.m_player1Health = game.Players.Count > 1 ? game.Players[1].Health.ToString() : "-";
-
-            foreach (var cc in m_cardControls)
-            {
-                cc.OnEvaluate(cc.Card);
-            }
         }
     }
 }

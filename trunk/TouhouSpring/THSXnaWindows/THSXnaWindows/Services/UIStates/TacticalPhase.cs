@@ -64,11 +64,11 @@ namespace TouhouSpring.Services.UIStates
 
             if (m_io.PlayCardCandidates.Contains(cardGuid))
             {
-                if (cardControl.CardData.SystemClass == UI.CardControl.CardClass.Warrior)
+                if (cardControl.CardData.IsWarrior)
                 {
                     m_gameUI.AddContextButton("召唤", ContextButton_OnPlay);
                 }
-                else if (cardControl.CardData.SystemClass == UI.CardControl.CardClass.Instant)
+                else if (cardControl.CardData.IsInstant)
                 {
                     m_gameUI.AddContextButton("施放", ContextButton_OnPlay);
                 }
@@ -81,18 +81,18 @@ namespace TouhouSpring.Services.UIStates
             {
                 m_gameUI.AddContextButton("激活", ContextButton_OnActivate);
             }
-            if (m_castFromCards.Contains(cardGuid))
-            {
-                var card = cardControl.Card;
-                foreach (var spell in card.Spells.Intersect(m_io.CastSpellCandidates))
-                {
-                    m_gameUI.AddContextButton("施放 " + spell.Model.Name, text =>
-                    {
-                        m_io.RespondCast(spell);
-                        m_gameUI.LeaveState();
-                    });
-                }
-            }
+            //if (m_castFromCards.Contains(cardGuid))
+            //{
+            //    var card = cardControl.Card;
+            //    foreach (var spell in card.Spells.Intersect(m_io.CastSpellCandidates))
+            //    {
+            //        m_gameUI.AddContextButton("施放 " + spell.Model.Name, text =>
+            //        {
+            //            m_io.RespondCast(spell);
+            //            m_gameUI.LeaveState();
+            //        });
+            //    }
+            //}
             if (m_io.SacrificeCandidates.Contains(cardGuid))
             {
                 m_gameUI.AddContextButton("牺牲", ContextButton_OnSacrifice);

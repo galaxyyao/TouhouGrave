@@ -94,7 +94,7 @@ namespace TouhouSpring.UI.CardControlAddins
             m_localFrame.Col2 = new Vector4(transform.M13, transform.M23, transform.M33, transform.M43);
             m_localFrame.Col3 = new Vector4(transform.M14, transform.M24, transform.M34, transform.M44);
 
-            bool activated = Card.IsActivatedAssist;
+            bool activated = CardData.IsAssistActivated;
             if (activated != m_lastActivated)
             {
                 if (m_activateEffectTimer.IsPlaying)

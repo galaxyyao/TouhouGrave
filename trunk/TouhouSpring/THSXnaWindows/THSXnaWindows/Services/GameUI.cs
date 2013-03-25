@@ -142,15 +142,6 @@ namespace TouhouSpring.Services
 
             InitializeCardZonesOnGameCreated(game.Players.Count);
             InitializePilesOnGameCreated(game);
-
-            foreach (var player in game.Players)
-            {
-                player.Assists.ForEach(card => RegisterCard(card));
-                if (player.Hero != null)
-                {
-                    RegisterCard(player.Hero);
-                }
-            }
         }
     }
 }

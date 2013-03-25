@@ -47,14 +47,21 @@ namespace TouhouSpring.UI
         private string m_designName;
         private Style.IStyleContainer m_cardDesignStyle;
 
-        public CardInstance Card
+        public int CardGuid
         {
             get; private set;
         }
 
-        public int CardGuid
+        public Services.CardDataManager.ICardData CardData
         {
-            get { return Card.Guid; }
+            // set in GameUI.UpdateCardControls() every frame
+            get; internal set;
+        }
+
+        public bool IsCardDead
+        {
+            // set in GameUI.PutToGraveyard()
+            get; internal set;
         }
 
         public Style.CardControlStyle Style
@@ -82,19 +89,15 @@ namespace TouhouSpring.UI
             get { return m_designName; }
         }
 
-        public CardControl(CardInstance card, Style.CardControlStyle style)
+        public CardControl(int cardGuid, Style.CardControlStyle style)
         {
-            if (card == null)
-            {
-                throw new ArgumentNullException("card");
-            }
-            else if (style == null)
+            if (style == null)
             {
                 throw new ArgumentNullException("style");
             }
 
             Addins = new List<Addin>();
-            Card = card;
+            CardGuid = cardGuid;
             Style = style;
             Style.RegisterBinding(this);
 

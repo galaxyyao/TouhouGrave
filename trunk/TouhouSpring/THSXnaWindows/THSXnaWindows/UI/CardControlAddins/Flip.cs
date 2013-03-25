@@ -39,7 +39,8 @@ namespace TouhouSpring.UI.CardControlAddins
             //return;
             var gameui = GameApp.Service<Services.GameUI>();
             var needFlip = gameui.ZoomedInCard != Control
-                           && !gameui.ShallPlayerBeRevealed(Control.CardData.OwnerPlayerIndex) && Card.Owner.CardsOnHand.Contains(Card);
+                           && !gameui.ShallPlayerBeRevealed(CardData.OwnerPlayerIndex)
+                           && CardData.Location == Services.CardDataManager.CardLocation.Hand;
 
             if (needFlip != Flipped)
             {

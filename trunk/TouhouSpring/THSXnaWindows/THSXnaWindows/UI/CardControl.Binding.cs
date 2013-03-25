@@ -30,17 +30,29 @@ namespace TouhouSpring.UI
                     replacement = CardData.SummonCost >= 0 ? CardData.SummonCost.ToString() : "";
                     break;
                 case "Card.SystemClass":
-                    switch (CardData.SystemClass)
+                    if (CardData.IsHero)
                     {
-                        case CardClass.Hero: replacement = "主角"; break;
-                        case CardClass.Warrior: replacement = "战士"; break;
-                        case CardClass.Assist: replacement = "支援"; break;
-                        case CardClass.Instant: replacement = "突袭"; break;
-                        default: replacement = "迷"; break;
+                        replacement = "主角";
+                    }
+                    else if (CardData.IsWarrior)
+                    {
+                        replacement = "战士";
+                    }
+                    else if (CardData.IsAssist)
+                    {
+                        replacement = "支援";
+                    }
+                    else if (CardData.IsInstant)
+                    {
+                        replacement = "突袭";
+                    }
+                    else
+                    {
+                        replacement = "迷";
                     }
                     break;
                 case "Card.Values":
-                    if (CardData.SystemClass == CardClass.Warrior)
+                    if (CardData.IsWarrior)
                     {
                         int sign = Math.Sign(CardData.AttackAndInitialAttack.Item1 - CardData.AttackAndInitialAttack.Item2);
                         var attackColor = sign > 0 ? "Green" : sign < 0 ? "Red" : "Black";

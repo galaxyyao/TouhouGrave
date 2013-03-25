@@ -29,10 +29,10 @@ namespace TouhouSpring.Services
             m_playerLibraryPileCountEvaluators = new GameEvaluator<int>[numPlayers];
             for (int i = 0; i < numPlayers; ++i)
             {
-                var dummyCard = CardInstance.CreateDummyCard(game.Players[i]);
-                var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), dummyCard);
+                var ccStyle = new Style.CardControlStyle(GameApp.Service<Styler>().GetCardStyle("PileBack"), -1);
                 ccStyle.Initialize();
                 m_playerLibraryPiles[i] = ccStyle.TypedTarget;
+                m_playerLibraryPiles[i].CardData = GameApp.Service<CardDataManager>().CreateDummyCardData(i);
                 m_playerLibraryPiles[i].EnableDepth = true;
 
                 int pid = i; // to force creating new lambdas based on the current value of i
@@ -67,6 +67,7 @@ namespace TouhouSpring.Services
 
         private void PutToGraveyard(UI.CardControl cardControl)
         {
+            cardControl.IsCardDead = true;
             var locationAnim = cardControl.GetAddin<UI.CardControlAddins.LocationAnimation>();
             locationAnim.SetNextLocation(
                 m_playerZones[cardControl.CardData.OwnerPlayerIndex].Graveyard,

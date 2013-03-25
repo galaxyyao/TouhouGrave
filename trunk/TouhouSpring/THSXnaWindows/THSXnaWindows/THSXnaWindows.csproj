@@ -105,6 +105,7 @@
     <Compile Include="PInvokes\Kernel.cs" />
     <Compile Include="PInvokes\User32.cs" />
     <Compile Include="Ray.cs" />
+    <Compile Include="Services\CardDataManager.cs" />
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
     <Compile Include="Services\GameManager.cs" />
@@ -180,11 +181,10 @@
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\CardControl.Addin.cs" />
     <Compile Include="UI\CardControl.Binding.cs" />
-    <Compile Include="UI\CardControl.CardData.cs" />
     <Compile Include="UI\CardControl.cs" />
     <Compile Include="UI\CardControl.Render.cs" />
-    <Compile Include="UI\CardControlAddins\CardIcons.cs" />
-    <Compile Include="UI\CardControlAddins\CardIcons.Icon.cs" />
+    <None Include="UI\CardControlAddins\CardIcons.cs" />
+    <None Include="UI\CardControlAddins\CardIcons.Icon.cs" />
     <Compile Include="UI\CardControlAddins\InstantRotation.cs" />
     <Compile Include="UI\CardControlAddins\DamageIndicator.cs" />
     <Compile Include="UI\CardControlAddins\Flip.cs" />
@@ -195,7 +195,7 @@
     <Compile Include="UI\CardControlAddins\RotationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\ToneAnimation.cs" />
     <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />
-    <Compile Include="UI\CardControlAddins\SpellButtons.cs" />
+    <None Include="UI\CardControlAddins\SpellButtons.cs" />
     <Compile Include="UI\ComposedImage.cs" />
     <Compile Include="UI\FocusableProxy.cs" />
     <Compile Include="UI\FocusManager.cs" />

@@ -27,7 +27,7 @@ namespace TouhouSpring.Services
                         {
                             sb.Append("召唤消耗　【[color:Red]#Card.SummonCost#[/color]】 灵力\n");
                         }
-                        if (ZoomedInCard.CardData.SystemClass == UI.CardControl.CardClass.Warrior)
+                        if (ZoomedInCard.CardData.IsWarrior)
                         {
                             sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
                             sb.Append("体力　　　【[color:Red]#Card.InitialLife#[/color]】\n");

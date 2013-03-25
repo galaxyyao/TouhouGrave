@@ -52,9 +52,9 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
-            var warrior = Card.Behaviors.Get<Behaviors.Warrior>();
-            var life = warrior == null || Card.IsDestroyed ? 0 : warrior.Life;
-            if (warrior != null && m_lastLife > life)
+            var life = CardData.IsWarrior && !Control.IsCardDead
+                       ? CardData.LifeAndInitialLife.Item1 : 0;
+            if (CardData.IsWarrior && m_lastLife > life)
             {
                 // get the center position of the card in screen space
                 var pt = new Vector3(Control.Region.Width / 2, Control.Region.Height / 2, 0);
@@ -70,7 +70,7 @@ namespace TouhouSpring.UI.CardControlAddins
                     new Animation.CurveTrack(resources.MoveCurve), new Animation.CurveTrack(resources.FadeCurve));
             }
 
-            m_lastLife = warrior != null ? life : -1;
+            m_lastLife = CardData.IsWarrior ? life : -1;
         }
     }
 }

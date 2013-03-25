@@ -15,10 +15,10 @@ namespace TouhouSpring.UI
 				get; private set;
 			}
 
-			public CardInstance Card
-			{
-				get { return Control.Card; }
-			}
+            public Services.CardDataManager.ICardData CardData
+            {
+                get { return Control.CardData; }
+            }
 
 			public Addin(CardControl control)
 			{
