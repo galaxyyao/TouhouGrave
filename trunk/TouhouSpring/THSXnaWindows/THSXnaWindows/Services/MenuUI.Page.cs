@@ -123,6 +123,7 @@ namespace TouhouSpring.Services
 				if (MenuClicked != null)
 				{
 					MenuClicked(id, sender);
+                    GameApp.Service<Sound>().PlaySound(Sound.SoundEffectEnum.Menu);
 				}
 			}
 		}

@@ -128,6 +128,7 @@
     <Compile Include="Services\ResourceManager.cs" />
     <Compile Include="Services\ResourceManager.IDisposableManager.cs" />
     <Compile Include="Graphics\Scene.cs" />
+    <Compile Include="Services\Sound.cs" />
     <Compile Include="Services\Styler.cs" />
     <Compile Include="GameApp.cs" />
     <Compile Include="Graphics\TexturedQuad.cs" />
