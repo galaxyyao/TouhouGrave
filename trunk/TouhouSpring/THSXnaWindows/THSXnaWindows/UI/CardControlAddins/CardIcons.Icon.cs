@@ -13,9 +13,7 @@ namespace TouhouSpring.UI.CardControlAddins
             private Graphics.TexturedQuad m_icon;
             private Graphics.TextRenderer.IFormattedText m_counterNumber;
 
-            public Behaviors.ICounter Counter;
-            public Behaviors.IStatusEffect StatusEffect;
-            public CardInstance Card;
+            public Services.CardDataManager.ICounterData CounterData;
 
             public Label TextLabel;
             public Panel TextPanel;
@@ -27,8 +25,7 @@ namespace TouhouSpring.UI.CardControlAddins
             public void Initialize()
             {
                 Region = new Rectangle(-IconSize / 2, 0, IconSize, IconSize);
-                string iconUri = Counter != null ? Counter.IconUri : StatusEffect.IconUri;
-                var texture = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>(iconUri);
+                var texture = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>(CounterData.IconUri);
                 m_icon = new Graphics.TexturedQuad(texture);
             }
 
@@ -39,10 +36,9 @@ namespace TouhouSpring.UI.CardControlAddins
 
             public override void OnMouseEnter(MouseEventArgs e)
             {
-                string text = Counter != null ? Counter.Text : StatusEffect.Text;
-                if (!String.IsNullOrEmpty(text))
+                if (!String.IsNullOrEmpty(CounterData.Name))
                 {
-                    TextLabel.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, LabelTextFormatOptions);
+                    TextLabel.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(CounterData.Name, LabelTextFormatOptions);
                     var world2D = GameApp.Service<Services.GameUI>().InGameUIPage.Style.ChildIds["World2D"].Target;
                     var transform = TransformNode.GetTransformBetween(this, world2D);
                     var pt1 = transform.TransformCoord(new Vector3(0, 0, 0));
@@ -70,21 +66,16 @@ namespace TouhouSpring.UI.CardControlAddins
 
             public void UpdateCounter()
             {
-                if (Counter == null)
-                {
-                    return;
-                }
-
-                var number = Card.GetCounterCount(Counter.GetType()).ToString();
-                if (number == "1")
+                if (CounterData.Count <= 1)
                 {
                     m_counterNumber = null;
                 }
                 else
                 {
-                    if (m_counterNumber == null || m_counterNumber.Text != number)
+                    var numStr = CounterData.Count.ToString();
+                    if (m_counterNumber == null || m_counterNumber.Text != numStr)
                     {
-                        m_counterNumber = GameApp.Service<Graphics.TextRenderer>().FormatText(number, CounterNumberFormatOptions); 
+                        m_counterNumber = GameApp.Service<Graphics.TextRenderer>().FormatText(numStr, CounterNumberFormatOptions);
                     }
                 }
 

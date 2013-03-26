@@ -18,6 +18,13 @@ namespace TouhouSpring.Services
             Graveyard
         }
 
+        public interface ICounterData
+        {
+            string Name { get; }
+            string IconUri { get; }
+            int Count { get; }
+        }
+
         public interface ICardData
         {
             int Guid { get; }
@@ -36,6 +43,22 @@ namespace TouhouSpring.Services
             bool IsAssist { get; }
             bool IsAssistActivated { get; }
             bool IsInstant { get; }
+
+            IIndexable<ICounterData> Counters { get; }
+        }
+
+        private class InternalCounterData : ICounterData
+        {
+            public string Name { get; private set; }
+            public string IconUri { get; private set; }
+            public int Count { get; private set; }
+
+            public InternalCounterData(string name, string iconUri, int count)
+            {
+                Name = name;
+                IconUri = iconUri;
+                Count = count;
+            }
         }
 
         private class InternalCardData : ICardData
@@ -56,6 +79,7 @@ namespace TouhouSpring.Services
             public bool IsAssist { get; private set; }
             public bool IsAssistActivated { get; private set; }
             public bool IsInstant { get; private set; }
+            public IIndexable<ICounterData> Counters { get; private set; }
 
             public InternalCardData(CardInstance card, CardLocation location, int locationIndex)
             {
@@ -83,6 +107,20 @@ namespace TouhouSpring.Services
                 IsAssistActivated = card.IsActivatedAssist;
 
                 IsInstant = card.Behaviors.Has<Behaviors.Instant>();
+
+                var counters = card.Counters;
+                var statusEffects = card.Behaviors.OfType<Behaviors.IStatusEffect>();
+                var counterArray = new InternalCounterData[counters.Count() + statusEffects.Count()];
+                int i = 0;
+                foreach (var counter in counters)
+                {
+                    counterArray[i++] = new InternalCounterData(counter.Text, counter.IconUri, card.GetCounterCount(counter.GetType()));
+                }
+                foreach (var statusEffect in statusEffects)
+                {
+                    counterArray[i++] = new InternalCounterData(statusEffect.Text, statusEffect.IconUri, 0);
+                }
+                Counters = counterArray.ToIndexable();
             }
 
             public InternalCardData(int ownerPlayerIndex)

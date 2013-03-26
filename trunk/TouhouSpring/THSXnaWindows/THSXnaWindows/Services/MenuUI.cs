@@ -204,6 +204,9 @@ namespace TouhouSpring.Services
             deck1.Add(cardDb.GetModel("alice_2"));
             deck1.Add(cardDb.GetModel("alice_2"));
             deck1.Add(cardDb.GetModel("alice_2"));
+            deck1.Add(cardDb.GetModel("marisa"));
+            deck1.Add(cardDb.GetModel("marisa"));
+            deck1.Add(cardDb.GetModel("marisa"));
             deck1.Assists.Add(cardDb.GetModel("eirin"));
             deck1.Assists.Add(cardDb.GetModel("patchouli"));
 
