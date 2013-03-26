@@ -48,6 +48,7 @@ namespace TouhouSpring.Services
             GameApp.Service<Graphics.Scene>().GameCreated();
 
             m_game.StartGameFlowThread();
+            GameApp.Service<Sound>().PlayMusic(Sound.MusicEnum.kagamiM);
         }
 
         public override void Update(float deltaTime)

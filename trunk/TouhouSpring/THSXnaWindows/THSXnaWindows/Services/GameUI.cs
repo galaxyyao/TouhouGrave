@@ -11,6 +11,7 @@ namespace TouhouSpring.Services
     [LifetimeDependency(typeof(UIManager))]
     [UpdateDependency(typeof(UIManager))]
     [RenderDependency(typeof(Graphics.Scene))]
+    [LifetimeDependency(typeof(GameManager))]
     partial class GameUI : GameService
     {
         public UI.Page InGameUIPage
