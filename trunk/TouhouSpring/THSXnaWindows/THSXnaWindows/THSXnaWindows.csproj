@@ -239,6 +239,10 @@
       <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Fountain\ImeProvider\ImeProvider.vcxproj">
+      <Project>{4731444F-DE0C-4E7C-986C-DB7F4CDF916D}</Project>
+      <Name>ImeProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Fountain\Particle\Particle.csproj">
       <Project>{68F40942-0B87-4A8A-874C-76D90B68877A}</Project>
       <Name>Particle</Name>
