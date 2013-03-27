@@ -74,4 +74,5 @@
 *.vcxproj.user
 *.opensdf
 *.sdf
+*.aps
 Thumbs.db
