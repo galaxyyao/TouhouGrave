@@ -107,6 +107,7 @@
     <Compile Include="Ray.cs" />
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
+    <Compile Include="Services\PlayerProfile.cs" />
     <Compile Include="Services\GameManager.cs" />
     <Compile Include="Services\GameManager.GameEvaluator.cs" />
     <Compile Include="Services\GameService.cs" />

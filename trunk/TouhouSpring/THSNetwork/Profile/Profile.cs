@@ -23,9 +23,21 @@ namespace TouhouSpring
 		/// <summary>
 		/// Returns the player's name.
 		/// </summary>
-		public string Name
+		public string Id
 		{
 			get; set;
 		}
+
+        public int Deck1Id
+        {
+            get;
+            set;
+        }
+
+        public int Deck2Id
+        {
+            get;
+            set;
+        }
     }
 }

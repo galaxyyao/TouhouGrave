@@ -51,11 +51,11 @@ namespace TouhouSpring
             private set;
         }
 
-        public Game(IIndexable<GameStartupParameters> startUpParams, BaseController controller)
+        public Game(List<Deck> playerDecks, List<string> playerIds, BaseController controller, int seed)
         {
-            if (startUpParams == null)
+            if (playerDecks == null)
             {
-                throw new ArgumentNullException("startUpParams");
+                throw new ArgumentNullException("decks");
             }
             else if (controller == null)
             {
@@ -66,7 +66,7 @@ namespace TouhouSpring
                 throw new ArgumentException("The controller is already bound.", "controller");
             }
 
-            int numPlayers = startUpParams.Count;
+            int numPlayers = playerDecks.Count;
             if (numPlayers != 2)
             {
                 //TODO: support game among more than 2 players
@@ -77,12 +77,7 @@ namespace TouhouSpring
 
             for (int i = 0; i < numPlayers; ++i)
             {
-                if (startUpParams[i].m_profile == null)
-                {
-                    throw new ArgumentNullException(String.Format(CultureInfo.CurrentCulture, "parms[{0}].m_profile", i));
-                }
-
-                var deck = startUpParams[i].m_deck;
+                var deck = playerDecks[i];
                 var validationResult = deck.Validate();
                 if (validationResult != Deck.ValidationResult.Okay)
                 {
@@ -90,7 +85,7 @@ namespace TouhouSpring
                         "The deck {0} is invalid: {1}", deck.Name, validationResult));
                 }
 
-                m_players[i] = new Player(startUpParams[i].m_profile.Name, i, this);
+                m_players[i] = new Player(playerIds[i], i, this);
                 m_players[i].Initialize(deck);
             }
 
@@ -99,7 +94,7 @@ namespace TouhouSpring
             CurrentPhase = "";
 
             Players = m_players.ToIndexable();
-            Random = (startUpParams[0].m_seed == -1) ? new Random() : new Random(startUpParams[0].m_seed);
+            Random = (seed == -1) ? new Random() : new Random(seed);
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
         }

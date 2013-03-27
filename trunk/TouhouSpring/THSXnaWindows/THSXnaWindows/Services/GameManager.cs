@@ -17,7 +17,8 @@ namespace TouhouSpring.Services
 
         public IIndexable<Agents.BaseAgent> Agents
         {
-            get; private set;
+            get;
+            private set;
         }
 
         public override void Startup()
@@ -25,7 +26,7 @@ namespace TouhouSpring.Services
             m_actingPlayerIndexEvaluator = CreateGameEvaluator(game => game.ActingPlayer != null ? game.ActingPlayer.Index : -1, -1);
         }
 
-        public void StartGame(GameStartupParameters[] parameters, Agents.BaseAgent[] agents)
+        public void StartGame(GameStartupParameters parameters, Agents.BaseAgent[] agents)
         {
             if (parameters == null)
             {
@@ -35,14 +36,14 @@ namespace TouhouSpring.Services
             {
                 throw new ArgumentNullException("agents");
             }
-            else if (parameters.Length != agents.Length)
+            else if (parameters.PlayerDecks.Count != agents.Length)
             {
-                throw new InvalidOperationException("Parameters and agents shall have the same length.");
+                throw new InvalidOperationException("PlayerDecks and agents shall have the same length.");
             }
 
             Agents = agents.ToIndexable();
 
-            m_game = new Game(parameters.ToIndexable(), new XnaUIController(agents));
+            m_game = new Game(parameters.PlayerDecks, parameters.PlayerIds, new XnaUIController(agents), parameters.Seed);
 
             GameApp.Service<GameUI>().GameCreated(m_game);
             GameApp.Service<Graphics.Scene>().GameCreated();

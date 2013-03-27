@@ -18,7 +18,7 @@ namespace TouhouSpring.Services
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
 
-        GameStartupParameters[] param = new GameStartupParameters[2];
+        GameStartupParameters param = new GameStartupParameters();
 
         public UI.TransformNode Root
         {
@@ -244,19 +244,11 @@ namespace TouhouSpring.Services
             deck2.Assists.Add(cardDb.GetModel("yakumo"));
             deck2.Assists.Add(cardDb.GetModel("tenshi"));
 
-            param[0] = new GameStartupParameters()
-            {
-                m_profile = new Profile() { Name = "真凉" },
-                m_deck = deck1
-            };
-            param[0].m_profile.Decks.Add(deck1);
-
-            param[1] = new GameStartupParameters()
-            {
-                m_profile = new Profile() { Name = "爱衣" },
-                m_deck = deck2
-            };
-            param[1].m_profile.Decks.Add(deck2);
+            param = new GameStartupParameters();
+            param.PlayerDecks.Add(deck1);
+            param.PlayerDecks.Add(deck2);
+            param.PlayerIds.Add("真凉");
+            param.PlayerIds.Add("爱衣");
         }
 
         private void LoadPage(string id)

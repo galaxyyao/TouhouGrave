@@ -116,11 +116,9 @@
     <Compile Include="Interactions\SelectNumber.cs" />
     <Compile Include="Interactions\TacticalPhase.CompiledResult.cs" />
     <Compile Include="Interactions\TacticalPhase.cs" />
-    <Compile Include="Miscs.cs" />
     <Compile Include="Pile.cs" />
     <Compile Include="Player.Clone.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Triggers.cs" />
   </ItemGroup>

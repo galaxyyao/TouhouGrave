@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="Client.OutboxMessage.cs" />
-    <Compile Include="Client.BaseMessage.cs" />
-    <Compile Include="Client.InboxMessage.cs" />
-    <Compile Include="Client.Room.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\Client.OutboxMessage.cs" />
+    <Compile Include="Network\Client.BaseMessage.cs" />
+    <Compile Include="Network\Client.InboxMessage.cs" />
+    <Compile Include="Network\Client.Room.cs" />
+    <Compile Include="Profile\GameStartupParameters.cs" />
+    <Compile Include="Profile\Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +62,12 @@
       <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
       <Name>Game</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Profile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

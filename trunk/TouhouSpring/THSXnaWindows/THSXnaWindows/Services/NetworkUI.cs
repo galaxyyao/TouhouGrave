@@ -25,7 +25,7 @@ namespace TouhouSpring.Services
 
         private Graphics.TextRenderer.FormatOptions m_textFormatOptions;
         private THSNetwork.Client m_networkClient;
-        GameStartupParameters[] param = new GameStartupParameters[2];
+        GameStartupParameters param = new GameStartupParameters();
 
         public override void Startup()
         {
@@ -106,10 +106,7 @@ namespace TouhouSpring.Services
                 if (m_networkClient.Seed != -1)
                 {
                     System.Diagnostics.Debug.Print(string.Format("Seed: {0}", m_networkClient.Seed));
-                    foreach (var playerParam in param)
-                    {
-                        playerParam.m_seed = m_networkClient.Seed;
-                    }
+                    param.Seed=m_networkClient.Seed;
                 }
 
                 if (m_networkClient.StartupIndex == 0)
@@ -210,19 +207,11 @@ namespace TouhouSpring.Services
             deck2.Assists.Add(cardDb.GetModel("yakumo"));
             deck2.Assists.Add(cardDb.GetModel("tenshi"));
 
-            param[0] = new GameStartupParameters()
-            {
-                m_profile = new Profile() { Name = "真凉" },
-                m_deck = deck1
-            };
-            param[0].m_profile.Decks.Add(deck1);
-
-            param[1] = new GameStartupParameters()
-            {
-                m_profile = new Profile() { Name = "爱衣" },
-                m_deck = deck2
-            };
-            param[1].m_profile.Decks.Add(deck2);
+            param = new GameStartupParameters();
+            param.PlayerDecks.Add(deck1);
+            param.PlayerDecks.Add(deck2);
+            param.PlayerIds.Add("真凉");
+            param.PlayerIds.Add("爱衣");
         }
     }
 }
