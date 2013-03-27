@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,6 +46,7 @@
     <Compile Include="Network\Client.BaseMessage.cs" />
     <Compile Include="Network\Client.InboxMessage.cs" />
     <Compile Include="Network\Client.Room.cs" />
+    <Compile Include="Profile\AppSettings.cs" />
     <Compile Include="Profile\GameStartupParameters.cs" />
     <Compile Include="Profile\Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

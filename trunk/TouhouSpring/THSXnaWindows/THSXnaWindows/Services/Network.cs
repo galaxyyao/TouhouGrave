@@ -8,6 +8,7 @@ using System.Configuration;
 
 namespace TouhouSpring.Services
 {
+    [LifetimeDependency(typeof(CurrentProfile))]
     public class Network : GameService
     {
         public THSNetwork.Client THSClient
@@ -19,8 +20,8 @@ namespace TouhouSpring.Services
         public override void Startup()
         {
             THSClient = new THSNetwork.Client();
-            THSClient.RemoteServerIp = ConfigurationManager.AppSettings["RemoteServerIp"].ToString();
-            THSClient.RemoteServerPort = Convert.ToInt32(ConfigurationManager.AppSettings["RemoteServerPort"].ToString());
+            THSClient.RemoteServerIp = AppSettings.Instance.RemoteServerIp;
+            THSClient.RemoteServerPort = AppSettings.Instance.RemoteServerPort;
         }
 
         public override void Shutdown()

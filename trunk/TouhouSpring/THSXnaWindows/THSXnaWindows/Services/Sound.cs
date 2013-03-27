@@ -9,6 +9,7 @@ using System.Configuration;
 namespace TouhouSpring.Services
 {
     [LifetimeDependency(typeof(ResourceManager))]
+    [LifetimeDependency(typeof(CurrentProfile))]
     partial class Sound : GameService
     {
         bool m_isMusicOn = false;
@@ -33,15 +34,6 @@ namespace TouhouSpring.Services
 
         public override void Startup()
         {
-            if (!Boolean.TryParse(ConfigurationManager.AppSettings["IsMusicOn"].ToString(), out m_isMusicOn))
-                throw new InvalidCastException("cast to bool failed");
-            if (!Boolean.TryParse(ConfigurationManager.AppSettings["IsSoundOn"].ToString(), out m_isSoundOn))
-                throw new InvalidCastException("cast to bool failed");
-            if(!float.TryParse(ConfigurationManager.AppSettings["MusicVolume"].ToString(), out m_musicVolume))
-                throw new InvalidCastException("cast to float failed");
-            if(!float.TryParse(ConfigurationManager.AppSettings["SoundVolume"].ToString(), out m_soundVolume))
-                throw new InvalidCastException("cast to float failed");
-
             FillSoundMusicList();
             PlayMusic(MusicEnum.BlueTearsNight);
         }
@@ -61,20 +53,20 @@ namespace TouhouSpring.Services
 
         public void PlaySound(SoundEffectEnum sound)
         {
-            if (!m_isSoundOn)
+            if (!AppSettings.Instance.IsSoundOn)
                 return;
             m_soundEffectInstance = m_sounds[sound];
-            m_soundEffectInstance.Volume = m_soundVolume;
+            m_soundEffectInstance.Volume = AppSettings.Instance.SoundVolume;
             m_soundEffectInstance.Play();
         }
 
         public void PlayMusic(MusicEnum music)
         {
-            if (!m_isMusicOn)
+            if (!AppSettings.Instance.IsMusicOn)
                 return;
             m_songInstance = m_musics[music];
             MediaPlayer.Play(m_songInstance);
-            MediaPlayer.Volume = m_musicVolume;
+            MediaPlayer.Volume = AppSettings.Instance.MusicVolume;
             MediaPlayer.IsRepeating = true;
         }
     }

@@ -1,5 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Profiles>
+  <Settings>
+    <!--<RemoteServerIp>42.96.144.161</RemoteServerIp>-->
+    <RemoteServerIp>127.0.0.1</RemoteServerIp>
+    <RemoteServerPort>13389</RemoteServerPort>
+    <IsMusicOn>False</IsMusicOn>
+    <IsSoundOn>False</IsSoundOn>
+    <MusicVolume>0.3</MusicVolume>
+    <SoundVolume>1</SoundVolume>
+  </Settings>
   <Profile>
     <Id>Default</Id>
     <Email></Email>
