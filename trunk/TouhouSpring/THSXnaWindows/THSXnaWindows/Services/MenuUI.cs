@@ -14,6 +14,7 @@ namespace TouhouSpring.Services
     [LifetimeDependency(typeof(UIManager))]
     [UpdateDependency(typeof(UIManager))]
     [LifetimeDependency(typeof(Graphics.SwfRenderer))]
+    [LifetimeDependency(typeof(CurrentProfile))]
     partial class MenuUI : GameService
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
@@ -172,77 +173,32 @@ namespace TouhouSpring.Services
         private void PrepareGameStartupParam()
         {
             var cardDb = GameApp.Service<CardDatabase>();
+            int i = AppSettings.Instance.ReadProfile().Deck1Id;
+            List<Profile.CardBuild> cardBuilds = AppSettings.Instance.ReadProfile().CardBuilds;
+            Profile.CardBuild cardBuild1 = AppSettings.Instance.ReadProfile().CardBuilds.Find(
+                cardBuild => cardBuild.Id == AppSettings.Instance.ReadProfile().Deck1Id);
+            Profile.CardBuild cardBuild2 = AppSettings.Instance.ReadProfile().CardBuilds.Find(
+                cardBuild => cardBuild.Id == AppSettings.Instance.ReadProfile().Deck2Id);
 
-            Deck deck1 = new Deck("Profile1");
-            deck1.Add(cardDb.GetModel("hatate"));
-            deck1.Add(cardDb.GetModel("hatate"));
-            deck1.Add(cardDb.GetModel("hatate"));
-            deck1.Add(cardDb.GetModel("koakuma"));
-            deck1.Add(cardDb.GetModel("koakuma"));
-            deck1.Add(cardDb.GetModel("koakuma"));
-            deck1.Add(cardDb.GetModel("mokou"));
-            deck1.Add(cardDb.GetModel("mokou"));
-            deck1.Add(cardDb.GetModel("mokou"));
-            deck1.Add(cardDb.GetModel("remilia"));
-            deck1.Add(cardDb.GetModel("remilia"));
-            deck1.Add(cardDb.GetModel("remilia"));
-            deck1.Add(cardDb.GetModel("yuyuko"));
-            deck1.Add(cardDb.GetModel("yuyuko"));
-            deck1.Add(cardDb.GetModel("yuyuko"));
-            deck1.Add(cardDb.GetModel("reimu"));
-            deck1.Add(cardDb.GetModel("reimu"));
-            deck1.Add(cardDb.GetModel("reimu"));
-            deck1.Add(cardDb.GetModel("suika"));
-            deck1.Add(cardDb.GetModel("suika"));
-            deck1.Add(cardDb.GetModel("suika"));
-            deck1.Add(cardDb.GetModel("youmu"));
-            deck1.Add(cardDb.GetModel("youmu"));
-            deck1.Add(cardDb.GetModel("youmu"));
-            deck1.Add(cardDb.GetModel("kaguya"));
-            deck1.Add(cardDb.GetModel("kaguya"));
-            deck1.Add(cardDb.GetModel("kaguya"));
-            deck1.Add(cardDb.GetModel("alice_2"));
-            deck1.Add(cardDb.GetModel("alice_2"));
-            deck1.Add(cardDb.GetModel("alice_2"));
-            deck1.Assists.Add(cardDb.GetModel("eirin"));
-            deck1.Assists.Add(cardDb.GetModel("patchouli"));
+            Deck deck1 = new Deck(cardBuild1.Id.ToString());
+            foreach (var cardModelId in cardBuild1.CardModelIds)
+            {
+                deck1.Add(cardDb.GetModel(cardModelId));
+            }
+            foreach (var assistModelId in cardBuild1.AssistModelIds)
+            {
+                deck1.Assists.Add(cardDb.GetModel(assistModelId));
+            }
 
-            Deck deck2 = new Deck("Profile2");
-            deck2.Add(cardDb.GetModel("lunar"));
-            deck2.Add(cardDb.GetModel("lunar"));
-            deck2.Add(cardDb.GetModel("lunar"));
-            deck2.Add(cardDb.GetModel("komachi"));
-            deck2.Add(cardDb.GetModel("komachi"));
-            deck2.Add(cardDb.GetModel("komachi"));
-            deck2.Add(cardDb.GetModel("sakuya"));
-            deck2.Add(cardDb.GetModel("sakuya"));
-            deck2.Add(cardDb.GetModel("sakuya"));
-            deck2.Add(cardDb.GetModel("meirin"));
-            deck2.Add(cardDb.GetModel("meirin"));
-            deck2.Add(cardDb.GetModel("meirin"));
-            deck2.Add(cardDb.GetModel("sanae"));
-            deck2.Add(cardDb.GetModel("sanae"));
-            deck2.Add(cardDb.GetModel("sanae"));
-            deck2.Add(cardDb.GetModel("kanako"));
-            deck2.Add(cardDb.GetModel("kanako"));
-            deck2.Add(cardDb.GetModel("kanako"));
-            deck2.Add(cardDb.GetModel("cirno"));
-            deck2.Add(cardDb.GetModel("cirno"));
-            deck2.Add(cardDb.GetModel("cirno"));
-            deck2.Add(cardDb.GetModel("keine"));
-            deck2.Add(cardDb.GetModel("keine"));
-            deck2.Add(cardDb.GetModel("keine"));
-            deck2.Add(cardDb.GetModel("nightbug"));
-            deck2.Add(cardDb.GetModel("nightbug"));
-            deck2.Add(cardDb.GetModel("nightbug"));
-            //deck2.Add(cardDb.GetModel("marisa"));
-            //deck2.Add(cardDb.GetModel("marisa"));
-            //deck2.Add(cardDb.GetModel("marisa"));
-            deck2.Add(cardDb.GetModel("alice_2"));
-            deck2.Add(cardDb.GetModel("alice_2"));
-            deck2.Add(cardDb.GetModel("alice_2"));
-            deck2.Assists.Add(cardDb.GetModel("yakumo"));
-            deck2.Assists.Add(cardDb.GetModel("tenshi"));
+            Deck deck2 = new Deck(cardBuild2.Id.ToString());
+            foreach (var cardModelId in cardBuild2.CardModelIds)
+            {
+                deck2.Add(cardDb.GetModel(cardModelId));
+            }
+            foreach (var assistModelId in cardBuild2.AssistModelIds)
+            {
+                deck2.Assists.Add(cardDb.GetModel(assistModelId));
+            }
 
             param = new GameStartupParameters();
             param.PlayerDecks.Add(deck1);

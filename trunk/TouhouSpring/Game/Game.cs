@@ -82,7 +82,7 @@ namespace TouhouSpring
                 if (validationResult != Deck.ValidationResult.Okay)
                 {
                     throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
-                        "The deck {0} is invalid: {1}", deck.Name, validationResult));
+                        "The deck {0} is invalid: {1}", deck.Id, validationResult));
                 }
 
                 m_players[i] = new Player(playerIds[i], i, this);

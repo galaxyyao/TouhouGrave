@@ -10,7 +10,8 @@
     <SoundVolume>1</SoundVolume>
   </Settings>
   <Profile>
-    <Id>Default</Id>
+    <GUID></GUID>
+    <Uid>default</Uid>
     <Email></Email>
     <Deck1Id>1</Deck1Id>
     <Deck2Id>2</Deck2Id>
@@ -99,7 +100,8 @@
     </Decks>
   </Profile>
   <Profile>
-    <Id>Dem</Id>
+    <GUID>35644d06-3884-45cd-bd82-f1cec0c37720</GUID>
+    <Uid>Dem</Uid>
     <Email>galaxy.yao@gmail.com</Email>
     <Deck1Id>1</Deck1Id>
     <Deck2Id>2</Deck2Id>

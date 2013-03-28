@@ -10,23 +10,56 @@ namespace TouhouSpring
     /// </summary>
     public class Profile
     {
-		private List<Deck> m_decks = new List<Deck>();
-
-		/// <summary>
-		/// Returns the decks pre-created by the player.
-		/// </summary>
-        public List<Deck> Decks
+        public class CardBuild
         {
-            get { return m_decks; }
+            public int Id
+            {
+                get;
+                set;
+            }
+
+            public List<string> CardModelIds
+            {
+                get;
+                set;
+            }
+
+            public List<string> AssistModelIds
+            {
+                get;
+                set;
+            }
+
+            public CardBuild(int id)
+            {
+                Id = id;
+                CardModelIds = new List<string>();
+                AssistModelIds = new List<string>();
+            }
         }
 
-		/// <summary>
-		/// Returns the player's name.
-		/// </summary>
-		public string Id
+        public List<CardBuild> CardBuilds
+        {
+            get;
+            set;
+        }
+
+        public string GUID
+        {
+            get;
+            set;
+        }
+
+		public string Uid
 		{
 			get; set;
 		}
+
+        public string Email
+        {
+            get;
+            set;
+        }
 
         public int Deck1Id
         {
@@ -38,6 +71,11 @@ namespace TouhouSpring
         {
             get;
             set;
+        }
+
+        public Profile()
+        {
+            CardBuilds = new List<CardBuild>();
         }
     }
 }

@@ -7,9 +7,10 @@ using System.Xml.Linq;
 
 namespace TouhouSpring
 {
-    public class AppSettings
+    public partial class AppSettings
     {
         private static AppSettings m_instance;
+        private const string m_profileFilePath = "Profile.xml";
 
         private string m_ip;
         private int m_port;
@@ -30,7 +31,7 @@ namespace TouhouSpring
             }
         }
 
-        private XDocument CurrentProfile
+        private XDocument ProfileDocument
         {
             get;
             set;
@@ -114,46 +115,42 @@ namespace TouhouSpring
 
         private AppSettings()
         {
-            CurrentProfile = XDocument.Load("Profile.xml");
+            ProfileDocument = XDocument.Load(m_profileFilePath);
             ReadSettings();
+            IsLoggedIn = false;
         }
 
         private void ReadSettings()
         {
-            m_ip = (from seg in CurrentProfile.Root.Descendants("RemoteServerIp")
-                             select (string)seg).FirstOrDefault();
+            m_ip = (from seg in ProfileDocument.Root.Descendants("RemoteServerIp")
+                    select (string)seg).FirstOrDefault();
             if (m_ip == null)
             {
                 throw new InvalidDataException("ip cannot be null");
             }
-            if (!Int32.TryParse((from seg in CurrentProfile.Root.Descendants("RemoteServerPort")
+            if (!Int32.TryParse((from seg in ProfileDocument.Root.Descendants("RemoteServerPort")
                                  select (string)seg).FirstOrDefault(), out m_port))
                 throw new InvalidDataException("Invalid port");
-            if (!Boolean.TryParse((from seg in CurrentProfile.Root.Descendants("IsMusicOn")
-                                 select (string)seg).FirstOrDefault(), out m_isMusicOn))
+            if (!Boolean.TryParse((from seg in ProfileDocument.Root.Descendants("IsMusicOn")
+                                   select (string)seg).FirstOrDefault(), out m_isMusicOn))
                 throw new InvalidDataException("Invalid isMusicOn");
-            if (!Boolean.TryParse((from seg in CurrentProfile.Root.Descendants("IsSoundOn")
+            if (!Boolean.TryParse((from seg in ProfileDocument.Root.Descendants("IsSoundOn")
                                    select (string)seg).FirstOrDefault(), out m_isSoundOn))
                 throw new InvalidDataException("Invalid isSoundOn");
-            if (!float.TryParse((from seg in CurrentProfile.Root.Descendants("MusicVolume")
-                                   select (string)seg).FirstOrDefault(), out m_musicVolume))
+            if (!float.TryParse((from seg in ProfileDocument.Root.Descendants("MusicVolume")
+                                 select (string)seg).FirstOrDefault(), out m_musicVolume))
                 throw new InvalidDataException("Invalid MusicVolume");
-            if (!float.TryParse((from seg in CurrentProfile.Root.Descendants("SoundVolume")
+            if (!float.TryParse((from seg in ProfileDocument.Root.Descendants("SoundVolume")
                                  select (string)seg).FirstOrDefault(), out m_soundVolume))
                 throw new InvalidDataException("Invalid SoundVolume");
         }
 
         private void WriteSetting(string elementName, string value)
         {
-            XElement element = (from seg in CurrentProfile.Root.Descendants(elementName)
+            XElement element = (from seg in ProfileDocument.Root.Descendants(elementName)
                                 select seg).FirstOrDefault();
             element.Value = value;
-            CurrentProfile.Save("Profile.xml", SaveOptions.None);
-        }
-
-        public void ReadProfile()
-        {
-
+            ProfileDocument.Save(m_profileFilePath, SaveOptions.None);
         }
     }
 }

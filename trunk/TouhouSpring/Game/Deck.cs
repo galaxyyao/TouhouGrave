@@ -40,7 +40,7 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public string Name
+        public string Id
         {
             get; private set;
         }
@@ -55,14 +55,14 @@ namespace TouhouSpring
             return m_cards.IndexOf(element);
         }
 
-        public Deck(string name)
+        public Deck(string id)
         {
-            if (name == null)
+            if (id == null)
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException("id");
             }
 
-            Name = name;
+            Id = id;
             Assists = new List<ICardModel>();
         }
 
