@@ -5,7 +5,7 @@ using System.Text;
 using Lidgren.Network;
 using System.Threading;
 
-namespace TouhouSpring.NetServerCore
+namespace TouhouSpring.ServerCore
 {
     public partial class Server
     {

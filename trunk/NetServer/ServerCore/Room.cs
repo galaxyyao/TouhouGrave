@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Lidgren.Network;
 
-namespace TouhouSpring.NetServerCore
+namespace TouhouSpring.ServerCore
 {
     public class Room
     {

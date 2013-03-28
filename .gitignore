@@ -15,8 +15,12 @@
 /trunk/NetServer/_ReSharper.NetServer
 /trunk/NetServer/Common/bin/*
 /trunk/NetServer/Common/obj/*
-/trunk/NetServer/NetServer/bin/*
-/trunk/NetServer/NetServer/obj/*
+/trunk/NetServer/ChatServerChan/bin/*
+/trunk/NetServer/ChatServerChan/obj/*
+/trunk/NetServer/GameServerChan/bin/*
+/trunk/NetServer/GameServerChan/obj/*
+/trunk/NetServer/ServerCore/bin/*
+/trunk/NetServer/ServerCore/obj/*
 /trunk/NetServer/NetServer.suo
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/bin/*
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/obj/*

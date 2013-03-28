@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Configuration;
+using TouhouSpring.ServerCore;
 
-namespace TouhouSpring.NetServerCore
+namespace GameServerChan
 {
     class Program
     {

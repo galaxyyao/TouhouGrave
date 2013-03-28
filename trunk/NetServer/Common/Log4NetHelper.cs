@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using log4net;
 
-namespace TouhouSpring.NetServerCore
+namespace GameServerChan
 {
     public class Log4NetHelper
     {
