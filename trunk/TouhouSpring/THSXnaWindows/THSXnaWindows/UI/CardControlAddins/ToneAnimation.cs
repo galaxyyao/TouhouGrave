@@ -30,9 +30,9 @@ namespace TouhouSpring.UI.CardControlAddins
         {
             var gameUI = GameApp.Service<Services.GameUI>();
             bool darken = gameUI.ZoomedInCard != Control
-                          && (Card.Behaviors.Has<Behaviors.Warrior>() && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown
-                              || Card.Owner.Assists.Contains(Card) && !Card.IsActivatedAssist
-                              || Card.Owner.CardsSacrificed.Contains(Card));
+                          && (CardData.IsWarriorCoolingDown
+                              || CardData.IsAssist && !CardData.IsAssistActivated
+                              || CardData.Location == Services.CardDataManager.CardLocation.Sacrifice);
 
             if (darken != m_lastDarken)
             {
@@ -44,7 +44,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 m_lastDarken = darken;
             }
 
-            var grayscale = gameUI.ZoomedInCard != Control && Card.IsDestroyed;
+            var grayscale = gameUI.ZoomedInCard != Control && Control.IsCardDead;
             if (grayscale != m_lastGrayscale)
             {
                 m_saturateTrack.TimeFactor = grayscale ? -1 : 1;

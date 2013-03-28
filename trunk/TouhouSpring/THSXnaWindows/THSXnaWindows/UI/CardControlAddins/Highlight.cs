@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TouhouSpring.Services.UIStates;
 
 namespace TouhouSpring.UI.CardControlAddins
 {
@@ -86,7 +87,7 @@ namespace TouhouSpring.UI.CardControlAddins
                 }
                 else if (gameUI.ZoomedInCard != Control
                     && gameUI.UIState is Services.UIStates.TacticalPhase
-                    && (gameUI.UIState.InteractionObject as Interactions.TacticalPhase).DefenderCandidates.Contains(Card))
+                    && (gameUI.UIState.InteractionObject as Interactions.TacticalPhase).DefenderCandidates.Contains(Control.CardGuid))
                 {
                     color = Color.Red;
                 }

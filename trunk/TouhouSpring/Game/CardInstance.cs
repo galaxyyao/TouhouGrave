@@ -68,14 +68,5 @@ namespace TouhouSpring
             Guid = hasGuid ? owner.Game.GenerateNextCardGuid() : 0;
             Model.Behaviors.ForEach(bhv => Behaviors.Add((bhv as Behaviors.IInternalBehaviorModel).CreateInitializedPersistent()));
         }
-
-        public static CardInstance CreateDummyCard(Player owner)
-        {
-            CardModel dummyModel = new CardModel
-            {
-                Behaviors = new List<Behaviors.IBehaviorModel>()
-            };
-            return new CardInstance(dummyModel, owner, false);
-        }
     }
 }

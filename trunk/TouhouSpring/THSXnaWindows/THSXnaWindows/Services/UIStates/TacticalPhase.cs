@@ -44,14 +44,17 @@ namespace TouhouSpring.Services.UIStates
 
         public void OnCardClicked(UI.CardControl cardControl)
         {
-            if (AttackerSelected && m_io.DefenderCandidates.Contains(cardControl.Card))
+            if (AttackerSelected && m_io.DefenderCandidates.Contains(cardControl.CardGuid))
             {
-                m_io.RespondAttackCard(SelectedCard.Card, cardControl.Card);
+                m_io.RespondAttackCard(
+                    m_io.AttackerCandidates.Find(SelectedCard.CardGuid),
+                    m_io.DefenderCandidates.Find(cardControl.CardGuid));
                 m_gameUI.LeaveState();
+                return;
             }
 
             SelectedCard = SelectedCard == cardControl ? null : cardControl;
-            var card = SelectedCard != null ? SelectedCard.Card : null;
+            var cardGuid = SelectedCard != null ? SelectedCard.CardGuid : -1;
 
             m_gameUI.RemoveAllContextButtons();
             if (m_io.CanPass)
@@ -59,13 +62,13 @@ namespace TouhouSpring.Services.UIStates
                 m_gameUI.AddContextButton("结束", ContextButton_OnPass);
             }
 
-            if (m_io.PlayCardCandidates.Contains(card))
+            if (m_io.PlayCardCandidates.Contains(cardGuid))
             {
-                if (card.Behaviors.Has<Behaviors.Warrior>())
+                if (cardControl.CardData.IsWarrior)
                 {
                     m_gameUI.AddContextButton("召唤", ContextButton_OnPlay);
                 }
-                else if (card.Behaviors.Has<Behaviors.Instant>())
+                else if (cardControl.CardData.IsInstant)
                 {
                     m_gameUI.AddContextButton("施放", ContextButton_OnPlay);
                 }
@@ -74,12 +77,14 @@ namespace TouhouSpring.Services.UIStates
                     m_gameUI.AddContextButton("Play", ContextButton_OnPlay);
                 }
             }
-            if (m_io.ActivateAssistCandidates.Contains(card))
+            if (m_io.ActivateAssistCandidates.Contains(cardGuid))
             {
                 m_gameUI.AddContextButton("激活", ContextButton_OnActivate);
             }
-            if (m_castFromCards.Contains(card))
+            if (m_castFromCards.Contains(cardGuid))
             {
+                // its okay to access actual CardInstance here because the game is waiting for UI
+                var card = m_castFromCards.First(c => c.Guid == cardGuid);
                 foreach (var spell in card.Spells.Intersect(m_io.CastSpellCandidates))
                 {
                     m_gameUI.AddContextButton("施放 " + spell.Model.Name, text =>
@@ -89,15 +94,15 @@ namespace TouhouSpring.Services.UIStates
                     });
                 }
             }
-            if (m_io.SacrificeCandidates.Contains(card))
+            if (m_io.SacrificeCandidates.Contains(cardGuid))
             {
                 m_gameUI.AddContextButton("牺牲", ContextButton_OnSacrifice);
             }
-            if (m_io.RedeemCandidates.Contains(card))
+            if (m_io.RedeemCandidates.Contains(cardGuid))
             {
                 m_gameUI.AddContextButton("赎回", ContextButton_OnRedeem);
             }
-            AttackerSelected = m_io.AttackerCandidates.Contains(card);
+            AttackerSelected = m_io.AttackerCandidates.Contains(cardGuid);
             if (AttackerSelected && m_io.DefenderCandidates.Count == 0)
             {
                 m_gameUI.AddContextButton("攻击对方", ContextButton_OnAttackPlayer);
@@ -106,14 +111,14 @@ namespace TouhouSpring.Services.UIStates
 
         public bool IsCardClickable(UI.CardControl cardControl)
         {
-            var card = cardControl.Card;
-            return m_io.PlayCardCandidates.Contains(card)
-                   || m_io.ActivateAssistCandidates.Contains(card)
-                   || m_castFromCards.Contains(card)
-                   || m_io.SacrificeCandidates.Contains(card)
-                   || m_io.RedeemCandidates.Contains(card)
-                   || m_io.AttackerCandidates.Contains(card)
-                   || AttackerSelected && m_io.DefenderCandidates.Contains(card);
+            var cardGuid = cardControl.CardGuid;
+            return m_io.PlayCardCandidates.Contains(cardGuid)
+                   || m_io.ActivateAssistCandidates.Contains(cardGuid)
+                   || m_castFromCards.Contains(cardGuid)
+                   || m_io.SacrificeCandidates.Contains(cardGuid)
+                   || m_io.RedeemCandidates.Contains(cardGuid)
+                   || m_io.AttackerCandidates.Contains(cardGuid)
+                   || AttackerSelected && m_io.DefenderCandidates.Contains(cardGuid);
         }
 
         public bool IsCardSelected(UI.CardControl cardControl)
@@ -129,32 +134,32 @@ namespace TouhouSpring.Services.UIStates
 
         private void ContextButton_OnPlay(string text)
         {
-            m_io.RespondPlay(SelectedCard.Card);
+            m_io.RespondPlay(m_io.PlayCardCandidates.Find(SelectedCard.CardGuid));
             m_gameUI.LeaveState();
         }
 
         private void ContextButton_OnActivate(string text)
         {
-            m_io.RespondActivate(SelectedCard.Card);
+            m_io.RespondActivate(m_io.ActivateAssistCandidates.Find(SelectedCard.CardGuid));
             m_gameUI.LeaveState();
         }
 
         private void ContextButton_OnSacrifice(string text)
         {
-            m_io.RespondSacrifice(SelectedCard.Card);
+            m_io.RespondSacrifice(m_io.SacrificeCandidates.Find(SelectedCard.CardGuid));
             m_gameUI.LeaveState();
         }
 
         private void ContextButton_OnRedeem(string text)
         {
-            m_io.RespondRedeem(SelectedCard.Card);
+            m_io.RespondRedeem(m_io.RedeemCandidates.Find(SelectedCard.CardGuid));
             m_gameUI.LeaveState();
         }
 
         private void ContextButton_OnAttackPlayer(string text)
         {
             // TODO: select player to attack
-            m_io.RespondAttackPlayer(SelectedCard.Card, m_io.Player.Game.ActingPlayerEnemies.First());
+            m_io.RespondAttackPlayer(m_io.AttackerCandidates.Find(SelectedCard.CardGuid), m_io.Player.Game.ActingPlayerEnemies.First());
             m_gameUI.LeaveState();
         }
     }

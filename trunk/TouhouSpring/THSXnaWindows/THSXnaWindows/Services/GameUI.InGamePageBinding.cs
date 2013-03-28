@@ -7,18 +7,6 @@ namespace TouhouSpring.Services
 {
     partial class GameUI : Style.IBindingProvider
     {
-        private class CachedGameValues
-        {
-            public string m_currentPhase = "";
-            public string m_player0Name = "-";
-            public string m_player0Health = "-";
-            public string m_player1Name = "-";
-            public string m_player1Health = "-";
-        }
-
-        private CachedGameValues m_cachedGameValues = new CachedGameValues();
-        private Services.GameEvaluator m_evaluator;
-
         bool Style.IBindingProvider.EvaluateBinding(string id, out string replacement)
         {
             switch (id)
@@ -28,24 +16,24 @@ namespace TouhouSpring.Services
                     break;
                 case "Game.DetailText1":
                     replacement = ZoomedInCard != null
-                                  ? ZoomedInCard.Card.Model.Name : "";
+                                  ? ZoomedInCard.CardData.ModelName : "";
                     break;
                 case "Game.DetailText2":
                     if (ZoomedInCard != null)
                     {
                         StringBuilder sb = new StringBuilder();
                         sb.Append("【#Card.SystemClass#】\n");
-                        if (ZoomedInCard.Card.Behaviors.Has<Behaviors.ManaCost>())
+                        if (ZoomedInCard.CardData.SummonCost >= 0)
                         {
                             sb.Append("召唤消耗　【[color:Red]#Card.SummonCost#[/color]】 灵力\n");
                         }
-                        if (ZoomedInCard.Card.Behaviors.Has<Behaviors.Warrior>())
+                        if (ZoomedInCard.CardData.IsWarrior)
                         {
                             sb.Append("攻击力　　【[color:Red]#Card.InitialAttack#[/color]】\n");
                             sb.Append("体力　　　【[color:Red]#Card.InitialLife#[/color]】\n");
                         }
                         sb.Append("\n");
-                        sb.Append(ZoomedInCard.Card.Model.Description);
+                        sb.Append(ZoomedInCard.CardData.Description);
                         replacement = sb.ToString();
                     }
                     else
@@ -102,25 +90,13 @@ namespace TouhouSpring.Services
                 default:
                     if (id.StartsWith("Card.") && ZoomedInCard != null)
                     {
-                        return ZoomedInCard.EvaluateBinding(id, out replacement);
+                        return (ZoomedInCard as Style.IBindingProvider).EvaluateBinding(id, out replacement);
                     }
                     replacement = null;
                     return false;
             }
 
             return true;
-        }
-
-        private void CreateBindingEvaluator()
-        {
-            m_evaluator = GameApp.Service<Services.GameManager>().CreateGameEvaluator(game =>
-            {
-                m_cachedGameValues.m_currentPhase = game.CurrentPhase;
-                m_cachedGameValues.m_player0Name = game.Players.Count > 0 ? game.Players[0].Name : "-";
-                m_cachedGameValues.m_player0Health = game.Players.Count > 0 ? game.Players[0].Health.ToString() : "-";
-                m_cachedGameValues.m_player1Name = game.Players.Count > 1 ? game.Players[1].Name : "-";
-                m_cachedGameValues.m_player1Health = game.Players.Count > 1 ? game.Players[1].Health.ToString() : "-";
-            });
         }
     }
 }

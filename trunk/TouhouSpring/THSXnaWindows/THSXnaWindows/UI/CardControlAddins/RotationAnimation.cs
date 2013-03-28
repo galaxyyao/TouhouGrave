@@ -31,8 +31,7 @@ namespace TouhouSpring.UI.CardControlAddins
 		public override void Update(float deltaTime)
 		{
 			var needRotate = GameApp.Service<Services.GameUI>().ZoomedInCard != Control
-                             && Card.Behaviors.Has<Behaviors.Warrior>()
-                             && Card.Behaviors.Get<Behaviors.Warrior>().State == Behaviors.WarriorState.CoolingDown;
+                             && CardData.IsWarriorCoolingDown;
 
 			if (needRotate != m_lastRotated)
 			{

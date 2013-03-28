@@ -15,10 +15,10 @@ namespace TouhouSpring.UI
 				get; private set;
 			}
 
-			public CardInstance Card
-			{
-				get { return Control.Card; }
-			}
+            public Services.CardDataManager.ICardData CardData
+            {
+                get { return Control.CardData; }
+            }
 
 			public Addin(CardControl control)
 			{
@@ -32,6 +32,7 @@ namespace TouhouSpring.UI
 
 			public virtual void Dispose() { }
 			public virtual void Update(float deltaTime) { }
+            public virtual void OnEvaluate(CardInstance card) { }
 
 			public virtual void RenderDepth(XnaMatrix transform, RenderEventArgs e) { }
 			public virtual void RenderMain(XnaMatrix transform, RenderEventArgs e) { }

@@ -11,11 +11,16 @@ namespace TouhouSpring
     class XnaUIController : BaseController
     {
         private Agents.BaseAgent[] m_agents;
+        private List<int> m_destroyedCards = new List<int>();
 
         public IIndexable<Agents.BaseAgent> Agents
         {
-            get;
-            private set;
+            get; private set;
+        }
+
+        public IEnumerable<int> DestroyedCards
+        {
+            get { return m_destroyedCards; }
         }
 
         public XnaUIController(Agents.BaseAgent[] agents)
@@ -35,13 +40,8 @@ namespace TouhouSpring
         {
             switch (interactionObj.Notification)
             {
-                case "OnCardAddedToManaPool":
-                case "OnCardDrawn":
-                case "OnCardSummoned":
-                    GameApp.Service<GameUI>().RegisterCard(interactionObj.Card);
-                    break;
                 case "OnCardDestroyed":
-                    GameApp.Service<GameUI>().UnregisterCard(interactionObj.Card);
+                    m_destroyedCards.Add(interactionObj.Card.Guid);
                     break;
                 case "OnCardPlayCanceled":
                     if (m_agents[Game.ActingPlayer.Index].OnCardPlayCanceled(interactionObj))

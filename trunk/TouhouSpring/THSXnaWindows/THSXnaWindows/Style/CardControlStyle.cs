@@ -11,7 +11,7 @@ namespace TouhouSpring.Style
 {
 	class CardControlStyle : BaseStyleContainer, BoundsProperty.IHost
 	{
-		private CardInstance m_card;
+		private int m_cardGuid;
 		private List<IBindingProvider> m_bindingProviders = new List<IBindingProvider>();
 
 		public CardControl TypedTarget
@@ -30,15 +30,10 @@ namespace TouhouSpring.Style
 			protected set { TypedTarget.Region = value; }
 		}
 
-		public CardControlStyle(XElement definition, CardInstance cardToBind)
+		public CardControlStyle(XElement definition, int cardGuid)
 			: base(null, definition)
 		{
-			if (cardToBind == null)
-			{
-				throw new ArgumentNullException("cardToBind");
-			}
-
-			m_card = cardToBind;
+            m_cardGuid = cardGuid;
 		}
 
 		public void RegisterBinding(IBindingProvider bindingProvider)
@@ -57,7 +52,7 @@ namespace TouhouSpring.Style
 
 		public override void Initialize()
 		{
-			PreInitialize(() => new CardControl(m_card, this));
+			PreInitialize(() => new CardControl(m_cardGuid, this));
 
 			if (Definition == null)
 			{

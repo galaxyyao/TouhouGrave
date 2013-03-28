@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TouhouSpring
 {
-	public interface IIndexable<T> : IEnumerable<T>, IEnumerable
+	public interface IIndexable<out T> : IEnumerable<T>, IEnumerable
 	{
 		T this[int index] { get; }
 		int Count { get; }
