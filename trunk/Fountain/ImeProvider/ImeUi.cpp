@@ -129,7 +129,7 @@ public:
 		}
 		HRESULT hr;
 		hr = CoInitializeEx( NULL, COINIT_APARTMENTTHREADED );
-	    if ( SUCCEEDED( hr ) || hr == RPC_E_CHANGED_MODE )
+	    if ( SUCCEEDED( hr ) )
 		{
 			m_bComInit = true;
 			hr = CoCreateInstance( CLSID_TF_ThreadMgr,
