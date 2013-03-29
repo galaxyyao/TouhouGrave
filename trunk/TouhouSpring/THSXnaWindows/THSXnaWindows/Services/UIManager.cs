@@ -10,19 +10,20 @@ namespace TouhouSpring.Services
     [RenderDependency(typeof(Graphics.Scene))]
     class UIManager : GameService
     {
-        private class FocusRoot : UI.EventDispatcher, UI.IFocusGroup
+        private class KeyboardInputRoot : UI.EventDispatcher, UI.IFocusGroup
         {
-            public UI.FocusManager FocusManager
+            public UI.KeyboardInputManager KeyboardInputManager
             {
                 get; private set;
             }
 
-            public FocusRoot()
+            public KeyboardInputRoot(Ime.ImeContext imeContext)
             {
-                FocusManager = new UI.FocusManager();
+                KeyboardInputManager = new UI.KeyboardInputManager(imeContext);
             }
         }
-        
+
+        private Ime.ImeContext m_imeContext;
         private UI.MouseState m_lastMouseState = new UI.MouseState(0, 0, false, false);
         private UI.KeyboardState m_lastKeyboardState = new UI.KeyboardState();
 
@@ -43,7 +44,13 @@ namespace TouhouSpring.Services
 
         public override void Startup()
         {
-            Root = new FocusRoot();
+            m_imeContext = new Ime.ImeContext(GameApp.Instance.Window.Handle);
+            Root = new KeyboardInputRoot(m_imeContext);
+        }
+
+        public override void Shutdown()
+        {
+            m_imeContext.Dispose();
         }
 
         public override void Update(float deltaTime)
@@ -53,9 +60,9 @@ namespace TouhouSpring.Services
                 return;
             }
 
-            // put the FocusManager to tail
-            (Root as FocusRoot).FocusManager.Dispatcher = null;
-            (Root as FocusRoot).FocusManager.Dispatcher = Root;
+            // put the KeyboardInputManager to tail
+            (Root as KeyboardInputRoot).KeyboardInputManager.Dispatcher = null;
+            (Root as KeyboardInputRoot).KeyboardInputManager.Dispatcher = Root;
 
             var currentKeyboardState = new UI.KeyboardState(GameApp.Instance.KeyboardState);
             bool[] pressedKeys, releasedKeys;

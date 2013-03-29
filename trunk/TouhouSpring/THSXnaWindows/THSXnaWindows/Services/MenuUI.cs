@@ -155,6 +155,19 @@ namespace TouhouSpring.Services
 
             CurrentPage = m_pages["MainMenu"];
 
+            var curve = GameApp.Service<ResourceManager>().Acquire<Curve>("Curves/CardMove");
+            var font = new Graphics.TextRenderer.FontDescriptor("Microsoft YaHei", 16);
+            var fmtOptions = new Graphics.TextRenderer.FormatOptions(font);
+
+            var txtBox = new UI.TextBox(100, 30, fmtOptions)
+            {
+                ForeColor = Color.Black,
+                SelectionBackColor = new Color(0, 0, 0, 0.75f),
+                SlidingCurve = curve,
+                Transform = MatrixHelper.Translate(50, 200),
+                Dispatcher = Root
+            };
+
             //m_testAnimation = new Graphics.SwfInstance("germs")
             //{
             //    IsPlaying = true,

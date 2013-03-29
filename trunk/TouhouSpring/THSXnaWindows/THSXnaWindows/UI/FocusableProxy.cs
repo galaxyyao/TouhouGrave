@@ -13,6 +13,11 @@ namespace TouhouSpring.UI
         void OnFocusedKeyReleased(KeyReleasedEventArgs e);
     }
 
+    interface IFocusGroup
+    {
+        KeyboardInputManager KeyboardInputManager { get; }
+    }
+
     class FocusableProxy : EventListener,
         IEventListener<KeyPressedEventArgs>,
         IEventListener<KeyReleasedEventArgs>
@@ -49,8 +54,7 @@ namespace TouhouSpring.UI
             {
                 if (i is IFocusGroup)
                 {
-                    var focusManager = (i as IFocusGroup).FocusManager;
-                    focusManager.RegisterFocusable(Target as IFocusable);
+                    (i as IFocusGroup).KeyboardInputManager.RegisterFocusable(Target as IFocusable);
                     return;
                 }
             }

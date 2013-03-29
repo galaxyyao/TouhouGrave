@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace TouhouSpring.UI
+{
+    interface ITextReceiver
+    {
+        bool ImeEnabled { get; } // shall be constant throughout object's lifetime (for now)
+        void OnChar();
+        void OnInputLanguageChange();
+        void OnStartComposition();
+        void OnComposition();
+        void OnEndComposition();
+    }
+}

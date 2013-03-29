@@ -5,25 +5,30 @@ using System.Text;
 
 namespace TouhouSpring.UI
 {
-    class FocusManager : EventListener,
+    class KeyboardInputManager : EventListener,
         IEventListener<KeyPressedEventArgs>,
         IEventListener<KeyReleasedEventArgs>
     {
         private List<IFocusable> m_focusableItems = new List<IFocusable>();
+        private Ime.ImeContext m_imeContext;
 
         public IFocusable Focus
         {
             get; private set;
         }
 
+        public KeyboardInputManager(Ime.ImeContext imeContext)
+        {
+            m_imeContext = imeContext;
+        }
+
         public void RaiseEvent(KeyPressedEventArgs e)
         {
             int focusIndex = m_focusableItems.IndexOf(Focus);
 
-            if (Focus != null && focusIndex == -1)
+            if (focusIndex == -1)
             {
-                Focus.OnLostFocus();
-                Focus = null;
+                SetFocus(null);
             }
 
             if (e.KeyPressed[(int)Microsoft.Xna.Framework.Input.Keys.Tab])
@@ -42,18 +47,11 @@ namespace TouhouSpring.UI
                     {
                         newIndex = m_focusableItems.Count - 1;
                     }
-                    var newFocusItem = m_focusableItems[newIndex];
-                    if (newFocusItem != Focus)
-                    {
-                        Focus.OnLostFocus();
-                        Focus = newFocusItem;
-                        Focus.OnGotFocus();
-                    }
+                    SetFocus(m_focusableItems[newIndex]);
                 }
                 else if (m_focusableItems.Count > 0)
                 {
-                    Focus = m_focusableItems[0];
-                    Focus.OnGotFocus();
+                    SetFocus(m_focusableItems[0]);
                 }
             }
 
@@ -69,10 +67,9 @@ namespace TouhouSpring.UI
         {
             int focusIndex = m_focusableItems.IndexOf(Focus);
 
-            if (Focus != null && focusIndex == -1)
+            if (focusIndex == -1)
             {
-                Focus.OnLostFocus();
-                Focus = null;
+                SetFocus(null);
             }
 
             if (Focus != null)
@@ -84,7 +81,7 @@ namespace TouhouSpring.UI
         }
 
         // called each time a focusable item receives KeyPressed or KeyReleased event
-        // to let FocusManager collect them
+        // to let KeyboardInputManager collect them
         public void RegisterFocusable(IFocusable item)
         {
             if (item == null)
@@ -98,10 +95,30 @@ namespace TouhouSpring.UI
 
             m_focusableItems.Add(item);
         }
-    }
 
-    interface IFocusGroup
-    {
-        FocusManager FocusManager { get; }
+        private void SetFocus(IFocusable newFocus)
+        {
+            if (newFocus != Focus)
+            {
+                if (Focus != null)
+                {
+                    Focus.OnLostFocus();
+                    if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
+                    {
+                        m_imeContext.EndIme();
+                    }
+                }
+
+                Focus = newFocus;
+                if (Focus != null)
+                {
+                    if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
+                    {
+                        m_imeContext.BeginIme();
+                    }
+                    Focus.OnGotFocus();
+                }
+            }
+        }
     }
 }

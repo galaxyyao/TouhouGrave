@@ -116,6 +116,8 @@ namespace TouhouSpring.UI
 
             m_renderableProxy = new RenderableProxy(this);
 
+            ImeEnabled = true;
+
             ForeColor = Color.White;
             SelectionBackColor = Color.Navy;
             SelectionForeColor = Color.White;
@@ -209,8 +211,6 @@ namespace TouhouSpring.UI
             m_caretPosition = m_text.Length;
             m_selectionLength = -m_caretPosition;
             MakeVisible();
-
-            GameApp.Service<Services.ImeManager>().BeginIme();
         }
 
         public void OnLostFocus()
@@ -219,8 +219,6 @@ namespace TouhouSpring.UI
             m_selectionLength = 0;
             MakeVisible();
             m_isFocused = false;
-
-            GameApp.Service<Services.ImeManager>().EndIme();
         }
 
         public void OnFocusedKeyPressed(KeyPressedEventArgs e)
