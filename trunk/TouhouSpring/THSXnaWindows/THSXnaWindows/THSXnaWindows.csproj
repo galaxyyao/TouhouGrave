@@ -120,6 +120,7 @@
     <Compile Include="Services\GameUI.Piles.cs" />
     <Compile Include="Services\GameUI.PlayerZones.cs" />
     <Compile Include="Services\GameUI.ZoomInCard.cs" />
+    <Compile Include="Services\ImeManager.cs" />
     <Compile Include="Services\IUIState.cs" />
     <Compile Include="Services\MenuUI.cs" />
     <Compile Include="Services\MenuUI.Page.cs" />

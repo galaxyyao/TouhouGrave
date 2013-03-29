@@ -14,6 +14,9 @@ public:
 		bool get() { return m_initialized; }
 	}
 
+	void BeginIme();
+	void EndIme();
+
 private:
 	bool m_initialized;
 };
