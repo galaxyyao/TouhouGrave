@@ -294,6 +294,15 @@ namespace TouhouSpring.UI
                     drawOptions2.ColorScaling = ImeCompositionStringForeColor.ToVector4();
                     drawOptions2.Offset.X = caretPosition;
                     e.TextRenderer.DrawText(m_compositionString, transform, drawOptions2);
+
+                    // composition caret
+                    if (((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
+                    {
+                        var caretPosition2 = m_compositionString.MeasureWidth(0, m_compositionCursorPos) - scrollPosition;
+                        caretPosition2 = MathHelper.Clamp(caretPosition2, 0, InputAreaWidth);
+                        e.RenderManager.Draw(new TexturedQuad { ColorToModulate = ImeCompositionStringForeColor },
+                            new Rectangle(caretPosition2 - 1, 0, 2, Height), transform);
+                    }
                 }
             }
         }
