@@ -146,4 +146,6 @@ extern void  (__cdecl *ImeUiCallback_Free )( void* ptr );
 extern void  (CALLBACK *ImeUiCallback_DrawFans )( const IMEUI_VERTEX* paVertex, UINT uNum );
 extern void  (CALLBACK *ImeUiCallback_OnChar )( WCHAR wc );
 
+extern void  (CALLBACK *ImeUiCallback_OnInputLangChange)();
+
 #endif //_IMEUI_H_

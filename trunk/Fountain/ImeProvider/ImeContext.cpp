@@ -26,11 +26,21 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     m_wndProc = gcnew WndProcDelegate(this, &ImeContext::WindowProcedure);
     System::IntPtr funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_wndProc);
     m_oldWndProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG>(funcPtr.ToPointer())));
+
+    m_imeOnInputLangChange = gcnew InputLangChangeDelegate(this, &ImeContext::ImeOnInputLangChange);
+    funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnInputLangChange);
+    typedef void (CALLBACK *ImeOnInputLangChangeCallback)();
+    ImeUiCallback_OnInputLangChange = reinterpret_cast<ImeOnInputLangChangeCallback>(funcPtr.ToPointer());
 }
 
 ImeContext::~ImeContext()
 {
     ImeUi_Uninitialize();
+}
+
+System::String^ ImeContext::IndicatorString::get()
+{
+    return gcnew System::String(ImeUi_IsEnabled() ? ImeUi_GetIndicatior() : L"En");
 }
 
 void ImeContext::BeginIme()
@@ -117,6 +127,11 @@ bool ImeContext::StaticMsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     }
 
     return false;
+}
+
+void ImeContext::ImeOnInputLangChange()
+{
+    OnInputLangChange(IndicatorString);
 }
 
 }

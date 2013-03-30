@@ -9,7 +9,7 @@ namespace TouhouSpring.UI
     {
         bool ImeEnabled { get; } // shall be constant throughout object's lifetime (for now)
         void OnChar(char code);
-        void OnInputLanguageChange();
+        void OnInputLanguageChange(string lang);
         void OnStartComposition();
         void OnComposition();
         void OnEndComposition();

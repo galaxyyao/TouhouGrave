@@ -159,12 +159,21 @@ namespace TouhouSpring.Services
             var font = new Graphics.TextRenderer.FontDescriptor("Microsoft YaHei", 16);
             var fmtOptions = new Graphics.TextRenderer.FormatOptions(font);
 
-            var txtBox = new UI.TextBox(100, 30, fmtOptions)
+            var txtBox = new UI.TextBox(150, 30, fmtOptions)
             {
                 ForeColor = Color.Black,
                 SelectionBackColor = new Color(0, 0, 0, 0.75f),
                 SlidingCurve = curve,
                 Transform = MatrixHelper.Translate(50, 200),
+                Dispatcher = Root
+            };
+
+            txtBox = new UI.TextBox(150, 30, fmtOptions)
+            {
+                ForeColor = Color.Black,
+                SelectionBackColor = new Color(0, 0, 0, 0.75f),
+                SlidingCurve = curve,
+                Transform = MatrixHelper.Translate(50, 250),
                 Dispatcher = Root
             };
 

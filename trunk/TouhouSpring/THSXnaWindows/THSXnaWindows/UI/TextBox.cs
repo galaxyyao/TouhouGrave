@@ -24,6 +24,7 @@ namespace TouhouSpring.UI
         private int m_selectionLength = 0;
         private float m_scrollPosition = 0;
         private TextRenderer.IFormattedText m_allText;
+        private TextRenderer.IFormattedText m_inidcatorStr;
 
         private Animation.CurveTrack m_scrollSlideTrack;
         private Action<float> m_onTrackElapsed;
@@ -75,6 +76,26 @@ namespace TouhouSpring.UI
             get; set;
         }
 
+        public Color ImeIndicatorBackColor
+        {
+            get; set;
+        }
+
+        public Color ImeIndicatorForeColor
+        {
+            get; set;
+        }
+
+        public int ImeIndicatorWidth
+        {
+            get; set;
+        }
+
+        public int ImeIndicatorMargin
+        {
+            get; set;
+        }
+
         public int Width
         {
             get; private set;
@@ -83,6 +104,11 @@ namespace TouhouSpring.UI
         public int Height
         {
             get; private set;
+        }
+
+        private int InputAreaWidth
+        {
+            get { return m_isFocused ? Width - ImeIndicatorWidth - ImeIndicatorMargin : Width; }
         }
 
         public Curve SlidingCurve
@@ -121,6 +147,10 @@ namespace TouhouSpring.UI
             ForeColor = Color.White;
             SelectionBackColor = Color.Navy;
             SelectionForeColor = Color.White;
+            ImeIndicatorBackColor = Color.RoyalBlue;
+            ImeIndicatorForeColor = Color.White;
+            ImeIndicatorWidth = height;
+            ImeIndicatorMargin = 2;
 
             Width = width;
             Height = height;
@@ -141,7 +171,7 @@ namespace TouhouSpring.UI
             var transform = TransformToGlobal;
             var drawOptions = TextRenderer.DrawOptions.Default;
             drawOptions.DrawFlags |= TextRenderer.DrawFlags.BoundedByBox;
-            drawOptions.BoundingBox = Region;
+            drawOptions.BoundingBox = new Rectangle(0, 0, InputAreaWidth, Height);
             drawOptions.ColorScaling = ForeColor.ToVector4();
             drawOptions.Offset.X = -m_scrollPosition;
 
@@ -160,9 +190,9 @@ namespace TouhouSpring.UI
                     selectionWidth += selectionLeft;
                     selectionLeft = 0;
                 }
-                if (selectionLeft + selectionWidth > Width)
+                if (selectionLeft + selectionWidth > InputAreaWidth)
                 {
-                    selectionWidth = Width - selectionLeft;
+                    selectionWidth = InputAreaWidth - selectionLeft;
                 }
                 e.RenderManager.Draw(new Graphics.TexturedQuad
                 {
@@ -199,9 +229,21 @@ namespace TouhouSpring.UI
             if (m_isFocused && ((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
             {
                 var caretPosition = m_allText.MeasureWidth(0, m_caretPosition) - m_scrollPosition;
-                caretPosition = MathHelper.Clamp(caretPosition, 0, Width);
+                caretPosition = MathHelper.Clamp(caretPosition, 0, InputAreaWidth);
                 e.RenderManager.Draw(new Graphics.TexturedQuad { ColorToModulate = ForeColor },
                     new Rectangle(caretPosition - 1, 0, 2, Height), transform);
+            }
+
+            // ime indicator
+            if (m_isFocused)
+            {
+                e.RenderManager.Draw(new Graphics.TexturedQuad { ColorToModulate = ImeIndicatorBackColor },
+                    new Rectangle(Width - ImeIndicatorWidth, 0, ImeIndicatorWidth, Height), transform);
+                var indicatorWidth = m_inidcatorStr.MeasureWidth(0, m_inidcatorStr.Text.Length);
+                var drawOptions2 = TextRenderer.DrawOptions.Default;
+                drawOptions2.ColorScaling = ImeIndicatorForeColor.ToVector4();
+                drawOptions2.Offset.X = Width - ImeIndicatorWidth / 2 - indicatorWidth / 2;
+                e.TextRenderer.DrawText(m_inidcatorStr, transform, drawOptions2);
             }
         }
 
@@ -210,14 +252,14 @@ namespace TouhouSpring.UI
             m_isFocused = true;
             m_caretPosition = m_text.Length;
             m_selectionLength = -m_caretPosition;
-            MakeVisible();
+            SetScrollPosition(Math.Max(m_allText.MeasureWidth(0, m_allText.Text.Length) - InputAreaWidth, 0));
         }
 
         public void OnLostFocus()
         {
             m_caretPosition = 0;
             m_selectionLength = 0;
-            MakeVisible();
+            SetScrollPosition(0);
             m_isFocused = false;
         }
 
@@ -324,11 +366,11 @@ namespace TouhouSpring.UI
             float caretOffset = m_allText.MeasureWidth(0, m_caretPosition);
             if (caretOffset < m_scrollPosition)
             {
-                SetScrollPosition(Math.Max(caretOffset - Width / 3.0f, 0));
+                SetScrollPosition(Math.Max(caretOffset - InputAreaWidth / 3.0f, 0));
             }
-            else if (caretOffset > m_scrollPosition + Width)
+            else if (caretOffset > m_scrollPosition + InputAreaWidth)
             {
-                SetScrollPosition(Math.Max(caretOffset + Width / 3.0f - Width, 0));
+                SetScrollPosition(Math.Max(caretOffset + InputAreaWidth / 3.0f - InputAreaWidth, 0));
             }
         }
 

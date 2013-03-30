@@ -24,8 +24,9 @@ namespace TouhouSpring.UI
             m_caretBlinkTimer = 0;
         }
 
-        void ITextReceiver.OnInputLanguageChange()
+        void ITextReceiver.OnInputLanguageChange(string lang)
         {
+            m_inidcatorStr = GameApp.Service<Graphics.TextRenderer>().FormatText(lang, m_textFormatOptions);
         }
 
         void ITextReceiver.OnStartComposition()

@@ -21,6 +21,7 @@ namespace TouhouSpring.UI
         {
             m_imeContext = imeContext;
             m_imeContext.OnChar += new Ime.CharMessageHandler(ImeContext_OnChar);
+            m_imeContext.OnInputLangChange += new Ime.InputLangChangeHandler(ImeContext_OnInputLangChange);
         }
 
         public void RaiseEvent(KeyPressedEventArgs e)
@@ -55,8 +56,7 @@ namespace TouhouSpring.UI
                     SetFocus(m_focusableItems[0]);
                 }
             }
-
-            if (Focus != null)
+            else if (Focus != null)
             {
                 Focus.OnFocusedKeyPressed(e);
             }
@@ -114,6 +114,14 @@ namespace TouhouSpring.UI
             }
         }
 
+        private void ImeContext_OnInputLangChange(string lang)
+        {
+            if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
+            {
+                (Focus as ITextReceiver).OnInputLanguageChange(lang);
+            }
+        }
+
         private void SetFocus(IFocusable newFocus)
         {
             if (newFocus != Focus)
@@ -133,6 +141,7 @@ namespace TouhouSpring.UI
                     if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
                     {
                         m_imeContext.BeginIme();
+                        (Focus as ITextReceiver).OnInputLanguageChange(m_imeContext.IndicatorString);
                     }
                     Focus.OnGotFocus();
                 }

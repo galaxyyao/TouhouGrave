@@ -204,6 +204,7 @@ void (CALLBACK *ImeUiCallback_DrawFans)(const IMEUI_VERTEX* paVertex, UINT uNum)
 void* (__cdecl *ImeUiCallback_Malloc)( size_t bytes );
 void (__cdecl *ImeUiCallback_Free)( void* ptr );
 void (CALLBACK *ImeUiCallback_OnChar)( WCHAR wc );
+void (CALLBACK *ImeUiCallback_OnInputLangChange)();
 
 static void (*_SendCompString)();
 static LRESULT (WINAPI* _SendMessage)(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) = SendMessageA;
@@ -2788,6 +2789,11 @@ static void OnInputLangChange()
 		// Fix for Zooty #3995: prevent CHT IME toobar from showing up
 		SendMessageA(hwndImeDef, WM_IME_CONTROL, IMC_OPENSTATUSWINDOW, 0);
 		SendMessageA(hwndImeDef, WM_IME_CONTROL, IMC_CLOSESTATUSWINDOW, 0);
+	}
+
+	if (ImeUiCallback_OnInputLangChange != NULL)
+	{
+		ImeUiCallback_OnInputLangChange();
 	}
 }
 
