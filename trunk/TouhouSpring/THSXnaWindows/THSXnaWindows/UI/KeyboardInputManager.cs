@@ -22,6 +22,8 @@ namespace TouhouSpring.UI
             m_imeContext = imeContext;
             m_imeContext.OnChar += new Ime.CharMessageHandler(ImeContext_OnChar);
             m_imeContext.OnInputLangChange += new Ime.InputLangChangeHandler(ImeContext_OnInputLangChange);
+            m_imeContext.OnComposition += new Ime.CompositionMessageHandler(ImeContext_OnComposition);
+            m_imeContext.OnEndComposition += new Ime.EndCompositionMessageHandler(ImeContext_OnEndComposition);
         }
 
         public void RaiseEvent(KeyPressedEventArgs e)
@@ -119,6 +121,22 @@ namespace TouhouSpring.UI
             if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
             {
                 (Focus as ITextReceiver).OnInputLanguageChange(lang);
+            }
+        }
+
+        private void ImeContext_OnComposition(string compositionString, int cursorPos)
+        {
+            if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
+            {
+                (Focus as ITextReceiver).OnComposition(compositionString, cursorPos);
+            }
+        }
+
+        private void ImeContext_OnEndComposition()
+        {
+            if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
+            {
+                (Focus as ITextReceiver).OnEndComposition();
             }
         }
 

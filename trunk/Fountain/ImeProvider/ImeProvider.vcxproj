@@ -77,14 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImeContext.h" />
-    <ClInclude Include="ImeProvider.h" />
     <ClInclude Include="ImeUi.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="ImeContext.cpp" />
-    <ClCompile Include="ImeProvider.cpp" />
     <ClCompile Include="ImeUi.cpp" />
   </ItemGroup>
   <ItemGroup>

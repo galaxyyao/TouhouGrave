@@ -7,6 +7,8 @@ namespace Ime {
 
 public delegate void CharMessageHandler(System::Char code);
 public delegate void InputLangChangeHandler(System::String^ lang);
+public delegate void CompositionMessageHandler(System::String^ compositionString, int cursorPos);
+public delegate void EndCompositionMessageHandler();
 
 public ref class ImeContext
 {
@@ -29,6 +31,8 @@ public:
 
     event CharMessageHandler^ OnChar;
     event InputLangChangeHandler^ OnInputLangChange;
+    event CompositionMessageHandler^ OnComposition;
+    event EndCompositionMessageHandler^ OnEndComposition;
 
 private:
     delegate LRESULT WndProcDelegate(HWND, UINT, WPARAM, LPARAM);

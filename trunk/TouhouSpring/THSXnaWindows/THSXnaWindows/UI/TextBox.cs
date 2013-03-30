@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -29,7 +28,7 @@ namespace TouhouSpring.UI
         private Animation.CurveTrack m_scrollSlideTrack;
         private Action<float> m_onTrackElapsed;
         private float m_lastScrollPosition;
-        private float m_nextScrollPosition;
+        private float m_currentScrollPosition;
 
         private static float CaretBlinkTime = PInvokes.User32.GetCaretBlinkTime();
 
@@ -96,6 +95,16 @@ namespace TouhouSpring.UI
             get; set;
         }
 
+        public Color ImeCompositionStringBackColor
+        {
+            get; set;
+        }
+
+        public Color ImeCompositionStringForeColor
+        {
+            get; set;
+        }
+
         public int Width
         {
             get; private set;
@@ -122,7 +131,6 @@ namespace TouhouSpring.UI
                     {
                         m_scrollSlideTrack.Stop();
                         m_scrollSlideTrack = null;
-                        m_scrollPosition = m_nextScrollPosition;
                     }
 
                     if (value != null)
@@ -151,21 +159,25 @@ namespace TouhouSpring.UI
             ImeIndicatorForeColor = Color.White;
             ImeIndicatorWidth = height;
             ImeIndicatorMargin = 2;
+            ImeCompositionStringBackColor = Color.Black;
+            ImeCompositionStringForeColor = Color.White;
 
             Width = width;
             Height = height;
             Region = new Rectangle(0, 0, Width, Height);
 
-            m_onTrackElapsed = w => m_scrollPosition = MathHelper.Lerp(m_lastScrollPosition, m_nextScrollPosition, w);
+            m_onTrackElapsed = w => m_currentScrollPosition = MathHelper.Lerp(m_lastScrollPosition, m_scrollPosition, w);
 
             TextChanged();
         }
 
         public void OnRender(RenderEventArgs e)
         {
+            var scrollPosition = m_scrollPosition;
             if (m_scrollSlideTrack != null && m_scrollSlideTrack.IsPlaying)
             {
                 m_scrollSlideTrack.Elapse((float)GameApp.Instance.TargetElapsedTime.TotalSeconds);
+                scrollPosition = m_currentScrollPosition;
             }
 
             var transform = TransformToGlobal;
@@ -173,7 +185,7 @@ namespace TouhouSpring.UI
             drawOptions.DrawFlags |= TextRenderer.DrawFlags.BoundedByBox;
             drawOptions.BoundingBox = new Rectangle(0, 0, InputAreaWidth, Height);
             drawOptions.ColorScaling = ForeColor.ToVector4();
-            drawOptions.Offset.X = -m_scrollPosition;
+            drawOptions.Offset.X = -scrollPosition;
 
             if (m_selectionLength != 0)
             {
@@ -181,7 +193,7 @@ namespace TouhouSpring.UI
                 var selectionEnd = m_selectionLength > 0 ? m_caretPosition + m_selectionLength : m_caretPosition;
 
                 // selection background
-                var selectionLeft = m_allText.MeasureWidth(0, selectionBegin) - m_scrollPosition;
+                var selectionLeft = m_allText.MeasureWidth(0, selectionBegin) - scrollPosition;
                 var selectionWidth = m_allText.MeasureWidth(selectionBegin, selectionEnd);
 
                 // clamp selection into window
@@ -194,29 +206,33 @@ namespace TouhouSpring.UI
                 {
                     selectionWidth = InputAreaWidth - selectionLeft;
                 }
-                e.RenderManager.Draw(new Graphics.TexturedQuad
-                {
-                    ColorToModulate = SelectionBackColor
-                }, new Rectangle(selectionLeft, 0, selectionWidth, Height), transform);
 
-                // draw the text before selection
-                if (selectionBegin > 0)
+                if (selectionWidth > 0)
                 {
-                    drawOptions.SubstringLength = selectionBegin;
+                    e.RenderManager.Draw(new TexturedQuad
+                    {
+                        ColorToModulate = SelectionBackColor
+                    }, new Rectangle(selectionLeft, 0, selectionWidth, Height), transform);
+
+                    // draw the text before selection
+                    if (selectionBegin > 0)
+                    {
+                        drawOptions.SubstringLength = selectionBegin;
+                        e.TextRenderer.DrawText(m_allText, transform, drawOptions);
+                    }
+                    // draw the selected text
+                    drawOptions.ColorScaling = SelectionForeColor.ToVector4();
+                    drawOptions.SubstringStart = selectionBegin;
+                    drawOptions.SubstringLength = selectionEnd - selectionBegin;
                     e.TextRenderer.DrawText(m_allText, transform, drawOptions);
-                }
-                // draw the selected text
-                drawOptions.ColorScaling = SelectionForeColor.ToVector4();
-                drawOptions.SubstringStart = selectionBegin;
-                drawOptions.SubstringLength = selectionEnd - selectionBegin;
-                e.TextRenderer.DrawText(m_allText, transform, drawOptions);
-                // draw the text after selection
-                if (selectionEnd < m_text.Length)
-                {
-                    drawOptions.ColorScaling = ForeColor.ToVector4();
-                    drawOptions.SubstringStart = selectionEnd;
-                    drawOptions.SubstringLength = m_text.Length - selectionEnd;
-                    e.TextRenderer.DrawText(m_allText, transform, drawOptions);
+                    // draw the text after selection
+                    if (selectionEnd < m_text.Length)
+                    {
+                        drawOptions.ColorScaling = ForeColor.ToVector4();
+                        drawOptions.SubstringStart = selectionEnd;
+                        drawOptions.SubstringLength = m_text.Length - selectionEnd;
+                        e.TextRenderer.DrawText(m_allText, transform, drawOptions);
+                    }
                 }
             }
             else
@@ -226,24 +242,59 @@ namespace TouhouSpring.UI
 
             // caret
             m_caretBlinkTimer += GameApp.Instance.TargetElapsedTime.Milliseconds;
-            if (m_isFocused && ((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
+            if (m_isFocused && !m_inComposition && ((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
             {
-                var caretPosition = m_allText.MeasureWidth(0, m_caretPosition) - m_scrollPosition;
+                var caretPosition = m_allText.MeasureWidth(0, m_caretPosition) - scrollPosition;
                 caretPosition = MathHelper.Clamp(caretPosition, 0, InputAreaWidth);
-                e.RenderManager.Draw(new Graphics.TexturedQuad { ColorToModulate = ForeColor },
+                e.RenderManager.Draw(new TexturedQuad { ColorToModulate = ForeColor },
                     new Rectangle(caretPosition - 1, 0, 2, Height), transform);
             }
 
             // ime indicator
             if (m_isFocused)
             {
-                e.RenderManager.Draw(new Graphics.TexturedQuad { ColorToModulate = ImeIndicatorBackColor },
+                e.RenderManager.Draw(new TexturedQuad { ColorToModulate = ImeIndicatorBackColor },
                     new Rectangle(Width - ImeIndicatorWidth, 0, ImeIndicatorWidth, Height), transform);
                 var indicatorWidth = m_inidcatorStr.MeasureWidth(0, m_inidcatorStr.Text.Length);
                 var drawOptions2 = TextRenderer.DrawOptions.Default;
                 drawOptions2.ColorScaling = ImeIndicatorForeColor.ToVector4();
                 drawOptions2.Offset.X = Width - ImeIndicatorWidth / 2 - indicatorWidth / 2;
                 e.TextRenderer.DrawText(m_inidcatorStr, transform, drawOptions2);
+            }
+
+            // composition string
+            if (m_inComposition)
+            {
+                // selection background
+                var caretPosition = m_allText.MeasureWidth(0, m_caretPosition) - scrollPosition;
+                var compositionLeft = caretPosition;
+                var compositionWidth = m_compositionString.MeasureWidth(0, m_compositionString.Text.Length);
+
+                // clamp selection into window
+                if (compositionLeft < 0)
+                {
+                    compositionWidth += compositionLeft;
+                    compositionLeft = 0;
+                }
+                if (compositionLeft + compositionWidth > InputAreaWidth)
+                {
+                    compositionWidth = InputAreaWidth - compositionLeft;
+                }
+
+                if (compositionWidth > 0)
+                {
+                    e.RenderManager.Draw(new TexturedQuad
+                    {
+                        ColorToModulate = ImeCompositionStringBackColor
+                    }, new Rectangle(compositionLeft, 0, compositionWidth, Height), transform);
+
+                    var drawOptions2 = TextRenderer.DrawOptions.Default;
+                    drawOptions2.DrawFlags |= TextRenderer.DrawFlags.BoundedByBox;
+                    drawOptions2.BoundingBox = new Rectangle(0, 0, InputAreaWidth, Height);
+                    drawOptions2.ColorScaling = ImeCompositionStringForeColor.ToVector4();
+                    drawOptions2.Offset.X = caretPosition;
+                    e.TextRenderer.DrawText(m_compositionString, transform, drawOptions2);
+                }
             }
         }
 
@@ -265,6 +316,12 @@ namespace TouhouSpring.UI
 
         public void OnFocusedKeyPressed(KeyPressedEventArgs e)
         {
+            if (m_inComposition)
+            {
+                // ignore all key events if IME is kicked in
+                return;
+            }
+
             bool shiftPressed = e.KeyboardState.KeyPressed[(int)Keys.LeftShift]
                 || e.KeyboardState.KeyPressed[(int)Keys.RightShift];
             var oldText = m_text.ToString();
@@ -364,6 +421,10 @@ namespace TouhouSpring.UI
         private void MakeVisible()
         {
             float caretOffset = m_allText.MeasureWidth(0, m_caretPosition);
+            if (m_inComposition)
+            {
+                caretOffset += m_compositionString.MeasureWidth(0, m_compositionCursorPos);
+            }
             if (caretOffset < m_scrollPosition)
             {
                 SetScrollPosition(Math.Max(caretOffset - InputAreaWidth / 3.0f, 0));
@@ -384,7 +445,7 @@ namespace TouhouSpring.UI
                 }
 
                 m_lastScrollPosition = m_scrollPosition;
-                m_nextScrollPosition = nextValue;
+                m_scrollPosition = nextValue;
                 m_scrollSlideTrack.Play();
             }
             else

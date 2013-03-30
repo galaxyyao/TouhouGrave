@@ -19,8 +19,11 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     ImeUiCallback_DrawFans = NULL;
 
     m_initialized = ImeUi_Initialize(hWnd, true, false);
+    if (!m_initialized)
+    {
+        return;
+    }
 
-    //s_CompString.SetBufferSize( MAX_COMPSTRING_SIZE );
     ImeUi_EnableIme( true );
 
     m_wndProc = gcnew WndProcDelegate(this, &ImeContext::WindowProcedure);
@@ -63,6 +66,17 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
     }
 
     ImeUi_ProcessMessage( hWnd, msg, wParam, lParam, &overrideDefault );
+    switch (msg)
+    {
+    case WM_IME_COMPOSITION:
+        OnComposition(gcnew System::String(ImeUi_GetCompositionString()), ImeUi_GetImeCursorChars());
+        break;
+    case WM_IME_ENDCOMPOSITION:
+        OnEndComposition();
+        break;
+    default:
+        break;
+    }
     if (overrideDefault)
     {
         return 0;
