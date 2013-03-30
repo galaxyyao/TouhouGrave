@@ -8,7 +8,7 @@ namespace TouhouSpring.UI
     interface ITextReceiver
     {
         bool ImeEnabled { get; } // shall be constant throughout object's lifetime (for now)
-        void OnChar();
+        void OnChar(char code);
         void OnInputLanguageChange();
         void OnStartComposition();
         void OnComposition();

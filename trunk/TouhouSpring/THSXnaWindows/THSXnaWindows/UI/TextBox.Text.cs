@@ -12,8 +12,16 @@ namespace TouhouSpring.UI
             get; private set;
         }
 
-        void ITextReceiver.OnChar()
+        void ITextReceiver.OnChar(char code)
         {
+            if (m_selectionLength != 0)
+            {
+                DeleteSelection();
+            }
+            m_text.Insert(m_caretPosition++, code);
+
+            TextChanged();
+            m_caretBlinkTimer = 0;
         }
 
         void ITextReceiver.OnInputLanguageChange()

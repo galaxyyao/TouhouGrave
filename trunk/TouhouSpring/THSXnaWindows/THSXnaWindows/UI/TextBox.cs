@@ -289,24 +289,6 @@ namespace TouhouSpring.UI
                 }
             }
 
-            bool capslock = (PInvokes.User32.GetKeyState(0x14) & 1) != 0;
-            bool numlock = (PInvokes.User32.GetKeyState(0x90) & 1) != 0;
-            for (int i = 0; i < e.KeyPressed.Count; ++i)
-            {
-                if (e.KeyPressed[i])
-                {
-                    char ch = TranslateChar((Keys)i, shiftPressed, capslock, numlock);
-                    if (ch != 0)
-                    {
-                        if (m_selectionLength != 0)
-                        {
-                            DeleteSelection();
-                        }
-                        m_text.Insert(m_caretPosition++, ch);
-                    }
-                }
-            }
-
             if (oldText != m_text.ToString())
             {
                 TextChanged();

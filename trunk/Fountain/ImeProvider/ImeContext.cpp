@@ -1,14 +1,16 @@
 #include "ImeContext.h"
-#include "ImeUi.h"
 
 namespace TouhouSpring {
 namespace Ime {
 
-static LRESULT CALLBACK WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam);
-static WNDPROC s_originalWindowProc;
-
 ImeContext::ImeContext(System::IntPtr windowHandle)
 {
+    if (s_instance != nullptr)
+    {
+        throw gcnew System::InvalidOperationException("Only one instance of ImeContext can be created.");
+    }
+    s_instance = this;
+
     HWND hWnd = reinterpret_cast<HWND>(static_cast<void*>(windowHandle));
 
     ImeUiCallback_DrawRect = NULL;
@@ -21,7 +23,9 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     //s_CompString.SetBufferSize( MAX_COMPSTRING_SIZE );
     ImeUi_EnableIme( true );
 
-    s_originalWindowProc = reinterpret_cast<WNDPROC>(::SetWindowLong(hWnd, GWL_WNDPROC, reinterpret_cast<LONG>(&WindowProc)));
+    m_wndProc = gcnew WndProcDelegate(this, &ImeContext::WindowProcedure);
+    System::IntPtr funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_wndProc);
+    m_oldWndProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG>(funcPtr.ToPointer())));
 }
 
 ImeContext::~ImeContext()
@@ -40,52 +44,7 @@ void ImeContext::EndIme()
     ImeUi_EnableIme(false);
 }
 
-static bool StaticMsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    if( !ImeUi_IsEnabled() )
-        return false;
-
-#if defined(DEBUG) || defined(_DEBUG)
-    //m_bIMEStaticMsgProcCalled = true;
-#endif
-
-    switch( uMsg )
-    {
-        case WM_INPUTLANGCHANGE:
-            System::Diagnostics::Debug::WriteLine("WM_INPUTLANGCHANGE");
-            return true;
-
-        case WM_IME_SETCONTEXT:
-            System::Diagnostics::Debug::WriteLine("WM_IME_SETCONTEXT");
-            //
-            // We don't want anything to display, so we have to clear this
-            //
-            lParam = 0;
-            return false;
-
-            // Handle WM_IME_STARTCOMPOSITION here since
-            // we do not want the default IME handler to see
-            // this when our fullscreen app is running.
-        case WM_IME_STARTCOMPOSITION:
-            System::Diagnostics::Debug::WriteLine("WM_IME_STARTCOMPOSITION");
-            //ResetCompositionString();
-            // Since the composition string has its own caret, we don't render
-            // the edit control's own caret to avoid double carets on screen.
-            //s_bHideCaret = true;
-            return true;
-        case WM_IME_ENDCOMPOSITION:
-            System::Diagnostics::Debug::WriteLine("WM_IME_ENDCOMPOSITION");
-            //s_bHideCaret = false;
-            return false;
-        case WM_IME_COMPOSITION:
-            System::Diagnostics::Debug::WriteLine("WM_IME_COMPOSITION");
-            return false;
-    }
-
-    return false;
-}
-
-LRESULT CALLBACK WindowProc(_In_ HWND hWnd, _In_ UINT msg, _In_ WPARAM wParam, _In_ LPARAM lParam)
+LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     bool overrideDefault = StaticMsgProc(hWnd, msg, wParam, lParam);
     if (overrideDefault)
@@ -99,8 +58,13 @@ LRESULT CALLBACK WindowProc(_In_ HWND hWnd, _In_ UINT msg, _In_ WPARAM wParam, _
         return 0;
     }
 
+    if (msg == WM_CHAR)
+    {
+        OnChar(static_cast<WCHAR>(wParam));
+    }
+
     // Default message processing
-    LRESULT retCode = ::CallWindowProc(s_originalWindowProc, hWnd, msg, wParam, lParam);
+    LRESULT retCode = ::CallWindowProc(m_oldWndProc, hWnd, msg, wParam, lParam);
 
     if (msg == WM_GETDLGCODE)
     {
@@ -108,6 +72,51 @@ LRESULT CALLBACK WindowProc(_In_ HWND hWnd, _In_ UINT msg, _In_ WPARAM wParam, _
     }
 
     return retCode;
+}
+
+bool ImeContext::StaticMsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    if( !ImeUi_IsEnabled() )
+        return false;
+
+#if defined(DEBUG) || defined(_DEBUG)
+    //m_bIMEStaticMsgProcCalled = true;
+#endif
+
+    switch( uMsg )
+    {
+    case WM_INPUTLANGCHANGE:
+        System::Diagnostics::Debug::WriteLine("WM_INPUTLANGCHANGE");
+        return true;
+
+    case WM_IME_SETCONTEXT:
+        System::Diagnostics::Debug::WriteLine("WM_IME_SETCONTEXT");
+        //
+        // We don't want anything to display, so we have to clear this
+        //
+        lParam = 0;
+        return false;
+
+        // Handle WM_IME_STARTCOMPOSITION here since
+        // we do not want the default IME handler to see
+        // this when our fullscreen app is running.
+    case WM_IME_STARTCOMPOSITION:
+        System::Diagnostics::Debug::WriteLine("WM_IME_STARTCOMPOSITION");
+        //ResetCompositionString();
+        // Since the composition string has its own caret, we don't render
+        // the edit control's own caret to avoid double carets on screen.
+        //s_bHideCaret = true;
+        return true;
+    case WM_IME_ENDCOMPOSITION:
+        System::Diagnostics::Debug::WriteLine("WM_IME_ENDCOMPOSITION");
+        //s_bHideCaret = false;
+        return false;
+    case WM_IME_COMPOSITION:
+        System::Diagnostics::Debug::WriteLine("WM_IME_COMPOSITION");
+        return false;
+    }
+
+    return false;
 }
 
 }

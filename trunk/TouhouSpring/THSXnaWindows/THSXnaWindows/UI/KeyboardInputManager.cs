@@ -20,6 +20,7 @@ namespace TouhouSpring.UI
         public KeyboardInputManager(Ime.ImeContext imeContext)
         {
             m_imeContext = imeContext;
+            m_imeContext.OnChar += new Ime.CharMessageHandler(ImeContext_OnChar);
         }
 
         public void RaiseEvent(KeyPressedEventArgs e)
@@ -94,6 +95,23 @@ namespace TouhouSpring.UI
             }
 
             m_focusableItems.Add(item);
+        }
+
+        private void ImeContext_OnChar(char code)
+        {
+            if (Char.IsControl(code))
+            {
+                return;
+            }
+            else if (code == '\t')
+            {
+                // we ignore tab
+            }
+
+            if (Focus is ITextReceiver)
+            {
+                (Focus as ITextReceiver).OnChar(code);
+            }
         }
 
         private void SetFocus(IFocusable newFocus)
