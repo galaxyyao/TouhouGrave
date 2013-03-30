@@ -218,6 +218,7 @@
     <Compile Include="UI\RenderableProxy.cs" />
     <Compile Include="UI\RenderEventArgs.cs" />
     <Compile Include="UI\TextBox.cs" />
+    <Compile Include="UI\TextBox.Resources.cs" />
     <Compile Include="UI\TextBox.Text.cs" />
     <Compile Include="UI\ITextReceiver.cs" />
     <Compile Include="UI\TransformNode.cs" />

@@ -40,7 +40,6 @@ namespace TouhouSpring.UI
 
         void ITextReceiver.OnComposition(string compositionString, int cursorPos)
         {
-            System.Diagnostics.Trace.WriteLine(String.Format("Composition: {0} {1}/{2}", compositionString, cursorPos, m_compositionCursorPos));
             m_inComposition = !String.IsNullOrEmpty(compositionString);
 
             if (m_compositionString == null || m_compositionString.Text != compositionString)

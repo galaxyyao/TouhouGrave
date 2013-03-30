@@ -295,6 +295,13 @@ namespace TouhouSpring.UI
                     drawOptions2.Offset.X = caretPosition;
                     e.TextRenderer.DrawText(m_compositionString, transform, drawOptions2);
 
+                    // underline
+                    e.RenderManager.Draw(new TexturedQuad(GameApp.Service<Resources>().DashLine)
+                    {
+                        UVBounds = new Rectangle(0, 0, compositionWidth, GameApp.Service<Resources>().DashLine.Height),
+                        WrapUV = true
+                    }, new Rectangle(compositionLeft, Height - 3, compositionWidth, 2), transform);
+
                     // composition caret
                     if (((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
                     {
