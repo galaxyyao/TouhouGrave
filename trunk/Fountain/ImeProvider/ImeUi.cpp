@@ -1914,7 +1914,7 @@ bool ImeUi_IsEnabled( void )
 	return g_bImeEnabled;
 }
 
-bool ImeUi_Initialize( HWND hwnd, bool bDisable )
+bool ImeUi_Initialize( HWND hwnd, bool alwaysUnicode, bool bDisable )
 {
 	if ( g_bInitialized )
 	{
@@ -1988,7 +1988,9 @@ bool ImeUi_Initialize( HWND hwnd, bool bDisable )
 	// Wnd: Unicode, Code: non Uni, Method: SendMessageA (System does A->W conversion) - possible, but unlikely to be used.
 	// Wnd: non Uni, Code: non Uni, Method: SendMessageA
 #ifdef UNICODE
-	if ( !IsWindowUnicode( hwnd ) )
+	// .net always uses unicode but sometime window is not registered as unicode
+	// we need to bypass this check
+	if ( !alwaysUnicode && !IsWindowUnicode( hwnd ) )
 	{
 		_SendCompString = AW_SendCompString;
 	}

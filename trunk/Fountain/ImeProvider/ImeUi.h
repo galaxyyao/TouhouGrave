@@ -101,7 +101,7 @@ typedef struct	// D3DTLVERTEX compatible
 // IME Flags
 #define IMEUI_FLAG_SUPPORT_CARET	0x00000001
 
-bool ImeUi_Initialize( HWND hwnd, bool bDisable = false );
+bool ImeUi_Initialize( HWND hwnd, bool alwaysUnicode, bool bDisable = false );
 void ImeUi_Uninitialize();
 void ImeUi_SetAppearance( const IMEUI_APPEARANCE* pia );
 void ImeUi_GetAppearance( IMEUI_APPEARANCE* pia );

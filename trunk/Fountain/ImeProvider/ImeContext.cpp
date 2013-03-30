@@ -18,7 +18,7 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     ImeUiCallback_Free = free;
     ImeUiCallback_DrawFans = NULL;
 
-    m_initialized = ImeUi_Initialize(hWnd, false);
+    m_initialized = ImeUi_Initialize(hWnd, true, false);
 
     //s_CompString.SetBufferSize( MAX_COMPSTRING_SIZE );
     ImeUi_EnableIme( true );
