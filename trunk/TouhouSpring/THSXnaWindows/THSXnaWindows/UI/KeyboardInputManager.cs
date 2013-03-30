@@ -20,7 +20,7 @@ namespace TouhouSpring.UI
         public KeyboardInputManager(Ime.ImeContext imeContext)
         {
             m_imeContext = imeContext;
-            m_imeContext.OnChar += new Ime.CharMessageHandler(ImeContext_OnChar);
+            m_imeContext.OnChar += new Ime.KeyMessageHandler(ImeContext_OnChar);
             m_imeContext.OnInputLangChange += new Ime.InputLangChangeHandler(ImeContext_OnInputLangChange);
             m_imeContext.OnComposition += new Ime.CompositionMessageHandler(ImeContext_OnComposition);
             m_imeContext.OnEndComposition += new Ime.EndCompositionMessageHandler(ImeContext_OnEndComposition);
@@ -35,7 +35,7 @@ namespace TouhouSpring.UI
                 SetFocus(null);
             }
 
-            if (e.KeyPressed[(int)Microsoft.Xna.Framework.Input.Keys.Tab])
+            if (e.KeyPressed == (char)Microsoft.Xna.Framework.Input.Keys.Tab)
             {
                 if (focusIndex != -1)
                 {
@@ -58,7 +58,7 @@ namespace TouhouSpring.UI
                     SetFocus(m_focusableItems[0]);
                 }
             }
-            else if (Focus != null)
+            else
             {
                 Focus.OnFocusedKeyPressed(e);
             }

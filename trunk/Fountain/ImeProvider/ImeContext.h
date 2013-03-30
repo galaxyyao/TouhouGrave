@@ -5,7 +5,7 @@
 namespace TouhouSpring {
 namespace Ime {
 
-public delegate void CharMessageHandler(System::Char code);
+public delegate void KeyMessageHandler(System::Char code);
 public delegate void InputLangChangeHandler(System::String^ lang);
 public delegate void CompositionMessageHandler(System::String^ compositionString, int cursorPos);
 public delegate void EndCompositionMessageHandler();
@@ -29,7 +29,9 @@ public:
     void BeginIme();
     void EndIme();
 
-    event CharMessageHandler^ OnChar;
+    event KeyMessageHandler^ OnChar;
+    event KeyMessageHandler^ OnKeyDown;
+    event KeyMessageHandler^ OnKeyUp;
     event InputLangChangeHandler^ OnInputLangChange;
     event CompositionMessageHandler^ OnComposition;
     event EndCompositionMessageHandler^ OnEndComposition;

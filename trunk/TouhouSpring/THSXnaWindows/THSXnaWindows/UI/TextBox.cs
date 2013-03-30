@@ -298,7 +298,7 @@ namespace TouhouSpring.UI
                     // composition caret
                     if (((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
                     {
-                        var caretPosition2 = m_compositionString.MeasureWidth(0, m_compositionCursorPos) - scrollPosition;
+                        var caretPosition2 = caretPosition + m_compositionString.MeasureWidth(0, m_compositionCursorPos);
                         caretPosition2 = MathHelper.Clamp(caretPosition2, 0, InputAreaWidth);
                         e.RenderManager.Draw(new TexturedQuad { ColorToModulate = ImeCompositionStringForeColor },
                             new Rectangle(caretPosition2 - 1, 0, 2, Height), transform);
@@ -335,66 +335,58 @@ namespace TouhouSpring.UI
                 || e.KeyboardState.KeyPressed[(int)Keys.RightShift];
             var oldText = m_text.ToString();
 
-            if (e.KeyPressed[(int)Keys.Left])
+            switch (e.KeyPressed)
             {
-                if (m_caretPosition == 0)
-                {
-                    m_selectionLength = shiftPressed ? m_selectionLength : 0;
-                }
-                else
-                {
-                    m_selectionLength = shiftPressed ? m_selectionLength + 1 : 0;
-                    --m_caretPosition;
-                }
-            }
-
-            if (e.KeyPressed[(int)Keys.Right])
-            {
-                if (m_caretPosition == m_text.Length)
-                {
-                    m_selectionLength = shiftPressed ? m_selectionLength : 0;
-                }
-                else
-                {
-                    m_selectionLength = shiftPressed ? m_selectionLength - 1 : 0;
-                    ++m_caretPosition;
-                }
-            }
-
-            if (e.KeyPressed[(int)Keys.Home])
-            {
-                m_selectionLength = shiftPressed ? m_caretPosition : 0;
-                m_caretPosition = 0;
-            }
-
-            if (e.KeyPressed[(int)Keys.End])
-            {
-                m_selectionLength = shiftPressed ? m_caretPosition - m_text.Length: 0;
-                m_caretPosition = m_text.Length;
-            }
-
-            if (e.KeyPressed[(int)Keys.Back])
-            {
-                if (m_selectionLength != 0)
-                {
-                    DeleteSelection();
-                }
-                else if (m_caretPosition != 0)
-                {
-                    m_text.Remove(--m_caretPosition, 1);
-                }
-            }
-
-            if (e.KeyPressed[(int)Keys.Delete])
-            {
-                if (m_selectionLength != 0)
-                {
-                    DeleteSelection();
-                }
-                else if (m_caretPosition < m_text.Length)
-                {
-                    m_text.Remove(m_caretPosition, 1);
-                }
+                case (char)Keys.Left:
+                    if (m_caretPosition == 0)
+                    {
+                        m_selectionLength = shiftPressed ? m_selectionLength : 0;
+                    }
+                    else
+                    {
+                        m_selectionLength = shiftPressed ? m_selectionLength + 1 : 0;
+                        --m_caretPosition;
+                    }
+                    break;
+                case (char)Keys.Right:
+                    if (m_caretPosition == m_text.Length)
+                    {
+                        m_selectionLength = shiftPressed ? m_selectionLength : 0;
+                    }
+                    else
+                    {
+                        m_selectionLength = shiftPressed ? m_selectionLength - 1 : 0;
+                        ++m_caretPosition;
+                    }
+                    break;
+                case (char)Keys.Home:
+                    m_selectionLength = shiftPressed ? m_caretPosition : 0;
+                    m_caretPosition = 0;
+                    break;
+                case (char)Keys.End:
+                    m_selectionLength = shiftPressed ? m_caretPosition - m_text.Length: 0;
+                    m_caretPosition = m_text.Length;
+                    break;
+                case (char)Keys.Back:
+                    if (m_selectionLength != 0)
+                    {
+                        DeleteSelection();
+                    }
+                    else if (m_caretPosition != 0)
+                    {
+                        m_text.Remove(--m_caretPosition, 1);
+                    }
+                    break;
+                case (char)Keys.Delete:
+                    if (m_selectionLength != 0)
+                    {
+                        DeleteSelection();
+                    }
+                    else if (m_caretPosition < m_text.Length)
+                    {
+                        m_text.Remove(m_caretPosition, 1);
+                    }
+                    break;
             }
 
             if (oldText != m_text.ToString())
