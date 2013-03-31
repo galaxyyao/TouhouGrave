@@ -20,10 +20,12 @@ namespace TouhouSpring.UI
         public KeyboardInputManager(Ime.ImeContext imeContext)
         {
             m_imeContext = imeContext;
+            m_imeContext.OnAppActivate += new Ime.ParameterlessMessageHandler(ImeContext_OnAppActivate);
+            m_imeContext.OnAppDeactivate += new Ime.ParameterlessMessageHandler(ImeContext_OnAppDeactivate);
             m_imeContext.OnChar += new Ime.KeyMessageHandler(ImeContext_OnChar);
             m_imeContext.OnInputLangChange += new Ime.InputLangChangeHandler(ImeContext_OnInputLangChange);
             m_imeContext.OnComposition += new Ime.CompositionMessageHandler(ImeContext_OnComposition);
-            m_imeContext.OnEndComposition += new Ime.EndCompositionMessageHandler(ImeContext_OnEndComposition);
+            m_imeContext.OnEndComposition += new Ime.ParameterlessMessageHandler(ImeContext_OnEndComposition);
         }
 
         public void RaiseEvent(KeyPressedEventArgs e)
@@ -97,6 +99,22 @@ namespace TouhouSpring.UI
             }
 
             m_focusableItems.Add(item);
+        }
+
+        private void ImeContext_OnAppActivate()
+        {
+            if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
+            {
+                m_imeContext.BeginIme();
+            }
+        }
+
+        private void ImeContext_OnAppDeactivate()
+        {
+            if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
+            {
+                m_imeContext.EndIme();
+            }
         }
 
         private void ImeContext_OnChar(char code)

@@ -18,7 +18,7 @@ public enum class ClauseAttribute
 public delegate void KeyMessageHandler(System::Char code);
 public delegate void InputLangChangeHandler(System::String^ lang);
 public delegate void CompositionMessageHandler(System::String^ compositionString, cli::array<ClauseAttribute>^ attributes, int cursorPos);
-public delegate void EndCompositionMessageHandler();
+public delegate void ParameterlessMessageHandler();
 
 public ref class ImeContext
 {
@@ -39,12 +39,14 @@ public:
     void BeginIme();
     void EndIme();
 
+    event ParameterlessMessageHandler^ OnAppActivate;
+    event ParameterlessMessageHandler^ OnAppDeactivate;
     event KeyMessageHandler^ OnChar;
     event KeyMessageHandler^ OnKeyDown;
     event KeyMessageHandler^ OnKeyUp;
     event InputLangChangeHandler^ OnInputLangChange;
     event CompositionMessageHandler^ OnComposition;
-    event EndCompositionMessageHandler^ OnEndComposition;
+    event ParameterlessMessageHandler^ OnEndComposition;
 
 private:
     delegate LRESULT WndProcDelegate(HWND, UINT, WPARAM, LPARAM);

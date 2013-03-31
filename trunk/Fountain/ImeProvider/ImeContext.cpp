@@ -108,6 +108,17 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
     {
         OnKeyUp(static_cast<WCHAR>(wParam));
     }
+    else if (msg == WM_ACTIVATEAPP)
+    {
+        if (wParam != 0)
+        {
+            OnAppActivate();
+        }
+        else
+        {
+            OnAppDeactivate();
+        }
+    }
 
     // Default message processing
     LRESULT retCode = ::CallWindowProc(m_oldWndProc, hWnd, msg, wParam, lParam);
@@ -136,7 +147,7 @@ bool ImeContext::StaticMsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         return true;
 
     case WM_IME_SETCONTEXT:
-        //System::Diagnostics::Debug::WriteLine("WM_IME_SETCONTEXT");
+        //System::Diagnostics::Debug::WriteLine(System::String::Format("WM_IME_SETCONTEXT {0} {1}", wParam, lParam));
         //
         // We don't want anything to display, so we have to clear this
         //
