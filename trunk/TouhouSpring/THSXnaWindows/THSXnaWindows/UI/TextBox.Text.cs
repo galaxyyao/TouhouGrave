@@ -10,6 +10,7 @@ namespace TouhouSpring.UI
     {
         private bool m_inComposition;
         private TextRenderer.IFormattedText m_compositionString;
+        private Ime.ClauseAttribute[] m_compStrAttr;
         private int m_compositionCursorPos;
 
         public bool ImeEnabled
@@ -38,7 +39,7 @@ namespace TouhouSpring.UI
         {
         }
 
-        void ITextReceiver.OnComposition(string compositionString, int cursorPos)
+        void ITextReceiver.OnComposition(string compositionString, Ime.ClauseAttribute[] attr, int cursorPos)
         {
             m_inComposition = !String.IsNullOrEmpty(compositionString);
 
@@ -46,8 +47,9 @@ namespace TouhouSpring.UI
             {
                 m_compositionString = GameApp.Service<TextRenderer>().FormatText(compositionString, m_textFormatOptions);
             }
-
+            m_compStrAttr = attr;
             m_compositionCursorPos = cursorPos;
+
             MakeVisible();
         }
 

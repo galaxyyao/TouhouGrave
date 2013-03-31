@@ -124,11 +124,11 @@ namespace TouhouSpring.UI
             }
         }
 
-        private void ImeContext_OnComposition(string compositionString, int cursorPos)
+        private void ImeContext_OnComposition(string compositionString, Ime.ClauseAttribute[] attr, int cursorPos)
         {
             if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
             {
-                (Focus as ITextReceiver).OnComposition(compositionString, cursorPos);
+                (Focus as ITextReceiver).OnComposition(compositionString, attr, cursorPos);
             }
         }
 

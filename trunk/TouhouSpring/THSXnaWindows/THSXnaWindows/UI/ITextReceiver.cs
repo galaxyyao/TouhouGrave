@@ -11,7 +11,7 @@ namespace TouhouSpring.UI
         void OnChar(char code);
         void OnInputLanguageChange(string lang);
         void OnStartComposition();
-        void OnComposition(string compositionString, int cursorPos);
+        void OnComposition(string compositionString, Ime.ClauseAttribute[] attr, int cursorPos);
         void OnEndComposition();
     }
 }

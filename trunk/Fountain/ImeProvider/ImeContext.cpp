@@ -11,7 +11,7 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     }
     s_instance = this;
 
-    HWND hWnd = reinterpret_cast<HWND>(static_cast<void*>(windowHandle));
+    HWND hWnd = reinterpret_cast<HWND>(windowHandle.ToPointer());
 
     m_wndProc = gcnew WndProcDelegate(this, &ImeContext::WindowProcedure);
     System::IntPtr funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_wndProc);
@@ -72,7 +72,17 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
         switch (msg)
         {
         case WM_IME_COMPOSITION:
-            OnComposition(gcnew System::String(ImeUi_GetCompositionString()), ImeUi_GetImeCursorChars());
+            {
+                System::String^ compStr = gcnew System::String(ImeUi_GetCompositionString());
+                cli::array<ClauseAttribute>^ attrArray = gcnew cli::array<ClauseAttribute>(compStr->Length);
+                BYTE* attr = ImeUi_GetCompStringAttr();
+                assert(attr != NULL);
+                for (int i = 0; i < compStr->Length; ++i)
+                {
+                    attrArray[i] = safe_cast<ClauseAttribute>(attr[i]);
+                }
+                OnComposition(compStr, attrArray, ImeUi_GetImeCursorChars());
+            }
             break;
         case WM_IME_ENDCOMPOSITION:
             OnEndComposition();

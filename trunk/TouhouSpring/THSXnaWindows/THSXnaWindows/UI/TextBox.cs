@@ -193,7 +193,7 @@ namespace TouhouSpring.UI
                 var selectionEnd = m_selectionLength > 0 ? m_caretPosition + m_selectionLength : m_caretPosition;
 
                 // selection background
-                var selectionLeft = m_allText.MeasureWidth(0, selectionBegin) - scrollPosition;
+                var selectionLeft = m_allText.MeasureLeft(selectionBegin) - scrollPosition;
                 var selectionWidth = m_allText.MeasureWidth(selectionBegin, selectionEnd);
 
                 // clamp selection into window
@@ -265,12 +265,12 @@ namespace TouhouSpring.UI
             // composition string
             if (m_inComposition)
             {
-                // selection background
-                var caretPosition = m_allText.MeasureWidth(0, m_caretPosition) - scrollPosition;
+                // composition background
+                var caretPosition = m_allText.MeasureLeft(m_caretPosition) - scrollPosition;
                 var compositionLeft = caretPosition;
                 var compositionWidth = m_compositionString.MeasureWidth(0, m_compositionString.Text.Length);
 
-                // clamp selection into window
+                // clamp composition into window
                 if (compositionLeft < 0)
                 {
                     compositionWidth += compositionLeft;
@@ -295,12 +295,62 @@ namespace TouhouSpring.UI
                     drawOptions2.Offset.X = caretPosition;
                     e.TextRenderer.DrawText(m_compositionString, transform, drawOptions2);
 
-                    // underline
-                    e.RenderManager.Draw(new TexturedQuad(GameApp.Service<Resources>().DashLine)
+                    for (int i = 0; i < m_compStrAttr.Length; ++i)
                     {
-                        UVBounds = new Rectangle(0, 0, compositionWidth, GameApp.Service<Resources>().DashLine.Height),
-                        WrapUV = true
-                    }, new Rectangle(compositionLeft, Height - 3, compositionWidth, 2), transform);
+                        // get the clause range sharing the same attribute
+                        Ime.ClauseAttribute clauseAttr = m_compStrAttr[i];
+                        int j = i + 1;
+                        for (; j < m_compStrAttr.Length; ++j)
+                        {
+                            if (m_compStrAttr[j] != clauseAttr)
+                            {
+                                break;
+                            }
+                        }
+
+                        float clauseLeft = m_compositionString.MeasureLeft(i) + caretPosition;
+                        float clauseWidth = m_compositionString.MeasureWidth(i, j);
+                        // clamp clause into window
+                        if (clauseLeft < 0)
+                        {
+                            clauseWidth += clauseLeft;
+                            clauseLeft = 0;
+                        }
+                        if (clauseLeft + clauseWidth > InputAreaWidth)
+                        {
+                            clauseWidth = InputAreaWidth - clauseLeft;
+                        }
+                        if (clauseWidth > 0)
+                        {
+                            VirtualTexture lineTexture;
+                            float lineThickness;
+                            switch (clauseAttr)
+                            {
+                                case Ime.ClauseAttribute.Input:
+                                case Ime.ClauseAttribute.InputError:
+                                    lineTexture = GameApp.Service<Resources>().DashLine;
+                                    lineThickness = 1f;
+                                    break;
+                                case Ime.ClauseAttribute.TargetConverted:
+                                case Ime.ClauseAttribute.TargetNotConverted:
+                                    lineTexture = GameApp.Service<Resources>().SolidLine;
+                                    lineThickness = 2f;
+                                    break;
+                                default:
+                                    lineTexture = GameApp.Service<Resources>().SolidLine;
+                                    lineThickness = 1f;
+                                    break;
+                            }
+                            
+                            e.RenderManager.Draw(new TexturedQuad(lineTexture)
+                            {
+                                UVBounds = new Rectangle(0, 0, clauseWidth, GameApp.Service<Resources>().DashLine.Height),
+                                WrapUV = true
+                            }, new Rectangle(clauseLeft, Height - lineThickness - 1, clauseWidth, lineThickness), transform);
+                        }
+
+                        i = j - 1;
+                    }
 
                     // composition caret
                     if (((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)

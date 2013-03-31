@@ -5,9 +5,19 @@
 namespace TouhouSpring {
 namespace Ime {
 
+public enum class ClauseAttribute
+{
+    Input               = ATTR_INPUT,
+    InputError          = ATTR_INPUT_ERROR,
+    TargetConverted     = ATTR_TARGET_CONVERTED,
+    Converted           = ATTR_CONVERTED,
+    TargetNotConverted  = ATTR_TARGET_NOTCONVERTED,
+    FixedConverted      = ATTR_FIXEDCONVERTED
+};
+
 public delegate void KeyMessageHandler(System::Char code);
 public delegate void InputLangChangeHandler(System::String^ lang);
-public delegate void CompositionMessageHandler(System::String^ compositionString, int cursorPos);
+public delegate void CompositionMessageHandler(System::String^ compositionString, cli::array<ClauseAttribute>^ attributes, int cursorPos);
 public delegate void EndCompositionMessageHandler();
 
 public ref class ImeContext

@@ -55,6 +55,7 @@ namespace TouhouSpring.Graphics
             Size Size { get; }
             bool RichTextFormat { get; }
             float MeasureWidth(int begin, int end);
+            float MeasureLeft(int begin);
         }
 
         private class FormattedGlyph
@@ -108,6 +109,31 @@ namespace TouhouSpring.Graphics
                 }
 
                 return m_lines[0].m_glyphs[end - 1].m_pos.X + m_lines[0].m_glyphs[end - 1].m_width - m_lines[0].m_glyphs[begin].m_pos.X;
+            }
+
+            public float MeasureLeft(int begin)
+            {
+                if (m_lines.Length > 1)
+                {
+                    throw new InvalidOperationException("MeasureLeft can't be called on multi-line text.");
+                }
+                else if (RichTextFormat)
+                {
+                    throw new InvalidOperationException("MeasureLeft can't be called on RTF text.");
+                }
+                if (begin < 0 || begin > Text.Length)
+                {
+                    throw new ArgumentOutOfRangeException("begin");
+                }
+
+                if (begin == Text.Length)
+                {
+                    return begin != 0 ? m_lines[0].m_glyphs[begin - 1].m_pos.X + m_lines[0].m_glyphs[begin - 1].m_width : 0;
+                }
+                else
+                {
+                    return m_lines[0].m_glyphs[begin].m_pos.X;
+                }
             }
         }
 
