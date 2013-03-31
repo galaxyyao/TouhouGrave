@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Message>
+  <Type>Game</Type>
+  <Time>2013-4-1 00:00:00.000</Time>
+  <Game>
+    <Action>SelectCards</Action>
+    <SelectCards>
+      <Index>1</Index>
+      <Index>2</Index>
+      <Index>3</Index>
+    </SelectCards>
+  </Game>
+</Message>

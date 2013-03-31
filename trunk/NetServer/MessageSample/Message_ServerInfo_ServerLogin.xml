@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Message>
+  <Type>ServerInfo</Type>
+  <Time>2013-4-1 00:00:00.000</Time>
+  <Info>
+    <Action>Login</Action>
+    <Email>aaa@test.com</Email>
+    <Password>xxxxx</Password>
+  </Info>
+</Message>

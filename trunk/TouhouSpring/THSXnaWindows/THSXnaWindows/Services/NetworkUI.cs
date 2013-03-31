@@ -84,7 +84,7 @@ namespace TouhouSpring.Services
 
         void btnLogin_MouseButton1Down(object sender, UI.MouseEventArgs e)
         {
-            m_networkClient.SendMessage("startrandomgame");
+            m_networkClient.StartRandomGame();
         }
 
         public override void Update(float deltaTime)

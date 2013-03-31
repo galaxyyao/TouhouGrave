@@ -4,32 +4,45 @@ using System.Linq;
 using System.Text;
 using log4net;
 
-namespace GameServerChan
+namespace Common
 {
     public class Log4NetHelper
     {
-        private static bool _isConfigured = false;
-        private static ILog _logger;
+        private static Log4NetHelper m_instance;
+        private bool m_isConfigured = false;
+        private ILog m_logger;
 
-        public Log4NetHelper()
+        public static Log4NetHelper Instance
+        {
+            get
+            {
+                if (m_instance == null)
+                {
+                    m_instance = new Log4NetHelper();
+                }
+                return m_instance;
+            }
+        }
+
+        private  Log4NetHelper()
         {
             EnsureConfigured();
         }
 
         private void EnsureConfigured()
         {
-            if (!_isConfigured)
+            if (!m_isConfigured)
             {
                 log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.cfg.xml"));
-                _logger = LogManager.GetLogger("THSLogger");
-                _isConfigured = true;
+                m_logger = LogManager.GetLogger("THSLogger");
+                m_isConfigured = true;
             }
         }
 
         public void WriteErrorLog(string info)
         {
             EnsureConfigured();
-            _logger.Error(info);
+            m_logger.Error(info);
         }
     }
 }

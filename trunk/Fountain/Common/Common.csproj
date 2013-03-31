@@ -71,6 +71,7 @@
     <Compile Include="UI\EventRelay.cs" />
     <Compile Include="UI\IEventListener.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="XML.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

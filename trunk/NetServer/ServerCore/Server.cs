@@ -11,7 +11,7 @@ namespace TouhouSpring.ServerCore
     {
         private readonly int _port;
 
-        private const int s_maxConnNum = 100;
+        private const int s_maxConnNum = 500;
 
         private NetServer _server;
 

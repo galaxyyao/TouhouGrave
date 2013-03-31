@@ -54,8 +54,6 @@ namespace TouhouSpring.Network
                     case NetIncomingMessageType.VerboseDebugMessage:
                         {
                             string text = im.ReadString();
-                            //Output(text);
-                            Debug.Print(im.MessageType.ToString() + "-" + text);
                             if (text == "Resending Connect...")
                                 NetworkStatus = NetworkStatusEnum.ResendingConnect;
                         }
@@ -63,8 +61,7 @@ namespace TouhouSpring.Network
                     case NetIncomingMessageType.StatusChanged:
                         {
                             NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
-                            string text = status.ToString() + im.ReadString();
-                            Debug.Print(im.MessageType.ToString() + "-" + text);
+                            string message = im.ReadString();
 
                             if (status == NetConnectionStatus.Connected)
                             {
@@ -72,43 +69,15 @@ namespace TouhouSpring.Network
                             }
                             else if (status == NetConnectionStatus.Disconnected)
                             {
-                                //TODO: Show "Lost Connection" Information on UI
-                                //TODO: Abort Game Thread and return to Main Menu
+                                OnInteractionMessageArrived(message);
                                 NetworkStatus = NetworkStatusEnum.ConnectFailed;
                             }
                         }
                         break;
                     case NetIncomingMessageType.Data:
                         {
-                            string text = im.ReadString();
-                            Debug.Print(string.Format("{0} Received:{1}", _client.UniqueIdentifier, text));
-                            var parts = text.Split(' ');
-                            if (parts[0] == "enterroom")
-                            {
-                                RoomId = Convert.ToInt32(parts[1]);
-                                Seed = -1;
-                                SendMessage(string.Format("{0} {1}", "roomentered", RoomId));
-                            }
-                            else if (parts[0] == "waiting")
-                            {
-                            }
-                            else if (parts[0] == "disconnect")
-                            {
-                            }
-                            else if (parts[0] == "startgame")
-                            {
-                                RoomStatus = RoomStatusEnum.Starting;
-                                StartupIndex = Convert.ToInt32(parts[2]);
-                                SendMessage(string.Format("{0} {1}", "gamestarted", RoomId));
-                            }
-                            else if (parts[0] == "generateseed")
-                            {
-                                Seed = Convert.ToInt32(parts[2]);
-                            }
-                            else
-                            {
-                                OnInteractionMessageArrive(parts);
-                            }
+                            string message = im.ReadString();
+                            OnInteractionMessageArrived(message);
                         }
                         break;
                     default:
@@ -116,6 +85,13 @@ namespace TouhouSpring.Network
                         break;
                 }
             }
+        }
+
+        public void StartRandomGame()
+        {
+            SendMessage(string.Format(
+                "<Message><Type>Game</Type><Time>{0}</Time><Info><Action>StartRandomGame</Action></Info></Message>"
+                , DateTime.Now));
         }
     }
 }

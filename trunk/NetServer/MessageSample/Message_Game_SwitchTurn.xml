@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Message>
+  <Type>Game</Type>
+  <Time>2013-4-1 00:00:00.000</Time>
+  <Game>
+    <Action>SwitchTurn</Action>
+  </Game>
+</Message>

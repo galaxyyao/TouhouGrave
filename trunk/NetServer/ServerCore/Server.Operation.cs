@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Lidgren.Network;
 using System.Threading;
+using Common;
 
 namespace TouhouSpring.ServerCore
 {
@@ -17,6 +18,7 @@ namespace TouhouSpring.ServerCore
 
             _server = new NetServer(config);
             _server.Start();
+            InitializeMessageActionsTable();
         }
 
         public void Listen()
@@ -56,7 +58,9 @@ namespace TouhouSpring.ServerCore
                                     && _roomList[disconnectedRoomId].Status == Room.RoomStatus.Full)
                                 {
                                     SendMessage(_roomList[disconnectedRoomId].GetOpponentPlayerConnection(disconnectedPlayerUid)
-                                        , string.Format("{0} disconnect", disconnectedRoomId));
+                                        , string.Format("<Message><Type>ServerInfo</Type><Time>{0}</Time><Info><Action>EnemyDisconnect</Action></Info></Message>"
+                                        , DateTime.Now)
+                                        );
                                     _roomList[disconnectedRoomId] = null;
                                     _roomList.Remove(disconnectedRoomId);
                                 }
@@ -67,12 +71,12 @@ namespace TouhouSpring.ServerCore
                     case NetIncomingMessageType.Data:
                         {
                             string text = im.ReadString();
-                            Console.WriteLine(text);
                             InterpretMessage(im.SenderConnection, text);
                         }
                         break;
                     default:
-                        Console.WriteLine(string.Format("Unhandled type: {0} {1} bytes {2}|{3}"
+                        Log4NetHelper.Instance.WriteErrorLog(
+                            string.Format("Unhandled type: {0} {1} bytes {2}|{3}"
                             , im.MessageType
                             , im.LengthBytes
                             , im.DeliveryMethod
@@ -128,61 +132,11 @@ namespace TouhouSpring.ServerCore
             }
         }
 
-        private void InterpretMessage(NetConnection senderConn, string message)
-        {
-            List<string> parts = message.Split(' ').ToList();
-            switch (parts[0])
-            {
-                case "roomentered":
-                case "gamestarted":
-                    break;
-                case "startrandomgame":
-                    {
-                        int enteredRoomId = UserEnter(senderConn);
-                        SendMessage(senderConn, string.Format("enterroom {0}", enteredRoomId));
-                        if (_roomList[enteredRoomId].Status == Room.RoomStatus.Idle)
-                        {
-                            SendMessage(senderConn, string.Format("waiting {0}", enteredRoomId));
-                        }
-                        else
-                        {
-                            int seed = gameStartSeed.Next();
-                            SendMessage(enteredRoomId, string.Format("generateseed {0} {1}", enteredRoomId, seed));
-                            foreach (var playerConn in _roomList[enteredRoomId].PlayerConns)
-                            {
-                                //SendMessage(playerConn
-                                //    , string.Format("{0} startgame {1}", enteredRoomId
-                                //    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2));//Random who start the 1st turn
-                                SendMessage(playerConn
-                                    , string.Format("startgame {0} {1}", enteredRoomId
-                                    , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier)));//Temporarily let playerindex be the same as enter room order
-
-                            }
-                        }
-                    }
-                    break;
-                case "switchturn":
-                case "sacrifice":
-                case "playcard":
-                case "attackcard":
-                case "attackplayer":
-                case "activateassist":
-                case "redeem":
-                case "selectcards":
-                case "selectnumber":
-                    {
-                        int roomId = GetRoomIdByUid(senderConn.RemoteUniqueIdentifier);
-                        SendMessage(_roomList[roomId].GetOpponentPlayerConnection(senderConn.RemoteUniqueIdentifier) , message);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
         public void Shutdown()
         {
-            _server.Shutdown("0 servershutdown");
+            _server.Shutdown(string.Format(
+                "<Message><Type>ServerInfo</Type><Time>{0}</Time><Info><Action>ServerShutDown</Action></Info></Message>"
+                , DateTime.Now));
         }
     }
 }

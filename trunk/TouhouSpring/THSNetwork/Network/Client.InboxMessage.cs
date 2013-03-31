@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lidgren.Network;
-using System.Diagnostics;
+using System.Xml.Linq;
+
 
 namespace TouhouSpring.Network
 {
     public partial class Client
     {
-        private Dictionary<string, Action<string[]>> m_interactionActions = new Dictionary<string, Action<string[]>>();
+        private Dictionary<string, Action<XDocument>> m_interactionActions = new Dictionary<string, Action<XDocument>>();
 
         private Interactions.BaseInteraction m_remoteInteraction;
-        private Queue<string[]> m_interactionMessageQueue = new Queue<string[]>();
+        private Queue<string> m_interactionMessageQueue = new Queue<string>();
 
         public void RemoteEnterInteraction(Interactions.BaseInteraction io)
         {
-            Debug.Assert(m_remoteInteraction == null);
+            if (m_remoteInteraction == null)
+            {
+                throw new InvalidDataException("Remote interaction should not be null");
+            }
             m_remoteInteraction = io;
             if (m_interactionMessageQueue.Count != 0)
             {
@@ -27,46 +31,115 @@ namespace TouhouSpring.Network
 
         private void InitializeInteractionActionsTable()
         {
-            m_interactionActions.Add("switchturn", InterpretMessageSwitchTurn);
-            m_interactionActions.Add("sacrifice", InterpretMessageSacrifice);
-            m_interactionActions.Add("playcard", InterpretMessagePlayCard);
-            m_interactionActions.Add("attackcard", InterpretMessageAttackCard);
-            m_interactionActions.Add("attackplayer", InterpretMessageAttackPlayer);
-            m_interactionActions.Add("activateassist", InterpretMessageActivateAssist);
-            m_interactionActions.Add("castspell", InterpretMessageCastSpell);
-            m_interactionActions.Add("redeem", InterpretMessageRedeem);
-            m_interactionActions.Add("selectcards", InterpretMessageSelectCards);
-            m_interactionActions.Add("selectnumber", InterpretMessageSelectNumber);
+            //Type
+            m_interactionActions.Add("ServerInfo", InterpretMessageAction);
+            m_interactionActions.Add("Game", InterpretMessageAction);
+
+            //ServerInfo
+            m_interactionActions.Add("ServerShutDown", InterpretMessageServerShutDown);
+            m_interactionActions.Add("EnterRoom", InterpretMessageEnterRoom);
+            m_interactionActions.Add("WaitingEnemy", InterpretMessageWaitingEnemy);
+            m_interactionActions.Add("EnemyDisconnect", InterpretMessageEnemyDisconnect);
+            m_interactionActions.Add("StartGame", InterpretMessageStartGame);
+            m_interactionActions.Add("GenerateSeed", InterpretMessageEnemyGenerateSeed);
+
+            //Game
+            m_interactionActions.Add("SwitchTurn", InterpretMessageSwitchTurn);
+            m_interactionActions.Add("Sacrifice", InterpretMessageSacrifice);
+            m_interactionActions.Add("PlayCard", InterpretMessagePlayCard);
+            m_interactionActions.Add("AttackCard", InterpretMessageAttackCard);
+            m_interactionActions.Add("AttackPlayer", InterpretMessageAttackPlayer);
+            m_interactionActions.Add("ActivateAssist", InterpretMessageActivateAssist);
+            m_interactionActions.Add("Castspell", InterpretMessageCastSpell);
+            m_interactionActions.Add("Redeem", InterpretMessageRedeem);
+            m_interactionActions.Add("SelectCards", InterpretMessageSelectCards);
+            m_interactionActions.Add("SelectNumber", InterpretMessageSelectNumber);
         }
 
-        private void OnInteractionMessageArrive(string[] messageParts)
+        private void OnInteractionMessageArrived(string message)
         {
             if (m_remoteInteraction == null)
             {
-                m_interactionMessageQueue.Enqueue(messageParts);
+                m_interactionMessageQueue.Enqueue(message);
             }
             else
             {
-                ProcessInteractionMessage(messageParts);
+                ProcessInteractionMessage(message);
             }
         }
 
-        private void ProcessInteractionMessage(string[] parts)
+        private void ProcessInteractionMessage(string message)
         {
-            Action<string[]> action;
-            if (m_interactionActions.TryGetValue(parts[0], out action))
+            Action<XDocument> action;
+            XDocument xmlMessage = XDocument.Parse(message);
+            if (m_interactionActions.TryGetValue(xmlMessage.Root.Elements("Type").FirstOrDefault().Value, out action))
             {
-                action(parts);
+                action(xmlMessage);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        #region Interaction message actions
+
+        #region Type
+        private void InterpretMessageAction(XDocument xmlMessage)
+        {
+            Action<XDocument> action;
+            if (m_interactionActions.TryGetValue(xmlMessage.Root.Descendants("Action").FirstOrDefault().Value, out action))
+            {
+                action(xmlMessage);
             }
             else
             {
                 throw new NotImplementedException("The method for {0} has not been implemented.");
             }
         }
+        #endregion
 
-        #region Interaction message actions
 
-        private void InterpretMessageSwitchTurn(string[] parts)
+        #region ServerInfo
+
+        private void InterpretMessageServerShutDown(XDocument xmlMessage)
+        {
+            //TODO: End game if game is running
+            //TODO: Logout chat
+            //TODO: Pop warning message
+        }
+
+        private void InterpretMessageEnterRoom(XDocument xmlMessage)
+        {
+            RoomId = XML.GetFirstDescendantsValue<Int32>(xmlMessage, "RoomId");
+            Seed = -1;
+        }
+
+        private void InterpretMessageWaitingEnemy(XDocument xmlMessage)
+        {
+            //TODO: Show waiting information
+        }
+
+        private void InterpretMessageEnemyDisconnect(XDocument xmlMessage)
+        {
+            //TODO: show enemy disconnect information
+            //TODO: abort game
+        }
+
+        private void InterpretMessageStartGame(XDocument xmlMessage)
+        {
+            RoomStatus = RoomStatusEnum.Starting;
+            StartupIndex = XML.GetFirstDescendantsValue<Int32>(xmlMessage, "StartGameIndex");
+        }
+
+        private void InterpretMessageEnemyGenerateSeed(XDocument xmlMessage)
+        {
+            Seed = XML.GetFirstDescendantsValue<Int32>(xmlMessage, "Seed");
+        }
+        #endregion
+
+        #region Game
+        private void InterpretMessageSwitchTurn(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -78,7 +151,7 @@ namespace TouhouSpring.Network
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageSacrifice(string[] parts)
+        private void InterpretMessageSacrifice(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -86,15 +159,12 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var sacrificedCard = tacticalPhase.SacrificeCandidates[Convert.ToInt32(parts[1])];
+            var sacrificedCard = tacticalPhase.SacrificeCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "SacrificeIndex")];
             tacticalPhase.RespondSacrifice(sacrificedCard);
-            Debug.Print(string.Format("Sacrificed {0}", sacrificedCard.Guid));
-            Debug.Print(string.Format("SelectCardsCandidates:{0}"
-                , string.Join(",", tacticalPhase.SacrificeCandidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessagePlayCard(string[] parts)
+        private void InterpretMessagePlayCard(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -102,15 +172,12 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var playedCard = tacticalPhase.PlayCardCandidates[Convert.ToInt32(parts[1])];
+            var playedCard = tacticalPhase.PlayCardCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "PlayCardIndex")];
             tacticalPhase.RespondPlay(playedCard);
-            Debug.Print(string.Format("Played {0}", playedCard.Guid));
-            Debug.Print(string.Format("PlayCardsCandidates:{0}"
-                , string.Join(",", tacticalPhase.PlayCardCandidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageAttackCard(string[] parts)
+        private void InterpretMessageAttackCard(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -118,18 +185,13 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var attackerCard = tacticalPhase.AttackerCandidates[Convert.ToInt32(parts[1])];
-            var defenderCard = tacticalPhase.DefenderCandidates[Convert.ToInt32(parts[2])];
+            var attackerCard = tacticalPhase.AttackerCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "AttackerIndex")];
+            var defenderCard = tacticalPhase.DefenderCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "DefenderIndex")];
             tacticalPhase.RespondAttackCard(attackerCard, defenderCard);
-            Debug.Print(string.Format("{0} attacked {1}", attackerCard.Guid, defenderCard.Guid));
-            Debug.Print(string.Format("AttackerCandidates:{0}"
-                , string.Join(",", tacticalPhase.AttackerCandidates.Select(candidate => candidate.Guid.ToString()))));
-            Debug.Print(string.Format("DefenderCandidates:{0}"
-                , string.Join(",", tacticalPhase.DefenderCandidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageAttackPlayer(string[] parts)
+        private void InterpretMessageAttackPlayer(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -137,16 +199,13 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var attackerCard = tacticalPhase.AttackerCandidates[Convert.ToInt32(parts[1])];
-            var playerBeingAttacked = tacticalPhase.Game.Players[Convert.ToInt32(parts[2])];
+            var attackerCard = tacticalPhase.AttackerCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "AttackerIndex")];
+            var playerBeingAttacked = tacticalPhase.Game.Players[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "PlayerIndex")];
             tacticalPhase.RespondAttackPlayer(attackerCard, playerBeingAttacked);
-            Debug.Print(string.Format("{0} attacked player {1}", attackerCard.Guid, playerBeingAttacked.Name));
-            Debug.Print(string.Format("AttackerCandidates:{0}"
-                , string.Join(",", tacticalPhase.AttackerCandidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageActivateAssist(string[] parts)
+        private void InterpretMessageActivateAssist(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -154,15 +213,12 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var assistCard = tacticalPhase.ActivateAssistCandidates[Convert.ToInt32(parts[1])];
+            var assistCard = tacticalPhase.ActivateAssistCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "AssistIndex")];
             tacticalPhase.RespondActivate(assistCard);
-            Debug.Print(string.Format("Activated {0}", assistCard.Guid));
-            Debug.Print(string.Format("AssistCandidates:{0}"
-                , string.Join(",", tacticalPhase.ActivateAssistCandidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageCastSpell(string[] parts)
+        private void InterpretMessageCastSpell(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -170,15 +226,12 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var spell = tacticalPhase.CastSpellCandidates[Convert.ToInt32(parts[1])];
+            var spell = tacticalPhase.CastSpellCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "CastSpellIndex")];
             tacticalPhase.RespondCast(spell);
-            Debug.Print(string.Format("Casted {0}", spell.ToString()));
-            Debug.Print(string.Format("SpellCandidates:{0}"
-                , string.Join(",", tacticalPhase.CastSpellCandidates.Select(candidate => candidate.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageRedeem(string[] parts)
+        private void InterpretMessageRedeem(XDocument xmlMessage)
         {
             var tacticalPhase = m_remoteInteraction as Interactions.TacticalPhase;
             if (tacticalPhase == null)
@@ -186,15 +239,12 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var redeemedCard = tacticalPhase.RedeemCandidates[Convert.ToInt32(parts[1])];
+            var redeemedCard = tacticalPhase.RedeemCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "RedeemIndex")];
             tacticalPhase.RespondRedeem(redeemedCard);
-            Debug.Print(string.Format("Activated {0}", redeemedCard.Guid));
-            Debug.Print(string.Format("AssistCandidates:{0}"
-                , string.Join(",", tacticalPhase.RedeemCandidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageSelectCards(string[] parts)
+        private void InterpretMessageSelectCards(XDocument xmlMessage)
         {
             var selectCards = m_remoteInteraction as Interactions.SelectCards;
             if (selectCards == null)
@@ -202,29 +252,25 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            if (parts.Length == 1)
+            List<int> indexes = XML.GetDescendantsValues<Int32>(xmlMessage, "Index");
+            if (indexes.Count() == 0)
             {
                 selectCards.Respond(Indexable.Empty<CardInstance>());
-                Debug.Print("Selected nothing");
             }
             else
             {
                 var selectedCards = new List<CardInstance>();
-                for (int i = 1; i < parts.Length; i++)
+                for (int i = 0; i < indexes.Count; i++)
                 {
-                    var selectedCard = selectCards.Candidates[Convert.ToInt32(parts[i])];
+                    var selectedCard = selectCards.Candidates[indexes[i]];
                     selectedCards.Add(selectedCard);
-                    Debug.Print(string.Format("Selected {0}", selectedCard.Guid));
                 }
                 selectCards.Respond(selectedCards.ToIndexable());
             }
-
-            Debug.Print(string.Format("SelectCandidates:{0}",
-                string.Join(",", selectCards.Candidates.Select(candidate => candidate.Guid.ToString()))));
             m_remoteInteraction = null;
         }
 
-        private void InterpretMessageSelectNumber(string[] parts)
+        private void InterpretMessageSelectNumber(XDocument xmlMessage)
         {
             var selectNumber = m_remoteInteraction as Interactions.SelectNumber;
             if (selectNumber == null)
@@ -232,19 +278,23 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            if (parts[1] == "null")
+            string num = XML.GetFirstDescendantsValue<string>(xmlMessage, "Number");
+            if (string.IsNullOrEmpty(num))
             {
                 selectNumber.Respond(null);
-                Debug.Print("SelectNumber: null");
             }
             else
             {
-                selectNumber.Respond(Int32.Parse(parts[1]));
-                Debug.Print(string.Format("SelectNumber: {0}", parts[1]));
+                int number;
+                if (!Int32.TryParse(num, out number))
+                {
+                    throw new InvalidCastException("Invalid Number");
+                }
+                selectNumber.Respond(number);
             }
             m_remoteInteraction = null;
         }
-
+        #endregion
         #endregion
     }
 }

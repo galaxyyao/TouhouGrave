@@ -8,8 +8,8 @@
     <ProjectGuid>{40E55A01-5429-4571-8822-890ABB1490E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServerCore</RootNamespace>
-    <AssemblyName>ServerCore</AssemblyName>
+    <RootNamespace>TouhouSpring.ServerCore</RootNamespace>
+    <AssemblyName>TouhouSpring.ServerCore</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,6 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="Server.InterpretMessage.cs" />
     <Compile Include="Server.Operation.cs" />
     <Compile Include="Server.Room.cs" />
   </ItemGroup>
@@ -50,6 +51,10 @@
     <ProjectReference Include="..\..\Third-parties\Lidgren.Network\Lidgren.Network.csproj">
       <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
       <Name>Lidgren.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{5D2150B3-83E1-4C1E-A553-E2569484563B}</Project>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
