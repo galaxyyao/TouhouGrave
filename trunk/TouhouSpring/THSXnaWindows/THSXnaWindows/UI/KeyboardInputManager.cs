@@ -60,7 +60,7 @@ namespace TouhouSpring.UI
                     SetFocus(m_focusableItems[0]);
                 }
             }
-            else
+            else if (Focus != null)
             {
                 Focus.OnFocusedKeyPressed(e);
             }

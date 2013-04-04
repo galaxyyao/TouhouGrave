@@ -112,6 +112,7 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
     {
         if (wParam != 0)
         {
+            ::SetFocus(hWnd); // IME only activates if the window gets the focus...
             OnAppActivate();
         }
         else
