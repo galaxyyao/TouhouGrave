@@ -179,7 +179,6 @@
     <Compile Include="Style\Values\Length.cs" />
     <Compile Include="Style\Values\Stretch.cs" />
     <Compile Include="Style\Values\VerticalAlignment.cs" />
-    <Compile Include="MatrixHelper.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\CardControl.Addin.cs" />
     <Compile Include="UI\CardControl.Binding.cs" />
@@ -200,8 +199,8 @@
     <None Include="UI\CardControlAddins\SpellButtons.cs" />
     <Compile Include="UI\ComposedImage.cs" />
     <Compile Include="UI\FocusableProxy.cs" />
-    <Compile Include="UI\FocusManager.cs" />
     <Compile Include="UI\KeyboardEventArgs.cs" />
+    <Compile Include="UI\KeyboardInputManager.cs" />
     <Compile Include="UI\KeyboardState.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\MenuItem.cs" />
@@ -219,8 +218,11 @@
     <Compile Include="UI\RenderableProxy.cs" />
     <Compile Include="UI\RenderEventArgs.cs" />
     <Compile Include="UI\TextBox.cs" />
-    <Compile Include="UI\TextBox.TranslateChar.cs" />
+    <Compile Include="UI\TextBox.Resources.cs" />
+    <Compile Include="UI\TextBox.Text.cs" />
+    <Compile Include="UI\ITextReceiver.cs" />
     <Compile Include="UI\TransformNode.cs" />
+    <Compile Include="XnaHelpers.cs" />
     <Compile Include="XnaUIController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +241,10 @@
     <ProjectReference Include="..\..\..\Fountain\Common\Common.csproj">
       <Project>{9475F61B-11D2-419E-A302-2814B04F83AC}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Fountain\ImeProvider\ImeProvider.vcxproj">
+      <Project>{4731444F-DE0C-4E7C-986C-DB7F4CDF916D}</Project>
+      <Name>ImeProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Fountain\Particle\Particle.csproj">
       <Project>{68F40942-0B87-4A8A-874C-76D90B68877A}</Project>

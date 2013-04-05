@@ -10,21 +10,21 @@ namespace TouhouSpring.Services
     [RenderDependency(typeof(Graphics.Scene))]
     class UIManager : GameService
     {
-        private class FocusRoot : UI.EventDispatcher, UI.IFocusGroup
+        private class KeyboardInputRoot : UI.EventDispatcher, UI.IFocusGroup
         {
-            public UI.FocusManager FocusManager
+            public UI.KeyboardInputManager KeyboardInputManager
             {
                 get; private set;
             }
 
-            public FocusRoot()
+            public KeyboardInputRoot(Ime.ImeContext imeContext)
             {
-                FocusManager = new UI.FocusManager();
+                KeyboardInputManager = new UI.KeyboardInputManager(imeContext);
             }
         }
-        
+
+        private Ime.ImeContext m_imeContext;
         private UI.MouseState m_lastMouseState = new UI.MouseState(0, 0, false, false);
-        private UI.KeyboardState m_lastKeyboardState = new UI.KeyboardState();
 
         public UI.EventDispatcher Root
         {
@@ -43,7 +43,16 @@ namespace TouhouSpring.Services
 
         public override void Startup()
         {
-            Root = new FocusRoot();
+            m_imeContext = new Ime.ImeContext(GameApp.Instance.Window.Handle);
+            // Ime.ImeContext provides windows messages
+            m_imeContext.OnKeyDown += new Ime.KeyMessageHandler(WindowsMessage_OnKeyDown);
+            m_imeContext.OnKeyUp += new Ime.KeyMessageHandler(WindowsMessage_OnKeyUp);
+            Root = new KeyboardInputRoot(m_imeContext);
+        }
+
+        public override void Shutdown()
+        {
+            m_imeContext.Dispose();
         }
 
         public override void Update(float deltaTime)
@@ -53,22 +62,9 @@ namespace TouhouSpring.Services
                 return;
             }
 
-            // put the FocusManager to tail
-            (Root as FocusRoot).FocusManager.Dispatcher = null;
-            (Root as FocusRoot).FocusManager.Dispatcher = Root;
-
-            var currentKeyboardState = new UI.KeyboardState(GameApp.Instance.KeyboardState);
-            bool[] pressedKeys, releasedKeys;
-            UI.KeyboardState.Differentiate(m_lastKeyboardState, currentKeyboardState, out pressedKeys, out releasedKeys);
-            if (pressedKeys.Contains(true))
-            {
-                Root.RaiseEvent(new UI.KeyPressedEventArgs(currentKeyboardState, pressedKeys));
-            }
-            if (releasedKeys.Contains(true))
-            {
-                Root.RaiseEvent(new UI.KeyReleasedEventArgs(currentKeyboardState, releasedKeys));
-            }
-            m_lastKeyboardState = currentKeyboardState;
+            // put the KeyboardInputManager to tail
+            (Root as KeyboardInputRoot).KeyboardInputManager.Dispatcher = null;
+            (Root as KeyboardInputRoot).KeyboardInputManager.Dispatcher = Root;
 
             var xnaMouseState = GameApp.Instance.MouseState;
             bool btn1Pressed = xnaMouseState.LeftButton == ButtonState.Pressed;
@@ -100,6 +96,16 @@ namespace TouhouSpring.Services
         public override void Render()
         {
             Root.RaiseEvent(new UI.RenderEventArgs());
+        }
+
+        private void WindowsMessage_OnKeyDown(char code)
+        {
+            Root.RaiseEvent(new UI.KeyPressedEventArgs(new UI.KeyboardState(GameApp.Instance.KeyboardState), code));
+        }
+
+        private void WindowsMessage_OnKeyUp(char code)
+        {
+            Root.RaiseEvent(new UI.KeyReleasedEventArgs(new UI.KeyboardState(GameApp.Instance.KeyboardState), code));
         }
     }
 }

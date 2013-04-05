@@ -104,6 +104,7 @@ namespace TouhouSpring.Graphics
             foreach (var pass in m_effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
+                Device.SamplerStates[0] = quad.WrapUV ? SamplerState.LinearWrap : SamplerState.LinearClamp;
                 Device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
             }
 

@@ -8,6 +8,7 @@ namespace TouhouSpring
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        [STAThread]
         static void Main(string[] args)
         {
             using (GameApp game = new GameApp())

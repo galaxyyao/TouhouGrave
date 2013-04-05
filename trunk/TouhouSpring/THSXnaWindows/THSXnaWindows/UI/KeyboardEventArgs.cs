@@ -20,29 +20,29 @@ namespace TouhouSpring.UI
 
     class KeyPressedEventArgs : KeyboardEventArgs
     {
-        public IIndexable<bool> KeyPressed
+        public char KeyPressed
         {
             get; private set;
         }
 
-        public KeyPressedEventArgs(KeyboardState keyboardState, bool[] pressedKeys)
+        public KeyPressedEventArgs(KeyboardState keyboardState, char keyPressed)
             : base(keyboardState)
         {
-            KeyPressed = pressedKeys.ToIndexable();
+            KeyPressed = keyPressed;
         }
     }
 
     class KeyReleasedEventArgs : KeyboardEventArgs
     {
-        public IIndexable<bool> KeyReleased
+        public char KeyReleased
         {
             get; private set;
         }
 
-        public KeyReleasedEventArgs(KeyboardState keyboardState, bool[] releasedKeys)
+        public KeyReleasedEventArgs(KeyboardState keyboardState, char keyReleased)
             : base(keyboardState)
         {
-            KeyReleased = releasedKeys.ToIndexable();
+            KeyReleased = keyReleased;
         }
     }
 }

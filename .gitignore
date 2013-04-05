@@ -2,6 +2,9 @@
 /trunk/TouhouSpring/_ReSharper.TouhouSpring
 /trunk/Fountain/Common/bin/*
 /trunk/Fountain/Common/obj/*
+/trunk/Fountain/ImeProvider/Debug/*
+/trunk/Fountain/ImeProvider/Output/*
+/trunk/Fountain/ImeProvider/Release/*
 /trunk/Fountain/Particle/bin/*
 /trunk/Fountain/Particle/obj/*
 /trunk/Fountain/ParticleWorkshop/bin/*
@@ -68,4 +71,8 @@
 *.csproj.user
 *.contentproj.user
 *.DotSettings.user
+*.vcxproj.user
+*.opensdf
+*.sdf
+*.aps
 Thumbs.db
