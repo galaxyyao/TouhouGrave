@@ -135,15 +135,22 @@ namespace TouhouSpring.UI
                     }
                     sb.Append("\n");
                 }
-                sb.Append(">");
-                sb.Append(data.PageIndex + 1);
-                sb.Append("/");
-                sb.Append(data.PageCount);
+                if (data.PageCount != 0)
+                {
+                    sb.Append(">");
+                    sb.Append(data.PageIndex + 1);
+                    sb.Append("/");
+                    sb.Append(data.PageCount);
+                }
                 sb.Append("[/color]");
 
                 // get the target clause
                 var candTarget = m_compositionData.Attributes.FindIndex(
                     attr => attr == Ime.ClauseAttribute.TargetConverted || attr == Ime.ClauseAttribute.TargetNotConverted);
+                if (candTarget == -1)
+                {
+                    candTarget = m_compositionData.Caret;
+                }
                 var candListLeft = m_allText.MeasureLeft(m_caretPosition) + m_compositionString.MeasureLeft(candTarget) - m_scrollPosition;
 
                 m_candidateListText = GameApp.Service<TextRenderer>().FormatText(sb.ToString(), m_candidateListFormatOptions);

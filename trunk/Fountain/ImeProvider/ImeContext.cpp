@@ -1,4 +1,5 @@
 #include "ImeContext.h"
+#include <malloc.h>
 
 using namespace System::Collections::Generic;
 
@@ -41,6 +42,8 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     }
 
     ImeUi_EnableIme( true );
+
+    m_candidateListFromImm = false;
 }
 
 ImeContext::~ImeContext()
@@ -92,6 +95,11 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
                 }
                 data.Caret = ImeUi_GetImeCursorChars();
                 OnCompositionUpdate(data);
+
+                if (!ImeUi_IsShowCandListWindow())
+                {
+                    UpdateCandidateListFromImm(hWnd);
+                }
             }
             break;
         case WM_IME_ENDCOMPOSITION:
@@ -202,7 +210,7 @@ void ImeContext::ImeOnCandidateListUpdate()
     data.IsOpened = ImeUi_IsShowCandListWindow() && ImeUi_GetCandidateCount() > 0;
     if (data.IsOpened)
     {
-        List<System::String^>^ candidates = gcnew List<System::String^>();
+        List<System::String^>^ candidates = gcnew List<System::String^>(ImeUi_GetCandidateCount());
         for (UINT i = 0; i < ImeUi_GetCandidateCount(); ++i)
         {
             TCHAR* str = ImeUi_GetCandidate(i);
@@ -218,6 +226,49 @@ void ImeContext::ImeOnCandidateListUpdate()
         data.PageCount = safe_cast<int>(ImeUi_GetCandidatePageCount());
     }
     OnCandidateListUpdate(data);
+}
+
+void ImeContext::UpdateCandidateListFromImm(HWND hWnd)
+{
+    HIMC himc = ::ImmGetContext(hWnd);
+    if (himc == NULL)
+    {
+        return;
+    }
+
+    CandidateListData data;
+
+    DWORD buffSize = ::ImmGetCandidateList(himc, 0, NULL, 0);
+    if (buffSize > 0)
+    {
+        ::CANDIDATELIST* pCandList = reinterpret_cast<::CANDIDATELIST*>(_alloca(buffSize));
+        ::ImmGetCandidateList(himc, 0, pCandList, buffSize);
+
+        if (pCandList->dwCount > 0)
+        {
+            data.IsOpened = true;
+            List<System::String^>^ candidates = gcnew List<System::String^>(pCandList->dwCount);
+            for (UINT i = 0; i < pCandList->dwCount; ++i)
+            {
+                const TCHAR* str = reinterpret_cast<const TCHAR*>(reinterpret_cast<char*>(pCandList) + pCandList->dwOffset[i]);
+                candidates->Add(gcnew System::String(str));
+            }
+            data.Candidates = candidates->ToArray();
+            data.Selection = safe_cast<int>(pCandList->dwSelection);
+            data.PageIndex = safe_cast<int>(0);
+            data.PageCount = safe_cast<int>(0);
+        }
+
+        _freea(pCandList);
+    }
+
+    ::ImmReleaseContext(hWnd, himc);
+
+    if (data.IsOpened || m_candidateListFromImm)
+    {
+        m_candidateListFromImm = data.IsOpened;
+        OnCandidateListUpdate(data);
+    }
 }
 
 }

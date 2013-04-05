@@ -74,6 +74,7 @@ private:
     bool StaticMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     void ImeOnInputLangChange();
     void ImeOnCandidateListUpdate();
+    void UpdateCandidateListFromImm(HWND hWnd);
 
     static ImeContext^ s_instance;
     bool m_initialized;
@@ -81,6 +82,7 @@ private:
     WNDPROC m_oldWndProc;
     System::Action^ m_imeOnInputLangChange;
     System::Action^ m_imeOnCandidateListUpdate;
+    bool m_candidateListFromImm;
 };
 
 }
