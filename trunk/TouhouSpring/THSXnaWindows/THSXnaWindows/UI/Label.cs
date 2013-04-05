@@ -42,11 +42,12 @@ namespace TouhouSpring.UI
             TextColor = XnaColor.Black;
         }
 
-        public void OnRender(RenderEventArgs e)
+        public virtual void OnRender(RenderEventArgs e)
         {
             if (FormattedText != null)
             {
                 var transform = TransformToGlobal;
+
                 Graphics.TextRenderer.DrawOptions drawOptions;
                 if (Shadowed)
                 {
