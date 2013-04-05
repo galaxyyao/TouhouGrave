@@ -139,7 +139,10 @@ namespace TouhouSpring
                 Direction = pt2 - pt1
             };
         }
+    }
 
+    static class ColorHelper
+    {
         public static string ToHex(this Color color, bool rgba)
         {
             uint value = ((uint)color.R << 16) + ((uint)color.G << 8) + (uint)color.B;

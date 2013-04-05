@@ -178,7 +178,6 @@
     <Compile Include="Style\Values\Length.cs" />
     <Compile Include="Style\Values\Stretch.cs" />
     <Compile Include="Style\Values\VerticalAlignment.cs" />
-    <Compile Include="MatrixHelper.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\CardControl.Addin.cs" />
     <Compile Include="UI\CardControl.Binding.cs" />
@@ -222,6 +221,7 @@
     <Compile Include="UI\TextBox.Text.cs" />
     <Compile Include="UI\ITextReceiver.cs" />
     <Compile Include="UI\TransformNode.cs" />
+    <Compile Include="XnaHelpers.cs" />
     <Compile Include="XnaUIController.cs" />
   </ItemGroup>
   <ItemGroup>
