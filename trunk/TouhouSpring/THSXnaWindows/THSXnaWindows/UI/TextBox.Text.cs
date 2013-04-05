@@ -142,6 +142,10 @@ namespace TouhouSpring.UI
                     sb.Append("/");
                     sb.Append(data.PageCount);
                 }
+                else
+                {
+                    sb.Remove(sb.Length - 1, 1);
+                }
                 sb.Append("[/color]");
 
                 // get the target clause
