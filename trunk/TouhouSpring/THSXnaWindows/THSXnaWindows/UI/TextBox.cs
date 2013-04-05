@@ -183,6 +183,11 @@ namespace TouhouSpring.UI
             TextChanged();
         }
 
+        public override void OnMouseButton1Up(MouseEventArgs e)
+        {
+            m_focusableProxy.SetFocus();
+        }
+
         public void OnRender(RenderEventArgs e)
         {
             var scrollPosition = m_scrollPosition;
