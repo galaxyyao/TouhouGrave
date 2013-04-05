@@ -246,7 +246,7 @@ namespace TouhouSpring.UI
 
             // caret
             m_caretBlinkTimer += GameApp.Instance.TargetElapsedTime.Milliseconds;
-            if (m_isFocused && !m_inComposition && ((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
+            if (m_isFocused && !m_compositionData.InComposition && ((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
             {
                 var caretPosition = m_allText.MeasureWidth(0, m_caretPosition) - scrollPosition;
                 caretPosition = MathHelper.Clamp(caretPosition, 0, InputAreaWidth);
@@ -267,7 +267,7 @@ namespace TouhouSpring.UI
             }
 
             // composition string
-            if (m_inComposition)
+            if (m_compositionData.InComposition)
             {
                 // composition background
                 var caretPosition = m_allText.MeasureLeft(m_caretPosition) - scrollPosition;
@@ -299,14 +299,14 @@ namespace TouhouSpring.UI
                     drawOptions2.Offset.X = caretPosition;
                     e.TextRenderer.DrawText(m_compositionString, transform, drawOptions2);
 
-                    for (int i = 0; i < m_compStrAttr.Length; ++i)
+                    for (int i = 0; i < m_compositionData.Attributes.Length; ++i)
                     {
                         // get the clause range sharing the same attribute
-                        Ime.ClauseAttribute clauseAttr = m_compStrAttr[i];
+                        Ime.ClauseAttribute clauseAttr = m_compositionData.Attributes[i];
                         int j = i + 1;
-                        for (; j < m_compStrAttr.Length; ++j)
+                        for (; j < m_compositionData.Attributes.Length; ++j)
                         {
-                            if (m_compStrAttr[j] != clauseAttr)
+                            if (m_compositionData.Attributes[j] != clauseAttr)
                             {
                                 break;
                             }
@@ -359,7 +359,7 @@ namespace TouhouSpring.UI
                     // composition caret
                     if (((int)Math.Floor(m_caretBlinkTimer / CaretBlinkTime) % 2) == 0)
                     {
-                        var caretPosition2 = caretPosition + m_compositionString.MeasureWidth(0, m_compositionCursorPos);
+                        var caretPosition2 = caretPosition + m_compositionString.MeasureWidth(0, m_compositionData.Caret);
                         caretPosition2 = MathHelper.Clamp(caretPosition2, 0, InputAreaWidth);
                         e.RenderManager.Draw(new TexturedQuad { ColorToModulate = ImeCompositionStringForeColor },
                             new Rectangle(caretPosition2 - 1, 0, 2, Height), transform);
@@ -386,7 +386,7 @@ namespace TouhouSpring.UI
 
         public void OnFocusedKeyPressed(KeyPressedEventArgs e)
         {
-            if (m_inComposition)
+            if (m_compositionData.InComposition)
             {
                 // ignore all key events if IME is kicked in
                 return;
@@ -483,9 +483,9 @@ namespace TouhouSpring.UI
         private void MakeVisible()
         {
             float caretOffset = m_allText.MeasureWidth(0, m_caretPosition);
-            if (m_inComposition)
+            if (m_compositionData.InComposition)
             {
-                caretOffset += m_compositionString.MeasureWidth(0, m_compositionCursorPos);
+                caretOffset += m_compositionString.MeasureWidth(0, m_compositionData.Caret);
             }
             if (caretOffset < m_scrollPosition)
             {

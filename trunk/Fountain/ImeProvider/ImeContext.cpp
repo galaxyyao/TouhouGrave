@@ -80,19 +80,26 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
         {
         case WM_IME_COMPOSITION:
             {
-                System::String^ compStr = gcnew System::String(ImeUi_GetCompositionString());
-                cli::array<ClauseAttribute>^ attrArray = gcnew cli::array<ClauseAttribute>(compStr->Length);
+                CompositionData data;
+                data.InComposition = true;
+                data.Text = gcnew System::String(ImeUi_GetCompositionString());
+                data.Attributes = gcnew cli::array<ClauseAttribute>(data.Text->Length);
                 BYTE* attr = ImeUi_GetCompStringAttr();
                 assert(attr != NULL);
-                for (int i = 0; i < compStr->Length; ++i)
+                for (int i = 0; i < data.Attributes->Length; ++i)
                 {
-                    attrArray[i] = safe_cast<ClauseAttribute>(attr[i]);
+                    data.Attributes[i] = safe_cast<ClauseAttribute>(attr[i]);
                 }
-                OnComposition(compStr, attrArray, ImeUi_GetImeCursorChars());
+                data.Caret = ImeUi_GetImeCursorChars();
+                OnCompositionUpdate(data);
             }
             break;
         case WM_IME_ENDCOMPOSITION:
-            OnEndComposition();
+            {
+                CompositionData data;
+                data.InComposition = false;
+                OnCompositionUpdate(data);
+            }
             break;
         default:
             break;

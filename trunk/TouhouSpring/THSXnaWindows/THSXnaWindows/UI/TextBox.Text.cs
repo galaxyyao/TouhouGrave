@@ -19,9 +19,11 @@ namespace TouhouSpring.UI
                 {
                     var transform = TransformToGlobal;
                     e.RenderManager.Draw(new TexturedQuad { ColorToModulate = m_textBox.ImeCandidateListBackColor },
-                        new Rectangle(0, 0, FormattedText.Size.Width, FormattedText.Size.Height),
+                        new Rectangle(-2, 0, FormattedText.Size.Width + 4, FormattedText.Size.Height),
                         transform);
                     var selection = FormattedText.GetLineRectangle(m_textBox.m_candidateListData.Selection);
+                    selection.Left -= 2;
+                    selection.Width += 4;
                     e.RenderManager.Draw(new TexturedQuad { ColorToModulate = m_textBox.ImeCandidateListSelectionBackColor },
                         selection, transform);
                 }
@@ -30,10 +32,8 @@ namespace TouhouSpring.UI
             }
         }
 
-        private bool m_inComposition;
+        private Ime.CompositionData m_compositionData;
         private TextRenderer.IFormattedText m_compositionString;
-        private Ime.ClauseAttribute[] m_compStrAttr;
-        private int m_compositionCursorPos;
 
         private Ime.CandidateListData m_candidateListData;
         private TextRenderer.IFormattedText m_candidateListText;
@@ -95,24 +95,21 @@ namespace TouhouSpring.UI
         {
         }
 
-        void ITextReceiver.OnComposition(string compositionString, Ime.ClauseAttribute[] attr, int cursorPos)
+        void ITextReceiver.OnCompositionUpdate(Ime.CompositionData data)
         {
-            m_inComposition = !String.IsNullOrEmpty(compositionString);
-
-            if (m_compositionString == null || m_compositionString.Text != compositionString)
+            m_compositionData = data;
+            if (m_compositionData.InComposition)
             {
-                m_compositionString = GameApp.Service<TextRenderer>().FormatText(compositionString, m_textFormatOptions);
+                if (m_compositionString == null || m_compositionString.Text != m_compositionData.Text)
+                {
+                    m_compositionString = GameApp.Service<TextRenderer>().FormatText(m_compositionData.Text, m_textFormatOptions);
+                }
             }
-            m_compStrAttr = attr;
-            m_compositionCursorPos = cursorPos;
+            else
+            {
+                m_compositionString = null;
+            }
 
-            MakeVisible();
-        }
-
-        void ITextReceiver.OnEndComposition()
-        {
-            m_inComposition = false;
-            m_compositionCursorPos = 0;
             MakeVisible();
         }
 
@@ -127,6 +124,8 @@ namespace TouhouSpring.UI
                 sb.Append("]");
                 for (int i = 0; i < data.Candidates.Length; ++i)
                 {
+                    sb.Append(i + 1);
+                    sb.Append(" ");
                     if (i == data.Selection)
                     {
                         sb.Append("[color:!");
@@ -147,13 +146,14 @@ namespace TouhouSpring.UI
                 sb.Append("[/color]");
 
                 // get the target clause
-                var candTarget = m_compStrAttr.FindIndex(attr => attr == Ime.ClauseAttribute.TargetConverted || attr == Ime.ClauseAttribute.TargetNotConverted);
+                var candTarget = m_compositionData.Attributes.FindIndex(
+                    attr => attr == Ime.ClauseAttribute.TargetConverted || attr == Ime.ClauseAttribute.TargetNotConverted);
                 var candListLeft = m_allText.MeasureLeft(m_caretPosition) + m_compositionString.MeasureLeft(candTarget) - m_scrollPosition;
 
                 m_candidateListText = GameApp.Service<TextRenderer>().FormatText(sb.ToString(), m_candidateListFormatOptions);
                 m_candidateListLabel.FormattedText = m_candidateListText;
 
-                m_candidateListLabel.Transform = MatrixHelper.Translate(candListLeft, Height) * Transform;
+                m_candidateListLabel.Transform = MatrixHelper.Translate(candListLeft - 2, Height) * Transform;
                 m_candidateListLabel.Dispatcher = Dispatcher;
             }
             else

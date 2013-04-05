@@ -15,6 +15,14 @@ public enum class ClauseAttribute
     FixedConverted      = ATTR_FIXEDCONVERTED
 };
 
+public value struct CompositionData
+{
+    bool InComposition;
+    System::String^ Text;
+    cli::array<ClauseAttribute>^ Attributes;
+    int Caret;
+};
+
 public value struct CandidateListData
 {
     bool IsOpened;
@@ -26,7 +34,7 @@ public value struct CandidateListData
 
 public delegate void KeyMessageHandler(System::Char code);
 public delegate void InputLangChangeHandler(System::String^ lang);
-public delegate void CompositionMessageHandler(System::String^ compositionString, cli::array<ClauseAttribute>^ attributes, int cursorPos);
+public delegate void CompositionMessageHandler(CompositionData data);
 public delegate void ParameterlessMessageHandler();
 public delegate void CandidateListMessageHandler(CandidateListData data);
 
@@ -57,10 +65,7 @@ public:
     event KeyMessageHandler^ OnKeyUp;
 
     event InputLangChangeHandler^ OnInputLangChange;
-
-    event CompositionMessageHandler^ OnComposition;
-    event ParameterlessMessageHandler^ OnEndComposition;
-
+    event CompositionMessageHandler^ OnCompositionUpdate;
     event CandidateListMessageHandler^ OnCandidateListUpdate;
 
 private:

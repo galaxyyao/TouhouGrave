@@ -24,8 +24,7 @@ namespace TouhouSpring.UI
             m_imeContext.OnAppDeactivate += new Ime.ParameterlessMessageHandler(ImeContext_OnAppDeactivate);
             m_imeContext.OnChar += new Ime.KeyMessageHandler(ImeContext_OnChar);
             m_imeContext.OnInputLangChange += new Ime.InputLangChangeHandler(ImeContext_OnInputLangChange);
-            m_imeContext.OnComposition += new Ime.CompositionMessageHandler(ImeContext_OnComposition);
-            m_imeContext.OnEndComposition += new Ime.ParameterlessMessageHandler(ImeContext_OnEndComposition);
+            m_imeContext.OnCompositionUpdate += new Ime.CompositionMessageHandler(ImeContext_OnCompositionUpdate);
             m_imeContext.OnCandidateListUpdate += new Ime.CandidateListMessageHandler(ImeContext_OnCandidateListUpdate);
         }
 
@@ -143,19 +142,11 @@ namespace TouhouSpring.UI
             }
         }
 
-        private void ImeContext_OnComposition(string compositionString, Ime.ClauseAttribute[] attr, int cursorPos)
+        private void ImeContext_OnCompositionUpdate(Ime.CompositionData data)
         {
             if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
             {
-                (Focus as ITextReceiver).OnComposition(compositionString, attr, cursorPos);
-            }
-        }
-
-        private void ImeContext_OnEndComposition()
-        {
-            if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
-            {
-                (Focus as ITextReceiver).OnEndComposition();
+                (Focus as ITextReceiver).OnCompositionUpdate(data);
             }
         }
 

@@ -705,11 +705,11 @@ static LONG WINAPI WA_ImmGetCompositionString(HIMC himc, DWORD dwIndex, LPVOID l
 static void ComposeCandidateLine( int index, LPCTSTR pszCandidate )
 {
 	LPTSTR psz = g_szCandidate[index];
-	*psz++ = (TCHAR)( TEXT( '0' ) + ( ( index + g_iCandListIndexBase ) % 10 ) );
-	if ( g_bVerticalCand )
-	{
-		*psz++ = TEXT( ' ' );
-	}
+	//*psz++ = (TCHAR)( TEXT( '0' ) + ( ( index + g_iCandListIndexBase ) % 10 ) );
+	//if ( g_bVerticalCand )
+	//{
+	//	*psz++ = TEXT( ' ' );
+	//}
 	while ( *pszCandidate && (COUNTOF(g_szCandidate[index]) > (psz-g_szCandidate[index])) )
 	{
 		*psz++ = *pszCandidate++;
