@@ -205,6 +205,7 @@ void* (__cdecl *ImeUiCallback_Malloc)( size_t bytes );
 void (__cdecl *ImeUiCallback_Free)( void* ptr );
 void (CALLBACK *ImeUiCallback_OnChar)( WCHAR wc );
 void (CALLBACK *ImeUiCallback_OnInputLangChange)();
+void (CALLBACK *ImeUiCallback_OnCandidateListUpdate)();
 
 static void (*_SendCompString)();
 static LRESULT (WINAPI* _SendMessage)(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) = SendMessageA;
@@ -220,6 +221,7 @@ static DWORD g_IMECursorBytes = 0;
 static DWORD g_IMECursorChars = 0;
 static TCHAR g_szCandidate[MAX_CANDLIST][MAX_CANDIDATE_LENGTH];
 static DWORD g_dwSelection, g_dwCount;
+static DWORD g_dwPageIndex, g_dwPageCount;
 static UINT g_uCandPageSize;
 static DWORD g_bDisableImeCompletely = false;
 static DWORD g_dwIMELevel;
@@ -1463,6 +1465,11 @@ static void CloseCandidateList()
 	{
 		g_dwCount = 0;
 		memset(&g_szCandidate, 0, sizeof(g_szCandidate));
+	}
+
+	if (ImeUiCallback_OnCandidateListUpdate != NULL)
+	{
+		ImeUiCallback_OnCandidateListUpdate();
 	}
 }
 
@@ -3282,7 +3289,7 @@ void CTsfUiLessMode::MakeCandidateStrings(ITfCandidateListUIElement* pcandidate)
 	pcandidate->GetPageIndex(NULL, 0, &uPageCnt);
 	if(uPageCnt > 0)
 	{
-		IndexList = (UINT *)ImeUiCallback_Malloc(sizeof(UINT)*uPageCnt);
+		IndexList = (UINT*)_alloca(sizeof(UINT)*uPageCnt);
 		if(IndexList)
 		{
 			pcandidate->GetPageIndex(IndexList, uPageCnt, &uPageCnt);
@@ -3290,8 +3297,21 @@ void CTsfUiLessMode::MakeCandidateStrings(ITfCandidateListUIElement* pcandidate)
 			dwPageSize = (uCurrentPage < uPageCnt-1) ? 
 				min(uCount, IndexList[uCurrentPage+1]) - dwPageStart:
 				uCount - dwPageStart;
+
+			for (UINT i = 0; i < uPageCnt; ++i)
+			{
+				if (IndexList[i] > uCount)
+				{
+					uPageCnt = i;
+					break;
+				}
+			}
+
+			_freea(IndexList);
 		}
 	}
+	g_dwPageIndex = (DWORD)uCurrentPage;
+	g_dwPageCount = (DWORD)uPageCnt;
 
 	g_uCandPageSize = min(dwPageSize, MAX_CANDLIST);
 	g_dwSelection = g_dwSelection - dwPageStart;
@@ -3325,9 +3345,9 @@ void CTsfUiLessMode::MakeCandidateStrings(ITfCandidateListUIElement* pcandidate)
 		g_dwSelection = (DWORD)-1;
 	}
 
-	if(IndexList)
+	if (ImeUiCallback_OnCandidateListUpdate != NULL)
 	{
-		ImeUiCallback_Free(IndexList);
+		ImeUiCallback_OnCandidateListUpdate();
 	}
 }
 
@@ -3564,3 +3584,12 @@ DWORD ImeUi_GetImeCursorChars()
 	return g_IMECursorChars;
 }
 
+DWORD ImeUi_GetCandidatePageIndex()
+{
+	return g_dwPageIndex;
+}
+
+DWORD ImeUi_GetCandidatePageCount()
+{
+	return g_dwPageCount;
+}

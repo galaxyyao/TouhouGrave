@@ -1,5 +1,7 @@
 #include "ImeContext.h"
 
+using namespace System::Collections::Generic;
+
 namespace TouhouSpring {
 namespace Ime {
 
@@ -17,10 +19,15 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     System::IntPtr funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_wndProc);
     m_oldWndProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG>(funcPtr.ToPointer())));
 
-    m_imeOnInputLangChange = gcnew InputLangChangeDelegate(this, &ImeContext::ImeOnInputLangChange);
+    m_imeOnInputLangChange = gcnew System::Action(this, &ImeContext::ImeOnInputLangChange);
     funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnInputLangChange);
     typedef void (CALLBACK *ImeOnInputLangChangeCallback)();
     ImeUiCallback_OnInputLangChange = reinterpret_cast<ImeOnInputLangChangeCallback>(funcPtr.ToPointer());
+
+    m_imeOnCandidateListUpdate = gcnew System::Action(this, &ImeContext::ImeOnCandidateListUpdate);
+    funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnCandidateListUpdate);
+    typedef void (CALLBACK *ImeOnCandidateListUpdate)();
+    ImeUiCallback_OnCandidateListUpdate = reinterpret_cast<ImeOnCandidateListUpdate>(funcPtr.ToPointer());
 
     ImeUiCallback_DrawRect = NULL;
     ImeUiCallback_Malloc = malloc;
@@ -180,6 +187,30 @@ bool ImeContext::StaticMsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 void ImeContext::ImeOnInputLangChange()
 {
     OnInputLangChange(IndicatorString);
+}
+
+void ImeContext::ImeOnCandidateListUpdate()
+{
+    CandidateListData data;
+    data.IsOpened = ImeUi_IsShowCandListWindow() && ImeUi_GetCandidateCount() > 0;
+    if (data.IsOpened)
+    {
+        List<System::String^>^ candidates = gcnew List<System::String^>();
+        for (UINT i = 0; i < ImeUi_GetCandidateCount(); ++i)
+        {
+            TCHAR* str = ImeUi_GetCandidate(i);
+            if (*str == L'\0')
+            {
+                break;
+            }
+            candidates->Add(gcnew System::String(str));
+        }
+        data.Candidates = candidates->ToArray();
+        data.Selection = safe_cast<int>(ImeUi_GetCandidateSelection());
+        data.PageIndex = safe_cast<int>(ImeUi_GetCandidatePageIndex());
+        data.PageCount = safe_cast<int>(ImeUi_GetCandidatePageCount());
+    }
+    OnCandidateListUpdate(data);
 }
 
 }

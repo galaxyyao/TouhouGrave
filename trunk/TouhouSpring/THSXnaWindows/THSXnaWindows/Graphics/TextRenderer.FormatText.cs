@@ -50,12 +50,14 @@ namespace TouhouSpring.Graphics
         public interface IFormattedText
         {
             string Text { get; }
+            int LineCount { get; }
             FormatOptions FormatOptions { get; }
             Point Offset { get; set; }
             Size Size { get; }
             bool RichTextFormat { get; }
             float MeasureWidth(int begin, int end);
             float MeasureLeft(int begin);
+            Rectangle GetLineRectangle(int lineIndex);
         }
 
         private class FormattedGlyph
@@ -80,6 +82,8 @@ namespace TouhouSpring.Graphics
             public Size Size { get; set; }
             public bool RichTextFormat { get; set; }
             public FormattedLine[] m_lines;
+
+            public int LineCount { get { return m_lines.Length; } }
 
             public float MeasureWidth(int begin, int end)
             {
@@ -134,6 +138,18 @@ namespace TouhouSpring.Graphics
                 {
                     return m_lines[0].m_glyphs[begin].m_pos.X;
                 }
+            }
+
+            public Rectangle GetLineRectangle(int lineIndex)
+            {
+                if (lineIndex < 0 || lineIndex > m_lines.Length)
+                {
+                    throw new ArgumentOutOfRangeException("lineIndex");
+                }
+
+                var bottom = lineIndex == m_lines.Length - 1 ? Size.Height : m_lines[lineIndex + 1].m_offset.Y;
+                var height = bottom - m_lines[lineIndex].m_offset.Y;
+                return new Rectangle(0, m_lines[lineIndex].m_offset.Y, Size.Width, height);
             }
         }
 

@@ -66,8 +66,9 @@ namespace TouhouSpring.Services
         private void InitializeLoginPage()
         {
             var curve = GameApp.Service<ResourceManager>().Acquire<Curve>("Curves/CardMove");
+            var candFmtOptions = new Graphics.TextRenderer.FormatOptions(new Graphics.TextRenderer.FontDescriptor("Microsoft YaHei", 11));
 
-            m_txtUserName = new UI.TextBox(100, 30, m_textFormatOptions)
+            m_txtUserName = new UI.TextBox(100, 30, m_textFormatOptions, candFmtOptions)
             {
                 ForeColor = Color.Red,
                 SelectionBackColor = new Color(255, 0, 0, 0.75f),
@@ -76,7 +77,7 @@ namespace TouhouSpring.Services
                 Dispatcher = Root
             };
 
-            m_txtPassword = new UI.TextBox(100, 30, m_textFormatOptions)
+            m_txtPassword = new UI.TextBox(100, 30, m_textFormatOptions, candFmtOptions)
             {
                 ForeColor = Color.Red,
                 SelectionBackColor = new Color(255, 0, 0, 0.75f),

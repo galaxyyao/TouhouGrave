@@ -13,6 +13,7 @@ namespace TouhouSpring.UI
         private bool m_isFocused = false;
         private FocusableProxy m_focusableProxy;
         private TextRenderer.FormatOptions m_textFormatOptions;
+        private TextRenderer.FormatOptions m_candidateListFormatOptions;
 
         private RenderableProxy m_renderableProxy;
 
@@ -95,16 +96,6 @@ namespace TouhouSpring.UI
             get; set;
         }
 
-        public Color ImeCompositionStringBackColor
-        {
-            get; set;
-        }
-
-        public Color ImeCompositionStringForeColor
-        {
-            get; set;
-        }
-
         public int Width
         {
             get; private set;
@@ -142,11 +133,14 @@ namespace TouhouSpring.UI
             }
         }
 
-        public TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions)
+        public TextBox(int width, int height,
+            TextRenderer.FormatOptions textFormatOptions,
+            TextRenderer.FormatOptions candidateListFormatOptions)
         {
             m_focusableProxy = new FocusableProxy(this);
             m_textFormatOptions = textFormatOptions;
             m_textFormatOptions.DisableRTF = true;
+            m_candidateListFormatOptions = candidateListFormatOptions;
 
             m_renderableProxy = new RenderableProxy(this);
 
@@ -161,6 +155,16 @@ namespace TouhouSpring.UI
             ImeIndicatorMargin = 2;
             ImeCompositionStringBackColor = Color.Black;
             ImeCompositionStringForeColor = Color.White;
+            ImeCandidateListBackColor = Color.Navy;
+            ImeCandidateListForeColor = Color.White;
+            ImeCandidateListSelectionBackColor = Color.RoyalBlue;
+            ImeCandidateListSelectionForeColor = Color.White;
+
+            m_candidateListLabel = new CandidateListLabel
+            {
+                m_textBox = this,
+                TextColor = Color.White
+            };
 
             Width = width;
             Height = height;

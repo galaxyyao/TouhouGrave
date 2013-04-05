@@ -158,8 +158,9 @@ namespace TouhouSpring.Services
             var curve = GameApp.Service<ResourceManager>().Acquire<Curve>("Curves/CardMove");
             var font = new Graphics.TextRenderer.FontDescriptor("Microsoft YaHei", 16);
             var fmtOptions = new Graphics.TextRenderer.FormatOptions(font);
+            var candFmtOptions = new Graphics.TextRenderer.FormatOptions(new Graphics.TextRenderer.FontDescriptor("Microsoft YaHei", 11));
 
-            var txtBox = new UI.TextBox(250, 30, fmtOptions)
+            var txtBox = new UI.TextBox(250, 30, fmtOptions, candFmtOptions)
             {
                 ForeColor = Color.Black,
                 SelectionBackColor = new Color(0, 0, 0, 0.75f),
@@ -168,7 +169,7 @@ namespace TouhouSpring.Services
                 Dispatcher = Root
             };
 
-            txtBox = new UI.TextBox(250, 30, fmtOptions)
+            txtBox = new UI.TextBox(250, 30, fmtOptions, candFmtOptions)
             {
                 ForeColor = Color.Black,
                 SelectionBackColor = new Color(0, 0, 0, 0.75f),

@@ -15,10 +15,20 @@ public enum class ClauseAttribute
     FixedConverted      = ATTR_FIXEDCONVERTED
 };
 
+public value struct CandidateListData
+{
+    bool IsOpened;
+    cli::array<System::String^>^ Candidates;
+    int Selection;
+    int PageIndex;
+    int PageCount;
+};
+
 public delegate void KeyMessageHandler(System::Char code);
 public delegate void InputLangChangeHandler(System::String^ lang);
 public delegate void CompositionMessageHandler(System::String^ compositionString, cli::array<ClauseAttribute>^ attributes, int cursorPos);
 public delegate void ParameterlessMessageHandler();
+public delegate void CandidateListMessageHandler(CandidateListData data);
 
 public ref class ImeContext
 {
@@ -41,25 +51,31 @@ public:
 
     event ParameterlessMessageHandler^ OnAppActivate;
     event ParameterlessMessageHandler^ OnAppDeactivate;
+
     event KeyMessageHandler^ OnChar;
     event KeyMessageHandler^ OnKeyDown;
     event KeyMessageHandler^ OnKeyUp;
+
     event InputLangChangeHandler^ OnInputLangChange;
+
     event CompositionMessageHandler^ OnComposition;
     event ParameterlessMessageHandler^ OnEndComposition;
 
+    event CandidateListMessageHandler^ OnCandidateListUpdate;
+
 private:
     delegate LRESULT WndProcDelegate(HWND, UINT, WPARAM, LPARAM);
-    delegate void InputLangChangeDelegate();
     LRESULT WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     bool StaticMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     void ImeOnInputLangChange();
+    void ImeOnCandidateListUpdate();
 
     static ImeContext^ s_instance;
     bool m_initialized;
     WndProcDelegate^ m_wndProc;
     WNDPROC m_oldWndProc;
-    InputLangChangeDelegate^ m_imeOnInputLangChange;
+    System::Action^ m_imeOnInputLangChange;
+    System::Action^ m_imeOnCandidateListUpdate;
 };
 
 }

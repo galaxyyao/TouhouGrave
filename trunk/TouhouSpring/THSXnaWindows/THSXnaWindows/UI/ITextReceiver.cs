@@ -13,5 +13,6 @@ namespace TouhouSpring.UI
         void OnStartComposition();
         void OnComposition(string compositionString, Ime.ClauseAttribute[] attr, int cursorPos);
         void OnEndComposition();
+        void OnCandidateListUpdate(Ime.CandidateListData data);
     }
 }
