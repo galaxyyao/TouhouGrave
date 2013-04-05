@@ -133,9 +133,17 @@ namespace TouhouSpring.UI
             }
         }
 
-        public TextBox(int width, int height,
-            TextRenderer.FormatOptions textFormatOptions,
+        public TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions)
+            : this(width, height, textFormatOptions, new TextRenderer.FormatOptions(), false)
+        { }
+
+        public TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions,
             TextRenderer.FormatOptions candidateListFormatOptions)
+            : this(width, height, textFormatOptions, candidateListFormatOptions, true)
+        { }
+
+        private TextBox(int width, int height, TextRenderer.FormatOptions textFormatOptions,
+            TextRenderer.FormatOptions candidateListFormatOptions, bool imeEnabled)
         {
             m_focusableProxy = new FocusableProxy(this);
             m_textFormatOptions = textFormatOptions;
@@ -144,7 +152,7 @@ namespace TouhouSpring.UI
 
             m_renderableProxy = new RenderableProxy(this);
 
-            ImeEnabled = true;
+            ImeEnabled = imeEnabled;
 
             ForeColor = Color.White;
             SelectionBackColor = Color.Navy;

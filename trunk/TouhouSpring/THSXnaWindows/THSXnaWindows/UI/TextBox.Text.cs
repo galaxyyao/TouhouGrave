@@ -91,10 +91,6 @@ namespace TouhouSpring.UI
             m_inidcatorStr = GameApp.Service<Graphics.TextRenderer>().FormatText(lang, m_textFormatOptions);
         }
 
-        void ITextReceiver.OnStartComposition()
-        {
-        }
-
         void ITextReceiver.OnCompositionUpdate(Ime.CompositionData data)
         {
             m_compositionData = data;
