@@ -135,16 +135,20 @@ namespace TouhouSpring.UI
                     }
                     sb.Append("\n");
                 }
-                if (data.PageCount != 0)
+                if (!data.HasNextPage && !data.HasPreviousPage)
                 {
-                    sb.Append(">");
-                    sb.Append(data.PageIndex + 1);
-                    sb.Append("/");
-                    sb.Append(data.PageCount);
+                    sb.Remove(sb.Length - 1, 1);
                 }
                 else
                 {
-                    sb.Remove(sb.Length - 1, 1);
+                    if (data.HasPreviousPage)
+                    {
+                        sb.Append("<- ");
+                    }
+                    if (data.HasNextPage)
+                    {
+                        sb.Append("->");
+                    }
                 }
                 sb.Append("[/color]");
 
@@ -153,7 +157,7 @@ namespace TouhouSpring.UI
                     attr => attr == Ime.ClauseAttribute.TargetConverted || attr == Ime.ClauseAttribute.TargetNotConverted);
                 if (candTarget == -1)
                 {
-                    candTarget = m_compositionData.Caret;
+                    candTarget = 0;
                 }
                 var candListLeft = m_allText.MeasureLeft(m_caretPosition) + m_compositionString.MeasureLeft(candTarget) - m_scrollPosition;
 

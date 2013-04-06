@@ -25,10 +25,10 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     typedef void (CALLBACK *ImeOnInputLangChangeCallback)();
     ImeUiCallback_OnInputLangChange = reinterpret_cast<ImeOnInputLangChangeCallback>(funcPtr.ToPointer());
 
-    m_imeOnCandidateListUpdate = gcnew System::Action(this, &ImeContext::ImeOnCandidateListUpdate);
-    funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnCandidateListUpdate);
-    typedef void (CALLBACK *ImeOnCandidateListUpdate)();
-    ImeUiCallback_OnCandidateListUpdate = reinterpret_cast<ImeOnCandidateListUpdate>(funcPtr.ToPointer());
+    //m_imeOnCandidateListUpdate = gcnew System::Action(this, &ImeContext::ImeOnCandidateListUpdate);
+    //funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnCandidateListUpdate);
+    //typedef void (CALLBACK *ImeOnCandidateListUpdate)();
+    //ImeUiCallback_OnCandidateListUpdate = reinterpret_cast<ImeOnCandidateListUpdate>(funcPtr.ToPointer());
 
     ImeUiCallback_DrawRect = NULL;
     ImeUiCallback_Malloc = malloc;
@@ -42,8 +42,6 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     }
 
     ImeUi_EnableIme( true );
-
-    m_candidateListFromImm = false;
 }
 
 ImeContext::~ImeContext()
@@ -95,11 +93,6 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
                 }
                 data.Caret = ImeUi_GetImeCursorChars();
                 OnCompositionUpdate(data);
-
-                if (!ImeUi_IsShowCandListWindow())
-                {
-                    UpdateCandidateListFromImm(hWnd);
-                }
             }
             break;
         case WM_IME_ENDCOMPOSITION:
@@ -109,6 +102,22 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
                 OnCompositionUpdate(data);
             }
             break;
+		case WM_IME_NOTIFY:
+			switch (wParam)
+			{
+			case IMN_OPENCANDIDATE:
+			case IMN_CHANGECANDIDATE:
+				UpdateCandidateListFromImm(hWnd);
+				break;
+			case IMN_CLOSECANDIDATE:
+				CandidateListData data;
+				data.IsOpened = false;
+				OnCandidateListUpdate(data);
+				break;
+			default:
+				break;
+			}
+			break;
         default:
             break;
         }
@@ -222,8 +231,8 @@ void ImeContext::ImeOnCandidateListUpdate()
         }
         data.Candidates = candidates->ToArray();
         data.Selection = safe_cast<int>(ImeUi_GetCandidateSelection());
-        data.PageIndex = safe_cast<int>(ImeUi_GetCandidatePageIndex());
-        data.PageCount = safe_cast<int>(ImeUi_GetCandidatePageCount());
+		data.HasPreviousPage = ImeUi_GetCandidatePageIndex() > 0;
+		data.HasNextPage = ImeUi_GetCandidatePageIndex() < ImeUi_GetCandidatePageCount() - 1;
     }
     OnCandidateListUpdate(data);
 }
@@ -247,16 +256,21 @@ void ImeContext::UpdateCandidateListFromImm(HWND hWnd)
         if (pCandList->dwCount > 0)
         {
             data.IsOpened = true;
-            List<System::String^>^ candidates = gcnew List<System::String^>(pCandList->dwCount);
-            for (UINT i = 0; i < pCandList->dwCount; ++i)
+			data.Selection = safe_cast<int>(pCandList->dwSelection);
+			data.Selection -= pCandList->dwPageStart;
+			data.HasPreviousPage = pCandList->dwPageStart > 0;
+			data.HasNextPage = pCandList->dwPageStart + pCandList->dwPageSize < pCandList->dwCount;
+
+            List<System::String^>^ candidates = gcnew List<System::String^>(pCandList->dwPageSize);
+            for (UINT i = 0; i < pCandList->dwPageSize; ++i)
             {
-                const TCHAR* str = reinterpret_cast<const TCHAR*>(reinterpret_cast<char*>(pCandList) + pCandList->dwOffset[i]);
+				DWORD strOffset = pCandList->dwOffset[i + pCandList->dwPageStart];
+                const TCHAR* str = reinterpret_cast<const TCHAR*>(reinterpret_cast<char*>(pCandList) + strOffset);
                 candidates->Add(gcnew System::String(str));
             }
             data.Candidates = candidates->ToArray();
-            data.Selection = safe_cast<int>(pCandList->dwSelection);
-            data.PageIndex = safe_cast<int>(0);
-            data.PageCount = safe_cast<int>(0);
+
+			//System::Diagnostics::Trace::WriteLine(System::String::Format("Count:{2} PageStart:{0} PageSize:{1}", pCandList->dwPageStart, pCandList->dwPageSize, pCandList->dwCount));
         }
 
         _freea(pCandList);
@@ -264,11 +278,7 @@ void ImeContext::UpdateCandidateListFromImm(HWND hWnd)
 
     ::ImmReleaseContext(hWnd, himc);
 
-    if (data.IsOpened || m_candidateListFromImm)
-    {
-        m_candidateListFromImm = data.IsOpened;
-        OnCandidateListUpdate(data);
-    }
+	OnCandidateListUpdate(data);
 }
 
 }

@@ -28,8 +28,8 @@ public value struct CandidateListData
     bool IsOpened;
     cli::array<System::String^>^ Candidates;
     int Selection;
-    int PageIndex;
-    int PageCount;
+	bool HasPreviousPage;
+	bool HasNextPage;
 };
 
 public delegate void KeyMessageHandler(System::Char code);
@@ -82,7 +82,6 @@ private:
     WNDPROC m_oldWndProc;
     System::Action^ m_imeOnInputLangChange;
     System::Action^ m_imeOnCandidateListUpdate;
-    bool m_candidateListFromImm;
 };
 
 }
