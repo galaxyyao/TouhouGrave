@@ -102,20 +102,23 @@ namespace TouhouSpring.Graphics
                     SystemDrawing.Pen outlinePen;
                     if (!m_outlinePensWithWidths.TryGetValue(font.m_outlineThickness, out outlinePen))
                     {
-                        outlinePen = new SystemDrawing.Pen(SystemDrawing.Color.White, font.m_outlineThickness);
+                        outlinePen = new SystemDrawing.Pen(SystemDrawing.Color.Gray, font.m_outlineThickness);
                         outlinePen.MiterLimit = font.m_outlineThickness;
                         m_outlinePensWithWidths.Add(font.m_outlineThickness, outlinePen);
                     }
 
                     // draw outline
-                    var outlinePath = new SystemDrawing.Drawing2D.GraphicsPath();
-                    outlinePath.AddString(str,
-                        font.m_fontObject.FontFamily,
-                        (int)font.m_fontObject.Style,
-                        g.DpiX * font.m_fontObject.SizeInPoints / 72,
-                        new SystemDrawing.PointF(-chRect.Left, -chRect.Top),
-                        SystemDrawing.StringFormat.GenericDefault);
-                    g.DrawPath(outlinePen, outlinePath);
+                    using (var outlinePath = new SystemDrawing.Drawing2D.GraphicsPath())
+                    {
+                        outlinePath.AddString(str,
+                            font.m_fontObject.FontFamily,
+                            (int)font.m_fontObject.Style,
+                            g.DpiX * font.m_fontObject.SizeInPoints / 72,
+                            new SystemDrawing.PointF(-chRect.Left, -chRect.Top),
+                            SystemDrawing.StringFormat.GenericDefault);
+                        g.DrawPath(outlinePen, outlinePath);
+                        g.FillPath(m_whiteBrush, outlinePath);
+                    }
                 }
                 else
                 {
