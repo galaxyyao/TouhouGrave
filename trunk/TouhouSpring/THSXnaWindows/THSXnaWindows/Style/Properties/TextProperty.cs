@@ -17,7 +17,8 @@ namespace TouhouSpring.Style.Properties
             string DefaultFontStyle { get; }
             string DefaultFontOutlineThickness { get; }
             string DefaultTextColor { get; }
-            void SetText(string text, Font font, Font ansiFont, Color textColor);
+            string DefaultTextOutlineColor { get; }
+            void SetText(string text, Font font, Font ansiFont, Color textColor, Color textOutlineColor);
         }
 
         private string m_text;
@@ -30,6 +31,7 @@ namespace TouhouSpring.Style.Properties
         private string m_ansiFontStyle;
         private string m_ansiFontOutlineThickness;
         private string m_textColor;
+        private string m_textOutlineColor;
 
         public TextProperty(IStyleContainer parent)
             : base(parent)
@@ -61,6 +63,10 @@ namespace TouhouSpring.Style.Properties
             {
                 throw new MissingAttributeException("Color");
             }
+
+            var attrTextOutlineColor = host.Definition.Attribute("OutlineColor");
+            var textOutlineColor = attrTextOutlineColor != null ? attrTextOutlineColor.Value : host.DefaultTextOutlineColor;
+            textOutlineColor = textOutlineColor ?? "!00000000";
 
             string fontFamily = null;
             string fontSize = null;
@@ -200,6 +206,7 @@ namespace TouhouSpring.Style.Properties
 
             m_text = text;
             m_textColor = textColor;
+            m_textOutlineColor = textOutlineColor;
             m_fontFamily = fontFamily;
             m_fontSize = fontSize;
             m_fontStyle = fontStyle ?? host.DefaultFontStyle ?? "regular";
@@ -225,6 +232,7 @@ namespace TouhouSpring.Style.Properties
 
             var text = BindValuesFor(m_text);
             var color = Color.Parse(BindValuesFor(m_textColor));
+            var outlineColor = Color.Parse(BindValuesFor(m_textOutlineColor));
 
             Font font = new Font
             {
@@ -242,7 +250,7 @@ namespace TouhouSpring.Style.Properties
                 OutlineThickness = float.Parse(m_ansiFontOutlineThickness)
             };
 
-            host.SetText(text, font, ansiFont, color);
+            host.SetText(text, font, ansiFont, color, outlineColor);
         }
     }
 }

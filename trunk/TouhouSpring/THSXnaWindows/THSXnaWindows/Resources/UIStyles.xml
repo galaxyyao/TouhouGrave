@@ -174,7 +174,7 @@
     <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
       <Bounds Top="240" HorizontalAlignment="Center" />
     </Label>
-    <Label Font="Constantia,28,bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />
+    <Label Font="Constantia,28,bold,5" Text="#Card.SummonCost#" Color="White" OutlineColor="Black" Right="10" Top="0" />
   </CardDesign>
   <CardDesign Name="NoResource">
     <!-- card's artwork -->
@@ -208,6 +208,6 @@
     <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
       <Bounds Top="240" HorizontalAlignment="Center" />
     </Label>
-    <Label Font="Constantia,28,bold" Text="#Card.SummonCost#" Color="Black" Right="10" Top="0" />
+    <Label Font="Constantia,28,bold,5" Text="#Card.SummonCost#" Color="White" OutlineColor="Black" Right="10" Top="0" />
   </CardDesign>
 </Style>

@@ -64,8 +64,9 @@ namespace TouhouSpring.Style
         string TextProperty.IHost.DefaultFontStyle { get { return null; } }
         string TextProperty.IHost.DefaultFontOutlineThickness { get { return null; } }
         string TextProperty.IHost.DefaultTextColor { get { return "Black"; } }
+        string TextProperty.IHost.DefaultTextOutlineColor { get { return null; } }
 
-        void TextProperty.IHost.SetText(string text, Font font, Font ansiFont, Color textColor)
+        void TextProperty.IHost.SetText(string text, Font font, Font ansiFont, Color textColor, Color textOutlineColor)
         {
             SystemFontStyle fontStyle;
             switch (font.Style)
@@ -113,6 +114,7 @@ namespace TouhouSpring.Style
                 TypedTarget.Label.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd, ansiFd));
             }
             TypedTarget.Label.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
+            TypedTarget.Label.TextOutlineColor = new XnaColor(textOutlineColor.Red, textOutlineColor.Green, textOutlineColor.Blue, textOutlineColor.Alpha);
         }
 
         #endregion

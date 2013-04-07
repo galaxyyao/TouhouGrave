@@ -67,7 +67,7 @@ namespace TouhouSpring.Graphics
             {
                 ForcedColor = Color.Transparent,
                 ColorScaling = Vector4.UnitW,
-                OutlineColor = Vector4.UnitW,
+                OutlineColor = Vector4.Zero,
                 Offset = new Point(0, 0),
                 DrawFlags = TextRenderer.DrawFlags.OffsetByHalfPixel,
                 SubstringStart = 0,

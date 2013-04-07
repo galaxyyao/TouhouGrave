@@ -98,7 +98,7 @@ namespace TouhouSpring.UI
         {
             m_renderableProxy = new RenderableProxy(this);
             TextColor = XnaColor.White;
-            TextOutlineColor = XnaColor.Black;
+            TextOutlineColor = XnaColor.Transparent;
         }
 
         #region IRenderable interface
