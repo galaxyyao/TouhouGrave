@@ -7,18 +7,26 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouSpring.Graphics
 {
+    [Flags]
+    enum TextureQuadFlags
+    {
+        OffsetByHalfTexel   = 0x1 << 0,
+        ZTest               = 0x1 << 1,
+        ZWrite              = 0x1 << 2,
+        WrapUV              = 0x1 << 3,
+        SharpLod            = 0x1 << 4
+    }
+
     class TexturedQuad
     {
+
         public VirtualTexture Texture;
         public Rectangle UVBounds;
         public Color ColorToAdd;
         public Color ColorToModulate;
         public Vector4 ColorScale;
         public BlendState BlendState;
-        public bool OffsetByHalfTexel;
-        public bool ZTest;
-        public bool ZWrite;
-        public bool WrapUV;
+        public TextureQuadFlags Flags;
 
         public TexturedQuad() : this(null)
         { }
@@ -31,10 +39,7 @@ namespace TouhouSpring.Graphics
             ColorToModulate = Color.White;
             ColorScale = Vector4.One;
             BlendState = BlendState.AlphaBlend;
-            OffsetByHalfTexel = true;
-            ZTest = false;
-            ZWrite = false;
-            WrapUV = false;
+            Flags |= TextureQuadFlags.OffsetByHalfTexel;
         }
     }
 }

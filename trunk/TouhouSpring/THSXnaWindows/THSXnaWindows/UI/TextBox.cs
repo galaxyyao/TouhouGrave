@@ -362,7 +362,7 @@ namespace TouhouSpring.UI
                             e.RenderManager.Draw(new TexturedQuad(lineTexture)
                             {
                                 UVBounds = new Rectangle(0, 0, clauseWidth, GameApp.Service<Resources>().DashLine.Height),
-                                WrapUV = true
+                                Flags = TextureQuadFlags.OffsetByHalfTexel | TextureQuadFlags.WrapUV,
                             }, new Rectangle(clauseLeft, Height - lineThickness - 1, clauseWidth, lineThickness), transform);
                         }
 

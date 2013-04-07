@@ -25,6 +25,7 @@ namespace TouhouSpring.Graphics
         private VertexBuffer m_vertexBuffer;
         private VertexDeclaration m_vertexDeclaration;
         private DepthStencilState[] m_depthSettings;
+        private SamplerState[] m_samplerStateSettings;
 
         private Stack<EffectTechnique> m_techStack = new Stack<EffectTechnique>();
 
@@ -73,7 +74,9 @@ namespace TouhouSpring.Graphics
             Device.SetVertexBuffer(m_vertexBuffer);
             Device.Indices = null;
             Device.BlendState = quad.BlendState;
-            Device.DepthStencilState = OverridingDepthStencilState ?? m_depthSettings[(quad.ZTest ? 2 : 0) | (quad.ZWrite ? 1 : 0)];
+            Device.DepthStencilState = OverridingDepthStencilState ?? m_depthSettings[
+                (quad.Flags.HasFlag(TextureQuadFlags.ZTest) ? 2 : 0)
+                | (quad.Flags.HasFlag(TextureQuadFlags.ZWrite) ? 1 : 0)];
             Device.RasterizerState = RasterizerState.CullCounterClockwise;
 
             if (m_effect.CurrentTechnique != m_techStack.Peek())
@@ -88,10 +91,10 @@ namespace TouhouSpring.Graphics
             float uvHeight = quad.Texture != null ? quad.Texture.XnaTexture.Height : Device.Viewport.Height;
             float uvLeft = quad.UVBounds.Left
                            + (quad.Texture != null ? quad.Texture.Bounds.Left : 0)
-                           + (quad.OffsetByHalfTexel ? 0.5f : 0.0f);
+                           + (quad.Flags.HasFlag(TextureQuadFlags.OffsetByHalfTexel) ? 0.5f : 0.0f);
             float uvTop = quad.UVBounds.Top
                           + (quad.Texture != null ? quad.Texture.Bounds.Top : 0)
-                          + (quad.OffsetByHalfTexel ? 0.5f : 0.0f);
+                          + (quad.Flags.HasFlag(TextureQuadFlags.OffsetByHalfTexel) ? 0.5f : 0.0f);
             m_paramUVAdjust.SetValue(new Vector4(quad.UVBounds.Width / uvWidth, quad.UVBounds.Height / uvHeight,
                                                  uvLeft / uvWidth, uvTop / uvHeight));
 
@@ -104,7 +107,9 @@ namespace TouhouSpring.Graphics
             foreach (var pass in m_effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                Device.SamplerStates[0] = quad.WrapUV ? SamplerState.LinearWrap : SamplerState.LinearClamp;
+                Device.SamplerStates[0] = m_samplerStateSettings[
+                    (quad.Flags.HasFlag(TextureQuadFlags.WrapUV) ? 2 : 0)
+                    | (quad.Flags.HasFlag(TextureQuadFlags.SharpLod) ? 1 : 0)];
                 Device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
             }
 
@@ -129,6 +134,19 @@ namespace TouhouSpring.Graphics
                     m_depthSettings[i].DepthBufferFunction = zTest ? CompareFunction.LessEqual : CompareFunction.Always;
                     m_depthSettings[i].DepthBufferWriteEnable = zWrite;
                 }
+            }
+
+            m_samplerStateSettings = new SamplerState[4];
+            for (int i = 0; i < 4; ++i)
+            {
+                bool linearWrap = (i & 2) != 0;
+                bool sharpLod = (i & 1 ) != 0;
+                m_samplerStateSettings[i] = new SamplerState
+                {
+                    AddressU = linearWrap ? TextureAddressMode.Wrap : TextureAddressMode.Clamp,
+                    AddressV = linearWrap ? TextureAddressMode.Wrap : TextureAddressMode.Clamp,
+                    MipMapLevelOfDetailBias = sharpLod ? -1 : 0
+                };
             }
         }
 

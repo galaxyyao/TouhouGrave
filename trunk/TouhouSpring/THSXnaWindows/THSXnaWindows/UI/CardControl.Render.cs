@@ -50,9 +50,6 @@ namespace TouhouSpring.UI
             ////////////////////////////////////////////////////////////
             // render content with depth off, pass only when stencil value
             // equals to the flagging stencil value
-            var oldSamplerState = e.RenderManager.Device.SamplerStates[0];
-            e.RenderManager.Device.SamplerStates[0] = m_mipmapBiasedSamplerState;
-
             e.RenderManager.OverridingDepthStencilState = m_contentDepthStencil;
             bool tone = Saturate < 1f || Brightness != 1f;
             if (tone)
@@ -68,8 +65,6 @@ namespace TouhouSpring.UI
                 e.RenderManager.PopTechnique();
             }
             e.RenderManager.OverridingDepthStencilState = null;
-
-            e.RenderManager.Device.SamplerStates[0] = oldSamplerState ?? m_defaultSamplerState;
 
             Addins.ForEach(addin => addin.RenderPostMain(transform, e));
 
