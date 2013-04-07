@@ -12,10 +12,11 @@ namespace TouhouSpring.Graphics
         private struct FontMetrics
         {
             public string m_id;
+            public Font m_fontObject;
+            public float m_outlineThickness;
             public float m_spaceWidth;
             public float m_fullWidthSpaceWidth;
             public float m_ascentInPixels;
-            public Font m_fontObject;
         }
 
         public struct FontDescriptor
@@ -23,21 +24,27 @@ namespace TouhouSpring.Graphics
             public string FamilyName;
             public float Size;
             public FontStyle Style;
+            public float OutlineThickness;
 
             public FontDescriptor(string familyName, float size)
                 : this(familyName, size, FontStyle.Regular)
             { }
 
             public FontDescriptor(string familyName, float size, FontStyle style)
+                : this(familyName, size, style, 0)
+            { }
+
+            public FontDescriptor(string familyName, float size, FontStyle style, float outlineThickness)
             {
                 FamilyName = familyName;
                 Size = size;
                 Style = style;
+                OutlineThickness = outlineThickness;
             }
 
             public string Id
             {
-                get { return FamilyName + Size.ToString() + Style.ToString(); }
+                get { return FamilyName + Size.ToString() + Style.ToString() + OutlineThickness.ToString(); }
             }
         }
 
@@ -55,9 +62,10 @@ namespace TouhouSpring.Graphics
                 {
                     m_id = fontId,
                     m_fontObject = fontObject,
+                    m_outlineThickness = fd.OutlineThickness,
                     m_spaceWidth = MeasureSpace(fontObject).Width,
-                    m_ascentInPixels = CalculateAscentInPixel(fontObject),
-                    m_fullWidthSpaceWidth = MeasureFullwidthSpace(fontObject).Width
+                    m_fullWidthSpaceWidth = MeasureFullwidthSpace(fontObject).Width,
+                    m_ascentInPixels = CalculateAscentInPixel(fontObject)
                 });
                 index = m_registeredFonts.Count - 1;
             }

@@ -61,7 +61,8 @@ namespace TouhouSpring.Style
         string TextProperty.IHost.DefaultText { get { return ""; } }
         string TextProperty.IHost.DefaultFontFamily { get { return "Segoe UI"; } }
         string TextProperty.IHost.DefaultFontSize { get { return "11"; } }
-        string TextProperty.IHost.DefaultFontStyle { get { return "regular"; } }
+        string TextProperty.IHost.DefaultFontStyle { get { return null; } }
+        string TextProperty.IHost.DefaultFontOutlineThickness { get { return null; } }
         string TextProperty.IHost.DefaultTextColor { get { return "Black"; } }
 
         void TextProperty.IHost.SetText(string text, Font font, Font ansiFont, Color textColor)
@@ -101,12 +102,14 @@ namespace TouhouSpring.Style
                 || TypedTarget.Label.FormattedText.FormatOptions.Font.FamilyName != font.Family
                 || TypedTarget.Label.FormattedText.FormatOptions.Font.Size != font.Size
                 || TypedTarget.Label.FormattedText.FormatOptions.Font.Style != fontStyle
+                || TypedTarget.Label.FormattedText.FormatOptions.Font.OutlineThickness != font.OutlineThickness
                 || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.FamilyName != ansiFont.Family
                 || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.Size != ansiFont.Size
-                || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.Style != ansiFontStyle)
+                || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.Style != ansiFontStyle
+                || TypedTarget.Label.FormattedText.FormatOptions.AnsiFont.OutlineThickness != ansiFont.OutlineThickness)
             {
-                var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
-                var ansiFd = new Graphics.TextRenderer.FontDescriptor(ansiFont.Family, ansiFont.Size.Value, ansiFontStyle);
+                var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle, font.OutlineThickness.Value);
+                var ansiFd = new Graphics.TextRenderer.FontDescriptor(ansiFont.Family, ansiFont.Size.Value, ansiFontStyle, ansiFont.OutlineThickness.Value);
                 TypedTarget.Label.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd, ansiFd));
             }
             TypedTarget.Label.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
