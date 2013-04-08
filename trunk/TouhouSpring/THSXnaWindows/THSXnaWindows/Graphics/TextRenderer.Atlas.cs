@@ -62,6 +62,7 @@ namespace TouhouSpring.Graphics
         private GlyphData Load(char glyph, FormatOptions formatOptions)
         {
             int fontId = GetFontId(IsAnsiChar(glyph) ? formatOptions.AnsiFont : formatOptions.Font);
+            var font = m_registeredFonts[fontId];
             uint glyphId = ((uint)fontId << 16) + glyph;
 
             GlyphData glyphData;
@@ -73,6 +74,7 @@ namespace TouhouSpring.Graphics
 
             var str = glyph.ToString();
             var chRect = MeasureCharacter(glyph, m_registeredFonts[fontId].m_fontObject);
+            chRect.Inflate(font.m_outlineThickness * 0.5f, font.m_outlineThickness * 0.5f);
 
             int width = Math.Max((int)Math.Ceiling(chRect.Width), 1);
             int height = Math.Max((int)Math.Ceiling(chRect.Height), 1);
@@ -96,7 +98,6 @@ namespace TouhouSpring.Graphics
                 g.SmoothingMode = SystemDrawing.Drawing2D.SmoothingMode.AntiAlias;
                 g.InterpolationMode = SystemDrawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
-                var font = m_registeredFonts[fontId];
                 if (font.m_outlineThickness > 0)
                 {
                     SystemDrawing.Pen outlinePen;
