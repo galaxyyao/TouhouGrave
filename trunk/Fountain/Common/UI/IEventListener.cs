@@ -5,9 +5,9 @@ using System.Text;
 
 namespace TouhouSpring.UI
 {
-	public interface IEventListener<TEventArgs>
-		where TEventArgs : EventArgs
-	{
-		void RaiseEvent(TEventArgs e);
-	}
+    public interface IEventListener<in TEventArgs>
+        where TEventArgs : EventArgs
+    {
+        void RaiseEvent(TEventArgs e);
+    }
 }
