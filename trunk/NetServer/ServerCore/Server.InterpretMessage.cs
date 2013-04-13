@@ -84,7 +84,7 @@ namespace TouhouSpring.ServerCore
                     //Random who start the 1st turn
                     SendMessage(playerConn
                         , string.Format("<Message><Type>Game</Type><Time>{1}</Time><Info><Action>StartGame</Action><StartGameIndex>{0}</StartGameIndex></Info></Message>"
-                        , _roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2
+                        , Math.Abs(_roomList[enteredRoomId].GetPlayerIndex(playerConn.RemoteUniqueIdentifier) - seed % 2)
                         , DateTime.Now));
                     //SendMessage(playerConn
                     //    , string.Format("startgame {0} {1}", enteredRoomId

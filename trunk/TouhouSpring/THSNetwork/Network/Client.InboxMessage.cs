@@ -17,10 +17,7 @@ namespace TouhouSpring.Network
 
         public void RemoteEnterInteraction(Interactions.BaseInteraction io)
         {
-            if (m_remoteInteraction == null)
-            {
-                throw new InvalidDataException("Remote interaction should not be null");
-            }
+            System.Diagnostics.Debug.Assert(m_remoteInteraction == null);
             m_remoteInteraction = io;
             if (m_interactionMessageQueue.Count != 0)
             {
@@ -58,7 +55,7 @@ namespace TouhouSpring.Network
 
         private void OnInteractionMessageArrived(string message)
         {
-            if (m_remoteInteraction == null)
+            if (m_remoteInteraction == null && RoomStatus == RoomStatusEnum.Started)
             {
                 m_interactionMessageQueue.Enqueue(message);
             }

@@ -53,8 +53,9 @@ namespace TouhouSpring.Network
                     case NetIncomingMessageType.WarningMessage:
                     case NetIncomingMessageType.VerboseDebugMessage:
                         {
-                            string text = im.ReadString();
-                            if (text == "Resending Connect...")
+                            string message = im.ReadString();
+                            Debug.Print(im.MessageType.ToString() + message);
+                            if (message == "Resending Connect...")
                                 NetworkStatus = NetworkStatusEnum.ResendingConnect;
                         }
                         break;
@@ -62,6 +63,7 @@ namespace TouhouSpring.Network
                         {
                             NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
                             string message = im.ReadString();
+                            Debug.Print(im.MessageType.ToString() + message);
 
                             if (status == NetConnectionStatus.Connected)
                             {
@@ -78,6 +80,7 @@ namespace TouhouSpring.Network
                         {
                             string message = im.ReadString();
                             OnInteractionMessageArrived(message);
+                            Debug.Print(im.MessageType.ToString() + message);
                         }
                         break;
                     default:
