@@ -83,6 +83,7 @@ namespace TouhouSpring.UI.ModalDialogs
                 drawOptions.Offset = new Point(textLeft + 2, textTop + 3);
                 e.TextRenderer.DrawText(m_text, transform, drawOptions);
                 drawOptions.ColorScaling = XnaColor.White.ToVector4();
+                drawOptions.OutlineColor = XnaColor.Black.ToVector4();
                 drawOptions.Offset = new Point(textLeft, textTop);
                 e.TextRenderer.DrawText(m_text, transform, drawOptions);
             }

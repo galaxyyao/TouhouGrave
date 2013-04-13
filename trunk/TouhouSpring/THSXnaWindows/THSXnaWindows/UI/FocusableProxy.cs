@@ -38,6 +38,15 @@ namespace TouhouSpring.UI
             Dispatcher = target;
         }
 
+        public void SetFocus()
+        {
+            var kbMgr = GetKeyboardInputManager();
+            if (kbMgr != null)
+            {
+                kbMgr.SetFocus(Target as IFocusable);
+            }
+        }
+
         public void RaiseEvent(KeyPressedEventArgs e)
         {
             RegisterToFocusManager();
@@ -50,14 +59,24 @@ namespace TouhouSpring.UI
 
         private void RegisterToFocusManager()
         {
+            var kbMgr = GetKeyboardInputManager();
+            if (kbMgr != null)
+            {
+                kbMgr.RegisterFocusable(Target as IFocusable);
+            }
+        }
+
+        private KeyboardInputManager GetKeyboardInputManager()
+        {
             for (var i = Target; i != null; i = i.Dispatcher)
             {
                 if (i is IFocusGroup)
                 {
-                    (i as IFocusGroup).KeyboardInputManager.RegisterFocusable(Target as IFocusable);
-                    return;
+                    return (i as IFocusGroup).KeyboardInputManager;
                 }
             }
+
+            return null;
         }
     }
 }

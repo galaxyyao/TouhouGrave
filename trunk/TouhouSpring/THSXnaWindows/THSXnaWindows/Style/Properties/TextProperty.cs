@@ -15,18 +15,23 @@ namespace TouhouSpring.Style.Properties
             string DefaultFontFamily { get; }
             string DefaultFontSize { get; }
             string DefaultFontStyle { get; }
+            string DefaultFontOutlineThickness { get; }
             string DefaultTextColor { get; }
-            void SetText(string text, Font font, Font ansiFont, Color textColor);
+            string DefaultTextOutlineColor { get; }
+            void SetText(string text, Font font, Font ansiFont, Color textColor, Color textOutlineColor);
         }
 
         private string m_text;
         private string m_fontFamily;
         private string m_fontSize;
         private string m_fontStyle;
+        private string m_fontOutlineThickness;
         private string m_ansiFontFamily;
         private string m_ansiFontSize;
         private string m_ansiFontStyle;
+        private string m_ansiFontOutlineThickness;
         private string m_textColor;
+        private string m_textOutlineColor;
 
         public TextProperty(IStyleContainer parent)
             : base(parent)
@@ -59,9 +64,14 @@ namespace TouhouSpring.Style.Properties
                 throw new MissingAttributeException("Color");
             }
 
+            var attrTextOutlineColor = host.Definition.Attribute("OutlineColor");
+            var textOutlineColor = attrTextOutlineColor != null ? attrTextOutlineColor.Value : host.DefaultTextOutlineColor;
+            textOutlineColor = textOutlineColor ?? "!00000000";
+
             string fontFamily = null;
             string fontSize = null;
             string fontStyle = null;
+            string fontOutlineThickness = null;
 
             var fontAttr = host.Definition.Attribute("Font");
             if (fontAttr != null)
@@ -80,6 +90,10 @@ namespace TouhouSpring.Style.Properties
                     fontStyle = tokens[2].Trim();
                 }
                 if (tokens.Length > 3)
+                {
+                    fontOutlineThickness = tokens[3].Trim();
+                }
+                if (tokens.Length > 4)
                 {
                     throw new FormatException(string.Format("'{0}' is not a valid value for Font.", fontAttr.Value));
                 }
@@ -107,6 +121,13 @@ namespace TouhouSpring.Style.Properties
                     throw new DuplicateAttributeException("Font style");
                 }
                 fontStyle = fontStyle ?? fontStyleAttr.Value;
+
+                var fontOutlineThicknessAttr = fontElement.Attribute("OutlineThickness");
+                if (fontOutlineThickness != null && fontOutlineThicknessAttr != null)
+                {
+                    throw new DuplicateAttributeException("Font outline thickness");
+                }
+                fontOutlineThickness = fontOutlineThickness ?? fontOutlineThicknessAttr.Value;
             }
 
             fontFamily = fontFamily ?? host.DefaultFontFamily;
@@ -124,6 +145,7 @@ namespace TouhouSpring.Style.Properties
             string ansiFontFamily = null;
             string ansiFontSize = null;
             string ansiFontStyle = null;
+            string ansiFontOutlineThickness = null;
 
             var ansiFontAttr = host.Definition.Attribute("AnsiFont");
             if (ansiFontAttr != null)
@@ -142,6 +164,10 @@ namespace TouhouSpring.Style.Properties
                     ansiFontStyle = tokens[2].Trim();
                 }
                 if (tokens.Length > 3)
+                {
+                    ansiFontOutlineThickness = tokens[3].Trim();
+                }
+                if (tokens.Length > 4)
                 {
                     throw new FormatException(string.Format("'{0}' is not a valid value for AnsiFont.", ansiFontAttr.Value));
                 }
@@ -169,16 +195,26 @@ namespace TouhouSpring.Style.Properties
                     throw new DuplicateAttributeException("Font style");
                 }
                 ansiFontStyle = ansiFontStyle ?? fontStyleAttr.Value;
+
+                var fontOutlineThicknessAttr = ansiFontElement.Attribute("OutlineThickness");
+                if (ansiFontOutlineThickness != null && fontOutlineThicknessAttr != null)
+                {
+                    throw new DuplicateAttributeException("Font outline thickness");
+                }
+                ansiFontOutlineThickness = ansiFontOutlineThickness ?? fontOutlineThicknessAttr.Value;
             }
 
             m_text = text;
             m_textColor = textColor;
+            m_textOutlineColor = textOutlineColor;
             m_fontFamily = fontFamily;
             m_fontSize = fontSize;
             m_fontStyle = fontStyle ?? host.DefaultFontStyle ?? "regular";
+            m_fontOutlineThickness = fontOutlineThickness ?? host.DefaultFontOutlineThickness ?? "0";
             m_ansiFontFamily = ansiFontFamily ?? m_fontFamily;
             m_ansiFontSize = ansiFontSize ?? m_fontSize;
-            m_ansiFontStyle = ansiFontStyle ?? m_fontStyle; ;
+            m_ansiFontStyle = ansiFontStyle ?? m_fontStyle;
+            m_ansiFontOutlineThickness = ansiFontOutlineThickness ?? m_fontOutlineThickness;
         }
 
         public override void Apply()
@@ -196,22 +232,25 @@ namespace TouhouSpring.Style.Properties
 
             var text = BindValuesFor(m_text);
             var color = Color.Parse(BindValuesFor(m_textColor));
+            var outlineColor = Color.Parse(BindValuesFor(m_textOutlineColor));
 
             Font font = new Font
             {
                 Family = m_fontFamily,
                 Size = float.Parse(m_fontSize),
-                Style = Font.ParseStyle(m_fontStyle)
+                Style = Font.ParseStyle(m_fontStyle),
+                OutlineThickness = float.Parse(m_fontOutlineThickness)
             };
 
             Font ansiFont = new Font
             {
                 Family = m_ansiFontFamily,
                 Size = float.Parse(m_ansiFontSize),
-                Style = Font.ParseStyle(m_ansiFontStyle)
+                Style = Font.ParseStyle(m_ansiFontStyle),
+                OutlineThickness = float.Parse(m_ansiFontOutlineThickness)
             };
 
-            host.SetText(text, font, ansiFont, color);
+            host.SetText(text, font, ansiFont, color, outlineColor);
         }
     }
 }

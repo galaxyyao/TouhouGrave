@@ -7,6 +7,7 @@ float2 Draw_InvTextureSize;
 float2 Draw_NumPages;
 float2 Draw_InvNumPages;
 float4 Draw_ColorScaling;
+float4 Draw_OutlineColor;
 
 texture TheTexture;
 
@@ -44,7 +45,8 @@ void BlitPS(
 	in float2 iUV	: TEXCOORD0,
 	out float4 oClr	: COLOR0)
 {
-	oClr = tex2D(PointSampler, iUV).aaaa;
+	float4 texColor = tex2D(PointSampler, iUV);
+	oClr = texColor.r * texColor.a;
 }
 
 void DrawVS(
@@ -57,19 +59,12 @@ void DrawVS(
 	out float4 oColor		: COLOR0,
 	out float4 oChannel		: COLOR1)
 {
-	const float4 masks[] = {
-		{ 0, 0, 0, 1 },
-		{ 1, 0, 0, 0 },
-		{ 0, 1, 0, 0 },
-		{ 0, 0, 1, 0 },
-	};
-
 	oPos = float4(iPos + iCorner * Draw_PageSize, 0, 1);
 	oPos = mul(oPos, Draw_WorldViewProj);
 	oUV_PageXY.xy = (iUV_Mask.xy + iCorner) * Draw_PageUVSize;
 	oUV_PageXY.zw = iUV_Mask.xy;
 	oColor = iColor * Draw_ColorScaling;
-	oChannel = masks[(int)iUV_Mask.z];
+	oChannel.xy = iUV_Mask.zw;
 }
 
 float ComputeMipmapLevel(float2 dx, float2 dy, float2 textureSize)
@@ -99,7 +94,33 @@ void DrawPS(
 	float4 pageUVRange = GetPageUV(iUV_PageXY.zw);
 	iUV = max(iUV, pageUVRange.xy + halfBorderSizeLod);
 	iUV = min(iUV, pageUVRange.zw - halfBorderSizeLod);
-	oColor = dot(tex2D(LinearSampler, iUV, dx, dy), iChannel).xxxx * iColor;
+
+	const float4 masks[] = {
+		{ 0, 0, 0, 1 },
+		{ 1, 0, 0, 0 },
+		{ 0, 1, 0, 0 },
+		{ 0, 0, 1, 0 },
+	};
+
+	float texColor = dot(tex2D(LinearSampler, iUV, dx, dy), masks[(int)iChannel.x]);
+
+	if (iChannel.y == 1)
+	{
+		// outline
+		texColor *= 2;
+		if (texColor < 1)
+		{
+			oColor = texColor * Draw_OutlineColor;
+		}
+		else
+		{
+			oColor = lerp(Draw_OutlineColor, iColor, texColor - 1);
+		}
+	}
+	else
+	{
+		oColor = texColor * iColor;
+	}
 }
 
 technique BlitToRT

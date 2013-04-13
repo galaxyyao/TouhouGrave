@@ -6,9 +6,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Byte4 = Microsoft.Xna.Framework.Graphics.PackedVector.Byte4;
 using Short2N = Microsoft.Xna.Framework.Graphics.PackedVector.NormalizedShort2;
-using SystemColor = System.Drawing.Color;
-using SystemFont = System.Drawing.Font;
-using SystemSolidBrush = System.Drawing.SolidBrush;
 
 namespace TouhouSpring.Graphics
 {
@@ -20,6 +17,7 @@ namespace TouhouSpring.Graphics
         {
             public Vector2 m_pos;
             public Color m_color;
+            public bool m_hasOutline;
             public int m_pageIndex;
         }
 
@@ -31,7 +29,6 @@ namespace TouhouSpring.Graphics
             public Color m_color;
         };
 
-        private SystemSolidBrush m_whiteBrush;
         private VertexDeclaration m_vertDeclDraw;
         private DynamicVertexBuffer m_verticesDraw;
         private int m_verticesDrawWriteCursor = 0;
@@ -44,6 +41,7 @@ namespace TouhouSpring.Graphics
         private EffectParameter m_paramNumPages;
         private EffectParameter m_paramInvNumPages;
         private EffectParameter m_paramColorScaling;
+        private EffectParameter m_paramOutlineColor;
 
         [Flags]
         public enum DrawFlags
@@ -57,6 +55,7 @@ namespace TouhouSpring.Graphics
         {
             public Color ForcedColor;
             public Vector4 ColorScaling;
+            public Vector4 OutlineColor;
             public Point Offset;
             public DrawFlags DrawFlags;
             public int SubstringStart;
@@ -68,6 +67,7 @@ namespace TouhouSpring.Graphics
             {
                 ForcedColor = Color.Transparent,
                 ColorScaling = Vector4.UnitW,
+                OutlineColor = Vector4.Zero,
                 Offset = new Point(0, 0),
                 DrawFlags = TextRenderer.DrawFlags.OffsetByHalfPixel,
                 SubstringStart = 0,
@@ -142,6 +142,9 @@ namespace TouhouSpring.Graphics
                             {
                                 m_pos = glyphPos + new Vector2(x * PageSize, y * PageSize),
                                 m_color = drawOptions.ForcedColor == Color.Transparent ? glyph.m_color : drawOptions.ForcedColor,
+                                m_hasOutline = IsAnsiChar(glyph.m_glyph)
+                                               ? formattedText.FormatOptions.AnsiFont.OutlineThickness > 0
+                                               : formattedText.FormatOptions.Font.OutlineThickness > 0,
                                 m_pageIndex = glyphData.m_pageIndices[x, y]
                             });
                         }
@@ -180,6 +183,11 @@ namespace TouhouSpring.Graphics
             premultipliedColorScaling.Y *= premultipliedColorScaling.W;
             premultipliedColorScaling.Z *= premultipliedColorScaling.W;
             m_paramColorScaling.SetValue(premultipliedColorScaling);
+            var premultipliedOutlineColor = drawOptions.OutlineColor;
+            premultipliedOutlineColor.X *= premultipliedOutlineColor.W;
+            premultipliedOutlineColor.Y *= premultipliedOutlineColor.W;
+            premultipliedOutlineColor.Z *= premultipliedOutlineColor.W;
+            m_paramOutlineColor.SetValue(premultipliedOutlineColor);
 
             var vertices = new VertexDataDraw[glyphPages.Count * 6];
 
@@ -224,7 +232,7 @@ namespace TouhouSpring.Graphics
                     {
                         vertices[counter + i].m_leftTopPos.X = glyphPage.m_pos.X;
                         vertices[counter + i].m_leftTopPos.Y = glyphPage.m_pos.Y;
-                        vertices[counter + i].m_localPageXY_mask = new Byte4(pageX, pageY, channel, 0);
+                        vertices[counter + i].m_localPageXY_mask = new Byte4(pageX, pageY, channel, glyphPage.m_hasOutline ? 1 : 0);
                         vertices[counter + i].m_color = glyphPage.m_color;
                     }
                     vertices[counter + 0].m_corner = new Short2N(boundedLeft, boundedTop);
@@ -284,8 +292,6 @@ namespace TouhouSpring.Graphics
 
         private void Initialize_DrawText()
         {
-            m_whiteBrush = new SystemSolidBrush(SystemColor.White);
-
             m_vertDeclDraw = new VertexDeclaration(
                 new VertexElement(0, VertexElementFormat.NormalizedShort2, VertexElementUsage.Position, 0),
                 new VertexElement(4, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
@@ -302,6 +308,7 @@ namespace TouhouSpring.Graphics
             m_paramNumPages = m_effect.Parameters["Draw_NumPages"];
             m_paramInvNumPages = m_effect.Parameters["Draw_InvNumPages"];
             m_paramColorScaling = m_effect.Parameters["Draw_ColorScaling"];
+            m_paramOutlineColor = m_effect.Parameters["Draw_OutlineColor"];
         }
 
         private void Destroy_DrawText()
@@ -311,8 +318,6 @@ namespace TouhouSpring.Graphics
                 m_verticesDraw.Dispose();
             }
             m_vertDeclDraw.Dispose();
-
-            m_whiteBrush.Dispose();
         }
     }
 }

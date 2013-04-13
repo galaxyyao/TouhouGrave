@@ -28,6 +28,32 @@ namespace TouhouSpring.UI
             m_imeContext.OnCandidateListUpdate += new Ime.CandidateListMessageHandler(ImeContext_OnCandidateListUpdate);
         }
 
+        public void SetFocus(IFocusable newFocus)
+        {
+            if (newFocus != Focus)
+            {
+                if (Focus != null)
+                {
+                    Focus.OnLostFocus();
+                    if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
+                    {
+                        m_imeContext.EndIme();
+                    }
+                }
+
+                Focus = newFocus;
+                if (Focus != null)
+                {
+                    if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
+                    {
+                        m_imeContext.BeginIme();
+                        (Focus as ITextReceiver).OnInputLanguageChange(m_imeContext.IndicatorString);
+                    }
+                    Focus.OnGotFocus();
+                }
+            }
+        }
+
         public void RaiseEvent(KeyPressedEventArgs e)
         {
             int focusIndex = m_focusableItems.IndexOf(Focus);
@@ -155,32 +181,6 @@ namespace TouhouSpring.UI
             if (Focus is ITextReceiver && (Focus as ITextReceiver).ImeEnabled)
             {
                 (Focus as ITextReceiver).OnCandidateListUpdate(data);
-            }
-        }
-
-        private void SetFocus(IFocusable newFocus)
-        {
-            if (newFocus != Focus)
-            {
-                if (Focus != null)
-                {
-                    Focus.OnLostFocus();
-                    if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
-                    {
-                        m_imeContext.EndIme();
-                    }
-                }
-
-                Focus = newFocus;
-                if (Focus != null)
-                {
-                    if ((Focus is ITextReceiver) && (Focus as ITextReceiver).ImeEnabled)
-                    {
-                        m_imeContext.BeginIme();
-                        (Focus as ITextReceiver).OnInputLanguageChange(m_imeContext.IndicatorString);
-                    }
-                    Focus.OnGotFocus();
-                }
             }
         }
     }

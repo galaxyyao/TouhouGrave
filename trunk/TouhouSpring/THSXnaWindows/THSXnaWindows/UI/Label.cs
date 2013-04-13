@@ -25,6 +25,11 @@ namespace TouhouSpring.UI
             get; set;
         }
 
+        public XnaColor TextOutlineColor
+        {
+            get; set;
+        }
+
         public XnaColor ShadowTextColor
         {
             get; set;
@@ -40,6 +45,7 @@ namespace TouhouSpring.UI
             m_renderableProxy = new RenderableProxy(this);
 
             TextColor = XnaColor.Black;
+            TextOutlineColor = XnaColor.Transparent;
         }
 
         public virtual void OnRender(RenderEventArgs e)
@@ -58,6 +64,7 @@ namespace TouhouSpring.UI
                 }
                 drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = TextColor.ToVector4();
+                drawOptions.OutlineColor = TextOutlineColor.ToVector4();
                 e.TextRenderer.DrawText(FormattedText, transform, drawOptions);
             }
         }

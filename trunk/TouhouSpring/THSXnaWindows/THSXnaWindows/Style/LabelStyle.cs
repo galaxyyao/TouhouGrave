@@ -55,10 +55,12 @@ namespace TouhouSpring.Style
         string TextProperty.IHost.DefaultText { get { return ""; } }
         string TextProperty.IHost.DefaultFontFamily { get { return "Segoe UI"; } }
         string TextProperty.IHost.DefaultFontSize { get { return "11"; } }
-        string TextProperty.IHost.DefaultFontStyle { get { return "regular"; } }
+        string TextProperty.IHost.DefaultFontStyle { get { return null; } }
+        string TextProperty.IHost.DefaultFontOutlineThickness { get { return null; } }
         string TextProperty.IHost.DefaultTextColor { get { return "Black"; } }
+        string TextProperty.IHost.DefaultTextOutlineColor { get { return null; } }
 
-        void TextProperty.IHost.SetText(string text, Font font, Font ansiFont, Color textColor)
+        void TextProperty.IHost.SetText(string text, Font font, Font ansiFont, Color textColor, Color textOutlineColor)
         {
             SystemFontStyle fontStyle;
             switch (font.Style)
@@ -95,15 +97,18 @@ namespace TouhouSpring.Style
                 || TypedTarget.FormattedText.FormatOptions.Font.FamilyName != font.Family
                 || TypedTarget.FormattedText.FormatOptions.Font.Size != font.Size
                 || TypedTarget.FormattedText.FormatOptions.Font.Style != fontStyle
+                || TypedTarget.FormattedText.FormatOptions.Font.OutlineThickness != font.OutlineThickness
                 || TypedTarget.FormattedText.FormatOptions.AnsiFont.FamilyName != ansiFont.Family
                 || TypedTarget.FormattedText.FormatOptions.AnsiFont.Size != ansiFont.Size
-                || TypedTarget.FormattedText.FormatOptions.AnsiFont.Style != ansiFontStyle)
+                || TypedTarget.FormattedText.FormatOptions.AnsiFont.Style != ansiFontStyle
+                || TypedTarget.FormattedText.FormatOptions.AnsiFont.OutlineThickness != ansiFont.OutlineThickness)
             {
-                var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle);
-                var ansiFd = new Graphics.TextRenderer.FontDescriptor(ansiFont.Family, ansiFont.Size.Value, ansiFontStyle);
+                var fd = new Graphics.TextRenderer.FontDescriptor(font.Family, font.Size.Value, fontStyle, font.OutlineThickness.Value);
+                var ansiFd = new Graphics.TextRenderer.FontDescriptor(ansiFont.Family, ansiFont.Size.Value, ansiFontStyle, ansiFont.OutlineThickness.Value);
                 TypedTarget.FormattedText = GameApp.Service<Graphics.TextRenderer>().FormatText(text, new Graphics.TextRenderer.FormatOptions(fd, ansiFd));
             }
             TypedTarget.TextColor = new XnaColor(textColor.Red, textColor.Green, textColor.Blue, textColor.Alpha);
+            TypedTarget.TextOutlineColor = new XnaColor(textOutlineColor.Red, textOutlineColor.Green, textOutlineColor.Blue, textOutlineColor.Alpha);
         }
 
         #endregion

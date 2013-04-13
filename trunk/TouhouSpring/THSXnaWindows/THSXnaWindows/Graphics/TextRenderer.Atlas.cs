@@ -51,6 +51,8 @@ namespace TouhouSpring.Graphics
         private Dictionary<uint, GlyphData> m_loadedGlyphs = new Dictionary<uint, GlyphData>();
         private List<CacheTexture> m_cacheTextures = new List<CacheTexture>();
 
+        private SystemDrawing.SolidBrush m_whiteBrush;
+        private Dictionary<float, SystemDrawing.Pen> m_outlinePensWithWidths = new Dictionary<float, SystemDrawing.Pen>();
         private SystemDrawing.Graphics m_measureContext;
         private SystemDrawing.StringFormat m_measureFormat;
         private EffectTechnique m_techBlit;
@@ -60,6 +62,7 @@ namespace TouhouSpring.Graphics
         private GlyphData Load(char glyph, FormatOptions formatOptions)
         {
             int fontId = GetFontId(IsAnsiChar(glyph) ? formatOptions.AnsiFont : formatOptions.Font);
+            var font = m_registeredFonts[fontId];
             uint glyphId = ((uint)fontId << 16) + glyph;
 
             GlyphData glyphData;
@@ -71,6 +74,7 @@ namespace TouhouSpring.Graphics
 
             var str = glyph.ToString();
             var chRect = MeasureCharacter(glyph, m_registeredFonts[fontId].m_fontObject);
+            chRect.Inflate(font.m_outlineThickness * 0.5f, font.m_outlineThickness * 0.5f);
 
             int width = Math.Max((int)Math.Ceiling(chRect.Width), 1);
             int height = Math.Max((int)Math.Ceiling(chRect.Height), 1);
@@ -89,8 +93,39 @@ namespace TouhouSpring.Graphics
             using (var g = SystemDrawing.Graphics.FromImage(bmp))
             using (var memStream = new MemoryStream())
             {
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                g.DrawString(str, m_registeredFonts[fontId].m_fontObject, m_whiteBrush, new SystemDrawing.PointF(-chRect.Left, -chRect.Top));
+                // draw text using GDI+
+                g.TextRenderingHint = SystemDrawing.Text.TextRenderingHint.AntiAliasGridFit;
+                g.SmoothingMode = SystemDrawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.InterpolationMode = SystemDrawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                if (font.m_outlineThickness > 0)
+                {
+                    SystemDrawing.Pen outlinePen;
+                    if (!m_outlinePensWithWidths.TryGetValue(font.m_outlineThickness, out outlinePen))
+                    {
+                        outlinePen = new SystemDrawing.Pen(SystemDrawing.Color.Gray, font.m_outlineThickness);
+                        outlinePen.MiterLimit = font.m_outlineThickness;
+                        m_outlinePensWithWidths.Add(font.m_outlineThickness, outlinePen);
+                    }
+
+                    // draw outline
+                    using (var outlinePath = new SystemDrawing.Drawing2D.GraphicsPath())
+                    {
+                        outlinePath.AddString(str,
+                            font.m_fontObject.FontFamily,
+                            (int)font.m_fontObject.Style,
+                            g.DpiX * font.m_fontObject.SizeInPoints / 72,
+                            new SystemDrawing.PointF(-chRect.Left, -chRect.Top),
+                            SystemDrawing.StringFormat.GenericDefault);
+                        g.DrawPath(outlinePen, outlinePath);
+                        g.FillPath(m_whiteBrush, outlinePath);
+                    }
+                }
+                else
+                {
+                    g.DrawString(str, font.m_fontObject, m_whiteBrush, new SystemDrawing.PointF(-chRect.Left, -chRect.Top));
+                }
+
                 bmp.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);
                 using (var tmpTexture = Texture2D.FromStream(GameApp.Instance.GraphicsDevice, memStream))
                 {
@@ -245,6 +280,7 @@ namespace TouhouSpring.Graphics
                 m_measureContext.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             }
 
+            m_whiteBrush = new SystemDrawing.SolidBrush(SystemDrawing.Color.White);
             m_measureFormat = new SystemDrawing.StringFormat(SystemDrawing.StringFormatFlags.NoClip | SystemDrawing.StringFormatFlags.NoWrap);
             m_measureFormat.SetMeasurableCharacterRanges(new SystemDrawing.CharacterRange[] { new SystemDrawing.CharacterRange(0, 1) });
 
@@ -261,7 +297,13 @@ namespace TouhouSpring.Graphics
 
         private void Destroy_Atlas()
         {
+            foreach (var pen in m_outlinePensWithWidths.Values)
+            {
+                pen.Dispose();
+            }
+
             m_channelMasks.ForEach(channel => channel.Dispose());
+            m_whiteBrush.Dispose();
             m_measureContext.Dispose();
         }
 

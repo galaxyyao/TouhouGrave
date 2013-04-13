@@ -1,4 +1,5 @@
 #include "ImeContext.h"
+#include <malloc.h>
 
 using namespace System::Collections::Generic;
 
@@ -24,10 +25,10 @@ ImeContext::ImeContext(System::IntPtr windowHandle)
     typedef void (CALLBACK *ImeOnInputLangChangeCallback)();
     ImeUiCallback_OnInputLangChange = reinterpret_cast<ImeOnInputLangChangeCallback>(funcPtr.ToPointer());
 
-    m_imeOnCandidateListUpdate = gcnew System::Action(this, &ImeContext::ImeOnCandidateListUpdate);
-    funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnCandidateListUpdate);
-    typedef void (CALLBACK *ImeOnCandidateListUpdate)();
-    ImeUiCallback_OnCandidateListUpdate = reinterpret_cast<ImeOnCandidateListUpdate>(funcPtr.ToPointer());
+    //m_imeOnCandidateListUpdate = gcnew System::Action(this, &ImeContext::ImeOnCandidateListUpdate);
+    //funcPtr = System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegate(m_imeOnCandidateListUpdate);
+    //typedef void (CALLBACK *ImeOnCandidateListUpdate)();
+    //ImeUiCallback_OnCandidateListUpdate = reinterpret_cast<ImeOnCandidateListUpdate>(funcPtr.ToPointer());
 
     ImeUiCallback_DrawRect = NULL;
     ImeUiCallback_Malloc = malloc;
@@ -101,6 +102,22 @@ LRESULT ImeContext::WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
                 OnCompositionUpdate(data);
             }
             break;
+		case WM_IME_NOTIFY:
+			switch (wParam)
+			{
+			case IMN_OPENCANDIDATE:
+			case IMN_CHANGECANDIDATE:
+				UpdateCandidateListFromImm(hWnd);
+				break;
+			case IMN_CLOSECANDIDATE:
+				CandidateListData data;
+				data.IsOpened = false;
+				OnCandidateListUpdate(data);
+				break;
+			default:
+				break;
+			}
+			break;
         default:
             break;
         }
@@ -202,7 +219,7 @@ void ImeContext::ImeOnCandidateListUpdate()
     data.IsOpened = ImeUi_IsShowCandListWindow() && ImeUi_GetCandidateCount() > 0;
     if (data.IsOpened)
     {
-        List<System::String^>^ candidates = gcnew List<System::String^>();
+        List<System::String^>^ candidates = gcnew List<System::String^>(ImeUi_GetCandidateCount());
         for (UINT i = 0; i < ImeUi_GetCandidateCount(); ++i)
         {
             TCHAR* str = ImeUi_GetCandidate(i);
@@ -214,10 +231,54 @@ void ImeContext::ImeOnCandidateListUpdate()
         }
         data.Candidates = candidates->ToArray();
         data.Selection = safe_cast<int>(ImeUi_GetCandidateSelection());
-        data.PageIndex = safe_cast<int>(ImeUi_GetCandidatePageIndex());
-        data.PageCount = safe_cast<int>(ImeUi_GetCandidatePageCount());
+		data.HasPreviousPage = ImeUi_GetCandidatePageIndex() > 0;
+		data.HasNextPage = ImeUi_GetCandidatePageIndex() < ImeUi_GetCandidatePageCount() - 1;
     }
     OnCandidateListUpdate(data);
+}
+
+void ImeContext::UpdateCandidateListFromImm(HWND hWnd)
+{
+    HIMC himc = ::ImmGetContext(hWnd);
+    if (himc == NULL)
+    {
+        return;
+    }
+
+    CandidateListData data;
+
+    DWORD buffSize = ::ImmGetCandidateList(himc, 0, NULL, 0);
+    if (buffSize > 0)
+    {
+        ::CANDIDATELIST* pCandList = reinterpret_cast<::CANDIDATELIST*>(_alloca(buffSize));
+        ::ImmGetCandidateList(himc, 0, pCandList, buffSize);
+
+        if (pCandList->dwCount > 0)
+        {
+            data.IsOpened = true;
+			data.Selection = safe_cast<int>(pCandList->dwSelection);
+			data.Selection -= pCandList->dwPageStart;
+			data.HasPreviousPage = pCandList->dwPageStart > 0;
+			data.HasNextPage = pCandList->dwPageStart + pCandList->dwPageSize < pCandList->dwCount;
+
+            List<System::String^>^ candidates = gcnew List<System::String^>(pCandList->dwPageSize);
+            for (UINT i = 0; i < pCandList->dwPageSize; ++i)
+            {
+				DWORD strOffset = pCandList->dwOffset[i + pCandList->dwPageStart];
+                const TCHAR* str = reinterpret_cast<const TCHAR*>(reinterpret_cast<char*>(pCandList) + strOffset);
+                candidates->Add(gcnew System::String(str));
+            }
+            data.Candidates = candidates->ToArray();
+
+			//System::Diagnostics::Trace::WriteLine(System::String::Format("Count:{2} PageStart:{0} PageSize:{1}", pCandList->dwPageStart, pCandList->dwPageSize, pCandList->dwCount));
+        }
+
+        _freea(pCandList);
+    }
+
+    ::ImmReleaseContext(hWnd, himc);
+
+	OnCandidateListUpdate(data);
 }
 
 }
