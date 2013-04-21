@@ -69,5 +69,10 @@ namespace TouhouSpring.Services
         {
             GameApp.Service<NetworkLoginUI>().Enter();
         }
+
+        public void EnterDeckUI()
+        {
+            GameApp.Service<DeckUI>().Enter();
+        }
     }
 }

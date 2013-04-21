@@ -3,7 +3,7 @@
   <Page Id="MainMenu">
     <Menu Id="storymode" Font="DFKai-SB, 24" Text="战役模式" Left="600" Top="250" Color="Gray" />
     <Menu Id="freemode" Font="DFKai-SB, 24" Text="自由模式" Left="600" Top="300" />
-    <Menu Id="extras" Font="DFKai-SB, 24" Text="？？？" Left="600" Top="350" Color="Gray" />
+    <Menu Id="makedeck" Font="DFKai-SB, 24" Text="卡组配置" Left="600" Top="350" />
     <Menu Id="options" Font="DFKai-SB, 24" Text="选项" Left="600" Top="400" Color="Gray" />
     <Menu Id="quit" Font="DFKai-SB, 24" Text="退出" Left="600" Top="450" />
     <!--<Image Uri="atlas:TitleMenuItems/FreeMode_Normal" />
@@ -94,6 +94,9 @@
     <Panel Id="UIPanel" Left="0" Top="540" Width="1024" Height="270" Color="White"></Panel>
   </Page>
   <Page Id="Network">
+    <Panel Id="UIPanel" Left="0" Top="540" Width="1024" Height="270" Color="White"></Panel>
+  </Page>
+  <Page Id="Deck">
     <Panel Id="UIPanel" Left="0" Top="540" Width="1024" Height="270" Color="White"></Panel>
   </Page>
   <PlayerZones Id="/">

@@ -109,6 +109,7 @@
     <Compile Include="Services\CardDatabase.cs" />
     <Compile Include="Services\ConversationUI.cs" />
     <Compile Include="Services\CurrentProfile.cs" />
+    <Compile Include="Services\DeckUI.cs" />
     <Compile Include="Services\GameManager.cs" />
     <Compile Include="Services\GameManager.GameEvaluator.cs" />
     <Compile Include="Services\GameService.cs" />

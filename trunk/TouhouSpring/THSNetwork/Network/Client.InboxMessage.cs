@@ -108,7 +108,7 @@ namespace TouhouSpring.Network
 
         private void InterpretMessageEnterRoom(XDocument xmlMessage)
         {
-            RoomId = XML.GetFirstDescendantsValue<Int32>(xmlMessage, "RoomId");
+            RoomId = ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "RoomId");
             Seed = -1;
         }
 
@@ -126,12 +126,12 @@ namespace TouhouSpring.Network
         private void InterpretMessageStartGame(XDocument xmlMessage)
         {
             RoomStatus = RoomStatusEnum.Starting;
-            StartupIndex = XML.GetFirstDescendantsValue<Int32>(xmlMessage, "StartGameIndex");
+            StartupIndex = ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "StartGameIndex");
         }
 
         private void InterpretMessageEnemyGenerateSeed(XDocument xmlMessage)
         {
-            Seed = XML.GetFirstDescendantsValue<Int32>(xmlMessage, "Seed");
+            Seed = ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "Seed");
         }
         #endregion
 
@@ -156,7 +156,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var sacrificedCard = tacticalPhase.SacrificeCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "SacrificeIndex")];
+            var sacrificedCard = tacticalPhase.SacrificeCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "SacrificeIndex")];
             tacticalPhase.RespondSacrifice(sacrificedCard);
             m_remoteInteraction = null;
         }
@@ -169,7 +169,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var playedCard = tacticalPhase.PlayCardCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "PlayCardIndex")];
+            var playedCard = tacticalPhase.PlayCardCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "PlayCardIndex")];
             tacticalPhase.RespondPlay(playedCard);
             m_remoteInteraction = null;
         }
@@ -182,8 +182,8 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var attackerCard = tacticalPhase.AttackerCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "AttackerIndex")];
-            var defenderCard = tacticalPhase.DefenderCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "DefenderIndex")];
+            var attackerCard = tacticalPhase.AttackerCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "AttackerIndex")];
+            var defenderCard = tacticalPhase.DefenderCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "DefenderIndex")];
             tacticalPhase.RespondAttackCard(attackerCard, defenderCard);
             m_remoteInteraction = null;
         }
@@ -196,8 +196,8 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var attackerCard = tacticalPhase.AttackerCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "AttackerIndex")];
-            var playerBeingAttacked = tacticalPhase.Game.Players[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "PlayerIndex")];
+            var attackerCard = tacticalPhase.AttackerCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "AttackerIndex")];
+            var playerBeingAttacked = tacticalPhase.Game.Players[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "PlayerIndex")];
             tacticalPhase.RespondAttackPlayer(attackerCard, playerBeingAttacked);
             m_remoteInteraction = null;
         }
@@ -210,7 +210,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var assistCard = tacticalPhase.ActivateAssistCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "AssistIndex")];
+            var assistCard = tacticalPhase.ActivateAssistCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "AssistIndex")];
             tacticalPhase.RespondActivate(assistCard);
             m_remoteInteraction = null;
         }
@@ -223,7 +223,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var spell = tacticalPhase.CastSpellCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "CastSpellIndex")];
+            var spell = tacticalPhase.CastSpellCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "CastSpellIndex")];
             tacticalPhase.RespondCast(spell);
             m_remoteInteraction = null;
         }
@@ -236,7 +236,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            var redeemedCard = tacticalPhase.RedeemCandidates[XML.GetFirstDescendantsValue<Int32>(xmlMessage, "RedeemIndex")];
+            var redeemedCard = tacticalPhase.RedeemCandidates[ExtXML.GetFirstDescendantsValue<Int32, XDocument>(xmlMessage, "RedeemIndex")];
             tacticalPhase.RespondRedeem(redeemedCard);
             m_remoteInteraction = null;
         }
@@ -249,7 +249,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            List<int> indexes = XML.GetDescendantsValues<Int32>(xmlMessage, "Index");
+            List<int> indexes = ExtXML.GetDescendantsValues<Int32, XDocument>(xmlMessage, "Index");
             if (indexes.Count() == 0)
             {
                 selectCards.Respond(Indexable.Empty<CardInstance>());
@@ -275,7 +275,7 @@ namespace TouhouSpring.Network
                 throw new Exception("Wrong Phase");
             }
 
-            string num = XML.GetFirstDescendantsValue<string>(xmlMessage, "Number");
+            string num = ExtXML.GetFirstDescendantsValue<string, XDocument>(xmlMessage, "Number");
             if (string.IsNullOrEmpty(num))
             {
                 selectNumber.Respond(null);

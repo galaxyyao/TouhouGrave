@@ -18,6 +18,7 @@ namespace TouhouSpring.Services
     partial class MenuUI : GameService
     {
         private Dictionary<string, MenuPage> m_pages = new Dictionary<string, MenuPage>();
+        private bool m_isFirstLoaded = true;
 
         GameStartupParameters param = new GameStartupParameters();
 
@@ -62,97 +63,108 @@ namespace TouhouSpring.Services
 
             #endregion
 
-            #region Main Menu
-            m_pages["MainMenu"].MenuClicked += (id, item) =>
+            if (m_isFirstLoaded)
             {
-                if (id == "freemode")
+                #region Main Menu
+                m_pages["MainMenu"].MenuClicked += (id, item) =>
                 {
-                    CurrentPage = m_pages["FreeMode"];
-                }
-                //else if (id == "storymode")
-                //{
-                //    //Test Conversation UI
-                //    CurrentPage = null;
-                //    Root.Dispatcher = null;
-                //    GameApp.Service<GameManager>().EnterConversation();
-                //}
-                else if (id == "quit")
-                {
-                    CurrentPage = m_pages["Quit"];
-                }
-            };
-            #endregion
-
-            #region FreeMode Menu
-
-            PrepareGameStartupParam();
-
-            m_pages["FreeMode"].MenuClicked += (id, item) =>
-            {
-                if (id == "vsai" || id == "hotseat")
-                {
-                    CurrentPage = null;
-                    // detach menu ui
-                    Root.Dispatcher = null;
-
-                    switch (id)
+                    if (id == "freemode")
                     {
-                        case "vsai":
-                            GameApp.Service<GameManager>().StartGame(param
-                                , new Agents.BaseAgent[] {
+                        CurrentPage = m_pages["FreeMode"];
+                    }
+                    //else if (id == "storymode")
+                    //{
+                    //    //Test Conversation UI
+                    //    CurrentPage = null;
+                    //    Root.Dispatcher = null;
+                    //    GameApp.Service<GameManager>().EnterConversation();
+                    //}
+                    else if (id == "makedeck")
+                    {
+                        CurrentPage = null;
+                        Root.Dispatcher = null;
+                        GameApp.Service<GameManager>().EnterDeckUI();
+                    }
+                    else if (id == "quit")
+                    {
+                        CurrentPage = m_pages["Quit"];
+                    }
+                };
+                #endregion
+
+                #region FreeMode Menu
+
+                PrepareGameStartupParam();
+
+                m_pages["FreeMode"].MenuClicked += (id, item) =>
+                {
+                    if (id == "vsai" || id == "hotseat")
+                    {
+                        CurrentPage = null;
+                        // detach menu ui
+                        Root.Dispatcher = null;
+
+                        switch (id)
+                        {
+                            case "vsai":
+                                GameApp.Service<GameManager>().StartGame(param
+                                    , new Agents.BaseAgent[] {
                                     new Agents.LocalPlayerAgent(0),
                                     new Agents.AIAgent(1)
                                 });
-                            break;
-                        case "hotseat":
-                            GameApp.Service<GameManager>().StartGame(param
-                                , new Agents.BaseAgent[] {
+                                break;
+                            case "hotseat":
+                                GameApp.Service<GameManager>().StartGame(param
+                                    , new Agents.BaseAgent[] {
                                     new Agents.LocalPlayerAgent(0),
                                     new Agents.LocalPlayerAgent(1)
                                 });
-                            break;
-                        default:
-                            throw new InvalidOperationException("Invalid menu item");
+                                break;
+                            default:
+                                throw new InvalidOperationException("Invalid menu item");
+                        }
                     }
-                }
-                else if (id == "vsnetwork")
-                {
-                    //CurrentPage = m_pages["Network"];
+                    else if (id == "vsnetwork")
+                    {
+                        //CurrentPage = m_pages["Network"];
 
-                    CurrentPage = null;
-                    Root.Dispatcher = null;
-                    GameApp.Service<GameManager>().EnterNetworkUI();
-                }
-                else if (id == "back")
-                {
-                    CurrentPage = m_pages["MainMenu"];
-                }
-            };
-            #endregion
+                        CurrentPage = null;
+                        Root.Dispatcher = null;
+                        GameApp.Service<GameManager>().EnterNetworkUI();
+                    }
+                    else if (id == "back")
+                    {
+                        CurrentPage = m_pages["MainMenu"];
+                    }
+                };
+                #endregion
 
-            #region Network Menu
-            m_pages["Network"].MenuClicked += (id, item) =>
-            {
-                if (id == "backtofreemode")
+                #region Network Menu
+                m_pages["Network"].MenuClicked += (id, item) =>
                 {
-                    //CurrentPage = m_pages["FreeMode"];
-                }
-            };
-            #endregion
+                    if (id == "backtofreemode")
+                    {
+                        //CurrentPage = m_pages["FreeMode"];
+                    }
+                };
+                #endregion
 
-            #region Quit Menu
-            m_pages["Quit"].MenuClicked += (id, item) =>
-            {
-                if (id == "quit")
+                #region Quit Menu
+                m_pages["Quit"].MenuClicked += (id, item) =>
                 {
-                    GameApp.Instance.Exit();
-                }
-                else if (id == "back")
-                {
-                    CurrentPage = m_pages["MainMenu"];
-                }
-            };
-            #endregion
+                    if (id == "quit")
+                    {
+                        GameApp.Instance.Exit();
+                    }
+                    else if (id == "back")
+                    {
+                        CurrentPage = m_pages["MainMenu"];
+                    }
+                };
+                #endregion
+
+                //m_isFirstLoaded = false;
+            }
 
             CurrentPage = m_pages["MainMenu"];
 
