@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
                 && Host.IsOnBattlefield
                 && Game.ActingPlayer==Host.Owner)
             {
-                Game.IssueCommands(new Commands.HealCard(Host, Model.LifeToHeal, this));
+                Game.QueueCommands(new Commands.HealCard(Host, Model.LifeToHeal, this));
             }
         }
 

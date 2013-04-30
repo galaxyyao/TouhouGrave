@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
                     var lasting = new LastingEffect.ModelType { Duration = Model.Duration }.CreateInitialized();
                     var enhanceMod = new Enhance.ModelType { AttackBoost = Model.AttackBoost }.CreateInitialized();
                     (lasting as LastingEffect).CleanUps.Add(enhanceMod);
-                    Game.IssueCommands(
+                    Game.QueueCommands(
                         new Commands.AddBehavior(Game.GetTarget(this)[0], enhanceMod),
                         new Commands.AddBehavior(Game.GetTarget(this)[0], lasting));
                 }

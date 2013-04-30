@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
                         card => card != Host && card.Behaviors.Has<Environment>());
                     if (lastEnv != null)
                     {
-                        Game.IssueCommands(new Commands.Kill(lastEnv, this));
+                        Game.QueueCommands(new Commands.Kill(lastEnv, this));
                         break;
                     }
                 }

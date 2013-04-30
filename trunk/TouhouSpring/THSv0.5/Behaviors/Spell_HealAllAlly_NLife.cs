@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
             {
                 if (card.Behaviors.Has<Warrior>())
                 {
-                    Game.IssueCommands(new Commands.HealCard(card, Model.LifeToHeal, this));
+                    Game.QueueCommands(new Commands.HealCard(card, Model.LifeToHeal, this));
                 }
             }
         }

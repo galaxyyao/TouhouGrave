@@ -41,7 +41,7 @@ namespace TouhouSpring.Behaviors
                     var lasting = new LastingEffect.ModelType { Duration = 2 }.CreateInitialized();
                     var neutralize = new Effect.ModelType().CreateInitialized();
                     (lasting as LastingEffect).CleanUps.Add(neutralize);
-                    Game.IssueCommands(
+                    Game.QueueCommands(
                         new Commands.AddBehavior(card, neutralize),
                         new Commands.AddBehavior(card, lasting));
                 }

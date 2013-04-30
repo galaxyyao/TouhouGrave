@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
                 && Game.ActingPlayer == Host.Owner
                 && isAttackedByWarriorLastRound)
             {
-                Game.IssueCommands(new Commands.AddPlayerMana(Host.Owner, 1, this));
+                Game.QueueCommands(new Commands.AddPlayerMana(Host.Owner, 1, this));
                 isAttackedByWarriorLastRound = false;
             }
         }

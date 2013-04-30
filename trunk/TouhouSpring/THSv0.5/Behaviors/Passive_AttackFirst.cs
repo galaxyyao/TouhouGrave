@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause is Warrior)
             {
                 var attacker = (Warrior)command.Cause;
-                Game.IssueCommands(new Commands.DealDamageToCard(attacker.Host, Host.Behaviors.Get<Warrior>().Attack, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(attacker.Host, Host.Behaviors.Get<Warrior>().Attack, this));
             }
         }
 
@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
             var attacker = command.Target.Behaviors.Get<Warrior>();
             if (attacker.Life<=0)
             {
-                Game.IssueCommands(new Commands.HealCard(Host, attacker.Attack, this));
+                Game.QueueCommands(new Commands.HealCard(Host, attacker.Attack, this));
             }
         }
 

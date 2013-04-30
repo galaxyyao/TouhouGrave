@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
             {
                 Model.NumToSummon.Repeat(() =>
                 {
-                    Game.IssueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
+                    Game.QueueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
                 });
             }
         }

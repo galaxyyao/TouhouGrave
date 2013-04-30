@@ -46,7 +46,7 @@ namespace TouhouSpring.Behaviors
             var warrior = card.Behaviors.Get<Warrior>();
             if (warrior != null)
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }
 
@@ -55,7 +55,7 @@ namespace TouhouSpring.Behaviors
             var warrior = card.Behaviors.Get<Warrior>();
             if (warrior != null)
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
             }
         }
 

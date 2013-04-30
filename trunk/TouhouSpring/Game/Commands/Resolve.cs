@@ -24,7 +24,7 @@ namespace TouhouSpring.Commands
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                 if (warrior.Life <= 0)
                 {
-                    Game.IssueCommands(new Commands.Kill(card, null));
+                    Game.QueueCommands(new Commands.Kill(card, null));
                 }
                 else if (warrior.Life > warrior.MaxLife)
                 {

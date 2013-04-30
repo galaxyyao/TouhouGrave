@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (Host.Owner == Game.ActingPlayer
                 && Host.IsOnBattlefield)
-                Game.IssueCommands(new Commands.HealCard(Host
+                Game.QueueCommands(new Commands.HealCard(Host
                     , Host.Behaviors.Get<Warrior>().MaxLife - Host.Behaviors.Get<Warrior>().Life
                     , this));
         }

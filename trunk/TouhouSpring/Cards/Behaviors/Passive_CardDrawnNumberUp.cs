@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             if (Host.IsOnBattlefield)
             {
-                Game.IssueCommands(new Commands.DrawCard(Host.Owner));
+                Game.QueueCommands(new Commands.DrawCard(Host.Owner));
             }
         }
 

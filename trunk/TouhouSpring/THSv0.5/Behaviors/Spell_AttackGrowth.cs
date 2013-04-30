@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(
+                Game.QueueCommands(new Commands.SendBehaviorMessage(
                     Game.GetTarget(this)[0].Behaviors.Get<Warrior>(),
                     "AttackModifiers",
                     new object[] { "add", m_attackMod }));

@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
                     if (!card.Behaviors.Has<Warrior>())
                         continue;
 
-                    Game.IssueCommands(new Commands.DealDamageToCard(card, Model.Damage, this));
+                    Game.QueueCommands(new Commands.DealDamageToCard(card, Model.Damage, this));
                 }
             }
         }

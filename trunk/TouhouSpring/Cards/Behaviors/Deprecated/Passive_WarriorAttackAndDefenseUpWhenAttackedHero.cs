@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.Cause == Host)
             {
-                Game.IssueCommands(new Commands.AddBehavior(Host, new Enhance.ModelType { AttackBoost = 1 }.CreateInitialized()));
+                Game.QueueCommands(new Commands.AddBehavior(Host, new Enhance.ModelType { AttackBoost = 1 }.CreateInitialized()));
             }
         }
 

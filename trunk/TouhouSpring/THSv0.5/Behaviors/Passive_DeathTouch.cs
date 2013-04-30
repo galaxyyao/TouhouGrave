@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
             if (command.Cause is Warrior
                 && (command.Cause as Warrior).Host == Host)
             {
-                Game.IssueCommands(new Commands.Kill(command.Target, this));
+                Game.QueueCommands(new Commands.Kill(command.Target, this));
             }
         }
 

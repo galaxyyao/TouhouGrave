@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
 
             foreach (var warrior in warriors)
             {
-                Game.IssueCommands(new Commands.DealDamageToCard(warrior, Model.Damage, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(warrior, Model.Damage, this));
             }
         }
 

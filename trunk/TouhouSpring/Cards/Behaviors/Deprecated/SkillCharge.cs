@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
 
         void ICastableSpell.Run(Commands.CastSpell command)
         {
-            Game.IssueCommands(
+            Game.QueueCommands(
                 new Commands.Charge(Host.Owner),
                 new Commands.Kill(Host, this));
         }

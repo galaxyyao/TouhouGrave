@@ -38,7 +38,7 @@ namespace TouhouSpring.Behaviors
             if (m_fatalWarriorCause != null
                 && Host.Behaviors.Get<Warrior>().Life <= 0)
             {
-                Game.IssueCommands(new Commands.DealDamageToCard(m_fatalWarriorCause.Host, Model.Damage, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(m_fatalWarriorCause.Host, Model.Damage, this));
             }
             m_fatalWarriorCause = null;
         }

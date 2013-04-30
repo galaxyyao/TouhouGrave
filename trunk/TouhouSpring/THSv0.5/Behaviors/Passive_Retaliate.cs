@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
                 var warrior = Host.Behaviors.Get<Warrior>();
                 if (warrior != null)
                 {
-                    Game.IssueCommands(new Commands.DealDamageToCard(
+                    Game.QueueCommands(new Commands.DealDamageToCard(
                         (command.Cause as Warrior).Host,
                         warrior.Attack,
                         this));

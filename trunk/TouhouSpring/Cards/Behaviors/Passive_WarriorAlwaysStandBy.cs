@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
             if (command.PhaseName == "Cleanup"
                 && Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }
         }
 

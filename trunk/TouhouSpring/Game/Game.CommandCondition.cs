@@ -225,11 +225,11 @@ namespace TouhouSpring
 
                 if (m_resourceConditions.m_manaNeeded != 0)
                 {
-                    IssueCommand(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, null));
+                    QueueCommands(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, null));
                 }
                 if (m_resourceConditions.m_lifeNeeded != 0)
                 {
-                    IssueCommand(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, null));
+                    QueueCommands(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, null));
                 }
             }
 

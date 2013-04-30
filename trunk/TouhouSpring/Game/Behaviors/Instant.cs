@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.IssueCommands(new Commands.Kill(Host, this));
+                Game.QueueCommands(new Commands.Kill(Host, this));
             }
         }
 

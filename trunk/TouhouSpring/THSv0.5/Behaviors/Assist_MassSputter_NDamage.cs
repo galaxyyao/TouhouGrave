@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause is Warrior
                 && ((Warrior)command.Cause).Host.Owner == Host.Owner)
             {
-                Game.IssueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Model.DamageToDeal, this));
             }
         }
 
@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause is Warrior
                 && ((Warrior)command.Cause).Host.Owner == Host.Owner)
             {
-                Game.IssueCommands(new Commands.SubtractPlayerLife(command.Player, Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.SubtractPlayerLife(command.Player, Model.DamageToDeal, this));
             }
         }
 

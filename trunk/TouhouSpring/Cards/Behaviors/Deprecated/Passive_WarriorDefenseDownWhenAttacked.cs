@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause is Warrior
                 && command.DamageToDeal > 0)
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(
+                Game.QueueCommands(new Commands.SendBehaviorMessage(
                     Host.Behaviors.Get<Warrior>(),
                     "DefenseModifiers",
                     new object[] { "add", new Warrior.ValueModifier(Warrior.ValueModifierOperator.Add, -1) }));

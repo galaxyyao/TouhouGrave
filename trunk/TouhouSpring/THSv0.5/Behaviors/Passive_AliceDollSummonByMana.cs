@@ -34,17 +34,17 @@ namespace TouhouSpring.Behaviors
                 var chosenNumber = new Interactions.SelectNumber(Host.Owner, 1, maxSummon, "召唤人偶的数量？").Run();
                 if (chosenNumber != null)
                 {
-                    chosenNumber.Value.Repeat(i => Game.IssueCommands(
+                    chosenNumber.Value.Repeat(i => Game.QueueCommands(
                         new Commands.Summon(Model.SummonType.Target, Host.Owner)));
                     var extraMana = dollSummonCost * chosenNumber.Value - 1;
                     if (extraMana != 0)
                     {
-                        Game.IssueCommands(new Commands.SubtractPlayerMana(Host.Owner, extraMana, true, this));
+                        Game.QueueCommands(new Commands.SubtractPlayerMana(Host.Owner, extraMana, true, this));
                     }
                 }
                 else
                 {
-                    Game.IssueCommands(new Commands.AddPlayerMana(Host.Owner, 1, true, this));
+                    Game.QueueCommands(new Commands.AddPlayerMana(Host.Owner, 1, true, this));
                 }
             }
         }

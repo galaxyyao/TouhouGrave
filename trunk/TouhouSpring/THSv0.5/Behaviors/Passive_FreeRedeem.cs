@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (Host.IsActivatedAssist)
             {
-                Game.IssueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
+                Game.QueueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
             }
         }
 

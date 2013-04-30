@@ -50,7 +50,7 @@ namespace TouhouSpring.Behaviors
 
             if (m_attackModifier != null && m_attackModifier.Amount != numberOfWarriors)
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(
+                Game.QueueCommands(new Commands.SendBehaviorMessage(
                     Host.Owner.Hero.Behaviors.Get<Warrior>(),
                     "AttackModifiers",
                     new object[] { "remove", m_attackModifier }));
@@ -59,7 +59,7 @@ namespace TouhouSpring.Behaviors
             if (m_attackModifier == null && numberOfWarriors != 0)
             {
                 m_attackModifier = new ValueModifier(ValueModifierOperator.Add, numberOfWarriors);
-                Game.IssueCommands(new Commands.SendBehaviorMessage(
+                Game.QueueCommands(new Commands.SendBehaviorMessage(
                     Host.Owner.Hero.Behaviors.Get<Warrior>(),
                     "AttackModifiers",
                     new object[] { "add", m_attackModifier }));

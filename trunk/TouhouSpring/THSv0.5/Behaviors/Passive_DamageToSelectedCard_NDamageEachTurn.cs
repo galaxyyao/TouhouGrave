@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
 
                     if (selectedCard.Count > 0)
                     {
-                        Game.IssueCommands(new Commands.DealDamageToCard(selectedCard[0], Model.DamageToDeal, this));
+                        Game.QueueCommands(new Commands.DealDamageToCard(selectedCard[0], Model.DamageToDeal, this));
                     }
                 }
             }

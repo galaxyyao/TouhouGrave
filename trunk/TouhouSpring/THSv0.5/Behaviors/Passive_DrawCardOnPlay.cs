@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         public void RunEpilog(Commands.PlayCard command)
         {
             if (command.CardToPlay == Host)
-                Game.IssueCommands(new Commands.DrawCard(Host.Owner));
+                Game.QueueCommands(new Commands.DrawCard(Host.Owner));
         }
 
         [BehaviorModel(typeof(Passive_DrawCardOnPlay), Category = "v0.5/Passive", DefaultName = "上场抽卡")]

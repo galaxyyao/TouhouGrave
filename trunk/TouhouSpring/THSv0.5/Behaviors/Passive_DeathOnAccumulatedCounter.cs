@@ -28,11 +28,11 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.GetCounterCount<SakuraCounter>() == Model.NumCounters - 1)
                     {
-                        Game.IssueCommands(new Commands.Kill(card, this));
+                        Game.QueueCommands(new Commands.Kill(card, this));
                     }
                     else
                     {
-                        Game.IssueCommands(new Commands.AddCounter(card, SakuraCounter.Singleton));
+                        Game.QueueCommands(new Commands.AddCounter(card, SakuraCounter.Singleton));
                     }
                 }
             }
@@ -47,7 +47,7 @@ namespace TouhouSpring.Behaviors
                     var numCounters = card.GetCounterCount<SakuraCounter>();
                     if (numCounters > 0)
                     {
-                        Game.IssueCommands(new Commands.RemoveCounter(card, SakuraCounter.Singleton, numCounters));
+                        Game.QueueCommands(new Commands.RemoveCounter(card, SakuraCounter.Singleton, numCounters));
                     }
                 }
             }

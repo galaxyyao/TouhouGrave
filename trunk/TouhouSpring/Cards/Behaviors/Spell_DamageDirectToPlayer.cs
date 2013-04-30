@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         public void RunSpell(Commands.CastSpell command)
         {
             // TODO: select player to deal damage to
-            Game.IssueCommands(new Commands.SubtractPlayerLife(
+            Game.QueueCommands(new Commands.SubtractPlayerLife(
                 Game.Players.First(player => player != Host.Owner),
                 Model.Damage, this));
         }

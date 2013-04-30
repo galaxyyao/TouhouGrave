@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Model.CardToDraw.Repeat(() => Game.IssueCommands(new Commands.DrawCard(Host.Owner)));
+                Model.CardToDraw.Repeat(() => Game.QueueCommands(new Commands.DrawCard(Host.Owner)));
             }
         }
 

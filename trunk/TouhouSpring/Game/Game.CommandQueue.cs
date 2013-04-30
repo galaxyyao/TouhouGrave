@@ -20,7 +20,7 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public void IssueCommands(params Commands.BaseCommand[] commands)
+        public void QueueCommands(params Commands.BaseCommand[] commands)
         {
             commands.ForEach(cmd =>
             {
@@ -28,13 +28,13 @@ namespace TouhouSpring
                 {
                     throw new ArgumentException("Resolve command can't be issued in behaviors.");
                 }
-                IssueCommand(cmd);
+                QueueCommand(cmd);
             });
         }
 
-        internal void IssueCommandsAndFlush(params Commands.BaseCommand[] commands)
+        public void QueueCommandsAndFlush(params Commands.BaseCommand[] commands)
         {
-            IssueCommands(commands);
+            QueueCommands(commands);
             FlushCommandQueue();
         }
 
@@ -54,7 +54,7 @@ namespace TouhouSpring
                     RunningCommand = null;
                 }
 
-                IssueCommand(new Commands.Resolve());
+                QueueCommand(new Commands.Resolve());
                 RunningCommand = m_pendingCommands.Dequeue();
                 RunCommandGeneric(RunningCommand);
                 RunningCommand = null;
@@ -86,7 +86,7 @@ namespace TouhouSpring
             return IsCommandRunnable(new Commands.CastSpell(spell));
         }
 
-        private void IssueCommand(Commands.BaseCommand command)
+        private void QueueCommand(Commands.BaseCommand command)
         {
             if (command == null)
             {

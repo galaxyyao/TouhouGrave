@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
                 return;
             if (command.Cause is Warrior)
             {
-                Game.IssueCommands(new Commands.DealDamageToCard(((Warrior)(command.Cause)).Host, Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(((Warrior)(command.Cause)).Host, Model.DamageToDeal, this));
             }
         }
 

@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host
                 && Host.Behaviors.Has<Warrior>())
             {
-                Game.IssueCommands(
+                Game.QueueCommands(
                     new Commands.AddBehavior(Host, new Effect.ModelType().CreateInitialized()),
                     new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
                 && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {
-                Game.IssueCommands(
+                Game.QueueCommands(
                     new Commands.RemoveBehavior(Host, Host.Behaviors.Get<Effect>()),
                     new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
             }

@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.IssueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Model.DamageToDeal, this));
             }
         }
 

@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
             if (Host.IsOnBattlefield
                 && command.Cause == Host.Behaviors.Get<Warrior>())
             {
-                Game.IssueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Model.DamageToDeal, this));
             }
         }
 

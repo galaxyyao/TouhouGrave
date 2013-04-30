@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             {
                 var damagedWarrior = command.Target.Behaviors.Get<Warrior>();
                 int overflow = Math.Min(Math.Max(-damagedWarrior.Life, 0), command.DamageToDeal);
-                Game.IssueCommands(new Commands.DealDamageToPlayer(command.Target.Owner, overflow, this));
+                Game.QueueCommands(new Commands.DealDamageToPlayer(command.Target.Owner, overflow, this));
             }
         }
 

@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
             {
                 foreach (var player in Game.ActingPlayerEnemies)
                 {
-                    Game.IssueCommands(new Commands.SubtractPlayerLife(player, Model.DamageToDeal, this));
+                    Game.QueueCommands(new Commands.SubtractPlayerLife(player, Model.DamageToDeal, this));
                 }
             }
         }

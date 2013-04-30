@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
                 && Host.IsOnBattlefield
                 && Host.Behaviors.Has<Warrior>())
             {
-                Game.IssueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
             }
         }
     }
