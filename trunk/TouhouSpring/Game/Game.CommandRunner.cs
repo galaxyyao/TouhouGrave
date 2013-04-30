@@ -8,15 +8,13 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private interface ICommandRunner
+        internal interface ICommandRunner
         {
             void Run(Commands.BaseCommand command);
             CommandResult RunPrerequisite(Commands.BaseCommand command);
         }
 
-        private List<Behaviors.IBehavior> m_commonTargets = new List<Behaviors.IBehavior>();
-
-        private class CommandRunner<TCommand> : ICommandRunner
+        internal class CommandRunner<TCommand> : ICommandRunner
             where TCommand : Commands.BaseCommand
         {
             [ThreadStatic]
@@ -162,6 +160,8 @@ namespace TouhouSpring
                 return s_tempBhvContainer;
             }
         }
+
+        private List<Behaviors.IBehavior> m_commonTargets = new List<Behaviors.IBehavior>();
 
         internal void SubscribeCardToCommands(CardInstance card)
         {

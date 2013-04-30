@@ -53,9 +53,9 @@
     <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
-    <Compile Include="Game.ResolveContext.CommandQueue.cs" />
-    <Compile Include="Game.ResolveContext.cs" />
-    <Compile Include="Game.ResolveContext.Resources.cs" />
+    <Compile Include="ResolveContext.CommandQueue.cs" />
+    <Compile Include="ResolveContext.cs" />
+    <Compile Include="ResolveContext.Resources.cs" />
     <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseController.CommandTriggers.cs" />

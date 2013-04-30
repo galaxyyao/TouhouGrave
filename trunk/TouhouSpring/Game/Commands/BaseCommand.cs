@@ -35,7 +35,7 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        internal Game.ResolveContext Context
+        internal ResolveContext Context
         {
             get; set;
         }
