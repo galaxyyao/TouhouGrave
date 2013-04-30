@@ -30,17 +30,23 @@ namespace TouhouSpring.Commands
             get; internal set;
         }
 
-        public BaseCommand Previous
-        {
-            get; internal set;
-        }
-
         public ICause Cause
         {
             get; private set;
         }
 
         internal Game Game
+        {
+            get; set;
+        }
+
+        // for command list
+        internal BaseCommand Prev
+        {
+            get; set;
+        }
+
+        internal BaseCommand Next
         {
             get; set;
         }

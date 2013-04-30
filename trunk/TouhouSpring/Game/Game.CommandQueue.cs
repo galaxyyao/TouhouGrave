@@ -10,7 +10,8 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private Queue<Commands.BaseCommand> m_pendingCommands = new Queue<Commands.BaseCommand>();
+        private Commands.BaseCommand m_commandQueueHead;
+        private Commands.BaseCommand m_commandQueueTail;
 
         // a dictionary of cached command runners to avoid using reflection too intensively
         private static Dictionary<Type, ICommandRunner> s_commandRunnerMap = new Dictionary<Type, ICommandRunner>();
@@ -43,19 +44,30 @@ namespace TouhouSpring
             Debug.Assert(RunningCommand == null);
 
             bool commandFlushed = false;
-            while (m_pendingCommands.Count != 0)
+            while (m_commandQueueHead != null)
             {
                 commandFlushed = true;
-                while (m_pendingCommands.Count != 0)
+                while (m_commandQueueHead != null)
                 {
-                    var cmd = m_pendingCommands.Dequeue();
-                    RunningCommand = cmd;
-                    RunCommandGeneric(cmd);
+                    RunningCommand = m_commandQueueHead;
+                    m_commandQueueHead = m_commandQueueHead.Next;
+                    if (m_commandQueueHead == null)
+                    {
+                        Debug.Assert(RunningCommand == m_commandQueueTail);
+                        m_commandQueueTail = null;
+                    }
+                    RunCommandGeneric(RunningCommand);
                     RunningCommand = null;
                 }
 
                 QueueCommand(new Commands.Resolve());
-                RunningCommand = m_pendingCommands.Dequeue();
+                RunningCommand = m_commandQueueHead;
+                m_commandQueueHead = m_commandQueueHead.Next;
+                if (m_commandQueueHead == null)
+                {
+                    Debug.Assert(RunningCommand == m_commandQueueTail);
+                    m_commandQueueTail = null;
+                }
                 RunCommandGeneric(RunningCommand);
                 RunningCommand = null;
             }
@@ -93,28 +105,38 @@ namespace TouhouSpring
                 throw new ArgumentNullException("command");
             }
 
-            InitializeCommand(command);
-            command.ValidateOnIssue();
-
-            // check whether a new command can be issued at this timing
+            // check whether a new command can be queued at this timing
             if (RunningCommand != null)
             {
                 Debug.Assert(RunningCommand.ExecutionPhase != Commands.CommandPhase.Pending);
 
                 if (RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite)
                 {
-                    throw new InvalidOperationException("Command can't be issued in Prerequisite phase.");
+                    throw new InvalidOperationException("Command can't be queued in Prerequisite phase.");
                 }
             }
 
-            m_pendingCommands.Enqueue(command);
+            InitializeCommand(command);
+            command.ValidateOnIssue();
+
+            if (m_commandQueueTail == null)
+            {
+                Debug.Assert(m_commandQueueHead == null);
+                m_commandQueueHead = m_commandQueueTail = command;
+            }
+            else
+            {
+                Debug.Assert(m_commandQueueTail.Next == null);
+                m_commandQueueTail.Next = command;
+                command.Prev = m_commandQueueTail;
+                m_commandQueueTail = command;
+            }
         }
 
         private void InitializeCommand(Commands.BaseCommand command)
         {
             command.ExecutionPhase = Commands.CommandPhase.Pending;
             command.Game = this;
-            command.Previous = RunningCommand;
         }
 
         private bool IsCommandRunnable(Commands.BaseCommand command)
