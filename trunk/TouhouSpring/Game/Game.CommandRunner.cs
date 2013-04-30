@@ -42,8 +42,8 @@ namespace TouhouSpring
                             var result = t.RunPrerequisite(command);
                             if (result.Canceled)
                             {
-                                command.Game.Controller.OnCommandCanceled(command, result.Reason);
-                                command.Game.ClearConditions();
+                                command.Context.Game.Controller.OnCommandCanceled(command, result.Reason);
+                                command.Context.ClearConditions();
                                 return;
                             }
                         }
@@ -52,11 +52,11 @@ namespace TouhouSpring
                     ////////////////////////////////////////////
 
                     command.ExecutionPhase = Commands.CommandPhase.Condition;
-                    var conditionResult = command.Game.ResolveConditions(false);
+                    var conditionResult = command.Context.ResolveConditions(false);
                     if (conditionResult.Canceled)
                     {
-                        command.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
-                        command.Game.ClearConditions();
+                        command.Context.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
+                        command.Context.ClearConditions();
                         return;
                     }
                 }
@@ -64,7 +64,7 @@ namespace TouhouSpring
                 ////////////////////////////////////////////
 
                 command.ExecutionPhase = Commands.CommandPhase.Prolog;
-                command.Game.Controller.OnCommandBegin(command);
+                command.Context.Game.Controller.OnCommandBegin(command);
                 foreach (var trigger in targets)
                 {
                     var t = trigger as IPrologTrigger<TCommand>;
@@ -90,9 +90,9 @@ namespace TouhouSpring
                         t.RunEpilog(command);
                     }
                 }
-                command.Game.Controller.OnCommandEnd(command);
+                command.Context.Game.Controller.OnCommandEnd(command);
 
-                command.Game.ClearConditions();
+                command.Context.ClearConditions();
             }
 
             public CommandResult RunPrerequisite(Commands.BaseCommand genericCommand)
@@ -109,14 +109,14 @@ namespace TouhouSpring
                         var result = t.RunPrerequisite(command);
                         if (result.Canceled)
                         {
-                            command.Game.ClearConditions();
+                            command.Context.ClearConditions();
                             return result;
                         }
                     }
                 }
 
-                var ret = command.Game.ResolveConditions(true);
-                command.Game.ClearConditions();
+                var ret = command.Context.ResolveConditions(true);
+                command.Context.ClearConditions();
                 return ret;
             }
 
@@ -143,12 +143,12 @@ namespace TouhouSpring
                 }
 
                 s_tempBhvContainer.Clear();
-                var newSize = command.Game.m_commonTargets.Count + (additionalTarget != null ? additionalTarget.Count : 0);
+                var newSize = command.Context.Game.m_commonTargets.Count + (additionalTarget != null ? additionalTarget.Count : 0);
                 s_tempBhvContainer.Capacity = Math.Max(newSize, s_tempBhvContainer.Capacity);
 
-                for (int i = 0; i < command.Game.m_commonTargets.Count; ++i)
+                for (int i = 0; i < command.Context.Game.m_commonTargets.Count; ++i)
                 {
-                    s_tempBhvContainer.Add(command.Game.m_commonTargets[i]);
+                    s_tempBhvContainer.Add(command.Context.Game.m_commonTargets[i]);
                 }
 
                 if (additionalTarget != null)

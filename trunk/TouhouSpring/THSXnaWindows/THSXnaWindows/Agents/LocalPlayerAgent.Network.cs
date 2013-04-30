@@ -81,12 +81,13 @@ namespace TouhouSpring.Agents
                     throw new NotImplementedException();
                 }
 
-                if (io.Game.RunningCommand.ExecutionPhase != Commands.CommandPhase.Condition)
-                {
-                    // means the command will never be canceled
-                    // flush
-                    m_NetworkClient.FlushOutboxQueue();
-                }
+                throw new NotImplementedException();
+                //if (io.Game.RunningCommand.ExecutionPhase != Commands.CommandPhase.Condition)
+                //{
+                //    // means the command will never be canceled
+                //    // flush
+                //    m_NetworkClient.FlushOutboxQueue();
+                //}
             }
         }
     }

@@ -21,7 +21,7 @@ namespace TouhouSpring.Commands
 
         internal override void ValidateOnRun()
         {
-            if (Game.CurrentPhase == "")
+            if (Context.Game.CurrentPhase == "")
             {
                 FailValidation("EndPhase must be issued only when the game is in some phase.");
             }
@@ -29,8 +29,8 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            PreviousPhase = Game.CurrentPhase;
-            Game.CurrentPhase = "";
+            PreviousPhase = Context.Game.CurrentPhase;
+            Context.Game.CurrentPhase = "";
         }
     }
 }

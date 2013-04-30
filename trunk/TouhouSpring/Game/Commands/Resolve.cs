@@ -17,14 +17,14 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            foreach (var card in
-                Game.Players.SelectMany(player => player.CardsOnBattlefield)
-                            .Where(card => card.Behaviors.Has<Behaviors.Warrior>()))
+            foreach (var card in Context.Game.Players
+                .SelectMany(player => player.CardsOnBattlefield)
+                .Where(card => card.Behaviors.Has<Behaviors.Warrior>()))
             {
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                 if (warrior.Life <= 0)
                 {
-                    Game.QueueCommands(new Commands.Kill(card, null));
+                    Context.QueueCommands(new Commands.Kill(card, null));
                 }
                 else if (warrior.Life > warrior.MaxLife)
                 {

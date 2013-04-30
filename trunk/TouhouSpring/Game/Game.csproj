@@ -53,6 +53,9 @@
     <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
+    <Compile Include="Game.ResolveContext.CommandQueue.cs" />
+    <Compile Include="Game.ResolveContext.cs" />
+    <Compile Include="Game.ResolveContext.Resources.cs" />
     <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseController.CommandTriggers.cs" />
@@ -96,7 +99,6 @@
     <Compile Include="Commands\StartTurn.cs" />
     <Compile Include="Commands\Summon.cs" />
     <Compile Include="Game.Clone.cs" />
-    <Compile Include="Game.CommandCondition.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Game.CommandRunner.cs" />

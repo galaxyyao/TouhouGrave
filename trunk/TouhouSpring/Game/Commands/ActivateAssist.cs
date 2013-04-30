@@ -48,7 +48,7 @@ namespace TouhouSpring.Commands
         internal override void RunMain()
         {
             CardToActivate.Owner.m_activatedAssists.Add(CardToActivate);
-            Game.SubscribeCardToCommands(CardToActivate);
+            Context.Game.SubscribeCardToCommands(CardToActivate);
         }
     }
 }

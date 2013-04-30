@@ -43,7 +43,7 @@ namespace TouhouSpring.Commands
         internal override void RunMain()
         {
             CardToDeactivate.Owner.m_activatedAssists.Remove(CardToDeactivate);
-            Game.UnsubscribeCardFromCommands(CardToDeactivate);
+            Context.Game.UnsubscribeCardFromCommands(CardToDeactivate);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace TouhouSpring.Commands
             {
                 FailValidation("Player can't be null.");
             }
-            else if (!Game.Players.Contains(player))
+            else if (!Context.Game.Players.Contains(player))
             {
                 FailValidation("The player is not registered in game.");
             }

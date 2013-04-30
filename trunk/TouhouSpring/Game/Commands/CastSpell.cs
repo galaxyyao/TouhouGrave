@@ -44,7 +44,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Debug.Assert(Game.RunningCommand == this);
+            Debug.Assert(Context.RunningCommand == this);
             (Spell as Behaviors.ICastableSpell).RunSpell(this);
         }
     }

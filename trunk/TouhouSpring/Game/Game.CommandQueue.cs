@@ -10,72 +10,46 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private Commands.BaseCommand m_commandQueueHead;
-        private Commands.BaseCommand m_commandQueueTail;
-
-        // a dictionary of cached command runners to avoid using reflection too intensively
-        private static Dictionary<Type, ICommandRunner> s_commandRunnerMap = new Dictionary<Type, ICommandRunner>();
-
-        public Commands.BaseCommand RunningCommand
-        {
-            get; private set;
-        }
+        private ResolveContext m_currentResolveContext;
 
         public void QueueCommands(params Commands.BaseCommand[] commands)
         {
-            commands.ForEach(cmd =>
-            {
-                if (cmd is Commands.Resolve)
-                {
-                    throw new ArgumentException("Resolve command can't be issued in behaviors.");
-                }
-                QueueCommand(cmd);
-            });
+            m_currentResolveContext.QueueCommands(commands);
         }
 
-        public void QueueCommandsAndFlush(params Commands.BaseCommand[] commands)
+        public void NeedMana(int amount)
         {
-            QueueCommands(commands);
-            FlushCommandQueue();
+            m_currentResolveContext.NeedMana(amount);
         }
 
-        internal void FlushCommandQueue()
+        public void NeedLife(int amount)
         {
-            Debug.Assert(RunningCommand == null);
+            m_currentResolveContext.NeedLife(amount);
+        }
 
-            bool commandFlushed = false;
-            while (m_commandQueueHead != null)
-            {
-                commandFlushed = true;
-                while (m_commandQueueHead != null)
-                {
-                    RunningCommand = m_commandQueueHead;
-                    m_commandQueueHead = m_commandQueueHead.Next;
-                    if (m_commandQueueHead == null)
-                    {
-                        Debug.Assert(RunningCommand == m_commandQueueTail);
-                        m_commandQueueTail = null;
-                    }
-                    RunCommandGeneric(RunningCommand);
-                    RunningCommand = null;
-                }
+        public void NeedManaOrLife(int mana, int life)
+        {
+            m_currentResolveContext.NeedManaOrLife(mana, life);
+        }
 
-                QueueCommand(new Commands.Resolve());
-                RunningCommand = m_commandQueueHead;
-                m_commandQueueHead = m_commandQueueHead.Next;
-                if (m_commandQueueHead == null)
-                {
-                    Debug.Assert(RunningCommand == m_commandQueueTail);
-                    m_commandQueueTail = null;
-                }
-                RunCommandGeneric(RunningCommand);
-                RunningCommand = null;
-            }
+        public void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
+        {
+            m_currentResolveContext.NeedTarget(user, candidates, message);
+        }
 
-            if (commandFlushed)
-            {
-                Controller.OnCommandFlushed();
-            }
+        public int GetRemainingMana()
+        {
+            return m_currentResolveContext.GetRemainingMana();
+        }
+
+        public int GetRemainingLife()
+        {
+            return m_currentResolveContext.GetRemainingLife();
+        }
+
+        public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
+        {
+            return m_currentResolveContext.GetTarget(user);
         }
 
         internal bool IsCardPlayable(CardInstance card)
@@ -98,93 +72,13 @@ namespace TouhouSpring
             return IsCommandRunnable(new Commands.CastSpell(spell));
         }
 
-        private void QueueCommand(Commands.BaseCommand command)
+        bool IsCommandRunnable(Commands.BaseCommand command)
         {
-            if (command == null)
-            {
-                throw new ArgumentNullException("command");
-            }
-
-            // check whether a new command can be queued at this timing
-            if (RunningCommand != null)
-            {
-                Debug.Assert(RunningCommand.ExecutionPhase != Commands.CommandPhase.Pending);
-
-                if (RunningCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite)
-                {
-                    throw new InvalidOperationException("Command can't be queued in Prerequisite phase.");
-                }
-            }
-
-            InitializeCommand(command);
-            command.ValidateOnIssue();
-
-            if (m_commandQueueTail == null)
-            {
-                Debug.Assert(m_commandQueueHead == null);
-                m_commandQueueHead = m_commandQueueTail = command;
-            }
-            else
-            {
-                Debug.Assert(m_commandQueueTail.Next == null);
-                m_commandQueueTail.Next = command;
-                command.Prev = m_commandQueueTail;
-                m_commandQueueTail = command;
-            }
-        }
-
-        private void InitializeCommand(Commands.BaseCommand command)
-        {
-            command.ExecutionPhase = Commands.CommandPhase.Pending;
-            command.Game = this;
-        }
-
-        private bool IsCommandRunnable(Commands.BaseCommand command)
-        {
-            Debug.Assert(RunningCommand == null);
-            InitializeCommand(command);
-            RunningCommand = command;
-            bool ret = !RunPrerequisiteGeneric(command).Canceled;
-            RunningCommand = null;
+            Debug.Assert(m_currentResolveContext == null);
+            m_currentResolveContext = new ResolveContext(this);
+            bool ret = m_currentResolveContext.IsCommandRunnable(command);
+            m_currentResolveContext = null;
             return ret;
-        }
-
-        private void RunCommandGeneric(Commands.BaseCommand command)
-        {
-            ICommandRunner runner;
-            if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-            {
-                lock (s_commandRunnerMap)
-                {
-                    if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-                    {
-                        var runnerType = typeof(CommandRunner<>).MakeGenericType(command.GetType());
-                        runner = runnerType.Assembly.CreateInstance(runnerType.FullName) as ICommandRunner;
-                        s_commandRunnerMap.Add(command.GetType(), runner);
-                    }
-                }
-            }
-
-            runner.Run(command);
-        }
-
-        private CommandResult RunPrerequisiteGeneric(Commands.BaseCommand command)
-        {
-            ICommandRunner runner;
-            if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-            {
-                lock (s_commandRunnerMap)
-                {
-                    if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-                    {
-                        var runnerType = typeof(CommandRunner<>).MakeGenericType(command.GetType());
-                        runner = runnerType.Assembly.CreateInstance(runnerType.FullName) as ICommandRunner;
-                        s_commandRunnerMap.Add(command.GetType(), runner);
-                    }
-                }
-            }
-
-            return runner.RunPrerequisite(command);
         }
     }
 }
