@@ -53,6 +53,7 @@
     <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
+    <Compile Include="Game.ResolveContext.cs" />
     <Compile Include="ResolveContext.CommandQueue.cs" />
     <Compile Include="ResolveContext.cs" />
     <Compile Include="ResolveContext.Resources.cs" />

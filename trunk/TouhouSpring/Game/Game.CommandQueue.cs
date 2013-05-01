@@ -10,46 +10,44 @@ namespace TouhouSpring
 {
     public partial class Game
     {
-        private ResolveContext m_currentResolveContext;
-
         public void QueueCommands(params Commands.BaseCommand[] commands)
         {
-            m_currentResolveContext.QueueCommands(commands);
+            m_resolveContextStack.Peek().QueueCommands(commands);
         }
 
         public void NeedMana(int amount)
         {
-            m_currentResolveContext.NeedMana(amount);
+            m_resolveContextStack.Peek().NeedMana(amount);
         }
 
         public void NeedLife(int amount)
         {
-            m_currentResolveContext.NeedLife(amount);
+            m_resolveContextStack.Peek().NeedLife(amount);
         }
 
         public void NeedManaOrLife(int mana, int life)
         {
-            m_currentResolveContext.NeedManaOrLife(mana, life);
+            m_resolveContextStack.Peek().NeedManaOrLife(mana, life);
         }
 
         public void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
         {
-            m_currentResolveContext.NeedTarget(user, candidates, message);
+            m_resolveContextStack.Peek().NeedTarget(user, candidates, message);
         }
 
         public int GetRemainingMana()
         {
-            return m_currentResolveContext.GetRemainingMana();
+            return m_resolveContextStack.Peek().GetRemainingMana();
         }
 
         public int GetRemainingLife()
         {
-            return m_currentResolveContext.GetRemainingLife();
+            return m_resolveContextStack.Peek().GetRemainingLife();
         }
 
         public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
         {
-            return m_currentResolveContext.GetTarget(user);
+            return m_resolveContextStack.Peek().GetTarget(user);
         }
 
         internal bool IsCardPlayable(CardInstance card)
@@ -74,10 +72,10 @@ namespace TouhouSpring
 
         bool IsCommandRunnable(Commands.BaseCommand command)
         {
-            Debug.Assert(m_currentResolveContext == null);
-            m_currentResolveContext = new ResolveContext(this);
-            bool ret = m_currentResolveContext.IsCommandRunnable(command);
-            m_currentResolveContext = null;
+            var ctx = new ResolveContext(this);
+            m_resolveContextStack.Push(ctx);
+            bool ret = ctx.IsCommandRunnable(command);
+            m_resolveContextStack.Pop();
             return ret;
         }
     }

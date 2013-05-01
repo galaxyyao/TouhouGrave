@@ -8,11 +8,11 @@ namespace TouhouSpring
 {
     internal partial class ResolveContext
     {
-        private Commands.BaseCommand m_commandQueueHead;
-        private Commands.BaseCommand m_commandQueueTail;
-
         // a dictionary of cached command runners to avoid using reflection too intensively
         private static Dictionary<Type, Game.ICommandRunner> s_commandRunnerMap = new Dictionary<Type, Game.ICommandRunner>();
+
+        private Commands.BaseCommand m_commandQueueHead;
+        private Commands.BaseCommand m_commandQueueTail;
 
         public Commands.BaseCommand RunningCommand
         {
