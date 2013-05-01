@@ -35,16 +35,6 @@ namespace TouhouSpring
             m_resolveContextStack.Peek().NeedTarget(user, candidates, message);
         }
 
-        public int GetRemainingMana()
-        {
-            return m_resolveContextStack.Peek().GetRemainingMana();
-        }
-
-        public int GetRemainingLife()
-        {
-            return m_resolveContextStack.Peek().GetRemainingLife();
-        }
-
         public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
         {
             return m_resolveContextStack.Peek().GetTarget(user);

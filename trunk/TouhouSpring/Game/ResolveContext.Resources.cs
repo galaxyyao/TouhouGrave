@@ -106,20 +106,6 @@ namespace TouhouSpring
             });
         }
 
-        public int GetRemainingMana()
-        {
-            CheckNotInPrerequisite();
-            var player = (RunningCommand as Commands.IInitiativeCommand).Initiator;
-            return player.Mana - m_resourceConditions.m_manaNeeded;
-        }
-
-        public int GetRemainingLife()
-        {
-            CheckNotInPrerequisite();
-            var player = (RunningCommand as Commands.IInitiativeCommand).Initiator;
-            return player.Health - m_resourceConditions.m_lifeNeeded;
-        }
-
         public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
         {
             CheckNotInPrerequisite();
