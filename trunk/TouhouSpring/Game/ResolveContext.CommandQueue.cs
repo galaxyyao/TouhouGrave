@@ -8,9 +8,6 @@ namespace TouhouSpring
 {
     internal partial class ResolveContext
     {
-        // a dictionary of cached command runners to avoid using reflection too intensively
-        private static Dictionary<Type, Game.ICommandRunner> s_commandRunnerMap = new Dictionary<Type, Game.ICommandRunner>();
-
         private Commands.BaseCommand m_commandQueueHead;
         private Commands.BaseCommand m_commandQueueTail;
 
@@ -35,45 +32,6 @@ namespace TouhouSpring
         {
             QueueCommands(commands);
             FlushCommandQueue();
-        }
-
-        internal void FlushCommandQueue()
-        {
-            Debug.Assert(RunningCommand == null);
-
-            bool commandFlushed = false;
-            while (m_commandQueueHead != null)
-            {
-                commandFlushed = true;
-                while (m_commandQueueHead != null)
-                {
-                    RunningCommand = m_commandQueueHead;
-                    m_commandQueueHead = m_commandQueueHead.Next;
-                    if (m_commandQueueHead == null)
-                    {
-                        Debug.Assert(RunningCommand == m_commandQueueTail);
-                        m_commandQueueTail = null;
-                    }
-                    RunCommandGeneric(RunningCommand);
-                    RunningCommand = null;
-                }
-
-                QueueCommand(new Commands.Resolve());
-                RunningCommand = m_commandQueueHead;
-                m_commandQueueHead = m_commandQueueHead.Next;
-                if (m_commandQueueHead == null)
-                {
-                    Debug.Assert(RunningCommand == m_commandQueueTail);
-                    m_commandQueueTail = null;
-                }
-                RunCommandGeneric(RunningCommand);
-                RunningCommand = null;
-            }
-
-            if (commandFlushed)
-            {
-                Game.Controller.OnCommandFlushed();
-            }
         }
 
         internal bool IsCommandRunnable(Commands.BaseCommand command)
@@ -110,14 +68,28 @@ namespace TouhouSpring
             if (m_commandQueueTail == null)
             {
                 Debug.Assert(m_commandQueueHead == null);
-                m_commandQueueHead = m_commandQueueTail = command;
+                m_commandQueueHead = command;
             }
             else
             {
                 Debug.Assert(m_commandQueueTail.Next == null);
                 m_commandQueueTail.Next = command;
-                command.Prev = m_commandQueueTail;
-                m_commandQueueTail = command;
+            }
+            m_commandQueueTail = command;
+        }
+
+        private void QueueCommandAtHead(Commands.BaseCommand command)
+        {
+            // can only queue command at head when issueing resource consuming commands
+            Debug.Assert(RunningCommand != null && RunningCommand.ExecutionPhase == Commands.CommandPhase.Condition);
+            InitializeCommand(command);
+            command.ValidateOnIssue();
+
+            command.Next = m_commandQueueHead;
+            m_commandQueueHead = command;
+            if (m_commandQueueTail == null)
+            {
+                m_commandQueueTail = m_commandQueueHead;
             }
         }
 
@@ -127,42 +99,19 @@ namespace TouhouSpring
             command.Context = this;
         }
 
-        private void RunCommandGeneric(Commands.BaseCommand command)
+        private Commands.BaseCommand DequeCommand()
         {
-            Game.ICommandRunner runner;
-            if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
+            Debug.Assert(m_commandQueueHead != null);
+
+            var ret = m_commandQueueHead;
+            m_commandQueueHead = m_commandQueueHead.Next;
+            if (m_commandQueueHead == null)
             {
-                lock (s_commandRunnerMap)
-                {
-                    if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-                    {
-                        var runnerType = typeof(Game.CommandRunner<>).MakeGenericType(command.GetType());
-                        runner = runnerType.Assembly.CreateInstance(runnerType.FullName) as Game.ICommandRunner;
-                        s_commandRunnerMap.Add(command.GetType(), runner);
-                    }
-                }
+                Debug.Assert(ret == m_commandQueueTail);
+                m_commandQueueTail = null;
             }
 
-            runner.Run(command);
-        }
-
-        private CommandResult RunPrerequisiteGeneric(Commands.BaseCommand command)
-        {
-            Game.ICommandRunner runner;
-            if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-            {
-                lock (s_commandRunnerMap)
-                {
-                    if (!s_commandRunnerMap.TryGetValue(command.GetType(), out runner))
-                    {
-                        var runnerType = typeof(Game.CommandRunner<>).MakeGenericType(command.GetType());
-                        runner = runnerType.Assembly.CreateInstance(runnerType.FullName) as Game.ICommandRunner;
-                        s_commandRunnerMap.Add(command.GetType(), runner);
-                    }
-                }
-            }
-
-            return runner.RunPrerequisite(command);
+            return ret;
         }
     }
 }

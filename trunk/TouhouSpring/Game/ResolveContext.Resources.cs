@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -130,7 +131,7 @@ namespace TouhouSpring
             return targetCondition.m_selection;
         }
 
-        internal void ClearConditions()
+        private void ClearConditions()
         {
             m_resourceConditions.m_manaNeeded = 0;
             m_resourceConditions.m_lifeNeeded = 0;
@@ -140,8 +141,9 @@ namespace TouhouSpring
             m_targetConditions.Clear();
         }
 
-        internal CommandResult ResolveConditions(bool prerequisiteOnly)
+        private CommandResult ResolveConditions(bool prerequisiteOnly)
         {
+            Debug.Assert(RunningCommand.ExecutionPhase == Commands.CommandPhase.Condition);
             var initiator = (RunningCommand as Commands.IInitiativeCommand).Initiator;
 
             if (m_resourceConditions.m_manaNeeded != 0)
@@ -225,11 +227,11 @@ namespace TouhouSpring
 
                 if (m_resourceConditions.m_manaNeeded != 0)
                 {
-                    QueueCommand(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, null));
+                    QueueCommandAtHead(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, null));
                 }
                 if (m_resourceConditions.m_lifeNeeded != 0)
                 {
-                    QueueCommand(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, null));
+                    QueueCommandAtHead(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, null));
                 }
             }
 

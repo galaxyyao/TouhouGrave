@@ -41,11 +41,6 @@ namespace TouhouSpring.Commands
         }
 
         // for command list
-        internal BaseCommand Prev
-        {
-            get; set;
-        }
-
         internal BaseCommand Next
         {
             get; set;

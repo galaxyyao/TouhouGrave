@@ -56,6 +56,7 @@
     <Compile Include="Game.ResolveContext.cs" />
     <Compile Include="ResolveContext.CommandQueue.cs" />
     <Compile Include="ResolveContext.cs" />
+    <Compile Include="ResolveContext.Flush.cs" />
     <Compile Include="ResolveContext.Resources.cs" />
     <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />

@@ -29,38 +29,6 @@ namespace TouhouSpring
 
                 ////////////////////////////////////////////
 
-                if (command is Commands.IInitiativeCommand)
-                {
-                    command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
-                    foreach (var trigger in targets)
-                    {
-                        var t = trigger as IPrerequisiteTrigger<TCommand>;
-                        if (t != null)
-                        {
-                            var result = t.RunPrerequisite(command);
-                            if (result.Canceled)
-                            {
-                                command.Context.Game.Controller.OnCommandCanceled(command, result.Reason);
-                                command.Context.ClearConditions();
-                                return;
-                            }
-                        }
-                    }
-
-                    ////////////////////////////////////////////
-
-                    command.ExecutionPhase = Commands.CommandPhase.Condition;
-                    var conditionResult = command.Context.ResolveConditions(false);
-                    if (conditionResult.Canceled)
-                    {
-                        command.Context.Game.Controller.OnCommandCanceled(command, conditionResult.Reason);
-                        command.Context.ClearConditions();
-                        return;
-                    }
-                }
-
-                ////////////////////////////////////////////
-
                 command.ExecutionPhase = Commands.CommandPhase.Prolog;
                 command.Context.Game.Controller.OnCommandBegin(command);
                 foreach (var trigger in targets)
@@ -89,16 +57,14 @@ namespace TouhouSpring
                     }
                 }
                 command.Context.Game.Controller.OnCommandEnd(command);
-
-                command.Context.ClearConditions();
             }
 
             public CommandResult RunPrerequisite(Commands.BaseCommand genericCommand)
             {
                 Debug.Assert(genericCommand is Commands.IInitiativeCommand);
+                Debug.Assert(genericCommand.ExecutionPhase == Commands.CommandPhase.Prerequisite);
 
                 var command = genericCommand as TCommand;
-                command.ExecutionPhase = Commands.CommandPhase.Prerequisite;
                 foreach (var trigger in GenerateTargetList(command))
                 {
                     var t = trigger as IPrerequisiteTrigger<TCommand>;
@@ -107,15 +73,12 @@ namespace TouhouSpring
                         var result = t.RunPrerequisite(command);
                         if (result.Canceled)
                         {
-                            command.Context.ClearConditions();
                             return result;
                         }
                     }
                 }
 
-                var ret = command.Context.ResolveConditions(true);
-                command.Context.ClearConditions();
-                return ret;
+                return CommandResult.Pass;
             }
 
             private List<Behaviors.IBehavior> GenerateTargetList(Commands.BaseCommand command)
