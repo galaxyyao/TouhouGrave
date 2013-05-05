@@ -8,6 +8,8 @@ namespace TouhouSpring
 {
     internal partial class ResolveContext
     {
+        private Commands.BaseCommand m_resourceCommandQueueHead;
+        private Commands.BaseCommand m_resourceCommandQueueTail;
         private Commands.BaseCommand m_commandQueueHead;
         private Commands.BaseCommand m_commandQueueTail;
 
@@ -34,16 +36,6 @@ namespace TouhouSpring
             FlushCommandQueue();
         }
 
-        internal bool IsCommandRunnable(Commands.BaseCommand command)
-        {
-            Debug.Assert(RunningCommand == null);
-            InitializeCommand(command);
-            RunningCommand = command;
-            bool ret = !RunPrerequisiteGeneric(command).Canceled;
-            RunningCommand = null;
-            return ret;
-        }
-
         internal void QueueCommand(Commands.BaseCommand command)
         {
             if (command == null)
@@ -65,32 +57,27 @@ namespace TouhouSpring
             InitializeCommand(command);
             command.ValidateOnIssue();
 
-            if (m_commandQueueTail == null)
+            if (RunningCommand != null && RunningCommand.ExecutionPhase == Commands.CommandPhase.Prolog)
             {
-                Debug.Assert(m_commandQueueHead == null);
-                m_commandQueueHead = command;
+                Debug.Assert(m_timingGroupHead != null && m_timingGroupTail != null);
+                command.Next = m_timingGroupTail.Next;
+                m_timingGroupTail.Next = command;
+                m_timingGroupTail = command;
             }
             else
             {
-                Debug.Assert(m_commandQueueTail.Next == null);
-                m_commandQueueTail.Next = command;
+                CommandQueue.PushTail(command, ref m_commandQueueHead, ref m_commandQueueTail);
             }
-            m_commandQueueTail = command;
         }
 
-        private void QueueCommandAtHead(Commands.BaseCommand command)
+        private void QueueResourceCommand(Commands.BaseCommand command)
         {
             // can only queue command at head when issueing resource consuming commands
             Debug.Assert(RunningCommand != null && RunningCommand.ExecutionPhase == Commands.CommandPhase.Condition);
             InitializeCommand(command);
             command.ValidateOnIssue();
 
-            command.Next = m_commandQueueHead;
-            m_commandQueueHead = command;
-            if (m_commandQueueTail == null)
-            {
-                m_commandQueueTail = m_commandQueueHead;
-            }
+            CommandQueue.PushTail(command, ref m_resourceCommandQueueHead, ref m_resourceCommandQueueTail);
         }
 
         private void InitializeCommand(Commands.BaseCommand command)
@@ -101,17 +88,12 @@ namespace TouhouSpring
 
         private Commands.BaseCommand DequeCommand()
         {
-            Debug.Assert(m_commandQueueHead != null);
+            return CommandQueue.PopHead(ref m_commandQueueHead, ref m_commandQueueTail);
+        }
 
-            var ret = m_commandQueueHead;
-            m_commandQueueHead = m_commandQueueHead.Next;
-            if (m_commandQueueHead == null)
-            {
-                Debug.Assert(ret == m_commandQueueTail);
-                m_commandQueueTail = null;
-            }
-
-            return ret;
+        private Commands.BaseCommand DequeResourceCommand()
+        {
+            return CommandQueue.PopHead(ref m_resourceCommandQueueHead, ref m_resourceCommandQueueTail);
         }
     }
 }

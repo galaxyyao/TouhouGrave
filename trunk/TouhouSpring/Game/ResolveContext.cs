@@ -12,6 +12,11 @@ namespace TouhouSpring
             get; private set;
         }
 
+        internal bool Abort
+        {
+            get; set;
+        }
+
         public ResolveContext(Game game)
         {
             Game = game;

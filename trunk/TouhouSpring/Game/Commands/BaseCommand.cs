@@ -11,6 +11,7 @@ namespace TouhouSpring.Commands
         Pending,
         Prerequisite,
         Condition,
+        Preemptive,
         Prolog,
         Main,
         Epilog

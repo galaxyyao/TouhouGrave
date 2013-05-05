@@ -18,7 +18,7 @@ namespace TouhouSpring
             return ctx;
         }
 
-        private void FlushResolveContext()
+        internal void FlushResolveContext()
         {
             m_resolveContextStack.Peek().FlushCommandQueue();
             m_resolveContextStack.Pop();
