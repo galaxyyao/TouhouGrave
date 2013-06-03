@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    internal partial class ResolveContext
+    public partial class ResolveContext
     {
         private struct ResourceConditions
         {
@@ -33,7 +33,7 @@ namespace TouhouSpring
         private ResourceConditions m_resourceConditions;
         private List<TargetCondition> m_targetConditions = new List<TargetCondition>();
 
-        public void NeedMana(int amount)
+        internal void NeedMana(int amount)
         {
             if (amount <= 0)
             {
@@ -44,7 +44,7 @@ namespace TouhouSpring
             m_resourceConditions.m_manaNeeded += amount;
         }
 
-        public void NeedLife(int amount)
+        internal void NeedLife(int amount)
         {
             if (amount <= 0)
             {
@@ -55,7 +55,7 @@ namespace TouhouSpring
             m_resourceConditions.m_lifeNeeded += amount;
         }
 
-        public void NeedManaOrLife(int mana, int life)
+        internal void NeedManaOrLife(int mana, int life)
         {
             if (mana <= 0)
             {
@@ -76,7 +76,7 @@ namespace TouhouSpring
             m_resourceConditions.m_manaOrLifeLife = life;
         }
 
-        public void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
+        internal void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
         {
             if (user == null)
             {
@@ -106,7 +106,7 @@ namespace TouhouSpring
             });
         }
 
-        public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
+        internal IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
         {
             CheckNotInPrerequisite();
             var targetCondition = m_targetConditions.FirstOrDefault(tgt => tgt.m_user == user);

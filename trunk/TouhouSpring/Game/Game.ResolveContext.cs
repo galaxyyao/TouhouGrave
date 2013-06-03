@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -9,19 +10,28 @@ namespace TouhouSpring
     {
         private Stack<ResolveContext> m_resolveContextStack = new Stack<ResolveContext>();
 
-        internal ResolveContext PushNewResolveContext(params Commands.BaseCommand[] commands)
+        public ResolveContext CreateResolveContext()
         {
-            // TODO: check the timing
-            var ctx = new ResolveContext(this);
-            ctx.QueueCommands(commands);
-            m_resolveContextStack.Push(ctx);
-            return ctx;
+            return new ResolveContext(this);
         }
 
-        internal void FlushResolveContext()
+        internal void StackAndFlush(ResolveContext ctx)
         {
-            m_resolveContextStack.Peek().FlushCommandQueue();
+            Debug.Assert(ctx.Game == this);
+            Debug.Assert(!m_resolveContextStack.Contains(ctx));
+            Debug.Assert(m_resolveContextStack.Count == 0
+                         || (m_resolveContextStack.Peek().RunningCommand != null
+                             && m_resolveContextStack.Peek().RunningCommand.ExecutionPhase == Commands.CommandPhase.Preemptive));
+            m_resolveContextStack.Push(ctx);
+            ctx.FlushCommandQueue();
             m_resolveContextStack.Pop();
+        }
+
+        internal void StackAndFlush(params Commands.BaseCommand[] commands)
+        {
+            var ctx = new ResolveContext(this);
+            ctx.QueueCommands(commands);
+            StackAndFlush(ctx);
         }
     }
 }

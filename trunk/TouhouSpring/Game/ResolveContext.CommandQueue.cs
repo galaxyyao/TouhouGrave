@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    internal partial class ResolveContext
+    public partial class ResolveContext
     {
         private Commands.BaseCommand m_resourceCommandQueueHead;
         private Commands.BaseCommand m_resourceCommandQueueTail;
@@ -30,7 +30,7 @@ namespace TouhouSpring
             });
         }
 
-        public void QueueCommandsAndFlush(params Commands.BaseCommand[] commands)
+        internal void QueueCommandsAndFlush(params Commands.BaseCommand[] commands)
         {
             QueueCommands(commands);
             FlushCommandQueue();

@@ -30,7 +30,7 @@ namespace TouhouSpring
 
     public interface IPreemptiveTrigger<in TCommand> where TCommand : Commands.BaseCommand
     {
-        void RunPreemptive(TCommand command);
+        ResolveContext RunPreemptive(TCommand command);
     }
 
     public interface IPrologTrigger<in TCommand> where TCommand : Commands.BaseCommand

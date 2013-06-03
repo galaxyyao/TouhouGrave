@@ -103,7 +103,11 @@ namespace TouhouSpring
                 if (t != null)
                 {
                     // TODO: get the new stack
-                    t.RunPreemptive(command);
+                    var ctx = t.RunPreemptive(command);
+                    if (ctx != null)
+                    {
+                        return ctx;
+                    }
                 }
             }
             return null;

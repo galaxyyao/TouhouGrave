@@ -75,7 +75,7 @@ namespace TouhouSpring
 
                 if (newStack != null)
                 {
-                    Game.FlushResolveContext();
+                    Game.StackAndFlush(newStack);
                     if (Abort)
                     {
                         return;

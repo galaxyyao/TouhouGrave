@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    internal partial class ResolveContext
+    public partial class ResolveContext
     {
         public Game Game
         {
@@ -17,7 +17,7 @@ namespace TouhouSpring
             get; set;
         }
 
-        public ResolveContext(Game game)
+        internal ResolveContext(Game game)
         {
             Game = game;
         }
