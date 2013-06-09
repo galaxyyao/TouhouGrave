@@ -47,10 +47,10 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonNewCard = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButtonNewBehavior = new System.Windows.Forms.ToolStripDropDownButton();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip.SuspendLayout();
@@ -64,12 +64,12 @@
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(127, 6);
+            toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(127, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
             // 
             // menuStrip
             // 
@@ -78,7 +78,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(284, 25);
+            this.menuStrip.Size = new System.Drawing.Size(874, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip";
             // 
@@ -93,20 +93,20 @@
             toolStripMenuItem2,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -114,7 +114,7 @@
             // 
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -122,13 +122,13 @@
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -137,19 +137,19 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutCardEditorToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(47, 21);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
             // 
             // aboutCardEditorToolStripMenuItem
             // 
             this.aboutCardEditorToolStripMenuItem.Name = "aboutCardEditorToolStripMenuItem";
-            this.aboutCardEditorToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.aboutCardEditorToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.aboutCardEditorToolStripMenuItem.Text = "About Card Editor";
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 50);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -159,8 +159,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.propertyGrid);
-            this.splitContainer1.Size = new System.Drawing.Size(284, 212);
-            this.splitContainer1.SplitterDistance = 94;
+            this.splitContainer1.Size = new System.Drawing.Size(874, 506);
+            this.splitContainer1.SplitterDistance = 289;
             this.splitContainer1.TabIndex = 1;
             // 
             // treeViewCards
@@ -174,7 +174,7 @@
             this.treeViewCards.Name = "treeViewCards";
             this.treeViewCards.PathSeparator = "/";
             this.treeViewCards.SelectedImageIndex = 0;
-            this.treeViewCards.Size = new System.Drawing.Size(94, 212);
+            this.treeViewCards.Size = new System.Drawing.Size(289, 506);
             this.treeViewCards.TabIndex = 0;
             this.treeViewCards.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewCards_AfterSelect);
             // 
@@ -190,7 +190,7 @@
             this.propertyGrid.Enabled = false;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(186, 212);
+            this.propertyGrid.Size = new System.Drawing.Size(581, 506);
             this.propertyGrid.TabIndex = 0;
             this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -202,9 +202,9 @@
             this.toolStripDropDownButtonNewBehavior,
             this.toolStripSeparator,
             this.toolStripButtonDelete});
-            this.toolStrip.Location = new System.Drawing.Point(0, 25);
+            this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(284, 25);
+            this.toolStrip.Size = new System.Drawing.Size(874, 25);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "toolStrip";
             // 
@@ -213,7 +213,7 @@
             this.toolStripButtonNewCard.Image = global::TouhouSpring.Properties.Resources.Add_16x16;
             this.toolStripButtonNewCard.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonNewCard.Name = "toolStripButtonNewCard";
-            this.toolStripButtonNewCard.Size = new System.Drawing.Size(86, 22);
+            this.toolStripButtonNewCard.Size = new System.Drawing.Size(79, 22);
             this.toolStripButtonNewCard.Text = "New Card";
             this.toolStripButtonNewCard.Click += new System.EventHandler(this.toolStripButtonNewCard_Click);
             // 
@@ -222,17 +222,9 @@
             this.toolStripDropDownButtonNewBehavior.Image = global::TouhouSpring.Properties.Resources.Add_16x16;
             this.toolStripDropDownButtonNewBehavior.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButtonNewBehavior.Name = "toolStripDropDownButtonNewBehavior";
-            this.toolStripDropDownButtonNewBehavior.Size = new System.Drawing.Size(118, 22);
+            this.toolStripDropDownButtonNewBehavior.Size = new System.Drawing.Size(109, 22);
             this.toolStripDropDownButtonNewBehavior.Text = "New Behavior";
             this.toolStripDropDownButtonNewBehavior.Visible = false;
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.Filter = "Card database file (*.xml)|*.xml";
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.Filter = "Card database file (*.xml)|*.xml";
             // 
             // toolStripSeparator
             // 
@@ -251,11 +243,19 @@
             this.toolStripButtonDelete.Visible = false;
             this.toolStripButtonDelete.Click += new System.EventHandler(this.toolStripButtonDelete_Click);
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "Card database file (*.xml)|*.xml";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Card database file (*.xml)|*.xml";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(874, 555);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
