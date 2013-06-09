@@ -46,6 +46,8 @@
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />
     <Compile Include="CardInstance.cs" />
+    <Compile Include="CommandQueue.cs" />
+    <Compile Include="CommandRunner.cs" />
     <Compile Include="Commands\AddCounter.cs" />
     <Compile Include="Commands\AddPlayerLife.cs" />
     <Compile Include="Commands\AddPlayerMana.cs" />
@@ -53,11 +55,13 @@
     <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
+    <Compile Include="Game.CommandTargets.cs" />
     <Compile Include="Game.ResolveContext.cs" />
     <Compile Include="ResolveContext.CommandQueue.cs" />
     <Compile Include="ResolveContext.cs" />
     <Compile Include="ResolveContext.Flush.cs" />
     <Compile Include="ResolveContext.Resources.cs" />
+    <Compile Include="ResolveContext.RunCommand.cs" />
     <Compile Include="ValueModifier.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseController.CommandTriggers.cs" />
@@ -103,7 +107,6 @@
     <Compile Include="Game.Clone.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Deck.cs" />
-    <Compile Include="Game.CommandRunner.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game.Main.cs" />
     <Compile Include="Game.Players.cs" />

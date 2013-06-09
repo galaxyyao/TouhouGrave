@@ -8,10 +8,6 @@ namespace TouhouSpring
 {
     public partial class BaseController
     {
-        internal void OnCommandBegin(Commands.BaseCommand command)
-        {
-        }
-
         internal void OnCommandEnd(Commands.BaseCommand command)
         {
             if (command is Commands.AddCardToManaPool)

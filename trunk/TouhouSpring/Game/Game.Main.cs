@@ -32,10 +32,10 @@ namespace TouhouSpring
                 throw new InvalidOperationException("Can't run turn.");
             }
 
-            PushNewResolveContext(new Commands.StartTurn(ActingPlayer));
-            FlushResolveContext();
+            StackAndFlush(new Commands.StartTurn(ActingPlayer));
 
-            var ctx = PushNewResolveContext(new Commands.StartPhase("Upkeep"));
+            var ctx = CreateResolveContext();
+            ctx.QueueCommand(new Commands.StartPhase("Upkeep"));
             // skip drawing card for the starting player in the first round
             if (Round > 1 || m_actingPlayer != 0)
             {
@@ -47,12 +47,11 @@ namespace TouhouSpring
                 .ForEach(card => ctx.QueueCommand(
                     new Commands.SendBehaviorMessage(card.Behaviors.Get<Behaviors.Warrior>(), "GoStandingBy", null)));
             ctx.QueueCommand(new Commands.EndPhase());
-            FlushResolveContext();
+            StackAndFlush(ctx);
 
             DidSacrifice = false;
             DidRedeem = false;
-            PushNewResolveContext(new Commands.StartPhase("Main"));
-            FlushResolveContext();
+            StackAndFlush(new Commands.StartPhase("Main"));
 
             return RunTurnFromMainPhase();
         }
@@ -80,61 +79,55 @@ namespace TouhouSpring
                 {
                     var cardToPlay = (CardInstance)result.Data;
                     Debug.Assert(cardToPlay.Owner == ActingPlayer);
-                    PushNewResolveContext(new Commands.PlayCard(cardToPlay));
-                    FlushResolveContext();
+                    StackAndFlush(new Commands.PlayCard(cardToPlay));
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.ActivateAssist)
                 {
                     var cardToActivate = (CardInstance)result.Data;
                     Debug.Assert(cardToActivate.Owner == ActingPlayer);
-                    var ctx = PushNewResolveContext();
+                    var ctx = CreateResolveContext();
                     foreach (var card in ActingPlayer.ActivatedAssits)
                     {
                         ctx.QueueCommand(new Commands.DeactivateAssist(card));
                     }
                     ctx.QueueCommand(new Commands.ActivateAssist(cardToActivate));
-                    FlushResolveContext();
+                    StackAndFlush(ctx);
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.CastSpell)
                 {
                     var spellToCast = (Behaviors.ICastableSpell)result.Data;
                     Debug.Assert(spellToCast.Host.Owner == ActingPlayer);
-                    PushNewResolveContext(new Commands.CastSpell(spellToCast));
-                    FlushResolveContext();
+                    StackAndFlush(new Commands.CastSpell(spellToCast));
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Sacrifice)
                 {
                     var cardToSacrifice = (CardInstance)result.Data;
-                    PushNewResolveContext(
+                    StackAndFlush(
                         new Commands.Sacrifice(cardToSacrifice),
                         new Commands.AddPlayerMana(ActingPlayer, 1, true, this));
-                    FlushResolveContext();
                     DidSacrifice = true;
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Redeem)
                 {
                     var cardToRedeem = (CardInstance)result.Data;
-                    PushNewResolveContext(new Commands.Redeem(cardToRedeem));
-                    FlushResolveContext();
+                    StackAndFlush(new Commands.Redeem(cardToRedeem));
                     DidRedeem = true;
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.AttackCard)
                 {
                     var pair = (CardInstance[])result.Data;
                     var attackerWarrior = pair[0].Behaviors.Get<Behaviors.Warrior>();
-                    PushNewResolveContext(
+                    StackAndFlush(
                         new Commands.DealDamageToCard(pair[1], attackerWarrior.Attack, attackerWarrior),
                         new Commands.SendBehaviorMessage(attackerWarrior, "GoCoolingDown", null));
-                    FlushResolveContext();
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.AttackPlayer)
                 {
                     var pair = (object[])result.Data;
                     var attackerWarrior = (pair[0] as CardInstance).Behaviors.Get<Behaviors.Warrior>();
-                    PushNewResolveContext(
+                    StackAndFlush(
                         new Commands.SubtractPlayerLife(pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
                         new Commands.SendBehaviorMessage(attackerWarrior, "GoCoolingDown", null));
-                    FlushResolveContext();
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Pass)
                 {
@@ -150,19 +143,19 @@ namespace TouhouSpring
                 }
             }
 
-            PushNewResolveContext(
+            StackAndFlush(
                 new Commands.EndPhase(),
                 new Commands.StartPhase("Cleanup"),
                 new Commands.EndPhase(),
                 new Commands.EndTurn(ActingPlayer));
-            FlushResolveContext();
 
             return true;
         }
 
         private void GameFlowMain()
         {
-            var ctx = PushNewResolveContext(new Commands.StartPhase("Begin"));
+            var ctx = CreateResolveContext();
+            ctx.QueueCommand(new Commands.StartPhase("Begin"));
 
             foreach (var player in Players)
             {
@@ -174,7 +167,7 @@ namespace TouhouSpring
             }
 
             ctx.QueueCommand(new Commands.EndPhase());
-            FlushResolveContext();
+            StackAndFlush(ctx);
 
             // TODO: Non-trivial determination of the acting player for the first turn
             m_actingPlayer = 0;
