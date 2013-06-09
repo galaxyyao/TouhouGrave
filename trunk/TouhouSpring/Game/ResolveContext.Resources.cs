@@ -25,6 +25,7 @@ namespace TouhouSpring
         private class TargetCondition
         {
             public Behaviors.IBehavior m_user;
+            public bool m_compulsory;
             public IIndexable<CardInstance> m_candidates;
             public string m_message;
             public IIndexable<CardInstance> m_selection;
@@ -76,7 +77,7 @@ namespace TouhouSpring
             m_resourceConditions.m_manaOrLifeLife = life;
         }
 
-        internal void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
+        internal void NeedTargets(Behaviors.IBehavior user, bool compulsory, IIndexable<CardInstance> candidates, string message)
         {
             if (user == null)
             {
@@ -100,21 +101,36 @@ namespace TouhouSpring
             m_targetConditions.Add(new TargetCondition
             {
                 m_user = user,
+                m_compulsory = compulsory,
                 m_candidates = candidates,
                 m_message = message,
                 m_selection = null
             });
         }
 
-        internal IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
+        internal IIndexable<CardInstance> GetTargets(Behaviors.IBehavior user)
         {
             CheckNotInPrerequisite();
             var targetCondition = m_targetConditions.FirstOrDefault(tgt => tgt.m_user == user);
-            if (targetCondition == null)
+            return targetCondition != null ? targetCondition.m_selection : null;
+        }
+
+        internal bool CheckCompulsoryTargets()
+        {
+            foreach (var tgtCondition in m_targetConditions)
             {
-                throw new InvalidOperationException("No target is registered for this behavior before.");
+                if (tgtCondition.m_compulsory)
+                {
+                    foreach (var card in tgtCondition.m_selection)
+                    {
+                        if (card.IsDestroyed)
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
-            return targetCondition.m_selection;
+            return true;
         }
 
         private void ClearConditions()
@@ -162,7 +178,7 @@ namespace TouhouSpring
 
             foreach (var tgt in m_targetConditions)
             {
-                if (tgt.m_candidates.Count == 0)
+                if (tgt.m_candidates.Count == 0 && tgt.m_compulsory)
                 {
                     return CommandResult.Cancel("No target.");
                 }
@@ -200,14 +216,17 @@ namespace TouhouSpring
 
                 foreach (var tgt in m_targetConditions)
                 {
-                    tgt.m_selection = new Interactions.SelectCards(
-                        initiator,
-                        tgt.m_candidates,
-                        Interactions.SelectCards.SelectMode.Single,
-                        tgt.m_message).Run();
-                    if (tgt.m_selection.Count == 0)
+                    if (tgt.m_candidates.Count != 0)
                     {
-                        return CommandResult.Cancel("Canceled.");
+                        tgt.m_selection = new Interactions.SelectCards(
+                            initiator,
+                            tgt.m_candidates,
+                            Interactions.SelectCards.SelectMode.Single,
+                            tgt.m_message).Run();
+                        if (tgt.m_selection.Count == 0 && tgt.m_compulsory)
+                        {
+                            return CommandResult.Cancel("Canceled.");
+                        }
                     }
                 }
 

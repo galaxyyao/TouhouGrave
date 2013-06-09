@@ -33,6 +33,27 @@ namespace TouhouSpring.Commands
             throw new CommandValidationFailException(String.Format(CultureInfo.CurrentCulture, format, args));
         }
 
+        internal bool DefaultValidateOnRun(ResolveContext ctx)
+        {
+            var causeBhv = Cause as Behaviors.IBehavior;
+            if (causeBhv != null)
+            {
+                var causeBhvHost = causeBhv.Host;
+                if (causeBhvHost == null || causeBhvHost.IsDestroyed || !causeBhvHost.Owner.CardsOnBattlefield.Contains(causeBhvHost))
+                {
+                    return false;
+                }
+            }
+            if (this is IInitiativeCommand)
+            {
+                if (!ctx.CheckCompulsoryTargets())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         protected void Validate(Player player)
         {
             if (player == null)

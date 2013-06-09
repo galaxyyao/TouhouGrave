@@ -9,14 +9,12 @@ namespace TouhouSpring.Commands
     {
         public CardInstance Target
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public int LifeToHeal
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public HealCard(CardInstance target, int lifeToHeal, ICause cause)
@@ -44,12 +42,9 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
-            if (LifeToHeal < 0)
-            {
-                FailValidation("Life to heal must be greater than zero.");
-            }
+            return LifeToHeal >= 0 && !Target.IsDestroyed;
         }
 
         internal override void RunMain()

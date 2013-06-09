@@ -11,8 +11,9 @@ namespace TouhouSpring.Commands
         {
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            return true;
         }
 
         internal override void RunMain()

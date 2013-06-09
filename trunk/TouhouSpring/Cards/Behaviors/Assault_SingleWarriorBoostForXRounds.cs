@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.NeedTarget(this,
+                Game.NeedTargets(this,
                     Host.Owner.CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
                     "Select a card to boost its attack.");
             }
@@ -32,8 +32,8 @@ namespace TouhouSpring.Behaviors
                     var enhanceMod = new Enhance.ModelType { AttackBoost = Model.AttackBoost }.CreateInitialized();
                     (lasting as LastingEffect).CleanUps.Add(enhanceMod);
                     Game.QueueCommands(
-                        new Commands.AddBehavior(Game.GetTarget(this)[0], enhanceMod),
-                        new Commands.AddBehavior(Game.GetTarget(this)[0], lasting));
+                        new Commands.AddBehavior(Game.GetTargets(this)[0], enhanceMod),
+                        new Commands.AddBehavior(Game.GetTargets(this)[0], lasting));
                 }
             }
         }

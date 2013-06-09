@@ -36,8 +36,9 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            return !CardToDeactivate.IsDestroyed && CardToDeactivate.Owner.ActivatedAssits.Contains(CardToDeactivate);
         }
 
         internal override void RunMain()

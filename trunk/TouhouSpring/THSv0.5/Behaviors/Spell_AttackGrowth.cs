@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.NeedTarget(this,
+                Game.NeedTargets(this,
                     Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
                     "指定1张己方的卡，增加3点攻击力");
             }
@@ -30,7 +30,7 @@ namespace TouhouSpring.Behaviors
             if (command.CardToPlay == Host)
             {
                 Game.QueueCommands(new Commands.SendBehaviorMessage(
-                    Game.GetTarget(this)[0].Behaviors.Get<Warrior>(),
+                    Game.GetTargets(this)[0].Behaviors.Get<Warrior>(),
                     "AttackModifiers",
                     new object[] { "add", m_attackMod }));
             }

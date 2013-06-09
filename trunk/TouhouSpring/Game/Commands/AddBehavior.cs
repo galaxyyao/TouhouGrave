@@ -51,8 +51,9 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            return !Target.IsDestroyed && !Target.Behaviors.Contains(Behavior);
         }
 
         internal override void RunMain()

@@ -48,7 +48,7 @@ namespace TouhouSpring.Commands
         }
 
         internal abstract void ValidateOnIssue();
-        internal abstract void ValidateOnRun();
+        internal abstract bool ValidateOnRun();
         internal abstract void RunMain();
 
         protected BaseCommand() { }
@@ -56,7 +56,8 @@ namespace TouhouSpring.Commands
 
         protected void CheckPatchable(string propertyName)
         {
-            if (ExecutionPhase != CommandPhase.Prolog)
+            if (ExecutionPhase != CommandPhase.Prolog
+                && ExecutionPhase != CommandPhase.Preemptive)
             {
                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "{0} can't be set when the command is read-only.", propertyName));
             }
