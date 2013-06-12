@@ -15,7 +15,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.NeedTarget(this,
+                Game.NeedTargets(this,
                     Game.Players.Where(player => player != Host.Owner)
                     .SelectMany(player => player.CardsOnBattlefield)
                     .Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
@@ -29,7 +29,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.CardToPlay == Host)
             {
-                Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTargets(this)[0], Model.DamageToDeal, this));
             }
         }
 

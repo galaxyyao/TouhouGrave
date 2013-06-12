@@ -183,11 +183,15 @@
           <Name>ManaCost</Name>
           <Cost>4</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AttackFirst+ModelType">
-          <Name>先攻</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_FirstStrike_Attacker+ModelType">
+          <Name>先攻（攻击者）</Name>
+          <DoubleStrike>false</DoubleStrike>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_FirstStrike_Defender+ModelType">
+          <Name>先攻（防御者）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>

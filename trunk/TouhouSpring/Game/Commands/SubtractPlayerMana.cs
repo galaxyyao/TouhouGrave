@@ -48,12 +48,13 @@ namespace TouhouSpring.Commands
             Validate(Player);
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
             if (Player.Mana < FinalAmount)
             {
                 FailValidation("Insufficient mana.");
             }
+            return FinalAmount >= 0;
         }
 
         internal override void RunMain()

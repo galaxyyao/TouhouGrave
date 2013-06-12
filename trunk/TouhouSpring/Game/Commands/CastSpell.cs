@@ -38,8 +38,10 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            var spellHost = Spell.Host;
+            return !spellHost.IsDestroyed && spellHost.Behaviors.Contains(Spell) && spellHost.Owner.CardsOnBattlefield.Contains(spellHost);
         }
 
         internal override void RunMain()

@@ -30,8 +30,9 @@ namespace TouhouSpring.Commands
             Validate(Player);
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            return true;
         }
 
         internal override void RunMain()

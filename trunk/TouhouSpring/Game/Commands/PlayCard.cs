@@ -48,8 +48,9 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            return !CardToPlay.IsDestroyed && CardToPlay.Owner.CardsOnHand.Contains(CardToPlay);
         }
 
         internal override void RunMain()

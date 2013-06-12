@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
             if (command.Spell == this)
             {
                 Game.NeedMana(1);
-                Game.NeedTarget(this,
+                Game.NeedTargets(this,
                     Game.Players.Where(player => player != Host.Owner)
                     .SelectMany(player => player.CardsOnBattlefield)
                     .Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
         public void RunSpell(Commands.CastSpell command)
         {
             Game.QueueCommands(new Commands.SubtractPlayerMana(Host.Owner, Host.Owner.Mana, this));
-            Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTarget(this)[0], Host.Owner.Mana + 1, this));
+            Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTargets(this)[0], Host.Owner.Mana + 1, this));
         }
 
         [BehaviorModel(typeof(Spell_ManaCannon), Category = "v0.5/Spell", DefaultName = "灵力炮")]

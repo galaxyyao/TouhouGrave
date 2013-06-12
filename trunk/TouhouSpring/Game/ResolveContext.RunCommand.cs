@@ -26,8 +26,11 @@ namespace TouhouSpring
             Debug.Assert(command.Context == this);
             Debug.Assert(RunningCommand == null);
             RunningCommand = command;
-            command.ExecutionPhase = Commands.CommandPhase.Main;
-            GetCommandRunner(command.GetType()).RunMainAndEpilog(command);
+            if (command.ValidateOnRun() && command.DefaultValidateOnRun(this))
+            {
+                command.ExecutionPhase = Commands.CommandPhase.Main;
+                GetCommandRunner(command.GetType()).RunMainAndEpilog(command);
+            }
             Game.Controller.OnCommandEnd(command);
             RunningCommand = null;
         }
@@ -56,6 +59,7 @@ namespace TouhouSpring
             //
             // Keep stacking until no more stack is requested from Preemptive triggers
 
+            bool firstTime = true;
             while (true)
             {
                 ResolveContext newStack = null;
@@ -64,24 +68,23 @@ namespace TouhouSpring
                 {
                     RunningCommand = cmd;
                     cmd.ExecutionPhase = Commands.CommandPhase.Preemptive;
-                    newStack = GetCommandRunner(cmd.GetType()).RunPreemptive(cmd);
-                    RunningCommand = null;
+                    newStack = GetCommandRunner(cmd.GetType()).RunPreemptive(cmd, firstTime);
 
                     if (newStack != null)
                     {
+                        Game.StackAndFlush(newStack);
+                        if (Abort)
+                        {
+                            return;
+                        }
+                        firstTime = false;
                         break;
                     }
+
+                    RunningCommand = null;
                 }
 
-                if (newStack != null)
-                {
-                    Game.StackAndFlush(newStack);
-                    if (Abort)
-                    {
-                        return;
-                    }
-                }
-                else
+                if (newStack == null)
                 {
                     break;
                 }

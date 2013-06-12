@@ -13,20 +13,17 @@ namespace TouhouSpring.Commands
         // TODO: change to serializable behavior ID
         public ICardModel Model
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public Player Owner
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public CardInstance CardAdded
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public AddCardToManaPool(ICardModel model, Player owner)
@@ -53,8 +50,9 @@ namespace TouhouSpring.Commands
             Validate(Owner);
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
+            return true;
         }
 
         internal override void RunMain()

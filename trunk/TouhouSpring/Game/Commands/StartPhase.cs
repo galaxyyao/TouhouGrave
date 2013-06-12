@@ -26,12 +26,13 @@ namespace TouhouSpring.Commands
         {
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
             if (Context.Game.CurrentPhase != "")
             {
                 FailValidation("StartPhase must be issued only when the game is not in any other phase.");
             }
+            return true;
         }
 
         internal override void RunMain()

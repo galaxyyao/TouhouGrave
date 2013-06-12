@@ -30,14 +30,19 @@ namespace TouhouSpring
             m_resolveContextStack.Peek().NeedManaOrLife(mana, life);
         }
 
-        public void NeedTarget(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
+        public void NeedTargets(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
         {
-            m_resolveContextStack.Peek().NeedTarget(user, candidates, message);
+            m_resolveContextStack.Peek().NeedTargets(user, true, candidates, message);
         }
 
-        public IIndexable<CardInstance> GetTarget(Behaviors.IBehavior user)
+        public void NeedOptionalTargets(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
         {
-            return m_resolveContextStack.Peek().GetTarget(user);
+            m_resolveContextStack.Peek().NeedTargets(user, false, candidates, message);
+        }
+
+        public IIndexable<CardInstance> GetTargets(Behaviors.IBehavior user)
+        {
+            return m_resolveContextStack.Peek().GetTargets(user);
         }
 
         internal bool IsCardPlayable(CardInstance card)

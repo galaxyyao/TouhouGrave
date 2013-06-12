@@ -10,7 +10,7 @@ namespace TouhouSpring
     {
         CommandResult RunPrerequisite(Commands.BaseCommand command);
         void RunProlog(Commands.BaseCommand command);
-        ResolveContext RunPreemptive(Commands.BaseCommand command);
+        ResolveContext RunPreemptive(Commands.BaseCommand command, bool firstTimeTriggering);
         void RunMainAndEpilog(Commands.BaseCommand command);
     }
 
@@ -78,24 +78,24 @@ namespace TouhouSpring
             }
         }
 
-        public ResolveContext RunPreemptive(Commands.BaseCommand command)
+        public ResolveContext RunPreemptive(Commands.BaseCommand command, bool firstTimeTriggering)
         {
             Debug.Assert(command.ExecutionPhase == Commands.CommandPhase.Preemptive);
 
             var tCommand = command as TCommand;
-            var newStack = RunPreemptive(tCommand, command.Context.Game.m_commonTargets);
+            var newStack = RunPreemptive(tCommand, command.Context.Game.m_commonTargets, firstTimeTriggering);
             if (newStack == null)
             {
                 var additionalTargets = GetAdditionalCommandTargets(command);
                 if (additionalTargets != null)
                 {
-                    newStack = RunPreemptive(tCommand, additionalTargets);
+                    newStack = RunPreemptive(tCommand, additionalTargets, firstTimeTriggering);
                 }
             }
             return newStack;
         }
 
-        private ResolveContext RunPreemptive(TCommand command, IEnumerable<Behaviors.IBehavior> targets)
+        private ResolveContext RunPreemptive(TCommand command, IEnumerable<Behaviors.IBehavior> targets, bool firstTimeTriggering)
         {
             foreach (var trigger in targets)
             {
@@ -103,7 +103,7 @@ namespace TouhouSpring
                 if (t != null)
                 {
                     // TODO: get the new stack
-                    var ctx = t.RunPreemptive(command);
+                    var ctx = t.RunPreemptive(command, firstTimeTriggering);
                     if (ctx != null)
                     {
                         return ctx;

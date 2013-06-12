@@ -59,13 +59,9 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
-            // TODO: proper serialization of complex data type
-            //else if (Args != null && Args.Any(arg => !s_simpleTypes.Contains(arg.GetType())))
-            //{
-            //    throw new CommandValidationFailException("Arguments can only be of some simple types.");
-            //}
+            return !Target.Host.IsDestroyed && Target.Host.Behaviors.Contains(Target);
         }
 
         internal override void RunMain()

@@ -50,12 +50,9 @@ namespace TouhouSpring.Commands
             }
         }
 
-        internal override void ValidateOnRun()
+        internal override bool ValidateOnRun()
         {
-            if (DamageToDeal < 0)
-            {
-                FailValidation("Damage must be greater than zero.");
-            }
+            return DamageToDeal >= 0 && !Target.IsDestroyed && Target.Owner.CardsOnBattlefield.Contains(Target);
         }
 
         internal override void RunMain()

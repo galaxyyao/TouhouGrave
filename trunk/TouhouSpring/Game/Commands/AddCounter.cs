@@ -50,8 +50,10 @@ namespace TouhouSpring.Commands
         internal override void ValidateOnIssue()
         { }
 
-        internal override void ValidateOnRun()
-        { }
+        internal override bool ValidateOnRun()
+        {
+            return !Target.IsDestroyed && NumToAdd >= 0 && Target.Owner.CardsOnBattlefield.Contains(Target);
+        }
 
         internal override void RunMain()
         {
