@@ -23,22 +23,22 @@ namespace TouhouSpring
         }
     }
 
-    public interface IPrerequisiteTrigger<in TCommand> where TCommand : Commands.BaseCommand
+    public interface IPrerequisiteTrigger<in TCommand> where TCommand : Commands.ICommand
     {
         CommandResult RunPrerequisite(TCommand command);
     }
 
-    public interface IPreemptiveTrigger<in TCommand> where TCommand : Commands.BaseCommand
+    public interface IPreemptiveTrigger<in TCommand> where TCommand : Commands.ICommand
     {
         ResolveContext RunPreemptive(TCommand command, bool firstTimeTriggering);
     }
 
-    public interface IPrologTrigger<in TCommand> where TCommand : Commands.BaseCommand
+    public interface IPrologTrigger<in TCommand> where TCommand : Commands.ICommand
     {
         void RunProlog(TCommand command);
     }
 
-    public interface IEpilogTrigger<in TCommand> where TCommand : Commands.BaseCommand
+    public interface IEpilogTrigger<in TCommand> where TCommand : Commands.ICommand
     {
         void RunEpilog(TCommand command);
     }

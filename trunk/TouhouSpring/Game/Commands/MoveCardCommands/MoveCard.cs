@@ -5,43 +5,25 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public abstract class MoveCardBase : BaseCommand
+    public class MoveCard<TFromZone, TToZone> : BaseCommand,
+        IMoveCard<TFromZone, TToZone>
+        where TFromZone : IZoneToken, new()
+        where TToZone : IZoneToken, new()
     {
+        private static TFromZone s_fromZone = new TFromZone();
+        private static TToZone s_toZone = new TToZone();
+
         public CardInstance Subject
         {
-            get; protected set;
+            get; private set;
         }
 
-        public abstract int FromZone
-        {
-            get;
-        }
-
-        public abstract int ToZone
-        {
-            get;
-        }
-
-        protected MoveCardBase(CardInstance subject, ICause cause)
-            : base(cause)
-        {
-            Subject = subject;
-        }
-    }
-
-    public class MoveCard<TFromZone, TToZone> : MoveCardBase
-        where TFromZone : IZoneToken
-        where TToZone : IZoneToken
-    {
-        private static TFromZone s_fromZone;
-        private static TToZone s_toZone;
-
-        public override int FromZone
+        public int FromZone
         {
             get { return s_fromZone.Zone; }
         }
 
-        public override int ToZone
+        public int ToZone
         {
             get { return s_toZone.Zone; }
         }
@@ -51,8 +33,15 @@ namespace TouhouSpring.Commands
         { }
 
         public MoveCard(CardInstance subject, ICause cause)
-            : base(subject, cause)
-        { }
+            : base(cause)
+        {
+            if (subject == null)
+            {
+                throw new ArgumentNullException("subject");
+            }
+
+            Subject = subject;
+        }
 
         internal override void ValidateOnIssue()
         {
@@ -82,8 +71,8 @@ namespace TouhouSpring.Commands
 
     public class InitiativeMoveCard<TFromZone, TToZone> : MoveCard<TFromZone, TToZone>,
         IInitiativeCommand
-        where TFromZone : IZoneToken
-        where TToZone : IZoneToken
+        where TFromZone : IZoneToken, new()
+        where TToZone : IZoneToken, new()
     {
         public Player Initiator
         {

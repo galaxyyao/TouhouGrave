@@ -6,25 +6,7 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public enum CommandPhase
-    {
-        Pending,
-        Prerequisite,
-        Condition,
-        Preemptive,
-        Prolog,
-        Main,
-        Epilog
-    }
-
-    public interface ICause { }
-
-    public interface IInitiativeCommand
-    {
-        Player Initiator { get; }
-    }
-
-    public abstract partial class BaseCommand
+    public abstract partial class BaseCommand : ICommand
     {
         public CommandPhase ExecutionPhase
         {

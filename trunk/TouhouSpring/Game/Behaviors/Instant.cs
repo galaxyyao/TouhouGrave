@@ -7,10 +7,9 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Instant : BaseBehavior<Instant.ModelType>,
         Commands.ICause,
-        // TODO: Commands.MoveTo<Battlefield>
-        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
+        IEpilogTrigger<Commands.IMoveTo<Commands.Battlefield>>
     {
-        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public void RunEpilog(Commands.IMoveTo<Commands.Battlefield> command)
         {
             if (command.Subject == Host)
             {

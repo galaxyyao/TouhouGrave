@@ -6,13 +6,15 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class DrawMove<TToZone> : MoveCardBase
-        where TToZone : IZoneToken
+    public class DrawMove<TToZone> : BaseCommand,
+        IMoveCard<Library, TToZone>
+        where TToZone : IZoneToken, new()
     {
-        private static TToZone s_toZone;
+        private static TToZone s_toZone = new TToZone();
 
-        public override int FromZone { get { return SystemZone.Library; } }
-        public override int ToZone { get { return s_toZone.Zone; } }
+        public CardInstance Subject { get; private set; }
+        public int FromZone { get { return SystemZone.Library; } }
+        public int ToZone { get { return s_toZone.Zone; } }
 
         public Player Player
         {
@@ -24,7 +26,7 @@ namespace TouhouSpring.Commands
         { }
 
         public DrawMove(Player player, ICause cause)
-            : base(null, cause)
+            : base(cause)
         {
             if (player == null)
             {

@@ -5,21 +5,30 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class KillMove<TFromZone> : MoveCardBase
-        where TFromZone : IZoneToken
+    public class KillMove<TFromZone> : BaseCommand,
+        IMoveCard<TFromZone, Graveyard>
+        where TFromZone : IZoneToken, new()
     {
-        private static TFromZone s_fromZone;
+        private static TFromZone s_fromZone = new TFromZone();
 
-        public override int FromZone { get { return s_fromZone.Zone; } }
-        public override int ToZone { get { return SystemZone.Graveyard; } }
+        public CardInstance Subject { get; private set; }
+        public int FromZone { get { return s_fromZone.Zone; } }
+        public int ToZone { get { return SystemZone.Graveyard; } }
 
         public KillMove(CardInstance subject)
             : this(subject, null)
         { }
 
         public KillMove(CardInstance subject, ICause cause)
-            : base(subject, cause)
-        { }
+            : base(cause)
+        {
+            if (subject == null)
+            {
+                throw new ArgumentNullException("subject");
+            }
+
+            Subject = subject;
+        }
 
         internal override void ValidateOnIssue()
         {
