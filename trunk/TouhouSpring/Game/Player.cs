@@ -13,10 +13,10 @@ namespace TouhouSpring
     public sealed partial class Player
     {
         // TODO: command for manipulating these lists
-        private List<ValueModifier> m_manaAddModifiers = new List<ValueModifier>();
-        private List<ValueModifier> m_manaSubtractModifiers = new List<ValueModifier>();
-        private List<ValueModifier> m_lifeAddModifiers = new List<ValueModifier>();
-        private List<ValueModifier> m_lifeSubtractModifiers = new List<ValueModifier>();
+        internal List<ValueModifier> m_manaAddModifiers = new List<ValueModifier>();
+        internal List<ValueModifier> m_manaSubtractModifiers = new List<ValueModifier>();
+        internal List<ValueModifier> m_lifeAddModifiers = new List<ValueModifier>();
+        internal List<ValueModifier> m_lifeSubtractModifiers = new List<ValueModifier>();
 
         internal List<CardInstance> m_handSet = new List<CardInstance>();
         internal List<CardInstance> m_sacrifices = new List<CardInstance>();

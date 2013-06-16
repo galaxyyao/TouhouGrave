@@ -14,24 +14,24 @@ namespace TouhouSpring
             clonedPlayer.Health = Health;
             clonedPlayer.Mana = Mana;
 
-            for (int i = 0; i < m_manaAddModifiers.Count; ++i)
+            foreach (var mod in m_manaAddModifiers)
             {
-                clonedPlayer.m_manaAddModifiers.Add(m_manaAddModifiers[i]);
+                clonedPlayer.m_manaAddModifiers.Add(mod);
             }
 
-            for (int i = 0; i < m_manaSubtractModifiers.Count; ++i)
+            foreach (var mod in m_manaSubtractModifiers)
             {
-                clonedPlayer.m_manaSubtractModifiers.Add(m_manaSubtractModifiers[i]);
+                clonedPlayer.m_manaSubtractModifiers.Add(mod);
             }
 
-            for (int i = 0; i < m_lifeAddModifiers.Count; ++i)
+            foreach (var mod in m_lifeAddModifiers)
             {
-                clonedPlayer.m_lifeAddModifiers.Add(m_lifeAddModifiers[i]);
+                clonedPlayer.m_lifeAddModifiers.Add(mod);
             }
 
-            for (int i = 0; i < m_lifeSubtractModifiers.Count; ++i)
+            foreach (var mod in m_lifeSubtractModifiers)
             {
-                clonedPlayer.m_lifeSubtractModifiers.Add(m_lifeSubtractModifiers[i]);
+                clonedPlayer.m_lifeSubtractModifiers.Add(mod);
             }
 
             for (int i = 0; i < m_handSet.Count; ++i)

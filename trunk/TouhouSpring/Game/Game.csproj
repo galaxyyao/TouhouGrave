@@ -51,6 +51,7 @@
     <Compile Include="Commands\AddCounter.cs" />
     <Compile Include="Commands\AddPlayerLife.cs" />
     <Compile Include="Commands\AddPlayerMana.cs" />
+    <Compile Include="Commands\AddPlayerModifier.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />
     <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />

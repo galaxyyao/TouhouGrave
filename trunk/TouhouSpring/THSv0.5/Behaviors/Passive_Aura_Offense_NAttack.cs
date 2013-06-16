@@ -10,7 +10,8 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.ActivateAssist>,
         IEpilogTrigger<Commands.DeactivateAssist>,
-        IEpilogTrigger<Commands.PlayCard>
+        IEpilogTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.Summon>
     {
         private ValueModifier m_attackMod;
 
@@ -52,6 +53,20 @@ namespace TouhouSpring.Behaviors
                 && Host.Owner == command.CardToPlay.Owner)
             {
                 var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
+                if (warrior != null)
+                {
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                }
+            }
+        }
+
+        void IEpilogTrigger<Commands.Summon>.RunEpilog(Commands.Summon command)
+        {
+            if (Host.IsActivatedAssist
+                && Host.Owner == command.CardSummoned.Owner)
+            {
+                var warrior = command.CardSummoned.Behaviors.Get<Warrior>();
                 if (warrior != null)
                 {
                     Game.QueueCommands(

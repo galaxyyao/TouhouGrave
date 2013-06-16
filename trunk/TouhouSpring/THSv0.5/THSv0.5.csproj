@@ -42,12 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
+    <Compile Include="Behaviors\Passive_CantBeRetaliated.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
     <Compile Include="Behaviors\ManaOrLifeCost.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummonByMana.cs" />
     <Compile Include="Behaviors\Passive_AttackFirst.cs" />
     <Compile Include="Behaviors\Passive_DeathOnAccumulatedCounter.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Attacker.cs" />
+    <Compile Include="Behaviors\Passive_Trample.cs" />
     <Compile Include="Behaviors\Passive_Retaliate.cs" />
     <Compile Include="Behaviors\Passive_Sputter_NDamage.cs" />
     <Compile Include="Behaviors\Spell_AttackGrowth.cs" />
