@@ -8,14 +8,14 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_AttackGrowth:
         BaseBehavior<Spell_AttackGrowth.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
         private ValueModifier m_attackMod;
 
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 Game.NeedTargets(this,
                     Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
@@ -25,9 +25,9 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 Game.QueueCommands(new Commands.SendBehaviorMessage(
                     Game.GetTargets(this)[0].Behaviors.Get<Warrior>(),

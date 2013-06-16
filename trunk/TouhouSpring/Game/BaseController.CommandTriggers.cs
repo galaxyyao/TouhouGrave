@@ -10,9 +10,9 @@ namespace TouhouSpring
     {
         internal void OnCommandEnd(Commands.BaseCommand command)
         {
-            if (command is Commands.AddCardToManaPool)
+            if (command is Commands.SummonMove<Commands.Sacrifice>)
             {
-                var card = (command as Commands.AddCardToManaPool).CardAdded;
+                var card = (command as Commands.SummonMove<Commands.Sacrifice>).Subject;
                 new Interactions.NotifyCardEvent(Game, "OnCardAddedToManaPool", card).Run();
             }
             else if (command is Commands.CastSpell)
@@ -25,33 +25,24 @@ namespace TouhouSpring
                 var cmd = command as Commands.SubtractPlayerLife;
                 new Interactions.NotifyPlayerEvent(Game, "OnPlayerLifeSubtracted", cmd.Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.FinalAmount)).Run();
             }
-            else if (command is Commands.DrawCard)
+            else if (command is Commands.DrawMove<Commands.Hand>)
             {
-                var card = (command as Commands.DrawCard).CardDrawn;
+                var card = (command as Commands.DrawMove<Commands.Hand>).Subject;
                 new Interactions.NotifyCardEvent(Game, "OnCardDrawn", card).Run();
             }
             else if (command is Commands.EndTurn)
             {
                 new Interactions.NotifyPlayerEvent(Game, "OnTurnEnded", (command as Commands.EndTurn).Player).Run();
             }
-            else if (command is Commands.Kill)
+            // TODO: Commands.Kill
+            else if (command is Commands.KillMove<Commands.Battlefield>)
             {
-                var card = (command as Commands.Kill).Target;
+                var card = (command as Commands.KillMove<Commands.Battlefield>).Subject;
                 new Interactions.NotifyCardEvent(Game, "OnCardDestroyed", card).Run();
-            }
-            else if (command is Commands.PlayCard)
-            {
-                var card = (command as Commands.PlayCard).CardToPlay;
-                new Interactions.NotifyCardEvent(Game, "OnCardPlayed", card).Run();
             }
             else if (command is Commands.StartTurn)
             {
                 new Interactions.NotifyPlayerEvent(Game, "OnTurnStarted", (command as Commands.StartTurn).Player).Run();
-            }
-            else if (command is Commands.Summon)
-            {
-                var card = (command as Commands.Summon).CardSummoned;
-                new Interactions.NotifyCardEvent(Game, "OnCardSummoned", card).Run();
             }
 
             if (command is Commands.IInitiativeCommand)
@@ -67,9 +58,9 @@ namespace TouhouSpring
                 var spell = (command as Commands.CastSpell).Spell;
                 new Interactions.NotifySpellEvent(Game, "OnSpellCastCanceled", spell as Behaviors.ICastableSpell, reason).Run();
             }
-            else if (command is Commands.PlayCard)
+            else if (command is Commands.MoveCard<Commands.Hand, Commands.Battlefield>)
             {
-                var card = (command as Commands.PlayCard).CardToPlay;
+                var card = (command as Commands.MoveCard<Commands.Hand, Commands.Battlefield>).Subject;
                 new Interactions.NotifyCardEvent(Game, "OnCardPlayCanceled", card, reason).Run();
             }
 

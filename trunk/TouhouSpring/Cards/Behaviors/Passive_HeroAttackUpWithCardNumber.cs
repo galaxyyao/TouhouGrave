@@ -7,25 +7,24 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_HeroAttackUpWithCardNumber
         : BaseBehavior<Passive_HeroAttackUpWithCardNumber.ModelType>,
-        IEpilogTrigger<Commands.Kill>,
-        IEpilogTrigger<Commands.PlayCard>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
     {
         private ValueModifier m_attackModifier;
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host
-                || Host.IsOnBattlefield && command.CardToPlay.Owner == Host.Owner)
+            if (command.Subject == Host
+                || Host.IsOnBattlefield && command.Subject.Owner == Host.Owner)
             {
                 UpdateNumber();
             }
         }
 
-        public void RunEpilog(Commands.Kill command)
+        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
         {
-            if (command.LeftBattlefield
-                && (command.Target == Host
-                    || Host.IsOnBattlefield && command.Target.Owner == Host.Owner))
+            if (command.Subject == Host
+                || Host.IsOnBattlefield && command.Subject.Owner == Host.Owner)
             {
                 UpdateNumber();
             }

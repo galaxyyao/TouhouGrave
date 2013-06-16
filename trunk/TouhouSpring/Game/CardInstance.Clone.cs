@@ -13,7 +13,8 @@ namespace TouhouSpring
             {
                 Model = Model,
                 Owner = owner,
-                Guid = Guid
+                Guid = Guid,
+                Zone = Zone
             };
 
             clonedCard.Behaviors.Reserve(Behaviors.Count);

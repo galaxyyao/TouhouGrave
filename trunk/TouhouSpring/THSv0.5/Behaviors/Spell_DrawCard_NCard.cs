@@ -8,13 +8,13 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_DrawCard_NCard:
         BaseBehavior<Spell_DrawCard_NCard.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.PlayCard>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
-                Model.CardToDraw.Repeat(() => Game.QueueCommands(new Commands.DrawCard(Host.Owner)));
+                Model.CardToDraw.Repeat(() => Game.QueueCommands(new Commands.DrawMove<Commands.Hand>(Host.Owner)));
             }
         }
 

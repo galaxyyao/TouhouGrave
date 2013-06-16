@@ -39,7 +39,7 @@ namespace TouhouSpring
             // skip drawing card for the starting player in the first round
             if (Round > 1 || m_actingPlayer != 0)
             {
-                ctx.QueueCommand(new Commands.DrawCard(ActingPlayer));
+                ctx.QueueCommand(new Commands.DrawMove<Commands.Hand>(ActingPlayer));
             }
             ctx.QueueCommand(new Commands.AddPlayerMana(ActingPlayer, ActingPlayer.MaxMana - ActingPlayer.Mana, true, this));
             ActingPlayer.CardsOnBattlefield
@@ -79,7 +79,7 @@ namespace TouhouSpring
                 {
                     var cardToPlay = (CardInstance)result.Data;
                     Debug.Assert(cardToPlay.Owner == ActingPlayer);
-                    StackAndFlush(new Commands.PlayCard(cardToPlay));
+                    StackAndFlush(new Commands.InitiativeMoveCard<Commands.Hand, Commands.Battlefield>(cardToPlay));
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.ActivateAssist)
                 {
@@ -103,14 +103,14 @@ namespace TouhouSpring
                 {
                     var cardToSacrifice = (CardInstance)result.Data;
                     StackAndFlush(
-                        new Commands.Sacrifice(cardToSacrifice),
+                        new Commands.InitiativeMoveCard<Commands.Hand, Commands.Sacrifice>(cardToSacrifice),
                         new Commands.AddPlayerMana(ActingPlayer, 1, true, this));
                     DidSacrifice = true;
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Redeem)
                 {
                     var cardToRedeem = (CardInstance)result.Data;
-                    StackAndFlush(new Commands.Redeem(cardToRedeem));
+                    StackAndFlush(new Commands.InitiativeMoveCard<Commands.Sacrifice, Commands.Hand>(cardToRedeem));
                     DidRedeem = true;
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.AttackCard)
@@ -163,7 +163,7 @@ namespace TouhouSpring
                 ctx.QueueCommand(new Commands.ShuffleLibrary(player));
 
                 // draw initial hands
-                7.Repeat(i => ctx.QueueCommand(new Commands.DrawCard(player)));
+                7.Repeat(i => ctx.QueueCommand(new Commands.DrawMove<Commands.Hand>(player, this)));
             }
 
             ctx.QueueCommand(new Commands.EndPhase());

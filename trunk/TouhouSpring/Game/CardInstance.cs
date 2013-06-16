@@ -23,9 +23,14 @@ namespace TouhouSpring
             get; private set;
         }
 
+        public int Zone
+        {
+            get; internal set;
+        }
+
         public bool IsOnBattlefield
         {
-            get { return Owner.CardsOnBattlefield.Contains(this); }
+            get { return Zone == SystemZone.Battlefield; }
         }
 
         public bool IsActivatedAssist
@@ -33,14 +38,14 @@ namespace TouhouSpring
             get { return Owner.ActivatedAssits.Contains(this); }
         }
 
-        public bool IsHero
-        {
-            get { return Owner.Hero == this; }
-        }
-
         public bool IsDestroyed
         {
-            get; internal set; // set by Kill command
+            get { return Zone == SystemZone.Graveyard; }
+        }
+
+        public bool IsHero
+        {
+            get { return false; }
         }
 
         internal CardInstance(ICardModel model, Player owner)

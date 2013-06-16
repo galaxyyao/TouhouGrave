@@ -8,13 +8,11 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_UnRedeemable:
         BaseBehavior<Passive_UnRedeemable.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.Redeem>
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Sacrifice, Commands.Hand>>
     {
-        public CommandResult RunPrerequisite(Commands.Redeem command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Sacrifice, Commands.Hand> command)
         {
-            if (command.Target == Host)
-                return CommandResult.Cancel();
-            return CommandResult.Pass;
+            return command.Subject != Host ? CommandResult.Pass : CommandResult.Cancel();
         }
 
         [BehaviorModel(typeof(Passive_UnRedeemable), Category = "v0.5/Passive", DefaultName = "不可赎回")]

@@ -7,16 +7,16 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Environment : BaseBehavior<Environment.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.PlayCard>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
         public string VisualId
         {
             get { return Model.VisualId; }
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 foreach (var player in Game.Players)
                 {
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
                         card => card != Host && card.Behaviors.Has<Environment>());
                     if (lastEnv != null)
                     {
-                        Game.QueueCommands(new Commands.Kill(lastEnv, this));
+                        Game.QueueCommands(new Commands.KillMove<Commands.Battlefield>(lastEnv, this));
                         break;
                     }
                 }

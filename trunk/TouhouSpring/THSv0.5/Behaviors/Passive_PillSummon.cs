@@ -8,15 +8,15 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_PillSummon:
         BaseBehavior<Passive_PillSummon.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.PlayCard>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
             if (Game.ActingPlayer == Host.Owner)
             {
                 Model.NumToSummon.Repeat(() =>
                 {
-                    Game.QueueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
+                    Game.QueueCommands(new Commands.SummonMove<Commands.Sacrifice>(Host.Owner, Model.SummonType.Target));
                 });
             }
         }

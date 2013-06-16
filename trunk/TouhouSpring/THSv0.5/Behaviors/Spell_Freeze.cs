@@ -6,8 +6,8 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Spell_Freeze : BaseBehavior<Spell_Freeze.ModelType>,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
         private class Effect : Neutralize, IStatusEffect
         {
@@ -18,9 +18,9 @@ namespace TouhouSpring.Behaviors
             new public class ModelType : Neutralize.ModelType { }
         }
 
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host
+            if (command.Subject == Host
                 && !Game.Players.Where(player => player != Host.Owner)
                     .SelectMany(player => player.CardsOnBattlefield)
                     .Any())
@@ -31,9 +31,9 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                                                  .SelectMany(player => player.CardsOnBattlefield))

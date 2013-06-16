@@ -6,22 +6,25 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    /// <summary>
-    /// Draw a card for the specified player.
-    /// </summary>
-    public class DrawCard : BaseCommand
+    public class DrawMove<TToZone> : MoveCardBase
+        where TToZone : IZoneToken
     {
+        private static TToZone s_toZone;
+
+        public override int FromZone { get { return SystemZone.Library; } }
+        public override int ToZone { get { return s_toZone.Zone; } }
+
         public Player Player
         {
             get; private set;
         }
 
-        public CardInstance CardDrawn
-        {
-            get; private set;
-        }
+        public DrawMove(Player player)
+            : this(player, null)
+        { }
 
-        public DrawCard(Player player)
+        public DrawMove(Player player, ICause cause)
+            : base(null, cause)
         {
             if (player == null)
             {
@@ -45,9 +48,9 @@ namespace TouhouSpring.Commands
         {
             var cardModel = Player.Library.RemoveFromTop();
             Debug.Assert(cardModel != null);
-            var card = new CardInstance(cardModel, Player);
-            Player.AddToHandSorted(card);
-            CardDrawn = card;
+            Subject = new CardInstance(cardModel, Player);
+            s_toZone.Add(Subject);
+            Subject.Zone = s_toZone.Zone;
         }
     }
 }

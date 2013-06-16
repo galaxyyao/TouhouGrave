@@ -9,7 +9,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.EndTurn>,
         // TODO: change kill to semantically "leave battlefield"
-        IEpilogTrigger<Commands.Kill>
+        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
     {
         public class SakuraCounter : ICounter
         {
@@ -28,7 +28,7 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.GetCounterCount<SakuraCounter>() == Model.NumCounters - 1)
                     {
-                        Game.QueueCommands(new Commands.Kill(card, this));
+                        Game.QueueCommands(new Commands.KillMove<Commands.Battlefield>(card, this));
                     }
                     else
                     {
@@ -38,9 +38,9 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.Kill command)
+        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
         {
-            if (command.Target == Host)
+            if (command.Subject == Host)
             {
                 foreach (var card in Game.Players.Where(player => player != Host.Owner).SelectMany(player => player.CardsOnBattlefield))
                 {

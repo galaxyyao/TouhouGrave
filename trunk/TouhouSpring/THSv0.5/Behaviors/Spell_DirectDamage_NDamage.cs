@@ -8,12 +8,12 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_DirectDamage_NDamage :
         BaseBehavior<Spell_DirectDamage_NDamage.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 Game.NeedTargets(this,
                     Game.Players.Where(player => player != Host.Owner)
@@ -25,9 +25,9 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTargets(this)[0], Model.DamageToDeal, this));
             }

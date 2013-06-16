@@ -151,10 +151,10 @@ namespace TouhouSpring
         {
             if (command.ExecutionPhase < Commands.CommandPhase.Main)
             {
-                var playCard = command as Commands.PlayCard;
+                var playCard = command as Commands.MoveCard<Commands.Hand, Commands.Battlefield>;
                 if (playCard != null)
                 {
-                    return playCard.CardToPlay.Behaviors;
+                    return playCard.Subject.Behaviors;
                 }
 
                 var activateAssist = command as Commands.ActivateAssist;
@@ -165,10 +165,10 @@ namespace TouhouSpring
             }
             else
             {
-                var kill = command as Commands.Kill;
-                if (kill != null && kill.LeftBattlefield)
+                var kill = command as Commands.KillMove<Commands.Battlefield>;
+                if (kill != null)
                 {
-                    return kill.Target.Behaviors;
+                    return kill.Subject.Behaviors;
                 }
 
                 var deactivateAssist = command as Commands.DeactivateAssist;
@@ -178,10 +178,10 @@ namespace TouhouSpring
                 }
             }
 
-            var redeem = command as Commands.Redeem;
+            var redeem = command as Commands.MoveCard<Commands.Sacrifice, Commands.Hand>;
             if (redeem != null)
             {
-                return redeem.Target.Behaviors;
+                return redeem.Subject.Behaviors;
             }
 
             return null;

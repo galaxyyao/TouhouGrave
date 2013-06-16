@@ -47,7 +47,7 @@ namespace TouhouSpring
 
         internal bool IsCardPlayable(CardInstance card)
         {
-            return IsCommandRunnable(new Commands.PlayCard(card));
+            return IsCommandRunnable(new Commands.InitiativeMoveCard<Commands.Hand, Commands.Battlefield>(card));
         }
 
         internal bool IsCardActivatable(CardInstance card)
@@ -57,7 +57,7 @@ namespace TouhouSpring
 
         internal bool IsCardRedeemable(CardInstance card)
         {
-            return IsCommandRunnable(new Commands.Redeem(card));
+            return IsCommandRunnable(new Commands.InitiativeMoveCard<Commands.Sacrifice, Commands.Hand>(card));
         }
 
         internal bool IsSpellCastable(Behaviors.ICastableSpell spell)

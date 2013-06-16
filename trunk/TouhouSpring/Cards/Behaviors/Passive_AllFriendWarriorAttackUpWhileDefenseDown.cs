@@ -7,15 +7,15 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_AllFriendWarriorAttackUpWhileDefenseDown :
         BaseBehavior<Passive_AllFriendWarriorAttackUpWhileDefenseDown.ModelType>,
-        IEpilogTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.Kill>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
     {
         private ValueModifier m_attackMod;
         private ValueModifier m_defenseMod;
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
@@ -30,25 +30,20 @@ namespace TouhouSpring.Behaviors
                         new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
                 }
             }
-            else if (command.CardToPlay.Owner == Host.Owner
+            else if (command.Subject.Owner == Host.Owner
                      && Host.IsOnBattlefield
-                     && command.CardToPlay.Behaviors.Get<Warrior>() != null)
+                     && command.Subject.Behaviors.Get<Warrior>() != null)
             {
-                var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
+                var warrior = command.Subject.Behaviors.Get<Warrior>();
                 Game.QueueCommands(
                     new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
                     new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
             }
         }
 
-        public void RunEpilog(Commands.Kill command)
+        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
         {
-            if (!command.LeftBattlefield)
-            {
-                return;
-            }
-
-            if (command.Target == Host)
+            if (command.Subject == Host)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
@@ -66,16 +61,16 @@ namespace TouhouSpring.Behaviors
                     }
                 }
             }
-            else if (command.Target.Owner == Host.Owner
+            else if (command.Subject.Owner == Host.Owner
                      && Host.IsOnBattlefield)
             {
                 Game.QueueCommands(
                     new Commands.SendBehaviorMessage(
-                        command.Target.Behaviors.Get<Warrior>(),
+                        command.Subject.Behaviors.Get<Warrior>(),
                         "AttackModifiers",
                         new object[] { "remove", m_attackMod }),
                     new Commands.SendBehaviorMessage(
-                        command.Target.Behaviors.Get<Warrior>(),
+                        command.Subject.Behaviors.Get<Warrior>(),
                         "DefenseModifiers",
                         new object[] { "remove", m_defenseMod }));
             }

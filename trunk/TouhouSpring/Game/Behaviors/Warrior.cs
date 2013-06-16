@@ -14,8 +14,10 @@ namespace TouhouSpring.Behaviors
 
     public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.Kill>
+        // TODO: Commands.MoveTo(Comamnds.Battlefield)
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        // TODO: Commands.MoveFrom(Commands.Battlefield)
+        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
     {
         private List<ValueModifier> m_attackModifiers = new List<ValueModifier>();
 
@@ -50,9 +52,9 @@ namespace TouhouSpring.Behaviors
             get; internal set;
         }
 
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 if (Model.Unique && Host.Owner.CardsOnBattlefield.Any(card => card.Model == Host.Model))
                 {
@@ -62,9 +64,9 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.Kill command)
+        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
         {
-            if (command.Target == Host)
+            if (command.Subject == Host)
             {
                 State = WarriorState.StandingBy;
                 m_attackModifiers.Clear();

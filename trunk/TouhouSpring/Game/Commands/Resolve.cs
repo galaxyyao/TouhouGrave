@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class Resolve : BaseCommand
+    public class Resolve : BaseCommand, ICause
     {
         internal override void ValidateOnIssue()
         {
@@ -25,7 +25,7 @@ namespace TouhouSpring.Commands
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                 if (warrior.Life <= 0)
                 {
-                    Context.QueueCommand(new Commands.Kill(card, null));
+                    Context.QueueCommand(new Commands.KillMove<Commands.Battlefield>(card, this));
                 }
                 else if (warrior.Life > warrior.MaxLife)
                 {

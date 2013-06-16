@@ -8,11 +8,11 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay.Owner != Host.Owner)
+            if (command.Subject.Owner != Host.Owner)
             {
                 Game.NeedMana(1);
             }

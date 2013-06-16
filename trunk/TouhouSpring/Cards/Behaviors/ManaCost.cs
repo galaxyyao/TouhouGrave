@@ -7,7 +7,7 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class ManaCost : BaseBehavior<ManaCost.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
+        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
         IPrerequisiteTrigger<Commands.ActivateAssist>
     {
         public int Cost
@@ -15,9 +15,9 @@ namespace TouhouSpring.Behaviors
             get { return Model.Cost; }
         }
 
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 Game.NeedMana(Model.Cost);
             }

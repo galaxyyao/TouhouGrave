@@ -8,18 +8,20 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeterAura_NAttack :
         BaseBehavior<Passive_DeterAura_NAttack.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.Summon>,
-        IEpilogTrigger<Commands.Kill>
+        // TODO: Commands.MoveTo<Commands.Battlefield>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.SummonMove<Commands.Battlefield>>,
+        // TODO: Commands.Kill
+        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
     {
         private ValueModifier m_attackMod;
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
             //TODO: Future change for 3 or more players
             if (!Host.IsOnBattlefield)
                 return;
-            if (command.CardToPlay == Host)
+            if (command.Subject == Host)
             {
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                     .SelectMany(player => player.CardsOnBattlefield))
@@ -27,17 +29,17 @@ namespace TouhouSpring.Behaviors
                     AffectByAura(card);
                 }
             }
-            else if (command.CardToPlay.Owner != Host.Owner)
+            else if (command.Subject.Owner != Host.Owner)
             {
-                AffectByAura(command.CardToPlay);
+                AffectByAura(command.Subject);
             }
         }
 
-        public void RunEpilog(Commands.Summon command)
+        public void RunEpilog(Commands.SummonMove<Commands.Battlefield> command)
         {
-            if (command.CardSummoned.Owner != Host.Owner)
+            if (command.Subject.Owner != Host.Owner)
             {
-                AffectByAura(command.CardSummoned);
+                AffectByAura(command.Subject);
             }
         }
 
@@ -59,9 +61,9 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.Kill command)
+        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
         {
-            if (command.Target == Host)
+            if (command.Subject == Host)
             {
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                     .SelectMany(player => player.CardsOnBattlefield))

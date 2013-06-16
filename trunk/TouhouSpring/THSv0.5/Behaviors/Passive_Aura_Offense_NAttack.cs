@@ -10,8 +10,9 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.ActivateAssist>,
         IEpilogTrigger<Commands.DeactivateAssist>,
-        IEpilogTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.Summon>
+        // TODO: Commands.MoveTo<Battlefield>
+        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
+        IEpilogTrigger<Commands.SummonMove<Commands.Battlefield>>
     {
         private ValueModifier m_attackMod;
 
@@ -47,12 +48,12 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
         {
             if (Host.IsActivatedAssist
-                && Host.Owner == command.CardToPlay.Owner)
+                && Host.Owner == command.Subject.Owner)
             {
-                var warrior = command.CardToPlay.Behaviors.Get<Warrior>();
+                var warrior = command.Subject.Behaviors.Get<Warrior>();
                 if (warrior != null)
                 {
                     Game.QueueCommands(
@@ -61,12 +62,12 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        void IEpilogTrigger<Commands.Summon>.RunEpilog(Commands.Summon command)
+        void IEpilogTrigger<Commands.SummonMove<Commands.Battlefield>>.RunEpilog(Commands.SummonMove<Commands.Battlefield> command)
         {
             if (Host.IsActivatedAssist
-                && Host.Owner == command.CardSummoned.Owner)
+                && Host.Owner == command.Subject.Owner)
             {
-                var warrior = command.CardSummoned.Behaviors.Get<Warrior>();
+                var warrior = command.Subject.Behaviors.Get<Warrior>();
                 if (warrior != null)
                 {
                     Game.QueueCommands(

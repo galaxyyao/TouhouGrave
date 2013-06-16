@@ -46,6 +46,11 @@
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />
     <Compile Include="CardInstance.cs" />
+    <Compile Include="Commands\DrawMove.cs" />
+    <Compile Include="Commands\IZoneToken.cs" />
+    <Compile Include="Commands\KillMove.cs" />
+    <Compile Include="Commands\SummonMove.cs" />
+    <Compile Include="SystemZone.cs" />
     <Compile Include="CommandQueue.cs" />
     <Compile Include="CommandRunner.cs" />
     <Compile Include="Commands\AddCounter.cs" />
@@ -53,6 +58,7 @@
     <Compile Include="Commands\AddPlayerMana.cs" />
     <Compile Include="Commands\AddPlayerModifier.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />
+    <Compile Include="Commands\MoveCard.cs" />
     <Compile Include="Commands\RemoveCounter.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
@@ -85,7 +91,6 @@
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Commands\ActivateAssist.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
-    <Compile Include="Commands\AddCardToManaPool.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\BaseCommand.Validation.cs" />
     <Compile Include="Commands\CastSpell.cs" />
@@ -93,18 +98,12 @@
     <Compile Include="Commands\HealCard.cs" />
     <Compile Include="Commands\StartPhase.cs" />
     <Compile Include="Commands\DealDamageToCard.cs" />
-    <Compile Include="Commands\Kill.cs" />
-    <Compile Include="Commands\Redeem.cs" />
     <Compile Include="Commands\RemoveBehavior.cs" />
     <Compile Include="Commands\Resolve.cs" />
-    <Compile Include="Commands\Sacrifice.cs" />
-    <Compile Include="Commands\DrawCard.cs" />
     <Compile Include="Commands\EndTurn.cs" />
-    <Compile Include="Commands\PlayCard.cs" />
     <Compile Include="Commands\SendBehaviorMessage.cs" />
     <Compile Include="Commands\ShuffleLibrary.cs" />
     <Compile Include="Commands\StartTurn.cs" />
-    <Compile Include="Commands\Summon.cs" />
     <Compile Include="Game.Clone.cs" />
     <Compile Include="Game.CommandQueue.cs" />
     <Compile Include="Deck.cs" />

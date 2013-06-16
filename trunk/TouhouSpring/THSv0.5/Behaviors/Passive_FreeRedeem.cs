@@ -8,13 +8,13 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_FreeRedeem:
         BaseBehavior<Passive_FreeRedeem.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.Redeem>
+        IEpilogTrigger<Commands.MoveCard<Commands.Sacrifice, Commands.Hand>>
     {
-        public void RunEpilog(Commands.Redeem command)
+        public void RunEpilog(Commands.MoveCard<Commands.Sacrifice, Commands.Hand> command)
         {
             if (Host.IsActivatedAssist)
             {
-                Game.QueueCommands(new Commands.AddCardToManaPool(Model.SummonType.Target, Host.Owner));
+                Game.QueueCommands(new Commands.SummonMove<Commands.Sacrifice>(Host.Owner, Model.SummonType.Target));
             }
         }
 
