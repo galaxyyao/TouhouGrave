@@ -23,19 +23,22 @@ namespace TouhouSpring
             Debug.Assert(command.ExecutionPhase == Commands.CommandPhase.Prerequisite);
 
             var tCommand = command as TCommand;
-            var result = RunPrerequisite(tCommand, command.Context.Game.m_commonTargets);
-            if (!result.Canceled)
+            foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                var additionalTargets = GetAdditionalCommandTargets(command);
-                if (additionalTargets != null)
+                var result = RunPrerequisite(tCommand, targetList);
+                if (result.Canceled)
                 {
-                    result = RunPrerequisite(tCommand, additionalTargets);
+                    return result;
                 }
             }
-            return result;
+
+            var localTargets = GetLocalTargets(command);
+            return localTargets != null
+                   ? RunPrerequisite(tCommand, localTargets)
+                   : CommandResult.Pass;
         }
 
-        private CommandResult RunPrerequisite(TCommand command, IEnumerable<Behaviors.IBehavior> targets)
+        private CommandResult RunPrerequisite(TCommand command, Behaviors.BehaviorList targets)
         {
             foreach (var trigger in targets)
             {
@@ -58,15 +61,19 @@ namespace TouhouSpring
             Debug.Assert(command.ExecutionPhase == Commands.CommandPhase.Prolog);
 
             var tCommand = command as TCommand;
-            RunProlog(tCommand, command.Context.Game.m_commonTargets);
-            var additionalTargets = GetAdditionalCommandTargets(command);
-            if (additionalTargets != null)
+            foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                RunProlog(tCommand, additionalTargets);
+                RunProlog(tCommand, targetList);
+            }
+
+            var localTargets = GetLocalTargets(command);
+            if (localTargets != null)
+            {
+                RunProlog(tCommand, localTargets);
             }
         }
 
-        private void RunProlog(TCommand command, IEnumerable<Behaviors.IBehavior> targets)
+        private void RunProlog(TCommand command, Behaviors.BehaviorList targets)
         {
             foreach (var trigger in targets)
             {
@@ -83,26 +90,28 @@ namespace TouhouSpring
             Debug.Assert(command.ExecutionPhase == Commands.CommandPhase.Preemptive);
 
             var tCommand = command as TCommand;
-            var newStack = RunPreemptive(tCommand, command.Context.Game.m_commonTargets, firstTimeTriggering);
-            if (newStack == null)
+            foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                var additionalTargets = GetAdditionalCommandTargets(command);
-                if (additionalTargets != null)
+                var newStack = RunPreemptive(tCommand, targetList, firstTimeTriggering);
+                if (newStack != null)
                 {
-                    newStack = RunPreemptive(tCommand, additionalTargets, firstTimeTriggering);
+                    return newStack;
                 }
             }
-            return newStack;
+
+            var localTargets = GetLocalTargets(command);
+            return localTargets != null
+                   ? RunPreemptive(tCommand, localTargets, firstTimeTriggering)
+                   : null;
         }
 
-        private ResolveContext RunPreemptive(TCommand command, IEnumerable<Behaviors.IBehavior> targets, bool firstTimeTriggering)
+        private ResolveContext RunPreemptive(TCommand command, Behaviors.BehaviorList targets, bool firstTimeTriggering)
         {
             foreach (var trigger in targets)
             {
                 var t = trigger as IPreemptiveTrigger<TCommand>;
                 if (t != null)
                 {
-                    // TODO: get the new stack
                     var ctx = t.RunPreemptive(command, firstTimeTriggering);
                     if (ctx != null)
                     {
@@ -127,11 +136,14 @@ namespace TouhouSpring
             ////////////////////////////////////////////
 
             tCommand.ExecutionPhase = Commands.CommandPhase.Epilog;
-            RunEpilog(tCommand, command.Context.Game.m_commonTargets);
-            var additionalTargets = GetAdditionalCommandTargets(command);
-            if (additionalTargets != null)
+            foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                RunEpilog(tCommand, additionalTargets);
+                RunEpilog(tCommand, targetList);
+            }
+            var localTargets = GetLocalTargets(command);
+            if (localTargets != null)
+            {
+                RunEpilog(tCommand, localTargets);
             }
         }
 
@@ -147,7 +159,8 @@ namespace TouhouSpring
             }
         }
 
-        private Behaviors.BehaviorList GetAdditionalCommandTargets(Commands.BaseCommand command)
+        // TODO: implement real local target
+        private Behaviors.BehaviorList GetLocalTargets(Commands.BaseCommand command)
         {
             if (command.ExecutionPhase < Commands.CommandPhase.Main)
             {
