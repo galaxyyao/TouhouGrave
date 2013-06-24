@@ -67,6 +67,7 @@
     <None Include="Behaviors\Deprecated\Passive_WarriorAttackAndDefenseUpWhenAttackedHero.cs" />
     <None Include="Behaviors\Deprecated\Spell_PreventAllDamageInOneRound.cs" />
     <None Include="Behaviors\Deprecated\Passive_HeroPenetrate.cs" />
+    <None Include="Behaviors\Deprecated\Passive_HeroAttackUpWithCardNumber.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
@@ -77,9 +78,7 @@
     <Compile Include="Behaviors\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
     <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
     <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
-    <Compile Include="Behaviors\Passive_HeroAttackUpWithCardNumber.cs" />
     <Compile Include="Behaviors\Passive_ManaGainUpWhenAttackedByWarrior.cs" />
-    <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpAndDefenseUp.cs" />
     <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
     <Compile Include="Behaviors\Passive_WarriorAlwaysStandBy.cs" />
     <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />

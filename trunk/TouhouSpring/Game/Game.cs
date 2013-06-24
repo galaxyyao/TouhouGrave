@@ -14,14 +14,14 @@ namespace TouhouSpring
     {
         private Int32 m_nextCardGuid;
         private Thread m_gameFlowThread;
+        internal Dictionary<int, ZoneType> m_zoneConfig;
 
         /// <summary>
         /// Give a random number generator for this game.
         /// </summary>
         public Random Random
         {
-            get;
-            private set;
+            get; private set;
         }
 
         /// <summary>
@@ -29,33 +29,29 @@ namespace TouhouSpring
         /// </summary>
         public string CurrentPhase
         {
-            get;
-            internal set;
+            get; internal set;
         }
 
         public int Round
         {
-            get;
-            private set;
+            get; private set;
         }
 
         public BaseController Controller
         {
-            get;
-            private set;
+            get; private set;
         }
 
         internal Messaging.LetterBox LetterBox
         {
-            get;
-            private set;
+            get; private set;
         }
 
-        public Game(List<Deck> playerDecks, List<string> playerIds, BaseController controller, int seed)
+        public Game(List<string> playerNames, BaseController controller, int seed)
         {
-            if (playerDecks == null)
+            if (playerNames == null)
             {
-                throw new ArgumentNullException("decks");
+                throw new ArgumentNullException("playerNames");
             }
             else if (controller == null)
             {
@@ -66,7 +62,7 @@ namespace TouhouSpring
                 throw new ArgumentException("The controller is already bound.", "controller");
             }
 
-            int numPlayers = playerDecks.Count;
+            int numPlayers = playerNames.Count;
             if (numPlayers != 2)
             {
                 //TODO: support game among more than 2 players
@@ -74,19 +70,9 @@ namespace TouhouSpring
             }
 
             m_players = new Player[numPlayers];
-
             for (int i = 0; i < numPlayers; ++i)
             {
-                var deck = playerDecks[i];
-                var validationResult = deck.Validate();
-                if (validationResult != Deck.ValidationResult.Okay)
-                {
-                    throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
-                        "The deck {0} is invalid: {1}", deck.Id, validationResult));
-                }
-
-                m_players[i] = new Player(playerIds[i], i, this);
-                m_players[i].Initialize(deck);
+                m_players[i] = new Player(playerNames[i], i, this);
             }
 
             controller.Game = this;
@@ -97,6 +83,32 @@ namespace TouhouSpring
             Random = (seed == -1) ? new Random() : new Random(seed);
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
+        }
+
+        public void Initialize(List<Deck> playerDecks)
+        {
+            m_zoneConfig = new Dictionary<int, ZoneType>()
+            {
+                {SystemZone.Library,        ZoneType.Library},
+                {SystemZone.Hand,           ZoneType.OffBattlefield},
+                {SystemZone.Sacrifice,      ZoneType.OffBattlefield},
+                {SystemZone.Battlefield,    ZoneType.OnBattlefield},
+                {SystemZone.Graveyard,      ZoneType.Library},
+                {SystemZone.Assist,         ZoneType.OffBattlefield},
+            };
+
+            for (int i = 0; i < m_players.Length; ++i)
+            {
+                var deck = playerDecks[i];
+                var validationResult = deck.Validate();
+                if (validationResult != Deck.ValidationResult.Okay)
+                {
+                    throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
+                        "The deck {0} is invalid: {1}", deck.Id, validationResult));
+                }
+
+                m_players[i].Initialize(deck);
+            }
         }
 
         public void StartGameFlowThread()

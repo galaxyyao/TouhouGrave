@@ -10,9 +10,7 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         IEpilogTrigger<Commands.ActivateAssist>,
         IEpilogTrigger<Commands.DeactivateAssist>,
-        // TODO: Commands.MoveTo<Battlefield>
-        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
-        IEpilogTrigger<Commands.SummonMove<Commands.Battlefield>>
+        IEpilogTrigger<Commands.IMoveCard>
     {
         private ValueModifier m_attackMod;
 
@@ -22,10 +20,10 @@ namespace TouhouSpring.Behaviors
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
-                    if (card.Behaviors.Get<Warrior>() == null)
+                    var warrior = card.Behaviors.Get<Warrior>();
+                    if (warrior == null)
                         continue;
 
-                    var warrior = card.Behaviors.Get<Warrior>();
                     Game.QueueCommands(
                         new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
                 }
@@ -38,40 +36,41 @@ namespace TouhouSpring.Behaviors
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
-                    if (card.Behaviors.Get<Warrior>() == null)
+                    var warrior = card.Behaviors.Get<Warrior>();
+                    if (warrior == null)
                         continue;
 
-                    var warrior = card.Behaviors.Get<Warrior>();
                     Game.QueueCommands(
                         new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
                 }
             }
         }
 
-        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public void RunEpilog(Commands.IMoveCard command)
         {
             if (Host.IsActivatedAssist
-                && Host.Owner == command.Subject.Owner)
+                && Host.Owner == command.Subject.Owner
+                && Host != command.Subject)
             {
-                var warrior = command.Subject.Behaviors.Get<Warrior>();
-                if (warrior != null)
+                if (command.FromZoneType != ZoneType.OnBattlefield
+                    && command.ToZoneType == ZoneType.OnBattlefield)
                 {
-                    Game.QueueCommands(
-                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                    var warrior = command.Subject.Behaviors.Get<Warrior>();
+                    if (warrior != null)
+                    {
+                        Game.QueueCommands(
+                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                    }
                 }
-            }
-        }
-
-        void IEpilogTrigger<Commands.SummonMove<Commands.Battlefield>>.RunEpilog(Commands.SummonMove<Commands.Battlefield> command)
-        {
-            if (Host.IsActivatedAssist
-                && Host.Owner == command.Subject.Owner)
-            {
-                var warrior = command.Subject.Behaviors.Get<Warrior>();
-                if (warrior != null)
+                else if (command.FromZoneType == ZoneType.OnBattlefield
+                         && command.ToZoneType != ZoneType.OnBattlefield)
                 {
-                    Game.QueueCommands(
-                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                    var warrior = command.Subject.Behaviors.Get<Warrior>();
+                    if (warrior != null)
+                    {
+                        Game.QueueCommands(
+                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
+                    }
                 }
             }
         }

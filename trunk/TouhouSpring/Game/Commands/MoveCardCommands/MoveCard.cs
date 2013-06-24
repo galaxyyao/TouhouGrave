@@ -5,13 +5,10 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class MoveCard<TFromZone, TToZone> : BaseCommand,
-        IMoveCard<TFromZone, TToZone>
-        where TFromZone : IZoneToken, new()
-        where TToZone : IZoneToken, new()
+    public class MoveCard : BaseCommand, IMoveCard
     {
-        private static TFromZone s_fromZone = new TFromZone();
-        private static TToZone s_toZone = new TToZone();
+        private Zone m_fromZone;
+        private Zone m_toZone;
 
         public CardInstance Subject
         {
@@ -20,19 +17,29 @@ namespace TouhouSpring.Commands
 
         public int FromZone
         {
-            get { return s_fromZone.Zone; }
+            get { return m_fromZone.Id; }
+        }
+
+        public ZoneType FromZoneType
+        {
+            get { return m_fromZone.Type; }
         }
 
         public int ToZone
         {
-            get { return s_toZone.Zone; }
+            get { return m_toZone.Id; }
         }
 
-        public MoveCard(CardInstance subject)
-            : this(subject, null)
+        public ZoneType ToZoneType
+        {
+            get { return m_toZone.Type; }
+        }
+
+        public MoveCard(CardInstance subject, int toZone)
+            : this(subject, toZone, null)
         { }
 
-        public MoveCard(CardInstance subject, ICause cause)
+        public MoveCard(CardInstance subject, int toZone, ICause cause)
             : base(cause)
         {
             if (subject == null)
@@ -40,47 +47,81 @@ namespace TouhouSpring.Commands
                 throw new ArgumentNullException("subject");
             }
 
+            m_fromZone = subject.Owner.m_zones.GetZone(subject.Zone);
+            m_toZone = subject.Owner.m_zones.GetZone(toZone);
+
             Subject = subject;
         }
 
         internal override void ValidateOnIssue()
         {
-            Validate(Subject);
-            if (Subject.Zone != s_fromZone.Zone || !s_fromZone.ValidateRemove(Subject))
+            if (!ValidateOnRun())
             {
-                FailValidation("Card can't be moved from the specified zone.");
-            }
-            if (!s_toZone.ValidateAdd(Subject))
-            {
-                FailValidation("Card can't be moved to the specified zone.");
+                FailValidation("Card {0} can't be moved from Zone {1} to Zone {2}.", Subject.Model.Name, FromZone, ToZone);
             }
         }
 
         internal override bool ValidateOnRun()
         {
-            return Subject.Zone == s_fromZone.Zone && s_fromZone.ValidateRemove(Subject) && s_toZone.ValidateAdd(Subject);
+            return Subject.Zone == FromZone
+                   && m_fromZone.Type != ZoneType.Library
+                   && m_fromZone.CardInstances != null
+                   && m_toZone.Type != ZoneType.Library
+                   && m_toZone.CardInstances != null
+                   && m_fromZone.CardInstances.Contains(Subject)
+                   && !m_toZone.CardInstances.Contains(Subject);
         }
 
         internal override void RunMain()
         {
-            s_fromZone.Remove(Subject);
-            s_toZone.Add(Subject);
-            Subject.Zone = s_toZone.Zone;
+            m_fromZone.CardInstances.Remove(Subject);
+            m_toZone.CardInstances.Add(Subject);
+            Subject.Zone = ToZone;
+            if (m_fromZone.Type == ZoneType.OffBattlefield && m_toZone.Type == ZoneType.OnBattlefield)
+            {
+                Context.Game.SubscribeCardToCommands(Subject);
+            }
+            else if (m_fromZone.Type == ZoneType.OnBattlefield && m_toZone.Type == ZoneType.OffBattlefield)
+            {
+                Context.Game.UnsubscribeCardFromCommands(Subject);
+            }
         }
     }
 
-    public class InitiativeMoveCard<TFromZone, TToZone> : MoveCard<TFromZone, TToZone>,
-        IInitiativeCommand
-        where TFromZone : IZoneToken, new()
-        where TToZone : IZoneToken, new()
+    public class InitiativeMoveCard : MoveCard, IInitiativeMoveCard
     {
         public Player Initiator
         {
             get { return Subject.Owner; }
         }
 
-        public InitiativeMoveCard(CardInstance subject)
-            : base(subject)
+        public InitiativeMoveCard(CardInstance subject, int toZone)
+            : base(subject, toZone)
         { }
+
+        public InitiativeMoveCard(CardInstance subject, int toZone, ICause cause)
+            : base(subject, toZone, cause)
+        { }
+    }
+
+    public class PlayCard : InitiativeMoveCard
+    {
+        public PlayCard(CardInstance subject, int toZone, Game cause)
+            : base(subject, toZone, cause)
+        {
+            if (subject == null)
+            {
+                throw new ArgumentNullException("subject");
+            }
+            else if (cause == null)
+            {
+                throw new ArgumentNullException("cause");
+            }
+            else if (FromZone != SystemZone.Hand
+                || ToZoneType != ZoneType.OnBattlefield)
+            {
+                throw new InvalidOperationException("Invalid card to be played.");
+            }
+        }
     }
 }

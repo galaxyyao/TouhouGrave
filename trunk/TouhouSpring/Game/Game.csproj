@@ -52,13 +52,6 @@
     <Compile Include="Commands\MoveCardCommands\KillMove.cs" />
     <Compile Include="Commands\MoveCardCommands\MoveCard.cs" />
     <Compile Include="Commands\MoveCardCommands\SummonMove.cs" />
-    <Compile Include="Commands\ZoneTokens\Battlefield.cs" />
-    <Compile Include="Commands\ZoneTokens\Graveyard.cs" />
-    <Compile Include="Commands\ZoneTokens\Hand.cs" />
-    <Compile Include="Commands\ZoneTokens\IZoneToken.cs" />
-    <Compile Include="Commands\ZoneTokens\Library.cs" />
-    <Compile Include="Commands\ZoneTokens\Sacrifice.cs" />
-    <Compile Include="SystemZone.cs" />
     <Compile Include="CommandQueue.cs" />
     <Compile Include="CommandRunner.cs" />
     <Compile Include="Commands\AddCounter.cs" />
@@ -77,6 +70,7 @@
     <Compile Include="ResolveContext.Resources.cs" />
     <Compile Include="ResolveContext.RunCommand.cs" />
     <Compile Include="ValueModifier.cs" />
+    <Compile Include="Zone.cs" />
     <None Include="Behaviors\Deprecated\Equipment.cs" />
     <Compile Include="BaseController.CommandTriggers.cs" />
     <Compile Include="BaseController.cs" />

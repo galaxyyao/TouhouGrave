@@ -6,15 +6,17 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
-        , IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
+        , IEpilogTrigger<Commands.IMoveCard>
         , IEpilogTrigger<Commands.StartPhase>
     {
         class Effect : SimpleBehavior<Effect>
         { }
 
-        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public void RunEpilog(Commands.IMoveCard command)
         {
             if (command.Subject == Host
+                && command.ToZoneType == ZoneType.OnBattlefield
+                && command.FromZoneType != ZoneType.OnBattlefield
                 && Host.Behaviors.Has<Warrior>())
             {
                 Game.QueueCommands(

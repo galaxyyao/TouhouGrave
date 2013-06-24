@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class SummonMove<TToZone> : BaseCommand,
-        IMoveTo<TToZone>
-        where TToZone : IZoneToken, new()
+    public class SummonMove : BaseCommand, IMoveCard
     {
-        private static TToZone s_toZone = new TToZone();
+        private Zone m_toZone;
 
-        public CardInstance Subject { get; private set; }
-        public int FromZone { get { return SystemZone.Library; } }
-        public int ToZone { get { return s_toZone.Zone; } }
+        public CardInstance CardSummoned
+        {
+            get { return Subject; }
+        }
 
         public Player Owner
         {
@@ -26,45 +24,79 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public SummonMove(Player owner, ICardModel model)
-            : this(owner, model, null)
+        public CardInstance Subject
+        {
+            get; private set;
+        }
+
+        public int FromZone
+        {
+            get { return SystemZone.Unknown; }
+        }
+
+        public ZoneType FromZoneType
+        {
+            get { return ZoneType.Unknown; }
+        }
+
+        public int ToZone
+        {
+            get { return m_toZone.Id; }
+        }
+
+        public ZoneType ToZoneType
+        {
+            get { return m_toZone.Type; }
+        }
+
+        public SummonMove(ICardModel model, Player owner, int toZone)
+            : this(model, owner, toZone, null)
         { }
 
-        public SummonMove(Player owner, ICardModel model, ICause cause)
+        public SummonMove(ICardModel model, Player owner, int toZone, ICause cause)
             : base(cause)
         {
-            if (owner == null)
-            {
-                throw new ArgumentNullException("owner");
-            }
-            else if (model == null)
+            if (model == null)
             {
                 throw new ArgumentNullException("model");
             }
+            else if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
 
-            Owner = owner;
+            m_toZone = owner.m_zones.GetZone(toZone);
+
+            Subject = null;
             Model = model;
+            Owner = owner;
         }
 
         internal override void ValidateOnIssue()
         {
-            if (Model == null)
+            if (!ValidateOnRun())
             {
-                FailValidation("Card model can't be null.");
+                FailValidation("Player can't summon card to Zone {0}.", ToZone);
             }
-            Validate(Owner);
         }
 
         internal override bool ValidateOnRun()
         {
-            return true;
+            return Subject == null
+                   && m_toZone.Type != ZoneType.Library
+                   && m_toZone.CardInstances != null;
         }
 
         internal override void RunMain()
         {
             Subject = new CardInstance(Model, Owner);
-            s_toZone.Add(Subject);
-            Subject.Zone = s_toZone.Zone;
+            m_toZone.CardInstances.Add(Subject);
+            Subject.Zone = ToZone;
+
+            if (m_toZone.Type == ZoneType.OnBattlefield)
+            {
+                Context.Game.SubscribeCardToCommands(Subject);
+            }
         }
     }
 }

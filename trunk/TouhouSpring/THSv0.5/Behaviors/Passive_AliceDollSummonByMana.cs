@@ -7,10 +7,10 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_AliceDollSummonByMana : BaseBehavior<Passive_AliceDollSummonByMana.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
-        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
+        IPrerequisiteTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.Subject == Host)
             {
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.Subject == Host)
             {
@@ -35,7 +35,7 @@ namespace TouhouSpring.Behaviors
                 if (chosenNumber != null)
                 {
                     chosenNumber.Value.Repeat(i => Game.QueueCommands(
-                        new Commands.SummonMove<Commands.Battlefield>(Host.Owner, Model.SummonType.Target)));
+                        new Commands.SummonMove(Model.SummonType.Target, Host.Owner, command.ToZone)));
                     var extraMana = dollSummonCost * chosenNumber.Value - 1;
                     if (extraMana != 0)
                     {

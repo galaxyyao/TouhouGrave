@@ -18,13 +18,15 @@ namespace TouhouSpring
         internal List<ValueModifier> m_lifeAddModifiers = new List<ValueModifier>();
         internal List<ValueModifier> m_lifeSubtractModifiers = new List<ValueModifier>();
 
-        internal List<CardInstance> m_handSet = new List<CardInstance>();
-        internal List<CardInstance> m_sacrifices = new List<CardInstance>();
-        internal List<CardInstance> m_battlefieldCards = new List<CardInstance>();
-        internal List<CardInstance> m_assists = new List<CardInstance>();
-        internal List<CardInstance> m_activatedAssists = new List<CardInstance>();
-        internal List<ICardModel> m_library = new List<ICardModel>();
-        internal List<ICardModel> m_graveyard = new List<ICardModel>();
+        internal Zones m_zones;
+        internal List<CardInstance> m_handSet;
+        internal List<CardInstance> m_sacrifices;
+        internal List<CardInstance> m_battlefieldCards;
+        internal List<CardInstance> m_assists;
+        internal List<ICardModel> m_library;
+        internal List<ICardModel> m_graveyard;
+
+        internal List<CardInstance> m_activatedAssists;
 
         /// <summary>
         /// Return a collection of cards on hand.
@@ -154,14 +156,6 @@ namespace TouhouSpring
                 throw new ArgumentOutOfRangeException("playerIndex", "PlayerIndex shall be greater than or equal to zero.");
             }
 
-            CardsOnHand = m_handSet.ToIndexable();
-            CardsSacrificed = m_sacrifices.ToIndexable();
-            CardsOnBattlefield = m_battlefieldCards.ToIndexable();
-            Assists = m_assists.ToIndexable();
-            ActivatedAssits = m_activatedAssists.ToIndexable();
-            Library = new Pile(m_library);
-            Graveyard = new Pile(m_graveyard);
-
             Name = name;
             Game = game;
             Index = playerIndex;
@@ -173,10 +167,23 @@ namespace TouhouSpring
         /// <param name="deck">The deck from which a library pile is generated.</param>
         internal void Initialize(Deck deck)
         {
-            if (deck == null)
-            {
-                throw new ArgumentNullException("deck");
-            }
+            m_zones = new Zones(Game.m_zoneConfig, this);
+            m_handSet = m_zones.GetZone(SystemZone.Hand).CardInstances;
+            m_sacrifices = m_zones.GetZone(SystemZone.Sacrifice).CardInstances;
+            m_battlefieldCards = m_zones.GetZone(SystemZone.Battlefield).CardInstances;
+            m_assists = m_zones.GetZone(SystemZone.Assist).CardInstances;
+            m_library = m_zones.GetZone(SystemZone.Library).CardModels;
+            m_graveyard = m_zones.GetZone(SystemZone.Graveyard).CardModels;
+
+            m_activatedAssists = new List<CardInstance>();
+
+            CardsOnHand = m_handSet.ToIndexable();
+            CardsSacrificed = m_sacrifices.ToIndexable();
+            CardsOnBattlefield = m_battlefieldCards.ToIndexable();
+            Assists = m_assists.ToIndexable();
+            ActivatedAssits = m_activatedAssists.ToIndexable();
+            Library = new Pile(m_library);
+            Graveyard = new Pile(m_graveyard);
 
             // initialize player's library
             foreach (var cardModel in deck)

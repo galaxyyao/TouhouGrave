@@ -8,38 +8,47 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeterAura_NAttack :
         BaseBehavior<Passive_DeterAura_NAttack.ModelType>,
         Commands.ICause,
-        // TODO: Commands.MoveTo<Commands.Battlefield>
-        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
-        IEpilogTrigger<Commands.SummonMove<Commands.Battlefield>>,
-        // TODO: Commands.Kill
-        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
+        IEpilogTrigger<Commands.IMoveCard>
     {
         private ValueModifier m_attackMod;
 
-        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public void RunEpilog(Commands.IMoveCard command)
         {
-            //TODO: Future change for 3 or more players
-            if (!Host.IsOnBattlefield)
-                return;
-            if (command.Subject == Host)
+            if (command.FromZoneType != ZoneType.OnBattlefield
+                && command.ToZoneType == ZoneType.OnBattlefield)
             {
-                foreach (var card in Game.Players.Where(player => player != Host.Owner)
-                    .SelectMany(player => player.CardsOnBattlefield))
+                // enter battlefield
+                if (command.Subject == Host)
                 {
-                    AffectByAura(card);
+                    foreach (var card in Game.Players.Where(player => player != Host.Owner)
+                        .SelectMany(player => player.CardsOnBattlefield))
+                    {
+                        AffectByAura(card);
+                    }
+                }
+                else if (command.Subject.Owner != Host.Owner
+                         && Host.IsOnBattlefield)
+                {
+                    AffectByAura(command.Subject);
                 }
             }
-            else if (command.Subject.Owner != Host.Owner)
+            else if (command.FromZoneType == ZoneType.OnBattlefield
+                     && command.ToZoneType != ZoneType.OnBattlefield)
             {
-                AffectByAura(command.Subject);
-            }
-        }
-
-        public void RunEpilog(Commands.SummonMove<Commands.Battlefield> command)
-        {
-            if (command.Subject.Owner != Host.Owner)
-            {
-                AffectByAura(command.Subject);
+                // leave battlefield
+                if (command.Subject == Host)
+                {
+                    foreach (var card in Game.Players.Where(player => player != Host.Owner)
+                        .SelectMany(player => player.CardsOnBattlefield))
+                    {
+                        LeaveAura(card);
+                    }
+                }
+                else if (command.Subject.Owner != Host.Owner
+                         && Host.IsOnBattlefield)
+                {
+                    LeaveAura(command.Subject);
+                }
             }
         }
 
@@ -58,18 +67,6 @@ namespace TouhouSpring.Behaviors
             if (warrior != null)
             {
                 Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
-            }
-        }
-
-        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
-        {
-            if (command.Subject == Host)
-            {
-                foreach (var card in Game.Players.Where(player => player != Host.Owner)
-                    .SelectMany(player => player.CardsOnBattlefield))
-                {
-                    LeaveAura(card);
-                }
             }
         }
 

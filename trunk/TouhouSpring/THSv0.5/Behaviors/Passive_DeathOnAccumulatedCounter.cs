@@ -8,8 +8,7 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeathOnAccumulatedCounter : BaseBehavior<Passive_DeathOnAccumulatedCounter.ModelType>,
         Commands.ICause,
         IEpilogTrigger<Commands.EndTurn>,
-        // TODO: change kill to semantically "leave battlefield"
-        IEpilogTrigger<Commands.KillMove<Commands.Battlefield>>
+        IEpilogTrigger<Commands.IMoveCard>
     {
         public class SakuraCounter : ICounter
         {
@@ -28,7 +27,7 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.GetCounterCount<SakuraCounter>() == Model.NumCounters - 1)
                     {
-                        Game.QueueCommands(new Commands.KillMove<Commands.Battlefield>(card, this));
+                        Game.QueueCommands(new Commands.KillMove(card, this));
                     }
                     else
                     {
@@ -38,9 +37,11 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.KillMove<Commands.Battlefield> command)
+        public void RunEpilog(Commands.IMoveCard command)
         {
-            if (command.Subject == Host)
+            if (command.Subject == Host
+                && command.FromZoneType == ZoneType.OnBattlefield
+                && command.ToZoneType != ZoneType.OnBattlefield)
             {
                 foreach (var card in Game.Players.Where(player => player != Host.Owner).SelectMany(player => player.CardsOnBattlefield))
                 {

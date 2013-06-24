@@ -14,6 +14,23 @@ namespace TouhouSpring
             clonedPlayer.Health = Health;
             clonedPlayer.Mana = Mana;
 
+            clonedPlayer.m_zones = new Zones(Game.m_zoneConfig, clonedPlayer);
+            clonedPlayer.m_handSet = clonedPlayer.m_zones.GetZone(SystemZone.Hand).CardInstances;
+            clonedPlayer.m_sacrifices = clonedPlayer.m_zones.GetZone(SystemZone.Sacrifice).CardInstances;
+            clonedPlayer.m_battlefieldCards = clonedPlayer.m_zones.GetZone(SystemZone.Battlefield).CardInstances;
+            clonedPlayer.m_assists = clonedPlayer.m_zones.GetZone(SystemZone.Assist).CardInstances;
+            clonedPlayer.m_library = clonedPlayer.m_zones.GetZone(SystemZone.Library).CardModels;
+            clonedPlayer.m_graveyard = clonedPlayer.m_zones.GetZone(SystemZone.Graveyard).CardModels;
+            clonedPlayer.m_activatedAssists = new List<CardInstance>();
+
+            clonedPlayer.CardsOnHand = clonedPlayer.m_handSet.ToIndexable();
+            clonedPlayer.CardsSacrificed = clonedPlayer.m_sacrifices.ToIndexable();
+            clonedPlayer.CardsOnBattlefield = clonedPlayer.m_battlefieldCards.ToIndexable();
+            clonedPlayer.Assists = clonedPlayer.m_assists.ToIndexable();
+            clonedPlayer.ActivatedAssits = clonedPlayer.m_activatedAssists.ToIndexable();
+            clonedPlayer.Library = new Pile(clonedPlayer.m_library);
+            clonedPlayer.Graveyard = new Pile(clonedPlayer.m_graveyard);
+
             foreach (var mod in m_manaAddModifiers)
             {
                 clonedPlayer.m_manaAddModifiers.Add(mod);

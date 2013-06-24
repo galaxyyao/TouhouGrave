@@ -7,10 +7,10 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Assault_SingleWarriorBoostForXRounds :
         BaseBehavior<Assault_SingleWarriorBoostForXRounds.ModelType>,
-        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>,
-        IEpilogTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
+        IPrerequisiteTrigger<Commands.PlayCard>,
+        IEpilogTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.Subject == Host)
             {
@@ -22,7 +22,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public void RunEpilog(Commands.PlayCard command)
         {
             if (command.Subject == Host)
             {

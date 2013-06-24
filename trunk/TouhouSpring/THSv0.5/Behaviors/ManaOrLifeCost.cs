@@ -7,9 +7,9 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class ManaOrLifeCost : BaseBehavior<ManaOrLifeCost.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.MoveCard<Commands.Hand, Commands.Battlefield>>
+        IPrerequisiteTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.MoveCard<Commands.Hand, Commands.Battlefield> command)
+        public CommandResult RunPrerequisite(Commands.PlayCard command)
         {
             if (command.Subject == Host)
             {

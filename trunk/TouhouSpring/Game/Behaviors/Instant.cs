@@ -7,13 +7,14 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Instant : BaseBehavior<Instant.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.IMoveTo<Commands.Battlefield>>
+        IEpilogTrigger<Commands.PlayCard>
     {
-        public void RunEpilog(Commands.IMoveTo<Commands.Battlefield> command)
+        public void RunEpilog(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
+            if (command.ToZone == SystemZone.Battlefield
+                && command.Subject == Host)
             {
-                Game.QueueCommands(new Commands.KillMove<Commands.Battlefield>(Host, this));
+                Game.QueueCommands(new Commands.KillMove(Host, this));
             }
         }
 

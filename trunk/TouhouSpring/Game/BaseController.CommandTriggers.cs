@@ -10,12 +10,7 @@ namespace TouhouSpring
     {
         internal void OnCommandEnd(Commands.BaseCommand command)
         {
-            if (command is Commands.SummonMove<Commands.Sacrifice>)
-            {
-                var card = (command as Commands.SummonMove<Commands.Sacrifice>).Subject;
-                new Interactions.NotifyCardEvent(Game, "OnCardAddedToManaPool", card).Run();
-            }
-            else if (command is Commands.CastSpell)
+            if (command is Commands.CastSpell)
             {
                 var spell = (command as Commands.CastSpell).Spell;
                 new Interactions.NotifySpellEvent(Game, "OnSpellCasted", spell as Behaviors.ICastableSpell).Run();
@@ -25,19 +20,13 @@ namespace TouhouSpring
                 var cmd = command as Commands.SubtractPlayerLife;
                 new Interactions.NotifyPlayerEvent(Game, "OnPlayerLifeSubtracted", cmd.Player, String.Format(CultureInfo.CurrentCulture, "Damage:{0}", cmd.FinalAmount)).Run();
             }
-            else if (command is Commands.DrawMove<Commands.Hand>)
-            {
-                var card = (command as Commands.DrawMove<Commands.Hand>).Subject;
-                new Interactions.NotifyCardEvent(Game, "OnCardDrawn", card).Run();
-            }
             else if (command is Commands.EndTurn)
             {
                 new Interactions.NotifyPlayerEvent(Game, "OnTurnEnded", (command as Commands.EndTurn).Player).Run();
             }
-            // TODO: Commands.Kill
-            else if (command is Commands.KillMove<Commands.Battlefield>)
+            else if (command is Commands.KillMove)
             {
-                var card = (command as Commands.KillMove<Commands.Battlefield>).Subject;
+                var card = (command as Commands.KillMove).Subject;
                 new Interactions.NotifyCardEvent(Game, "OnCardDestroyed", card).Run();
             }
             else if (command is Commands.StartTurn)
@@ -53,15 +42,17 @@ namespace TouhouSpring
 
         internal void OnCommandCanceled(Commands.BaseCommand command, string reason)
         {
-            if (command is Commands.CastSpell)
+            var castSpell = command as Commands.CastSpell;
+            if (castSpell != null)
             {
-                var spell = (command as Commands.CastSpell).Spell;
-                new Interactions.NotifySpellEvent(Game, "OnSpellCastCanceled", spell as Behaviors.ICastableSpell, reason).Run();
+                new Interactions.NotifySpellEvent(Game, "OnSpellCastCanceled", castSpell.Spell as Behaviors.ICastableSpell, reason).Run();
             }
-            else if (command is Commands.MoveCard<Commands.Hand, Commands.Battlefield>)
+
+            var moveCard = command as Commands.InitiativeMoveCard;
+            if (moveCard != null && moveCard.FromZone == SystemZone.Hand && moveCard.ToZone == SystemZone.Battlefield
+                && moveCard.Cause is Game)
             {
-                var card = (command as Commands.MoveCard<Commands.Hand, Commands.Battlefield>).Subject;
-                new Interactions.NotifyCardEvent(Game, "OnCardPlayCanceled", card, reason).Run();
+                new Interactions.NotifyCardEvent(Game, "OnCardPlayCanceled", moveCard.Subject, reason).Run();
             }
 
             if (command is Commands.IInitiativeCommand)

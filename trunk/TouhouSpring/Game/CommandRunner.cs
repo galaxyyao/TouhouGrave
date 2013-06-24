@@ -162,14 +162,18 @@ namespace TouhouSpring
         // TODO: implement real local target
         private Behaviors.BehaviorList GetLocalTargets(Commands.BaseCommand command)
         {
+            var moveCard = command as Commands.IMoveCard;
+            if (moveCard != null && moveCard.Subject != null)
+            {
+                if (command.ExecutionPhase < Commands.CommandPhase.Main && command.Context.Game.m_zoneConfig[moveCard.FromZone] != ZoneType.OnBattlefield
+                    || command.ExecutionPhase > Commands.CommandPhase.Main && command.Context.Game.m_zoneConfig[moveCard.ToZone] != ZoneType.OnBattlefield)
+                {
+                    return moveCard.Subject.Behaviors;
+                }
+            }
+
             if (command.ExecutionPhase < Commands.CommandPhase.Main)
             {
-                var playCard = command as Commands.MoveCard<Commands.Hand, Commands.Battlefield>;
-                if (playCard != null)
-                {
-                    return playCard.Subject.Behaviors;
-                }
-
                 var activateAssist = command as Commands.ActivateAssist;
                 if (activateAssist != null)
                 {
@@ -178,23 +182,11 @@ namespace TouhouSpring
             }
             else
             {
-                var kill = command as Commands.KillMove<Commands.Battlefield>;
-                if (kill != null)
-                {
-                    return kill.Subject.Behaviors;
-                }
-
                 var deactivateAssist = command as Commands.DeactivateAssist;
                 if (deactivateAssist != null)
                 {
                     return deactivateAssist.CardToDeactivate.Behaviors;
                 }
-            }
-
-            var redeem = command as Commands.MoveCard<Commands.Sacrifice, Commands.Hand>;
-            if (redeem != null)
-            {
-                return redeem.Subject.Behaviors;
             }
 
             return null;
