@@ -14,8 +14,8 @@ namespace TouhouSpring.Behaviors
 
     public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.IInitiativeMoveCard>,
-        IEpilogTrigger<Commands.IMoveCard>
+        ILocalPrerequisiteTrigger<Commands.IInitiativeMoveCard>,
+        ILocalEpilogTrigger<Commands.IMoveCard>
     {
         private List<ValueModifier> m_attackModifiers = new List<ValueModifier>();
 
@@ -50,10 +50,9 @@ namespace TouhouSpring.Behaviors
             get; internal set;
         }
 
-        public CommandResult RunPrerequisite(Commands.IInitiativeMoveCard command)
+        public CommandResult RunLocalPrerequisite(Commands.IInitiativeMoveCard command)
         {
-            if (command.Subject == Host
-                && command.ToZoneType == ZoneType.OnBattlefield
+            if (command.ToZoneType == ZoneType.OnBattlefield
                 && command.FromZoneType != ZoneType.OnBattlefield)
             {
                 if (Model.Unique && Host.Owner.CardsOnBattlefield.Any(card => card.Model == Host.Model))
@@ -64,10 +63,9 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunLocalEpilog(Commands.IMoveCard command)
         {
-            if (command.Subject == Host
-                && command.FromZoneType == ZoneType.OnBattlefield
+            if (command.FromZoneType == ZoneType.OnBattlefield
                 && command.ToZoneType != ZoneType.OnBattlefield)
             {
                 State = WarriorState.StandingBy;

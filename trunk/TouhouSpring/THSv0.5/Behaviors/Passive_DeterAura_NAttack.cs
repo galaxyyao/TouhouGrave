@@ -8,26 +8,44 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeterAura_NAttack :
         BaseBehavior<Passive_DeterAura_NAttack.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.IMoveCard>
+        ILocalEpilogTrigger<Commands.IMoveCard>,
+        IGlobalEpilogTrigger<Commands.IMoveCard>
     {
         private ValueModifier m_attackMod;
 
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunLocalEpilog(Commands.IMoveCard command)
         {
             if (command.FromZoneType != ZoneType.OnBattlefield
                 && command.ToZoneType == ZoneType.OnBattlefield)
             {
                 // enter battlefield
-                if (command.Subject == Host)
-                {
-                    foreach (var card in Game.Players.Where(player => player != Host.Owner)
+                foreach (var card in Game.Players.Where(player => player != Host.Owner)
                         .SelectMany(player => player.CardsOnBattlefield))
-                    {
-                        AffectByAura(card);
-                    }
+                {
+                    AffectByAura(card);
                 }
-                else if (command.Subject.Owner != Host.Owner
-                         && Host.IsOnBattlefield)
+            }
+            else if (command.FromZoneType == ZoneType.OnBattlefield
+                     && command.ToZoneType != ZoneType.OnBattlefield)
+            {
+                // leave battlefield
+                foreach (var card in Game.Players.Where(player => player != Host.Owner)
+                    .SelectMany(player => player.CardsOnBattlefield))
+                {
+                    LeaveAura(card);
+                }
+            }
+        }
+
+        public void RunGlobalEpilog(Commands.IMoveCard command)
+        {
+            if (command.FromZoneType != ZoneType.OnBattlefield
+                && command.ToZoneType == ZoneType.OnBattlefield)
+            {
+                // enter battlefield
+                if (command.Subject != Host
+                    && command.Subject.Owner != Host.Owner
+                    && Host.IsOnBattlefield)
                 {
                     AffectByAura(command.Subject);
                 }
@@ -36,16 +54,9 @@ namespace TouhouSpring.Behaviors
                      && command.ToZoneType != ZoneType.OnBattlefield)
             {
                 // leave battlefield
-                if (command.Subject == Host)
-                {
-                    foreach (var card in Game.Players.Where(player => player != Host.Owner)
-                        .SelectMany(player => player.CardsOnBattlefield))
-                    {
-                        LeaveAura(card);
-                    }
-                }
-                else if (command.Subject.Owner != Host.Owner
-                         && Host.IsOnBattlefield)
+                if (command.Subject != Host
+                    && command.Subject.Owner != Host.Owner
+                    && Host.IsOnBattlefield)
                 {
                     LeaveAura(command.Subject);
                 }

@@ -7,11 +7,11 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_Retaliate : BaseBehavior<Passive_Retaliate.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        ILocalEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunLocalEpilog(Commands.DealDamageToCard command)
         {
-            if (command.Target == Host && command.Cause is Warrior)
+            if (command.Cause is Warrior)
             {
                 var warrior = Host.Behaviors.Get<Warrior>();
                 if (warrior != null)

@@ -17,6 +17,9 @@ namespace TouhouSpring
     internal class CommandRunner<TCommand> : ICommandRunner
         where TCommand : Commands.BaseCommand
     {
+        [ThreadStatic]
+        private Behaviors.IBehavior[] s_singleBehaviorArray;
+
         public CommandResult RunPrerequisite(Commands.BaseCommand command)
         {
             Debug.Assert(command is Commands.IInitiativeCommand);
@@ -25,30 +28,33 @@ namespace TouhouSpring
             var tCommand = command as TCommand;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                var result = RunPrerequisite(tCommand, targetList);
-                if (result.Canceled)
+                foreach (var trigger in targetList)
                 {
-                    return result;
+                    var t = trigger as IGlobalPrerequisiteTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        var result = t.RunGlobalPrerequisite(tCommand);
+                        if (result.Canceled)
+                        {
+                            return result;
+                        }
+                    }
                 }
             }
 
             var localTargets = GetLocalTargets(command);
-            return localTargets != null
-                   ? RunPrerequisite(tCommand, localTargets)
-                   : CommandResult.Pass;
-        }
-
-        private CommandResult RunPrerequisite(TCommand command, Behaviors.BehaviorList targets)
-        {
-            foreach (var trigger in targets)
+            if (localTargets != null)
             {
-                var t = trigger as IPrerequisiteTrigger<TCommand>;
-                if (t != null)
+                foreach (var trigger in localTargets)
                 {
-                    var result = t.RunPrerequisite(command);
-                    if (result.Canceled)
+                    var t = trigger as ILocalPrerequisiteTrigger<TCommand>;
+                    if (t != null)
                     {
-                        return result;
+                        var result = t.RunLocalPrerequisite(tCommand);
+                        if (result.Canceled)
+                        {
+                            return result;
+                        }
                     }
                 }
             }
@@ -63,24 +69,26 @@ namespace TouhouSpring
             var tCommand = command as TCommand;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                RunProlog(tCommand, targetList);
+                foreach (var trigger in targetList)
+                {
+                    var t = trigger as IGlobalPrologTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunGlobalProlog(tCommand);
+                    }
+                }
             }
 
             var localTargets = GetLocalTargets(command);
             if (localTargets != null)
             {
-                RunProlog(tCommand, localTargets);
-            }
-        }
-
-        private void RunProlog(TCommand command, Behaviors.BehaviorList targets)
-        {
-            foreach (var trigger in targets)
-            {
-                var t = trigger as IPrologTrigger<TCommand>;
-                if (t != null)
+                foreach (var trigger in localTargets)
                 {
-                    t.RunProlog(command);
+                    var t = trigger as ILocalPrologTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunLocalProlog(tCommand);
+                    }
                 }
             }
         }
@@ -92,33 +100,37 @@ namespace TouhouSpring
             var tCommand = command as TCommand;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                var newStack = RunPreemptive(tCommand, targetList, firstTimeTriggering);
-                if (newStack != null)
+                foreach (var trigger in targetList)
                 {
-                    return newStack;
+                    var t = trigger as IGlobalPreemptiveTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        var newStack = t.RunGlobalPreemptive(tCommand, firstTimeTriggering);
+                        if (newStack != null)
+                        {
+                            return newStack;
+                        }
+                    }
                 }
             }
 
             var localTargets = GetLocalTargets(command);
-            return localTargets != null
-                   ? RunPreemptive(tCommand, localTargets, firstTimeTriggering)
-                   : null;
-        }
-
-        private ResolveContext RunPreemptive(TCommand command, Behaviors.BehaviorList targets, bool firstTimeTriggering)
-        {
-            foreach (var trigger in targets)
+            if (localTargets != null)
             {
-                var t = trigger as IPreemptiveTrigger<TCommand>;
-                if (t != null)
+                foreach (var trigger in localTargets)
                 {
-                    var ctx = t.RunPreemptive(command, firstTimeTriggering);
-                    if (ctx != null)
+                    var t = trigger as ILocalPreemptiveTrigger<TCommand>;
+                    if (t != null)
                     {
-                        return ctx;
+                        var newStack = t.RunLocalPreemptive(tCommand, firstTimeTriggering);
+                        if (newStack != null)
+                        {
+                            return newStack;
+                        }
                     }
                 }
             }
+
             return null;
         }
 
@@ -138,55 +150,79 @@ namespace TouhouSpring
             tCommand.ExecutionPhase = Commands.CommandPhase.Epilog;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
-                RunEpilog(tCommand, targetList);
+                foreach (var trigger in targetList)
+                {
+                    var t = trigger as IGlobalEpilogTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunGlobalEpilog(tCommand);
+                    }
+                }
             }
             var localTargets = GetLocalTargets(command);
             if (localTargets != null)
             {
-                RunEpilog(tCommand, localTargets);
-            }
-        }
-
-        private void RunEpilog(TCommand command, IEnumerable<Behaviors.IBehavior> targets)
-        {
-            foreach (var trigger in targets)
-            {
-                var t = trigger as IEpilogTrigger<TCommand>;
-                if (t != null)
+                foreach (var trigger in localTargets)
                 {
-                    t.RunEpilog(command);
+                    var t = trigger as ILocalEpilogTrigger<TCommand>;
+                    if (t != null)
+                    {
+                        t.RunLocalEpilog(tCommand);
+                    }
                 }
             }
         }
 
-        // TODO: implement real local target
-        private Behaviors.BehaviorList GetLocalTargets(Commands.BaseCommand command)
+        private IEnumerable<Behaviors.IBehavior> GetLocalTargets(Commands.BaseCommand command)
         {
+            if (s_singleBehaviorArray == null)
+            {
+                s_singleBehaviorArray = new Behaviors.IBehavior[1];
+            }
+
             var moveCard = command as Commands.IMoveCard;
             if (moveCard != null && moveCard.Subject != null)
             {
-                if (command.ExecutionPhase < Commands.CommandPhase.Main && command.Context.Game.m_zoneConfig[moveCard.FromZone] != ZoneType.OnBattlefield
-                    || command.ExecutionPhase > Commands.CommandPhase.Main && command.Context.Game.m_zoneConfig[moveCard.ToZone] != ZoneType.OnBattlefield)
-                {
-                    return moveCard.Subject.Behaviors;
-                }
+                return moveCard.Subject.Behaviors;
             }
 
-            if (command.ExecutionPhase < Commands.CommandPhase.Main)
+            var dealDamageToCard = command as Commands.DealDamageToCard;
+            if (dealDamageToCard != null && dealDamageToCard.Target != null)
             {
-                var activateAssist = command as Commands.ActivateAssist;
-                if (activateAssist != null)
-                {
-                    return activateAssist.CardToActivate.Behaviors;
-                }
+                return dealDamageToCard.Target.Behaviors;
             }
-            else
+
+            var castSpell = command as Commands.CastSpell;
+            if (castSpell != null)
             {
-                var deactivateAssist = command as Commands.DeactivateAssist;
-                if (deactivateAssist != null)
-                {
-                    return deactivateAssist.CardToDeactivate.Behaviors;
-                }
+                s_singleBehaviorArray[0] = castSpell.Spell;
+                return s_singleBehaviorArray;
+            }
+
+            var addBehavior = command as Commands.AddBehavior;
+            if (addBehavior != null)
+            {
+                s_singleBehaviorArray[0] = addBehavior.Behavior;
+                return s_singleBehaviorArray;
+            }
+
+            var removeBehavior = command as Commands.RemoveBehavior;
+            if (removeBehavior != null)
+            {
+                s_singleBehaviorArray[0] = removeBehavior.Behavior;
+                return s_singleBehaviorArray;
+            }
+
+            var activateAssist = command as Commands.ActivateAssist;
+            if (activateAssist != null)
+            {
+                return activateAssist.CardToActivate.Behaviors;
+            }
+
+            var deactivateAssist = command as Commands.DeactivateAssist;
+            if (deactivateAssist != null)
+            {
+                return deactivateAssist.CardToDeactivate.Behaviors;
             }
 
             return null;

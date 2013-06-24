@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_HealAllAlly_NLife:
         BaseBehavior<Spell_HealAllAlly_NLife.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.PlayCard>
+        ILocalEpilogTrigger<Commands.PlayCard>
     {
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunLocalEpilog(Commands.PlayCard command)
         {
             foreach (var card in Game.ActingPlayer.CardsOnBattlefield)
             {

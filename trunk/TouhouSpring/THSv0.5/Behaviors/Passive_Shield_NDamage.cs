@@ -8,13 +8,11 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_Shield_NDamage:
         BaseBehavior<Passive_Shield_NDamage.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        ILocalEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunLocalEpilog(Commands.DealDamageToCard command)
         {
-            if (Host.IsOnBattlefield
-                && command.Target == Host)
-                Game.QueueCommands(new Commands.HealCard(Host, Model.DamageToMod, this));
+            Game.QueueCommands(new Commands.HealCard(Host, Model.DamageToMod, this));
         }
 
         [BehaviorModel(typeof(Passive_Shield_NDamage), Category = "v0.5/Passive", DefaultName = "厚皮")]

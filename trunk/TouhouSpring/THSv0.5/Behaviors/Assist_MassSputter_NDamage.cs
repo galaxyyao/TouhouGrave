@@ -8,10 +8,10 @@ namespace TouhouSpring.Behaviors
     public sealed class Assist_MassSputter_NDamage :
         BaseBehavior<Assist_MassSputter_NDamage.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>,
-        IEpilogTrigger<Commands.SubtractPlayerLife>
+        IGlobalEpilogTrigger<Commands.DealDamageToCard>,
+        IGlobalEpilogTrigger<Commands.SubtractPlayerLife>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             if (Host.IsActivatedAssist
                 && command.Cause is Warrior
@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.SubtractPlayerLife command)
+        public void RunGlobalEpilog(Commands.SubtractPlayerLife command)
         {
             if (Host.IsActivatedAssist
                 && command.FinalAmount > 0

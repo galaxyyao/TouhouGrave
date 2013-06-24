@@ -7,9 +7,9 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_WarriorAlwaysStandBy :
         BaseBehavior<Passive_WarriorAlwaysStandBy.ModelType>,
-        IEpilogTrigger<Commands.StartPhase>
+        IGlobalEpilogTrigger<Commands.StartPhase>
     {
-        public void RunEpilog(Commands.StartPhase command)
+        public void RunGlobalEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Cleanup"
                 && Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())

@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_RegenerateFull :
         BaseBehavior<Passive_RegenerateFull.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.StartTurn>
+        IGlobalEpilogTrigger<Commands.StartTurn>
     {
-        public void RunEpilog(Commands.StartTurn command)
+        public void RunGlobalEpilog(Commands.StartTurn command)
         {
             if (Host.Owner == Game.ActingPlayer
                 && Host.IsOnBattlefield)

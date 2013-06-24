@@ -23,23 +23,43 @@ namespace TouhouSpring
         }
     }
 
-    public interface IPrerequisiteTrigger<in TCommand> where TCommand : Commands.ICommand
+    public interface IGlobalPrerequisiteTrigger<in TCommand> where TCommand : Commands.ICommand
     {
-        CommandResult RunPrerequisite(TCommand command);
+        CommandResult RunGlobalPrerequisite(TCommand command);
     }
 
-    public interface IPreemptiveTrigger<in TCommand> where TCommand : Commands.ICommand
+    public interface ILocalPrerequisiteTrigger<in TCommand> where TCommand : Commands.ICommand
     {
-        ResolveContext RunPreemptive(TCommand command, bool firstTimeTriggering);
+        CommandResult RunLocalPrerequisite(TCommand command);
     }
 
-    public interface IPrologTrigger<in TCommand> where TCommand : Commands.ICommand
+    public interface IGlobalPreemptiveTrigger<in TCommand> where TCommand : Commands.ICommand
     {
-        void RunProlog(TCommand command);
+        ResolveContext RunGlobalPreemptive(TCommand command, bool firstTimeTriggering);
     }
 
-    public interface IEpilogTrigger<in TCommand> where TCommand : Commands.ICommand
+    public interface ILocalPreemptiveTrigger<in TCommand> where TCommand : Commands.ICommand
     {
-        void RunEpilog(TCommand command);
+        ResolveContext RunLocalPreemptive(TCommand command, bool firstTimeTriggering);
+    }
+
+    public interface IGlobalPrologTrigger<in TCommand> where TCommand : Commands.ICommand
+    {
+        void RunGlobalProlog(TCommand command);
+    }
+
+    public interface ILocalPrologTrigger<in TCommand> where TCommand : Commands.ICommand
+    {
+        void RunLocalProlog(TCommand command);
+    }
+
+    public interface IGlobalEpilogTrigger<in TCommand> where TCommand : Commands.ICommand
+    {
+        void RunGlobalEpilog(TCommand command);
+    }
+
+    public interface ILocalEpilogTrigger<in TCommand> where TCommand : Commands.ICommand
+    {
+        void RunLocalEpilog(TCommand command);
     }
 }

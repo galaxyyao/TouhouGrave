@@ -8,15 +8,14 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_Counterattack_NDamage:
         BaseBehavior<Passive_Counterattack_NDamage.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        ILocalEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunLocalEpilog(Commands.DealDamageToCard command)
         {
-            if (command.Target != Host)
-                return;
-            if (command.Cause is Warrior)
+            var warrior = command.Cause as Warrior;
+            if (warrior != null && warrior.Host.Owner != Host.Owner)
             {
-                Game.QueueCommands(new Commands.DealDamageToCard(((Warrior)(command.Cause)).Host, Model.DamageToDeal, this));
+                Game.QueueCommands(new Commands.DealDamageToCard(warrior.Host, Model.DamageToDeal, this));
             }
         }
 

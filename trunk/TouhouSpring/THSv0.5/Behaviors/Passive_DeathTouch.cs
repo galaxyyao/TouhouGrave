@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeathTouch :
         BaseBehavior<Passive_DeathTouch.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        IGlobalEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             if (command.Cause is Warrior
                 && (command.Cause as Warrior).Host == Host)

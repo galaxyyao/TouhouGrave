@@ -8,45 +8,39 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_Aura_Offense_NAttack:
         BaseBehavior<Passive_Aura_Offense_NAttack.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.ActivateAssist>,
-        IEpilogTrigger<Commands.DeactivateAssist>,
-        IEpilogTrigger<Commands.IMoveCard>
+        ILocalEpilogTrigger<Commands.ActivateAssist>,
+        ILocalEpilogTrigger<Commands.DeactivateAssist>,
+        IGlobalEpilogTrigger<Commands.IMoveCard>
     {
         private ValueModifier m_attackMod;
 
-        public void RunEpilog(Commands.ActivateAssist command)
+        public void RunLocalEpilog(Commands.ActivateAssist command)
         {
-            if (command.CardToActivate == Host)
+            foreach (var card in Host.Owner.CardsOnBattlefield)
             {
-                foreach (var card in Host.Owner.CardsOnBattlefield)
-                {
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if (warrior == null)
-                        continue;
+                var warrior = card.Behaviors.Get<Warrior>();
+                if (warrior == null)
+                    continue;
 
-                    Game.QueueCommands(
-                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
-                }
+                Game.QueueCommands(
+                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }
 
-        public void RunEpilog(Commands.DeactivateAssist command)
+        public void RunLocalEpilog(Commands.DeactivateAssist command)
         {
-            if (command.CardToDeactivate == Host)
+            foreach (var card in Host.Owner.CardsOnBattlefield)
             {
-                foreach (var card in Host.Owner.CardsOnBattlefield)
-                {
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if (warrior == null)
-                        continue;
+                var warrior = card.Behaviors.Get<Warrior>();
+                if (warrior == null)
+                    continue;
 
-                    Game.QueueCommands(
-                        new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
-                }
+                Game.QueueCommands(
+                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
             }
         }
 
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunGlobalEpilog(Commands.IMoveCard command)
         {
             if (Host.IsActivatedAssist
                 && Host.Owner == command.Subject.Owner

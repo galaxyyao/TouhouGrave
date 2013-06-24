@@ -6,9 +6,9 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_AliceDollSummon : BaseBehavior<Passive_AliceDollSummon.ModelType>,
-        IEpilogTrigger<Commands.StartPhase>
+        IGlobalEpilogTrigger<Commands.StartPhase>
     {
-        public void RunEpilog(Commands.StartPhase command)
+        public void RunGlobalEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Main"
                 && Game.ActingPlayer == Host.Owner

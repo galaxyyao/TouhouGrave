@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_EnemySummonCostUp :
         BaseBehavior<Passive_EnemySummonCostUp.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>
+        IGlobalPrerequisiteTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunGlobalPrerequisite(Commands.PlayCard command)
         {
             if (command.Subject.Owner != Host.Owner)
             {

@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DamageToSelectedCard_NDamageEachTurn :
         BaseBehavior<Passive_DamageToSelectedCard_NDamageEachTurn.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.EndPhase>
+        IGlobalEpilogTrigger<Commands.EndPhase>
     {
-        public void RunEpilog(Commands.EndPhase command)
+        public void RunGlobalEpilog(Commands.EndPhase command)
         {
             if (command.PreviousPhase == "Upkeep"
                 && Game.ActingPlayer == Host.Owner)

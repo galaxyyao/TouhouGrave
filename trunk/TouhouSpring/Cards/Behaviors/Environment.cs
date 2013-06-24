@@ -7,17 +7,16 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Environment : BaseBehavior<Environment.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.IMoveCard>
+        ILocalEpilogTrigger<Commands.IMoveCard>
     {
         public string VisualId
         {
             get { return Model.VisualId; }
         }
 
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunLocalEpilog(Commands.IMoveCard command)
         {
-            if (command.Subject == Host
-                && command.FromZoneType != ZoneType.OnBattlefield
+            if (command.FromZoneType != ZoneType.OnBattlefield
                 && command.ToZoneType == ZoneType.OnBattlefield)
             {
                 foreach (var player in Game.Players)

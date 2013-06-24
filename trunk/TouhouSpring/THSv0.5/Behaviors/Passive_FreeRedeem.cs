@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_FreeRedeem:
         BaseBehavior<Passive_FreeRedeem.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.IMoveCard>
+        IGlobalEpilogTrigger<Commands.IMoveCard>
     {
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunGlobalEpilog(Commands.IMoveCard command)
         {
             if (command.FromZone == SystemZone.Sacrifice
                 && Host.IsActivatedAssist)

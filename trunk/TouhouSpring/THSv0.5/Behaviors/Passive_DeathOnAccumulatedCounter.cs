@@ -7,8 +7,8 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_DeathOnAccumulatedCounter : BaseBehavior<Passive_DeathOnAccumulatedCounter.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.EndTurn>,
-        IEpilogTrigger<Commands.IMoveCard>
+        IGlobalEpilogTrigger<Commands.EndTurn>,
+        ILocalEpilogTrigger<Commands.IMoveCard>
     {
         public class SakuraCounter : ICounter
         {
@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             public static SakuraCounter Singleton = new SakuraCounter();
         }
 
-        public void RunEpilog(Commands.EndTurn command)
+        public void RunGlobalEpilog(Commands.EndTurn command)
         {
             if (command.Player == Host.Owner
                 && Host.IsOnBattlefield)
@@ -37,10 +37,9 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunLocalEpilog(Commands.IMoveCard command)
         {
-            if (command.Subject == Host
-                && command.FromZoneType == ZoneType.OnBattlefield
+            if (command.FromZoneType == ZoneType.OnBattlefield
                 && command.ToZoneType != ZoneType.OnBattlefield)
             {
                 foreach (var card in Game.Players.Where(player => player != Host.Owner).SelectMany(player => player.CardsOnBattlefield))

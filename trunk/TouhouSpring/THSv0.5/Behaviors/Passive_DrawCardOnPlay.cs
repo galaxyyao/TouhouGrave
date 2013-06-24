@@ -8,12 +8,11 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DrawCardOnPlay:
         BaseBehavior<Passive_DrawCardOnPlay.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.PlayCard>
+        ILocalEpilogTrigger<Commands.PlayCard>
     {
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunLocalEpilog(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-                Game.QueueCommands(new Commands.DrawMove(Host.Owner, SystemZone.Hand));
+            Game.QueueCommands(new Commands.DrawMove(Host.Owner, SystemZone.Hand));
         }
 
         [BehaviorModel(typeof(Passive_DrawCardOnPlay), Category = "v0.5/Passive", DefaultName = "上场抽卡")]

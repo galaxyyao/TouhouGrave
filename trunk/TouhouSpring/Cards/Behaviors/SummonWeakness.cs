@@ -6,16 +6,15 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class SummonWeakness : BaseBehavior<SummonWeakness.ModelType>
-        , IEpilogTrigger<Commands.IMoveCard>
-        , IEpilogTrigger<Commands.StartPhase>
+        , ILocalEpilogTrigger<Commands.IMoveCard>
+        , IGlobalEpilogTrigger<Commands.StartPhase>
     {
         class Effect : SimpleBehavior<Effect>
         { }
 
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunLocalEpilog(Commands.IMoveCard command)
         {
-            if (command.Subject == Host
-                && command.ToZoneType == ZoneType.OnBattlefield
+            if (command.ToZoneType == ZoneType.OnBattlefield
                 && command.FromZoneType != ZoneType.OnBattlefield
                 && Host.Behaviors.Has<Warrior>())
             {
@@ -25,7 +24,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.StartPhase command)
+        public void RunGlobalEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Cleanup"
                 && Game.ActingPlayer == Host.Owner

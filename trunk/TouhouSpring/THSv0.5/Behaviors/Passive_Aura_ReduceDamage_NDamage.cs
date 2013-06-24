@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_Aura_ReduceDamage_NDamage :
         BaseBehavior<Passive_Aura_ReduceDamage_NDamage.ModelType>,
         Commands.ICause,
-        IPrologTrigger<Commands.DealDamageToCard>
+        IGlobalPrologTrigger<Commands.DealDamageToCard>
     {
-        public void RunProlog(Commands.DealDamageToCard command)
+        public void RunGlobalProlog(Commands.DealDamageToCard command)
         {
             if (Host.IsActivatedAssist
                 && command.Target.Owner == Host.Owner

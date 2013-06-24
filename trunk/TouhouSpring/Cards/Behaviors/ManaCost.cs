@@ -7,31 +7,23 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class ManaCost : BaseBehavior<ManaCost.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IPrerequisiteTrigger<Commands.ActivateAssist>
+        ILocalPrerequisiteTrigger<Commands.PlayCard>,
+        ILocalPrerequisiteTrigger<Commands.ActivateAssist>
     {
         public int Cost
         {
             get { return Model.Cost; }
         }
 
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-            {
-                Game.NeedMana(Model.Cost);
-            }
-
+            Game.NeedMana(Model.Cost);
             return CommandResult.Pass;
         }
 
-        public CommandResult RunPrerequisite(Commands.ActivateAssist command)
+        public CommandResult RunLocalPrerequisite(Commands.ActivateAssist command)
         {
-            if (command.CardToActivate == Host)
-            {
-                Game.NeedMana(Model.Cost);
-            }
-
+            Game.NeedMana(Model.Cost);
             return CommandResult.Pass;
         }
 

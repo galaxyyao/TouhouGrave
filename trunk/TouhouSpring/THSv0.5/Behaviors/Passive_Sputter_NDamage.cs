@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_Sputter_NDamage:
         BaseBehavior<Passive_Sputter_NDamage.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        IGlobalEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             if (Host.IsOnBattlefield
                 && command.Cause == Host.Behaviors.Get<Warrior>())

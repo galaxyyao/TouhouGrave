@@ -8,32 +8,25 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_AttackGrowth:
         BaseBehavior<Spell_AttackGrowth.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>
+        ILocalPrerequisiteTrigger<Commands.PlayCard>,
+        ILocalEpilogTrigger<Commands.PlayCard>
     {
         private ValueModifier m_attackMod;
 
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-            {
-                Game.NeedTargets(this,
-                    Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
-                    "指定1张己方的卡，增加3点攻击力");
-            }
-
+            Game.NeedTargets(this,
+                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                "指定1张己方的卡，增加3点攻击力");
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunLocalEpilog(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-            {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(
-                    Game.GetTargets(this)[0].Behaviors.Get<Warrior>(),
-                    "AttackModifiers",
-                    new object[] { "add", m_attackMod }));
-            }
+            Game.QueueCommands(new Commands.SendBehaviorMessage(
+                Game.GetTargets(this)[0].Behaviors.Get<Warrior>(),
+                "AttackModifiers",
+                new object[] { "add", m_attackMod }));
         }
 
         protected override void OnInitialize()

@@ -8,11 +8,13 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_CardDrawnNumberUp :
         BaseBehavior<Passive_CardDrawnNumberUp.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DrawMove>
+        IGlobalEpilogTrigger<Commands.DrawMove>
     {
-        public void RunEpilog(Commands.DrawMove command)
+        public void RunGlobalEpilog(Commands.DrawMove command)
         {
-            if (command.Cause is Game && Host.IsOnBattlefield)
+            if (Host.IsOnBattlefield
+                && command.Player == Host.Owner
+                && command.Cause is Game)
             {
                 Game.QueueCommands(new Commands.DrawMove(Host.Owner, SystemZone.Hand, this));
             }

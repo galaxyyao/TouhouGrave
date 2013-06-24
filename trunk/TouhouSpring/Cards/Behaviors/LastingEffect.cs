@@ -6,7 +6,7 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class LastingEffect : BaseBehavior<LastingEffect.ModelType>,
-        IEpilogTrigger<Commands.StartPhase>
+        IGlobalEpilogTrigger<Commands.StartPhase>
     {
         private int m_duration;
 
@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
             CleanUps = new List<IBehavior>();
         }
 
-        public void RunEpilog(Commands.StartPhase command)
+        public void RunGlobalEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Upkeep"
                 && Game.ActingPlayer == Host.Owner 

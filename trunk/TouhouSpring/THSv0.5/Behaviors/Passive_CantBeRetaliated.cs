@@ -6,11 +6,11 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_CantBeRetaliated : BaseBehavior<Passive_CantBeRetaliated.ModelType>,
-        IPrologTrigger<Commands.DealDamageToCard>
+        ILocalPrologTrigger<Commands.DealDamageToCard>
     {
-        void IPrologTrigger<Commands.DealDamageToCard>.RunProlog(Commands.DealDamageToCard command)
+        void ILocalPrologTrigger<Commands.DealDamageToCard>.RunLocalProlog(Commands.DealDamageToCard command)
         {
-            if (command.Target == Host && command.Cause is Passive_Retaliate)
+            if (command.Cause is Passive_Retaliate)
             {
                 command.PatchDamageToDeal(0);
             }

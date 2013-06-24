@@ -8,15 +8,14 @@ namespace TouhouSpring.Behaviors
     class Passive_FirstStrike_Attacker :
         BaseBehavior<Passive_FirstStrike_Attacker.ModelType>,
         Commands.ICause,
-        IPreemptiveTrigger<Commands.DealDamageToCard>
+        IGlobalPreemptiveTrigger<Commands.DealDamageToCard>
     {
-        ResolveContext IPreemptiveTrigger<Commands.DealDamageToCard>.RunPreemptive(Commands.DealDamageToCard command, bool firstTimeTriggering)
+        ResolveContext IGlobalPreemptiveTrigger<Commands.DealDamageToCard>.RunGlobalPreemptive(Commands.DealDamageToCard command, bool firstTimeTriggering)
         {
             if (firstTimeTriggering
                 && Host.IsOnBattlefield
                 && command.Cause is Warrior
-                && (command.Cause as Warrior).Host == Host
-                && Host.Behaviors.Has<Warrior>())
+                && (command.Cause as Warrior).Host == Host)
             {
                 if (!Model.DoubleStrike)
                 {

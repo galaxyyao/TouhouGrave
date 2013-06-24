@@ -8,8 +8,8 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeathBomb :
         BaseBehavior<Passive_DeathBomb.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>,
-        IEpilogTrigger<Commands.Resolve>
+        ILocalEpilogTrigger<Commands.DealDamageToCard>,
+        IGlobalEpilogTrigger<Commands.Resolve>
     {
         private Warrior m_fatalWarriorCause;
         // 1, listen to DealDamageToCard command
@@ -19,9 +19,9 @@ namespace TouhouSpring.Behaviors
         // otherwise the bomb effect is triggered
         // 3, m_fatalWarriorCause is cleared to null
 
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunLocalEpilog(Commands.DealDamageToCard command)
         {
-            if (command.Target == Host && command.Cause is Warrior)
+            if (command.Cause is Warrior)
             {
                 var warrior = Host.Behaviors.Get<Warrior>();
                 if (warrior != null
@@ -33,7 +33,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        public void RunEpilog(Commands.Resolve command)
+        public void RunGlobalEpilog(Commands.Resolve command)
         {
             if (m_fatalWarriorCause != null
                 && Host.Behaviors.Get<Warrior>().Life <= 0)

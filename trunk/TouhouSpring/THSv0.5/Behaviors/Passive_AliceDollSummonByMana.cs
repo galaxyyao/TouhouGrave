@@ -7,45 +7,39 @@ namespace TouhouSpring.Behaviors
 {
     public class Passive_AliceDollSummonByMana : BaseBehavior<Passive_AliceDollSummonByMana.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>
+        ILocalPrerequisiteTrigger<Commands.PlayCard>,
+        ILocalEpilogTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
+            if (Host.Owner.CalculateFinalManaSubtract(1) == 0)
             {
-                Game.NeedMana(1);
-                if (Host.Owner.CalculateFinalManaSubtract(1) == 0)
-                {
-                    return CommandResult.Cancel();
-                }
+                return CommandResult.Cancel();
             }
+            Game.NeedMana(1);
 
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunLocalEpilog(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
+            var remainingMana = Host.Owner.Mana + 1;
+            var dollSummonCost = Host.Owner.CalculateFinalManaSubtract(1);
+            var maxSummon = remainingMana / dollSummonCost;
+            var chosenNumber = new Interactions.SelectNumber(Host.Owner, 1, maxSummon, "召唤人偶的数量？").Run();
+            if (chosenNumber != null)
             {
-                var remainingMana = Host.Owner.Mana + 1;
-                var dollSummonCost = Host.Owner.CalculateFinalManaSubtract(1);
-                var maxSummon = remainingMana / dollSummonCost;
-                var chosenNumber = new Interactions.SelectNumber(Host.Owner, 1, maxSummon, "召唤人偶的数量？").Run();
-                if (chosenNumber != null)
+                chosenNumber.Value.Repeat(i => Game.QueueCommands(
+                    new Commands.SummonMove(Model.SummonType.Target, Host.Owner, command.ToZone)));
+                var extraMana = dollSummonCost * chosenNumber.Value - 1;
+                if (extraMana != 0)
                 {
-                    chosenNumber.Value.Repeat(i => Game.QueueCommands(
-                        new Commands.SummonMove(Model.SummonType.Target, Host.Owner, command.ToZone)));
-                    var extraMana = dollSummonCost * chosenNumber.Value - 1;
-                    if (extraMana != 0)
-                    {
-                        Game.QueueCommands(new Commands.SubtractPlayerMana(Host.Owner, extraMana, true, this));
-                    }
+                    Game.QueueCommands(new Commands.SubtractPlayerMana(Host.Owner, extraMana, true, this));
                 }
-                else
-                {
-                    Game.QueueCommands(new Commands.AddPlayerMana(Host.Owner, 1, true, this));
-                }
+            }
+            else
+            {
+                Game.QueueCommands(new Commands.AddPlayerMana(Host.Owner, 1, true, this));
             }
         }
 

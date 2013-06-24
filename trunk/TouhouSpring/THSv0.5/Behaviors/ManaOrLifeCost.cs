@@ -7,15 +7,11 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class ManaOrLifeCost : BaseBehavior<ManaOrLifeCost.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>
+        ILocalPrerequisiteTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-            {
-                Game.NeedManaOrLife(Model.ManaCost, Model.LifeCost);
-            }
-
+            Game.NeedManaOrLife(Model.ManaCost, Model.LifeCost);
             return CommandResult.Pass;
         }
 

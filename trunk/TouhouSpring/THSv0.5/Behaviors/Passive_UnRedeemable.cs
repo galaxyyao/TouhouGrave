@@ -8,12 +8,11 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_UnRedeemable:
         BaseBehavior<Passive_UnRedeemable.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.IInitiativeMoveCard>
+        ILocalPrerequisiteTrigger<Commands.IInitiativeMoveCard>
     {
-        public CommandResult RunPrerequisite(Commands.IInitiativeMoveCard command)
+        public CommandResult RunLocalPrerequisite(Commands.IInitiativeMoveCard command)
         {
-            if (command.Subject == Host
-                && command.FromZone == SystemZone.Sacrifice
+            if (command.FromZone == SystemZone.Sacrifice
                 && command.ToZone == SystemZone.Hand
                 && command.Cause is Game)
             {

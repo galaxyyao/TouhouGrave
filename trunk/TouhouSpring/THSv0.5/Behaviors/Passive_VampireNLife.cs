@@ -8,9 +8,9 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_VampireNLife :
         BaseBehavior<Passive_VampireNLife.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        IGlobalEpilogTrigger<Commands.DealDamageToCard>
     {
-        public void RunEpilog(Commands.DealDamageToCard command)
+        public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             if(command.Cause==Host.Behaviors.Get<Warrior>()
                 && Host.IsOnBattlefield

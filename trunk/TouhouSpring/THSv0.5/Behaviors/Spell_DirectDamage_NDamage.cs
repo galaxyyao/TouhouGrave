@@ -8,29 +8,22 @@ namespace TouhouSpring.Behaviors
     public sealed class Spell_DirectDamage_NDamage :
         BaseBehavior<Spell_DirectDamage_NDamage.ModelType>,
         Commands.ICause,
-        IPrerequisiteTrigger<Commands.PlayCard>,
-        IEpilogTrigger<Commands.PlayCard>
+        ILocalPrerequisiteTrigger<Commands.PlayCard>,
+        ILocalEpilogTrigger<Commands.PlayCard>
     {
-        public CommandResult RunPrerequisite(Commands.PlayCard command)
+        public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-            {
-                Game.NeedTargets(this,
-                    Game.Players.Where(player => player != Host.Owner)
-                    .SelectMany(player => player.CardsOnBattlefield)
-                    .Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
-                    "指定1张对手的卡，造成伤害");
-            }
-
+            Game.NeedTargets(this,
+                Game.Players.Where(player => player != Host.Owner)
+                .SelectMany(player => player.CardsOnBattlefield)
+                .Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                "指定1张对手的卡，造成伤害");
             return CommandResult.Pass;
         }
 
-        public void RunEpilog(Commands.PlayCard command)
+        public void RunLocalEpilog(Commands.PlayCard command)
         {
-            if (command.Subject == Host)
-            {
-                Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTargets(this)[0], Model.DamageToDeal, this));
-            }
+            Game.QueueCommands(new Commands.DealDamageToCard(Game.GetTargets(this)[0], Model.DamageToDeal, this));
         }
 
         [BehaviorModel(typeof(Spell_DirectDamage_NDamage), Category = "v0.5/Spell", DefaultName = "直接伤害")]

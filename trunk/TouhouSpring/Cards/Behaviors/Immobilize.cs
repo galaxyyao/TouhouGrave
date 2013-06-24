@@ -6,9 +6,9 @@ using System.Text;
 namespace TouhouSpring.Behaviors
 {
     public sealed class Immobilize : SimpleBehavior<Immobilize>,
-        IEpilogTrigger<Commands.StartPhase>
+        IGlobalEpilogTrigger<Commands.StartPhase>
     {
-        public void RunEpilog(Commands.StartPhase command)
+        public void RunGlobalEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Upkeep"
                 && Game.ActingPlayer == Host.Owner

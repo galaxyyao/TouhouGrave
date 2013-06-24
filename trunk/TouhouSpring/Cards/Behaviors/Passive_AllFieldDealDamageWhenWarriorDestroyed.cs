@@ -8,12 +8,11 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_AllFieldDealDamageWhenWarriorDestroyed :
         BaseBehavior<Passive_AllFieldDealDamageWhenWarriorDestroyed.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.IMoveCard>
+        ILocalEpilogTrigger<Commands.IMoveCard>
     {
-        public void RunEpilog(Commands.IMoveCard command)
+        public void RunLocalEpilog(Commands.IMoveCard command)
         {
-            if (command.Subject == Host
-                && command.FromZoneType == ZoneType.OnBattlefield
+            if (command.FromZoneType == ZoneType.OnBattlefield
                 && command.ToZone == SystemZone.Graveyard)
             {
                 foreach (var card in Game.Players.SelectMany(player => player.CardsOnBattlefield))

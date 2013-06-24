@@ -7,9 +7,9 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_Trample : BaseBehavior<Passive_Trample.ModelType>,
         Commands.ICause,
-        IEpilogTrigger<Commands.DealDamageToCard>
+        IGlobalEpilogTrigger<Commands.DealDamageToCard>
     {
-        void IEpilogTrigger<Commands.DealDamageToCard>.RunEpilog(Commands.DealDamageToCard command)
+        void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             // TODO: cache hostwarrior
             var hostWarrior = Host.Behaviors.Get<Warrior>();
