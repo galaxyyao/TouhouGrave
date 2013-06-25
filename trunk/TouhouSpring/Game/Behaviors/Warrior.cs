@@ -128,20 +128,18 @@ namespace TouhouSpring.Behaviors
                 if ((string)args[0] == "add")
                 {
                     var mod = (ValueModifier)args[1];
-                    if (m_attackModifiers.Contains(mod))
+                    if (!m_attackModifiers.Contains(mod))
                     {
-                        throw new ArgumentException("The modifier has already been added.");
+                        m_attackModifiers.Add(mod);
                     }
-                    m_attackModifiers.Add(mod);
                 }
                 else if ((string)args[0] == "remove")
                 {
                     var mod = (ValueModifier)args[1];
-                    if (!m_attackModifiers.Contains(mod))
+                    if (m_attackModifiers.Contains(mod))
                     {
-                        throw new ArgumentException("The modifier has not been added.");
+                        m_attackModifiers.Remove(mod);
                     }
-                    m_attackModifiers.Remove(mod);
                 }
                 Attack = m_attackModifiers.Aggregate(InitialAttack, (i, v) => v.Process(i));
             }

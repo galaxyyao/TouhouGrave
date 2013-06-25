@@ -39,7 +39,9 @@ namespace TouhouSpring.Commands
             if (causeBhv != null)
             {
                 var causeBhvHost = causeBhv.Host;
-                if (causeBhvHost == null || causeBhvHost.IsDestroyed || !causeBhvHost.Owner.CardsOnBattlefield.Contains(causeBhvHost))
+                if (causeBhvHost == null
+                    || causeBhvHost.IsDestroyed
+                    || !causeBhvHost.IsOnBattlefield && !causeBhvHost.IsActivatedAssist)
                 {
                     return false;
                 }

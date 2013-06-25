@@ -41,7 +41,8 @@ namespace TouhouSpring.Commands
         internal override bool ValidateOnRun()
         {
             var spellHost = Spell.Host;
-            return !spellHost.IsDestroyed && spellHost.Behaviors.Contains(Spell) && spellHost.Owner.CardsOnBattlefield.Contains(spellHost);
+            return !spellHost.IsDestroyed && spellHost.Behaviors.Contains(Spell)
+                   && (spellHost.IsOnBattlefield || spellHost.IsActivatedAssist);
         }
 
         internal override void RunMain()
