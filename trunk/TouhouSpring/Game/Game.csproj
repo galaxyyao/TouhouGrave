@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\ForceAttack.cs" />
     <Compile Include="Behaviors\ICounter.cs" />
+    <Compile Include="Behaviors\Undefendable.cs" />
     <Compile Include="Behaviors\IStatusEffect.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />

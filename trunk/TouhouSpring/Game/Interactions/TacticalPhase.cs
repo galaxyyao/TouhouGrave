@@ -415,7 +415,8 @@ namespace TouhouSpring.Interactions
                 {
                     foreach (var card in p.CardsOnBattlefield)
                     {
-                        if (card.Behaviors.Has<Behaviors.Warrior>())
+                        if (card.Behaviors.Has<Behaviors.Warrior>()
+                            && !card.Behaviors.Has<Behaviors.Undefendable>())
                         {
                             yield return card;
                         }
