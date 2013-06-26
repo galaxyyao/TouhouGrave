@@ -23,7 +23,7 @@ namespace TouhouSpring
         {
             if (IsDocOpened)
             {
-                DialogResult confirmResult = MessageBox.Show("当前的牌库尚未保存，你确认要打开另一个牌库么？", "关闭确认", MessageBoxButtons.OKCancel);
+                DialogResult confirmResult = MessageBox.Show("Current card library has not been saved, do you really want to open another card library?", "Confirmation", MessageBoxButtons.OKCancel);
                 if (confirmResult == System.Windows.Forms.DialogResult.Cancel)
                 {
                     return;
