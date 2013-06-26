@@ -6,8 +6,13 @@ using System.Text;
 
 namespace TouhouSpring
 {
+    public class GameResource : Commands.ICause
+    { }
+
     public partial class ResolveContext
     {
+        private static GameResource s_resourceCause = new GameResource();
+
         private struct ResourceConditions
         {
             // fixed mana and life condition
@@ -232,11 +237,11 @@ namespace TouhouSpring
 
                 if (m_resourceConditions.m_manaNeeded != 0)
                 {
-                    QueueResourceCommand(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, null));
+                    QueueResourceCommand(new Commands.SubtractPlayerMana(initiator, m_resourceConditions.m_manaNeeded, true, s_resourceCause));
                 }
                 if (m_resourceConditions.m_lifeNeeded != 0)
                 {
-                    QueueResourceCommand(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, null));
+                    QueueResourceCommand(new Commands.SubtractPlayerLife(initiator, m_resourceConditions.m_lifeNeeded, true, s_resourceCause));
                 }
             }
 
