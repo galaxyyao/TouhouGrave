@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\Assist_GenericAura.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
     <None Include="Behaviors\Deprecated\Passive_AttackFirst.cs" />
     <None Include="Behaviors\Deprecated\Passive_AttackGrowth.cs" />
