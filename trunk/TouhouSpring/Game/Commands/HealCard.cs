@@ -29,6 +29,12 @@ namespace TouhouSpring.Commands
             LifeToHeal = lifeToHeal;
         }
 
+        public void PatchLifeToHeal(int value)
+        {
+            CheckPatchable("LifeToHeal");
+            LifeToHeal = value;
+        }
+
         internal override void ValidateOnIssue()
         {
             Validate(Target);

@@ -141,6 +141,27 @@ namespace TouhouSpring
             Controller.Game = this;
         }
 
+        public CardInstance FindCard(int guid, int zoneId, int player)
+        {
+            if (player < 0 || player > m_players.Length)
+            {
+                throw new ArgumentOutOfRangeException("player");
+            }
+            var zone = m_players[player].m_zones.GetZone(zoneId);
+            if (zone == null || zone.CardInstances == null)
+            {
+                throw new ArgumentException("zone");
+            }
+            foreach (var card in zone.CardInstances)
+            {
+                if (card.Guid == guid)
+                {
+                    return card;
+                }
+            }
+            return null;
+        }
+
         internal Int32 GenerateNextCardGuid()
         {
             return Interlocked.Increment(ref m_nextCardGuid);

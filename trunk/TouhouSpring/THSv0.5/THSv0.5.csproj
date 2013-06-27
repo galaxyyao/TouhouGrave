@@ -47,13 +47,16 @@
     <None Include="Behaviors\Deprecated\Passive_AttackGrowth.cs" />
     <Compile Include="Behaviors\AssistSpell_Recklessness.cs" />
     <Compile Include="Behaviors\Passive_CantBeRetaliated.cs" />
+    <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
     <Compile Include="Behaviors\ManaOrLifeCost.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummonByMana.cs" />
     <Compile Include="Behaviors\Passive_DeathOnAccumulatedCounter.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Attacker.cs" />
     <Compile Include="Behaviors\Passive_Inspire.cs" />
+    <Compile Include="Behaviors\Passive_Jail.cs" />
     <Compile Include="Behaviors\Passive_PhantomAttack.cs" />
+    <Compile Include="Behaviors\Passive_SpiritForm.cs" />
     <Compile Include="Behaviors\Passive_Stealth.cs" />
     <Compile Include="Behaviors\Passive_Trample.cs" />
     <Compile Include="Behaviors\Passive_Retaliate.cs" />
