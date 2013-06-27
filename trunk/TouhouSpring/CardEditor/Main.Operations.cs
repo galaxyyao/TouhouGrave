@@ -23,7 +23,12 @@ namespace TouhouSpring
         {
             if (IsDocOpened)
             {
-                throw new InvalidOperationException("Another document is opened.");
+                DialogResult confirmResult = MessageBox.Show("Current card library has not been saved, do you really want to open another card library?", "Confirmation", MessageBoxButtons.OKCancel);
+                if (confirmResult == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    return;
+                }
+                m_document = null;
             }
 
             m_document = doc;
