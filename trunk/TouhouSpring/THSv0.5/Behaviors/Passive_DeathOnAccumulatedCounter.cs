@@ -27,7 +27,7 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.GetCounterCount<SakuraCounter>() == Model.NumCounters - 1)
                     {
-                        Game.QueueCommands(new Commands.KillMove(card, this));
+                        Game.QueueCommands(new Commands.MoveCard(card, SystemZone.Graveyard, this));
                     }
                     else
                     {

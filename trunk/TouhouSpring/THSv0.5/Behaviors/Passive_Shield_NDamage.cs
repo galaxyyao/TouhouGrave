@@ -5,14 +5,13 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Passive_Shield_NDamage:
-        BaseBehavior<Passive_Shield_NDamage.ModelType>,
-        Commands.ICause,
-        ILocalEpilogTrigger<Commands.DealDamageToCard>
+    public sealed class Passive_Shield_NDamage: BaseBehavior<Passive_Shield_NDamage.ModelType>,
+        ILocalPrologTrigger<Commands.DealDamageToCard>,
+        Commands.ICause
     {
-        public void RunLocalEpilog(Commands.DealDamageToCard command)
+        void ILocalPrologTrigger<Commands.DealDamageToCard>.RunLocalProlog(Commands.DealDamageToCard command)
         {
-            Game.QueueCommands(new Commands.HealCard(Host, Model.DamageToMod, this));
+            command.PatchDamageToDeal(Math.Max(command.DamageToDeal - Model.DamageToMod, 0));
         }
 
         [BehaviorModel(typeof(Passive_Shield_NDamage), Category = "v0.5/Passive", DefaultName = "厚皮")]

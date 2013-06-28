@@ -25,7 +25,7 @@ namespace TouhouSpring.Behaviors
                         card => card != Host && card.Behaviors.Has<Environment>());
                     if (lastEnv != null)
                     {
-                        Game.QueueCommands(new Commands.KillMove(lastEnv, this));
+                        Game.QueueCommands(new Commands.MoveCard(lastEnv, SystemZone.Graveyard, this));
                         break;
                     }
                 }

@@ -81,8 +81,7 @@ namespace TouhouSpring.Interactions
             RedeemCandidates = !Game.DidRedeem
                                ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
                                : Indexable.Empty<CardInstance>();
-            AttackerCandidates = GetAttackerBaseSet(player)
-                                    .Where(card => !card.Behaviors.Has<Behaviors.Neutralize>()).ToArray().ToIndexable();
+            AttackerCandidates = GetAttackerBaseSet(player).ToArray().ToIndexable();
             if (AttackerCandidates.Count != 0)
             {
                 var defenders = GetDefenderBaseSet(player).ToArray();
@@ -400,7 +399,8 @@ namespace TouhouSpring.Interactions
             foreach (var card in player.CardsOnBattlefield)
             {
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                if (warrior != null && warrior.State == Behaviors.WarriorState.StandingBy)
+                if (warrior != null && warrior.State == Behaviors.WarriorState.StandingBy
+                    && !card.Behaviors.Has<Behaviors.Unattackable>())
                 {
                     yield return card;
                 }

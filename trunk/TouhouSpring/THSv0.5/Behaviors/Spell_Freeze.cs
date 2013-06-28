@@ -9,13 +9,13 @@ namespace TouhouSpring.Behaviors
         ILocalPrerequisiteTrigger<Commands.PlayCard>,
         ILocalEpilogTrigger<Commands.PlayCard>
     {
-        private class Effect : Neutralize, IStatusEffect
+        private class Effect : Unattackable, IStatusEffect
         {
             public string IconUri { get { return "atlas:Textures/Icons/Icons0$Freeze"; } }
             public string Text { get { return "冰冻\n该角色无法进攻。"; } }
 
             [BehaviorModel(typeof(Effect), HideFromEditor = true)]
-            new public class ModelType : Neutralize.ModelType { }
+            new public class ModelType : Unattackable.ModelType { }
         }
 
         public CommandResult RunLocalPrerequisite(Commands.PlayCard command)

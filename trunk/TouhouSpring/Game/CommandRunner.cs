@@ -192,6 +192,12 @@ namespace TouhouSpring
                 return dealDamageToCard.Target.Behaviors;
             }
 
+            var healCard = command as Commands.HealCard;
+            if (healCard != null && healCard.Target != null)
+            {
+                return healCard.Target.Behaviors;
+            }
+
             var castSpell = command as Commands.CastSpell;
             if (castSpell != null)
             {

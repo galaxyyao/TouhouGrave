@@ -5,49 +5,15 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Passive_DeathBomb :
-        BaseBehavior<Passive_DeathBomb.ModelType>,
-        Commands.ICause,
-        ILocalEpilogTrigger<Commands.DealDamageToCard>,
-        IGlobalEpilogTrigger<Commands.Resolve>
+    public sealed class Passive_DeathBomb : Passive_OnDeath<Passive_DeathBomb.ModelType>,
+        Commands.ICause
     {
-        private Warrior m_fatalWarriorCause;
-        // 1, listen to DealDamageToCard command
-        // if a fatal damage is dealt by Warrior, set m_fatalWarriorCause to this warrior;
-        // 2, listen to Resolve command
-        // if the card's life > 0, cancel the whole process
-        // otherwise the bomb effect is triggered
-        // 3, m_fatalWarriorCause is cleared to null
-
-        public void RunLocalEpilog(Commands.DealDamageToCard command)
+        protected override void OnDeath(IBehavior fatalDamageCause, Warrior hostWarrior)
         {
-            if (command.Cause is Warrior)
+            var warrior = fatalDamageCause as Warrior;
+            if (warrior != null)
             {
-                var warrior = Host.Behaviors.Get<Warrior>();
-                if (warrior != null
-                    && warrior.Life > -command.DamageToDeal
-                    && warrior.Life <= 0)
-                {
-                    m_fatalWarriorCause = command.Cause as Warrior;
-                }
-            }
-        }
-
-        public void RunGlobalEpilog(Commands.Resolve command)
-        {
-            if (m_fatalWarriorCause != null
-                && Host.Behaviors.Get<Warrior>().Life <= 0)
-            {
-                Game.QueueCommands(new Commands.DealDamageToCard(m_fatalWarriorCause.Host, Model.Damage, this));
-            }
-            m_fatalWarriorCause = null;
-        }
-
-        protected override void OnTransferFrom(IBehavior original)
-        {
-            if (m_fatalWarriorCause != null)
-            {
-                throw new InvalidOperationException();
+                Game.QueueCommands(new Commands.DealDamageToCard(warrior.Host, Model.Damage, this));
             }
         }
 

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public class Undefendable : BaseBehavior<Undefendable.ModelType>
+    public class Unattackable : BaseBehavior<Unattackable.ModelType>
     {
-        [BehaviorModel(typeof(Undefendable), Category = "Core")]
+        [BehaviorModel(typeof(Unattackable), Category = "Core")]
         public class ModelType : BehaviorModel
         { }
     }

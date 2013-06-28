@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\ForceAttack.cs" />
     <Compile Include="Behaviors\ICounter.cs" />
+    <Compile Include="Behaviors\Unattackable.cs" />
     <Compile Include="Behaviors\Undefendable.cs" />
     <Compile Include="Behaviors\IStatusEffect.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />
@@ -50,7 +51,6 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\MoveCardCommands\IMoveCard.cs" />
     <Compile Include="Commands\MoveCardCommands\DrawMove.cs" />
-    <Compile Include="Commands\MoveCardCommands\KillMove.cs" />
     <Compile Include="Commands\MoveCardCommands\MoveCard.cs" />
     <Compile Include="Commands\MoveCardCommands\SummonMove.cs" />
     <Compile Include="CommandQueue.cs" />
@@ -85,7 +85,6 @@
     <Compile Include="Behaviors\IBehaviorModel.cs" />
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
-    <Compile Include="Behaviors\Neutralize.cs" />
     <Compile Include="Behaviors\Protector.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />

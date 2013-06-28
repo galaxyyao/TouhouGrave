@@ -53,6 +53,13 @@ namespace TouhouSpring.Commands
             Subject = subject;
         }
 
+        public void PatchZoneMoveTo(int newToZone)
+        {
+            CheckPatchable("ToZone");
+            m_toZone = Subject.Owner.m_zones.GetZone(newToZone);
+            ValidateOnIssue();
+        }
+
         internal override void ValidateOnIssue()
         {
             if (!ValidateOnRun())
@@ -64,24 +71,30 @@ namespace TouhouSpring.Commands
         internal override bool ValidateOnRun()
         {
             return Subject.Zone == FromZone
+                   && m_fromZone != m_toZone
                    && m_fromZone.Type != ZoneType.Library
                    && m_fromZone.CardInstances != null
-                   && m_toZone.Type != ZoneType.Library
-                   && m_toZone.CardInstances != null
                    && m_fromZone.CardInstances.Contains(Subject)
-                   && !m_toZone.CardInstances.Contains(Subject);
+                   && (m_toZone.CardInstances == null || !m_toZone.CardInstances.Contains(Subject));
         }
 
         internal override void RunMain()
         {
             m_fromZone.CardInstances.Remove(Subject);
-            m_toZone.CardInstances.Add(Subject);
+            if (m_toZone.CardInstances != null)
+            {
+                m_toZone.CardInstances.Add(Subject);
+            }
+            else
+            {
+                m_toZone.CardModels.Add(Subject.Model);
+            }
             Subject.Zone = ToZone;
-            if (m_fromZone.Type == ZoneType.OffBattlefield && m_toZone.Type == ZoneType.OnBattlefield)
+            if (m_fromZone.Type != ZoneType.OnBattlefield && m_toZone.Type == ZoneType.OnBattlefield)
             {
                 Context.Game.SubscribeCardToCommands(Subject);
             }
-            else if (m_fromZone.Type == ZoneType.OnBattlefield && m_toZone.Type == ZoneType.OffBattlefield)
+            else if (m_fromZone.Type == ZoneType.OnBattlefield && m_toZone.Type != ZoneType.OnBattlefield)
             {
                 Context.Game.UnsubscribeCardFromCommands(Subject);
             }

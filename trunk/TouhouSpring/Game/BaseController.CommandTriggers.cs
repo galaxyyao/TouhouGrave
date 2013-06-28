@@ -24,10 +24,13 @@ namespace TouhouSpring
             {
                 new Interactions.NotifyPlayerEvent(Game, "OnTurnEnded", (command as Commands.EndTurn).Player).Run();
             }
-            else if (command is Commands.KillMove)
+            else if (command is Commands.MoveCard)
             {
-                var card = (command as Commands.KillMove).Subject;
-                new Interactions.NotifyCardEvent(Game, "OnCardDestroyed", card).Run();
+                var moveCard = command as Commands.MoveCard;
+                if (moveCard.Subject != null && moveCard.ToZone == SystemZone.Graveyard)
+                {
+                    new Interactions.NotifyCardEvent(Game, "OnCardDestroyed", moveCard.Subject).Run();
+                }
             }
             else if (command is Commands.StartTurn)
             {
