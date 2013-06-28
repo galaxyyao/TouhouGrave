@@ -8,8 +8,6 @@ namespace TouhouSpring.Behaviors
     public sealed class Passive_DeathBomb : Passive_OnDeath<Passive_DeathBomb.ModelType>,
         Commands.ICause
     {
-        private Warrior m_fatalWarriorCause;
-
         protected override void OnDeath(IBehavior fatalDamageCause, Warrior hostWarrior)
         {
             var warrior = fatalDamageCause as Warrior;

@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             if (command.ToZone == SystemZone.Battlefield)
             {
-                Game.QueueCommands(new Commands.KillMove(Host, this));
+                Game.QueueCommands(new Commands.MoveCard(Host, SystemZone.Graveyard, this));
             }
         }
 

@@ -58,6 +58,7 @@
     <Compile Include="Behaviors\Passive_Inspire.cs" />
     <Compile Include="Behaviors\Passive_Jail.cs" />
     <Compile Include="Behaviors\Passive_PhantomAttack.cs" />
+    <Compile Include="Behaviors\Passive_Rebirth.cs" />
     <Compile Include="Behaviors\Passive_SpiritForm.cs" />
     <Compile Include="Behaviors\Passive_Stealth.cs" />
     <Compile Include="Behaviors\Passive_Trample.cs" />

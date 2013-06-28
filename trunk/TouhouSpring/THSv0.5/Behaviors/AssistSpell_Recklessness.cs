@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
                 if (Game.ActingPlayer == Host.Owner
                     && command.PreviousPhase == "Main")
                 {
-                    Game.QueueCommands(new Commands.KillMove(Host, this));
+                    Game.QueueCommands(new Commands.MoveCard(Host, SystemZone.Graveyard, this));
                 }
             }
         }
