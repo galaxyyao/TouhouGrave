@@ -35,10 +35,11 @@ namespace TouhouSpring.Commands
 
         internal bool DefaultValidateOnRun(ResolveContext ctx)
         {
-            var causeBhv = Cause as Behaviors.IBehavior;
-            if (causeBhv != null)
+            // warrior can only deal damage while it is on battlefield
+            var causeWarrior = Cause as Behaviors.Warrior;
+            if (causeWarrior != null)
             {
-                var causeBhvHost = causeBhv.Host;
+                var causeBhvHost = causeWarrior.Host;
                 if (causeBhvHost == null
                     || causeBhvHost.IsDestroyed
                     || !causeBhvHost.IsOnBattlefield && !causeBhvHost.IsActivatedAssist)

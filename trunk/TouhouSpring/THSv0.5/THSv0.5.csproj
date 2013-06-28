@@ -48,6 +48,8 @@
     <Compile Include="Behaviors\AssistSpell_Recklessness.cs" />
     <Compile Include="Behaviors\Passive_CantBeRetaliated.cs" />
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
+    <Compile Include="Behaviors\Passive_FinalStrike.cs" />
+    <Compile Include="Behaviors\Passive_OnDeath.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
     <Compile Include="Behaviors\ManaOrLifeCost.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummonByMana.cs" />
