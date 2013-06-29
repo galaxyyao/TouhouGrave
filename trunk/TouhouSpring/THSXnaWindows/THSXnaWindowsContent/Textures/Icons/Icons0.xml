@@ -54,8 +54,21 @@
           <SourceHeight>64</SourceHeight>
         </Value>
       </Item>
+      <Item>
+        <Key>BTNInvisibility</Key>
+        <Value>
+          <SourceFile>BTNInvisibility.png</SourceFile>
+          <Left>256</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
     </SubTextures>
-    <Width>256</Width>
+    <Width>512</Width>
     <Height>64</Height>
     <Texture Null="true" />
   </Asset>
