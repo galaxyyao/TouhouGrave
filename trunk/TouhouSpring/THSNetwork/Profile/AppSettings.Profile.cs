@@ -35,8 +35,8 @@ namespace TouhouSpring
             if (!IsLoggedIn)
             {
                 #region Data Validation
-                IEnumerable<XElement> profiles = (from el in ProfileDocument.Root.Elements("Profile")
-                                                  where (string)el.Element("Uid") == "default"
+                IEnumerable<XElement> profiles = (from el in ProfileDocument.Root.Descendants("Profile")
+                                                  where el.Element("Uid").Value == "default"
                                                   select el);
                 if (profiles.Count() != 1)
                 {

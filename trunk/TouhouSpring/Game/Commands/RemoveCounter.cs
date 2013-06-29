@@ -48,15 +48,16 @@ namespace TouhouSpring.Commands
         }
 
         internal override void ValidateOnIssue()
-        { }
-
-        internal override bool ValidateOnRun()
         {
             if (Target.GetCounterCount(Counter.GetType()) < NumToRemove)
             {
                 FailValidation("Insufficient counters to be removed.");
             }
-            return !Target.IsDestroyed && NumToRemove >= 0 && Target.Owner.CardsOnBattlefield.Contains(Target);
+        }
+
+        internal override bool ValidateOnRun()
+        {
+            return !Target.IsDestroyed && NumToRemove >= 0 && (Target.IsOnBattlefield || Target.IsActivatedAssist);
         }
 
         internal override void RunMain()
