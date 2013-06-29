@@ -19,6 +19,10 @@ namespace TouhouSpring
         public int Amount { get; private set; }
 
         public ValueModifier(ValueModifierOperator op, int amount)
+            : this(op, amount, true)
+        { }
+
+        public ValueModifier(ValueModifierOperator op, int amount, bool throwException)
         {
             switch (op)
             {
@@ -27,14 +31,28 @@ namespace TouhouSpring
                 case ValueModifierOperator.Multiply:
                     if (amount <= 0)
                     {
-                        throw new ArgumentOutOfRangeException("amount", "Amount should be greater than zero.");
+                        if (throwException)
+                        {
+                            throw new ArgumentOutOfRangeException("amount", "Amount should be greater than zero.");
+                        }
+                        else
+                        {
+                            amount = 1;
+                        }
                     }
                     break;
                 case ValueModifierOperator.DivideRoundUp:
                 case ValueModifierOperator.DivideRoundDown:
                     if (amount <= 0)
                     {
-                        throw new ArgumentOutOfRangeException("amount", "Amount should be greater than zero.");
+                        if (throwException)
+                        {
+                            throw new ArgumentOutOfRangeException("amount", "Amount should be greater than zero.");
+                        }
+                        else
+                        {
+                            amount = 1;
+                        }
                     }
                     break;
                 default:
@@ -45,7 +63,7 @@ namespace TouhouSpring
             Amount = amount;
         }
 
-        internal int Process(int input)
+        public int Process(int input)
         {
             switch (Operator)
             {
