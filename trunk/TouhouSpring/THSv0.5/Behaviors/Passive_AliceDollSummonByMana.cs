@@ -30,7 +30,7 @@ namespace TouhouSpring.Behaviors
             if (chosenNumber != null)
             {
                 chosenNumber.Value.Repeat(i => Game.QueueCommands(
-                    new Commands.SummonMove(Model.SummonType.Target, Host.Owner, command.ToZone)));
+                    new Commands.SummonMove(Model.SummonType.Value, Host.Owner, command.ToZone)));
                 var extraMana = dollSummonCost * chosenNumber.Value - 1;
                 if (extraMana != 0)
                 {

@@ -49,7 +49,7 @@ namespace TouhouSpring
 
         protected override void Serialize(IntermediateWriter output, CardModelReference value, ContentSerializerAttribute format)
         {
-            output.WriteSharedResource(value.Target, m_format);
+            output.WriteSharedResource(value.Value, m_format);
         }
 
         protected override CardModelReference Deserialize(IntermediateReader input, ContentSerializerAttribute format, CardModelReference existingInstance)
@@ -59,7 +59,7 @@ namespace TouhouSpring
                 existingInstance = new CardModelReference();
             }
 
-            input.ReadSharedResource<ICardModel>(m_format, cardModel => existingInstance.Target = cardModel);
+            input.ReadSharedResource<ICardModel>(m_format, cardModel => existingInstance.Value = cardModel);
             return existingInstance;
         }
     }

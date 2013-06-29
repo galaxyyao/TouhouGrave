@@ -8,9 +8,9 @@ namespace TouhouSpring
 #if WINDOWS
     using System.ComponentModel;
 
-    [TypeConverter(typeof(CardModelReference.ProxiedTypeConverter))]
+    [TypeConverter(typeof(BehaviorModelReference.ProxiedTypeConverter))]
 #endif
-    public class CardModelReference
+    public class BehaviorModelReference
     {
 #if WINDOWS
         public static TypeConverter TypeConverter
@@ -22,14 +22,19 @@ namespace TouhouSpring
         {
             protected override TypeConverter GetProxy()
             {
-                return CardModelReference.TypeConverter;
+                return BehaviorModelReference.TypeConverter;
             }
         }
 #endif
 
-        public ICardModel Value
+        public Type ModelType
         {
             get; set;
+        }
+
+        public Behaviors.IBehaviorModel Instantiate()
+        {
+            return ModelType.Assembly.CreateInstance(ModelType.FullName) as Behaviors.IBehaviorModel;
         }
     }
 }

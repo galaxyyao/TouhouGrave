@@ -38,8 +38,28 @@ namespace TouhouSpring.Services
 
                 input.ReadSharedResource<CardModel>(cm =>
                 {
-                    existingInstance.Target = cm;
+                    existingInstance.Value = cm;
                 });
+                return existingInstance;
+            }
+        }
+
+        public class BehaviorModelReferenceReader : ContentTypeReader<BehaviorModelReference>
+        {
+            protected override BehaviorModelReference Read(ContentReader input, BehaviorModelReference existingInstance)
+            {
+                if (existingInstance == null)
+                {
+                    existingInstance = new BehaviorModelReference();
+                }
+
+                var typeFullName = input.ReadString();
+                var type = AssemblyReflection.GetTypesImplements<Behaviors.IBehaviorModel>().FirstOrDefault(t => t.FullName == typeFullName);
+                if (type == null)
+                {
+                    throw new InvalidDataException(String.Format("Can't find BehaviorModel {0}.", typeFullName));
+                }
+                existingInstance.ModelType = type;
                 return existingInstance;
             }
         }

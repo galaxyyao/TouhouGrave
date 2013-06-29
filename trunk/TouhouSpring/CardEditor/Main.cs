@@ -16,19 +16,7 @@ namespace TouhouSpring
             InitializeComponent();
             m_defaultTitle = Text;
 
-            CardModelReference.TypeConverter = new CardModelReferenceTypeConverter(() =>
-            {
-                return m_document == null
-                       ? Enumerable.Empty<ICardModel>()
-                       : m_document.Cards;
-            });
-
-            imageList.Images.Add("Card", Properties.Resources.Card_16x16);
-            imageList.Images.Add("Folder_Closed", Properties.Resources.Folder_Closed_16x16);
-            imageList.Images.Add("Behavior", Properties.Resources.Behavior_16x16);
-
-            var itemList = new List<ToolStripMenuItem>();
-
+            var behaviorModelTypes = new List<Type>();
             foreach (var t in AssemblyReflection.GetTypesImplements<Behaviors.IBehaviorModel>().Where(t => !t.IsAbstract))
             {
                 var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
@@ -37,6 +25,30 @@ namespace TouhouSpring
                     continue;
                 }
 
+                behaviorModelTypes.Add(t);
+            }
+
+            CardModelReference.TypeConverter = new CardModelReferenceTypeConverter(() =>
+            {
+                return m_document == null
+                       ? Enumerable.Empty<ICardModel>()
+                       : m_document.Cards;
+            });
+
+            BehaviorModelReference.TypeConverter = new BehaviorModelReferenceTypeConverter(() =>
+            {
+                return behaviorModelTypes;
+            });
+
+            imageList.Images.Add("Card", Properties.Resources.Card_16x16);
+            imageList.Images.Add("Folder_Closed", Properties.Resources.Folder_Closed_16x16);
+            imageList.Images.Add("Behavior", Properties.Resources.Behavior_16x16);
+
+            var itemList = new List<ToolStripMenuItem>();
+
+            foreach (var t in behaviorModelTypes)
+            {
+                var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
                 var category = bhvAttr.Category.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
                 var rootMenu = toolStripDropDownButtonNewBehavior.DropDownItems;
                 for (int i = 0; i < category.Length; ++i)

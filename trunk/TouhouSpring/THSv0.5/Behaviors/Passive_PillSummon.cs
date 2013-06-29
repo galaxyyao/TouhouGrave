@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
             {
                 Model.NumToSummon.Repeat(() =>
                 {
-                    Game.QueueCommands(new Commands.SummonMove(Model.SummonType.Target, Host.Owner, SystemZone.Sacrifice));
+                    Game.QueueCommands(new Commands.SummonMove(Model.SummonType.Value, Host.Owner, SystemZone.Sacrifice));
                 });
             }
         }

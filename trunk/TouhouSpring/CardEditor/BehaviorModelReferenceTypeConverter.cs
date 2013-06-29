@@ -6,13 +6,27 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    class CardModelReferenceTypeConverter : TypeConverter
+    class BehaviorModelReferenceTypeConverter : TypeConverter
     {
-        private Func<IEnumerable<ICardModel>> m_cardModelIterator;
+        private Func<IEnumerable<Type>> m_bhvModelTypeIterator;
 
-        public CardModelReferenceTypeConverter(Func<IEnumerable<ICardModel>> iterator)
+        public static string GetBehaviorName(Type behaviorModelType)
         {
-            m_cardModelIterator = iterator;
+            if (behaviorModelType == null)
+            {
+                throw new ArgumentNullException("behaviorModelType");
+            }
+            var bhvAttr = behaviorModelType.GetAttribute<Behaviors.BehaviorModelAttribute>();
+            if (bhvAttr == null || bhvAttr.HideFromEditor)
+            {
+                throw new ArgumentException("behaviorModelType");
+            }
+            return bhvAttr.DefaultName;
+        }
+
+        public BehaviorModelReferenceTypeConverter(Func<IEnumerable<Type>> iterator)
+        {
+            m_bhvModelTypeIterator = iterator;
         }
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
@@ -33,11 +47,11 @@ namespace TouhouSpring
                     return value;
                 }
 
-                var cmRef = value as CardModelReference;
+                var bmRef = value as BehaviorModelReference;
 
-                return cmRef == null || cmRef.Value == null
+                return bmRef == null || bmRef.ModelType == null
                        ? "{null}"
-                       : cmRef.Value.Id;
+                       : GetBehaviorName(bmRef.ModelType);
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
@@ -62,8 +76,8 @@ namespace TouhouSpring
                     return null;
                 }
 
-                var cardModel = m_cardModelIterator().FirstOrDefault(cm => cm.Id == str);
-                return cardModel != null ? new CardModelReference { Value = cardModel } : null;
+                var bhvModel = m_bhvModelTypeIterator().FirstOrDefault(bm => GetBehaviorName(bm) == str);
+                return bhvModel != null ? new BehaviorModelReference { ModelType = bhvModel } : null;
             }
 
             return base.ConvertFrom(context, culture, value);
@@ -87,9 +101,9 @@ namespace TouhouSpring
         private IEnumerable<string> IterateOptions()
         {
             yield return null;
-            foreach (var cm in m_cardModelIterator())
+            foreach (var bm in m_bhvModelTypeIterator())
             {
-                yield return cm.Id;
+                yield return GetBehaviorName(bm);
             }
         }
     }

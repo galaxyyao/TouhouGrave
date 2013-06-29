@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CardModelReferenceTypeConverter.cs" />
     <Compile Include="ContentPipelineClasses.cs" />
+    <Compile Include="BehaviorModelReferenceTypeConverter.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="EditorCardModel.cs" />
     <Compile Include="Main.cs">

@@ -85,7 +85,11 @@ namespace TouhouSpring.Interactions
             if (AttackerCandidates.Count != 0)
             {
                 var defenders = GetDefenderBaseSet(player).ToArray();
-                var protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
+                var protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Taunt>()).ToArray();
+                if (protectors.Length == 0)
+                {
+                    protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
+                }
                 DefenderCandidates = (protectors.Length != 0 ? protectors : defenders).ToIndexable();
             }
             else
@@ -93,7 +97,8 @@ namespace TouhouSpring.Interactions
                 DefenderCandidates = Indexable.Empty<CardInstance>();
             }
 
-            CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>());
+            CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>())
+                      && (!DefenderCandidates.Any(card => card.Behaviors.Has<Behaviors.Taunt>()) || AttackerCandidates.Count == 0);
         }
 
         internal Result Run()

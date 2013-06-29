@@ -57,7 +57,7 @@ namespace TouhouSpring
 
         internal bool IsCardRedeemable(CardInstance card)
         {
-            return card.Zone == SystemZone.Sacrifice && IsCommandRunnable(new Commands.InitiativeMoveCard(card, SystemZone.Battlefield));
+            return card.Zone == SystemZone.Sacrifice && IsCommandRunnable(new Commands.InitiativeMoveCard(card, SystemZone.Hand));
         }
 
         internal bool IsSpellCastable(Behaviors.ICastableSpell spell)
