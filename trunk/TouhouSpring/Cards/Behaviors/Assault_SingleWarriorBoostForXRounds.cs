@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
             Game.NeedTargets(this,
-                Host.Owner.CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                Host.Owner.CardsOnBattlefield.Where(c => c.Behaviors.Has<Warrior>()),
                 "Select a card to boost its attack.");
             return CommandResult.Pass;
         }

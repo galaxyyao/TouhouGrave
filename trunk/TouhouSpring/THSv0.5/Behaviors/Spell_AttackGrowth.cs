@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
         public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
             Game.NeedTargets(this,
-                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()),
                 "指定1张己方的卡，增加3点攻击力");
             return CommandResult.Pass;
         }

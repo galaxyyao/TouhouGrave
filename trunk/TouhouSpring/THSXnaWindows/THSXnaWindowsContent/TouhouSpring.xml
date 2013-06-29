@@ -193,6 +193,9 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_FirstStrike_Defender+ModelType">
           <Name>先攻（防御者）</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Unselectable+ModelType">
+          <Name>Unselectable</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>

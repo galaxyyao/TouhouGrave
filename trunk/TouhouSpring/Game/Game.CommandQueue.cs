@@ -30,12 +30,12 @@ namespace TouhouSpring
             m_resolveContextStack.Peek().NeedManaOrLife(mana, life);
         }
 
-        public void NeedTargets(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
+        public void NeedTargets(Behaviors.IBehavior user, IEnumerable<CardInstance> candidates, string message)
         {
             m_resolveContextStack.Peek().NeedTargets(user, true, candidates, message);
         }
 
-        public void NeedOptionalTargets(Behaviors.IBehavior user, IIndexable<CardInstance> candidates, string message)
+        public void NeedOptionalTargets(Behaviors.IBehavior user, IEnumerable<CardInstance> candidates, string message)
         {
             m_resolveContextStack.Peek().NeedTargets(user, false, candidates, message);
         }

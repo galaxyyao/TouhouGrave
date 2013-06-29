@@ -27,7 +27,7 @@ namespace TouhouSpring.Behaviors
         CommandResult ILocalPrerequisiteTrigger<Commands.CastSpell>.RunLocalPrerequisite(Commands.CastSpell command)
         {
             Game.NeedTargets(this,
-                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()).ToArray().ToIndexable(),
+                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()),
                 "Select a card to cast Reckless on.");
             return CommandResult.Pass;
         }

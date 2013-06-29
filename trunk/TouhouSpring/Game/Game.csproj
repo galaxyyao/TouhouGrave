@@ -45,6 +45,7 @@
     <Compile Include="Behaviors\Unattackable.cs" />
     <Compile Include="Behaviors\Undefendable.cs" />
     <Compile Include="Behaviors\IStatusEffect.cs" />
+    <Compile Include="Behaviors\Unselectable.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />
     <Compile Include="CardInstance.cs" />

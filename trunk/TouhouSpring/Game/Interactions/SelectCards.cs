@@ -33,31 +33,37 @@ namespace TouhouSpring.Interactions
             get; private set;
         }
 
-        public SelectCards(Player player, IIndexable<CardInstance> candidates, SelectMode mode)
+        public SelectCards(Player player, IEnumerable<CardInstance> candidates, SelectMode mode)
             : this(player, candidates, mode, null)
         { }
 
-        public SelectCards(Player player, IIndexable<CardInstance> candidates, SelectMode mode, string message)
+        public SelectCards(Player player, IEnumerable<CardInstance> candidates, SelectMode mode, string message)
+            : this(player, candidates.Where(card => !card.Behaviors.Has<Behaviors.Unselectable>()).ToArray().ToIndexable(), mode, message)
+        { }
+
+        internal SelectCards(Player player, IIndexable<CardInstance> filteredCandidates, SelectMode mode, string message)
             : base(player.Game)
         {
             if (player == null)
             {
                 throw new ArgumentNullException("player");
             }
-            else if (candidates == null || candidates.Count == 0)
+            else if (filteredCandidates == null)
             {
                 throw new ArgumentNullException("candidates");
             }
 
             Player = player;
-            Candidates = candidates;
+            Candidates = filteredCandidates;
             Message = message ?? String.Empty;
             Mode = mode;
         }
 
         public virtual IIndexable<CardInstance> Run()
         {
-            var result = NotifyAndWait<IIndexable<CardInstance>>();
+            var result = Candidates.Count != 0
+                         ? NotifyAndWait<IIndexable<CardInstance>>()
+                         : Indexable.Empty<CardInstance>();
             Validate(result);
             return result;
         }

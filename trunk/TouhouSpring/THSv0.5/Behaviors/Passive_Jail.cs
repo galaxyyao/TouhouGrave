@@ -33,8 +33,7 @@ namespace TouhouSpring.Behaviors
             Game.NeedTargets(
                 this,
                 Game.Players.Where(player => player != Host.Owner)
-                    .SelectMany(player => player.CardsOnBattlefield)
-                    .ToArray().ToIndexable(),
+                    .SelectMany(player => player.CardsOnBattlefield),
                 "Select a card to jail.");
             return CommandResult.Pass;
         }

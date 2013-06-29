@@ -15,8 +15,7 @@ namespace TouhouSpring.Behaviors
             Game.NeedOptionalTargets(
                 this,
                 Game.Players.Where(player => player != Host.Owner)
-                    .SelectMany(player => player.CardsOnBattlefield)
-                    .ToArray().ToIndexable(),
+                    .SelectMany(player => player.CardsOnBattlefield),
                 "Select a card to dismiss.");
             return CommandResult.Pass;
         }

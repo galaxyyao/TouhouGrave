@@ -82,7 +82,7 @@ namespace TouhouSpring
             m_resourceConditions.m_manaOrLifeLife = life;
         }
 
-        internal void NeedTargets(Behaviors.IBehavior user, bool compulsory, IIndexable<CardInstance> candidates, string message)
+        internal void NeedTargets(Behaviors.IBehavior user, bool compulsory, IEnumerable<CardInstance> candidates, string message)
         {
             if (user == null)
             {
@@ -107,7 +107,7 @@ namespace TouhouSpring
             {
                 m_user = user,
                 m_compulsory = compulsory,
-                m_candidates = candidates,
+                m_candidates = candidates.Where(card => !card.Behaviors.Has<Behaviors.Unselectable>()).ToArray().ToIndexable(),
                 m_message = message,
                 m_selection = null
             });
@@ -183,7 +183,7 @@ namespace TouhouSpring
 
             foreach (var tgt in m_targetConditions)
             {
-                if (tgt.m_candidates.Count == 0 && tgt.m_compulsory)
+                if (tgt.m_compulsory && tgt.m_candidates.Count == 0)
                 {
                     return CommandResult.Cancel("No target.");
                 }
@@ -221,17 +221,14 @@ namespace TouhouSpring
 
                 foreach (var tgt in m_targetConditions)
                 {
-                    if (tgt.m_candidates.Count != 0)
+                    tgt.m_selection = new Interactions.SelectCards(
+                        initiator,
+                        tgt.m_candidates,
+                        Interactions.SelectCards.SelectMode.Single,
+                        tgt.m_message).Run();
+                    if (tgt.m_selection.Count == 0 && tgt.m_compulsory)
                     {
-                        tgt.m_selection = new Interactions.SelectCards(
-                            initiator,
-                            tgt.m_candidates,
-                            Interactions.SelectCards.SelectMode.Single,
-                            tgt.m_message).Run();
-                        if (tgt.m_selection.Count == 0 && tgt.m_compulsory)
-                        {
-                            return CommandResult.Cancel("Canceled.");
-                        }
+                        return CommandResult.Cancel("Canceled.");
                     }
                 }
 
