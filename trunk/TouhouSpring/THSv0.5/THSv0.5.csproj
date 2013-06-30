@@ -48,14 +48,18 @@
     <Compile Include="Behaviors\AssistSpell_Recklessness.cs" />
     <Compile Include="Behaviors\Assist_GenericShield.cs" />
     <Compile Include="Behaviors\Assist_PlayCardRestraint.cs" />
+    <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
     <None Include="Behaviors\Deprecated\Passive_Aura_Offense_NAttack.cs" />
     <None Include="Behaviors\Deprecated\Passive_DeterAura_NAttack.cs" />
     <Compile Include="Behaviors\GenericAura.cs" />
     <Compile Include="Behaviors\Passive_CantBeRetaliated.cs" />
+    <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Assist_Doom.cs" />
+    <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
     <Compile Include="Behaviors\Passive_FinalStrike.cs" />
     <Compile Include="Behaviors\Passive_GenericAura.cs" />
+    <Compile Include="Behaviors\Passive_HealSpring.cs" />
     <Compile Include="Behaviors\Passive_LowProfile.cs" />
     <Compile Include="Behaviors\Passive_OnDeath.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
@@ -88,6 +92,8 @@
     <Compile Include="Behaviors\Passive_Shield_NDamage.cs" />
     <Compile Include="Behaviors\Passive_UnRedeemable.cs" />
     <Compile Include="Behaviors\Passive_VampireNLife.cs" />
+    <Compile Include="Behaviors\Spell_AttackGrowth_NRounds.cs" />
+    <Compile Include="Behaviors\Spell_DirectDamage_ToPlayer.cs" />
     <Compile Include="Behaviors\Spell_DirectDamage_NDamage.cs" />
     <Compile Include="Behaviors\Spell_DrawCard_NCard.cs" />
     <Compile Include="Behaviors\Spell_Freeze.cs" />

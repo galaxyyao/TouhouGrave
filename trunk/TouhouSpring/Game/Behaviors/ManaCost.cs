@@ -27,7 +27,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        [BehaviorModel(typeof(ManaCost))]
+        [BehaviorModel(typeof(ManaCost), Category = "Core", Description = "Mana required for summon or cast")]
         public class ModelType : BehaviorModel
         {
             public int Cost { get; set; }

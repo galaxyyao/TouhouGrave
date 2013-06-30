@@ -53,9 +53,11 @@
 /trunk/TouhouSpring/THSNetwork/obj/*
 /trunk/TouhouSpring.suo
 /trunk/TouhouSpring/CardEditor/bin/*
+/trunk/TouhouSpring/CardEditor/CardEditor.suo
 /trunk/TouhouSpring/CardEditor/obj/*
 /trunk/TouhouSpring/DeckMaker/bin/*
 /trunk/TouhouSpring/DeckMaker/obj/*
+/trunk/TouhouSpring/DeckMaker/DeckMaker.suo
 /trunk/TouhouSpring/Cards/bin/*
 /trunk/TouhouSpring/Cards/obj/*
 /trunk/TouhouSpring/Console/bin/*

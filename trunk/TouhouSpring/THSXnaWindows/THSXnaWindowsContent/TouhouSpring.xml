@@ -39,19 +39,12 @@
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
       <Id>alice</Id>
       <Name>爱丽丝·玛格特罗依德</Name>
-      <Description>人偶制作 【被动】
-己方行动开始时，召唤一只1/1的人偶
-战斗卡到场上。人偶无法阻挡
-      </Description>
+      <Description></Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummon+ModelType">
-          <Name>人偶召唤</Name>
-          <SummonType>#Resource2</SummonType>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
@@ -78,14 +71,14 @@
           <Name>反击</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ForceAttack+ModelType">
-          <Name>TouhouSpring.Behaviors.ForceAttack</Name>
+          <Name>狂热</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
     <Resource ID="#Resource3" Type="TouhouSpring.EditorCardModel">
       <Id>remilia</Id>
-      <Name>蕾米莉亚·斯卡雷特</Name>
+      <Name>蕾米莉亚·斯卡雷特【基本型】</Name>
       <Description>【吸血2】：
 每次攻击回复2点体力
       </Description>
@@ -150,10 +143,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>6</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_RegenerateFull+ModelType">
-          <Name>单卡完全恢复</Name>
+          <Cost>7</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -192,9 +182,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_FirstStrike_Defender+ModelType">
           <Name>先攻（防御者）</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Unselectable+ModelType">
-          <Name>Unselectable</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -253,7 +240,7 @@
     <Resource ID="#Resource9" Type="TouhouSpring.EditorCardModel">
       <Id>reimu</Id>
       <Name>博丽灵梦</Name>
-      <Description>该卡不能攻击玩家（暂无效）</Description>
+      <Description></Description>
       <ArtworkUri>Textures/Characters/reimu_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -277,11 +264,8 @@
     </Resource>
     <Resource ID="#Resource10" Type="TouhouSpring.EditorCardModel">
       <Id>marisa</Id>
-      <Name>雾雨魔理沙</Name>
-      <Description>指定1张角色卡，
-消耗灵力池里所有灵力，
-对该卡造成等量的伤害
-      </Description>
+      <Name>雾雨魔理沙【魔炮型】</Name>
+      <Description>【魔炮】：指定1张角色卡，消耗灵力池里所有灵力，对该卡造成等量的伤害</Description>
       <ArtworkUri>Textures/Characters/marisa_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -443,7 +427,7 @@ X等于己方场上本卡的数量
           <Name>SummonWeakness</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType">
-          <Name>星光</Name>
+          <Name>抽卡增加</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -454,9 +438,8 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource16" Type="TouhouSpring.EditorCardModel">
       <Id>flandre</Id>
       <Name>芙兰朵露·斯卡雷特</Name>
-      <Description>当此卡造成攻击伤害时，
-攻击力+1
-      </Description>
+      <Description>【闪避】攻击时不会受到反击伤害
+【血瘾】当本卡造成伤害时，攻击力+1</Description>
       <ArtworkUri>Textures/Characters/flandre_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -478,18 +461,18 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_CantBeRetaliated+ModelType">
+          <Name>闪避</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource17" Type="TouhouSpring.EditorCardModel">
       <Id>meirin</Id>
       <Name>红美铃</Name>
-      <Description>【护卫】：
-如果场上有护卫，
-对手无法攻击护卫以外的目标，
-每一个玩家的场上最多只能有1张护卫
-【反击1】：
-被攻击后造成1点反击伤害
+      <Description>【护卫】：如果场上有护卫，
+对手无法攻击护卫以外的目标
+【反击1】：被攻击后造成1点反击伤害
       </Description>
       <ArtworkUri>Textures/Characters/meirin_stand</ArtworkUri>
       <Behaviors>
@@ -519,16 +502,16 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
       <Id>mokou</Id>
       <Name>藤原妹红</Name>
-      <Description>当被破坏时，
-对破坏者造成3点伤害
-      </Description>
+      <Description>【自爆4】当被破坏时，
+对破坏者造成4点伤害
+</Description>
       <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>2</Attack>
-          <Life>2</Life>
+          <Attack>1</Attack>
+          <Life>1</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -538,8 +521,8 @@ X等于己方场上本卡的数量
           <Name>SummonWeakness</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathBomb+ModelType">
-          <Name>凤凰烈焰</Name>
-          <Damage>3</Damage>
+          <Name>自爆</Name>
+          <Damage>4</Damage>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
@@ -550,10 +533,7 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource19" Type="TouhouSpring.EditorCardModel">
       <Id>chen</Id>
       <Name>八云橙</Name>
-      <Description>式神化猫【被动】
-己方主角卡具有【穿透】效果
-（进攻阶段，所有卡造成的溢出
-伤害直接作用于主角卡）
+      <Description>
       </Description>
       <ArtworkUri>Textures/Characters/chen_stand</ArtworkUri>
       <Behaviors>
@@ -599,10 +579,7 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
       <Id>aya</Id>
       <Name>射命丸文</Name>
-      <Description>风神【被动】
-带有【高速】效果
-（比不带【高速】效果的卡提前造成伤害）
-      </Description>
+      <Description></Description>
       <ArtworkUri>Textures/Characters/aya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -637,7 +614,7 @@ X等于己方场上本卡的数量
           <Name>Warrior</Name>
           <Unique>true</Unique>
           <Attack>1</Attack>
-          <Life>3</Life>
+          <Life>4</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -770,9 +747,7 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource28" Type="TouhouSpring.EditorCardModel">
       <Id>koakuma</Id>
       <Name>小恶魔</Name>
-      <Description>当攻击对方角色卡时，
-对对方玩家造成1点伤害
-      </Description>
+      <Description>     </Description>
       <ArtworkUri>Textures/Characters/koakuma_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -784,10 +759,6 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Sputter_NDamage+ModelType">
-          <Name>溅射</Name>
-          <DamageToDeal>1</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -847,22 +818,22 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource31" Type="TouhouSpring.EditorCardModel">
       <Id>yuyuko</Id>
       <Name>西行寺幽幽子</Name>
-      <Description>此卡受到所有伤害-1</Description>
+      <Description>【灵体】受到单次的伤害固定为1。
+本卡的体力不能上升
+【诱亡】在对方场上所有角色卡上放置1个樱花指示物，
+然后将所有带有4个樱花指示物的角色卡送入冥界
+</Description>
       <ArtworkUri>Textures/Characters/yuyuko_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
           <Attack>3</Attack>
-          <Life>4</Life>
+          <Life>5</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>4</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Shield_NDamage+ModelType">
-          <Name>厚皮</Name>
-          <DamageToMod>1</DamageToMod>
+          <Cost>6</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -873,6 +844,9 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathOnAccumulatedCounter+ModelType">
           <Name>诱亡</Name>
           <NumCounters>4</NumCounters>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_SpiritForm+ModelType">
+          <Name>灵体</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -892,25 +866,34 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource33" Type="TouhouSpring.EditorCardModel">
       <Id>alice_2</Id>
       <Name>爱丽丝·玛格特罗依德</Name>
-      <Description></Description>
+      <Description>【人形师】【上场X】：上场时可以选择
+额外消耗X点灵力。每多消耗1点灵力，
+将1张名为人形的1/1角色卡放置上场
+【羁绊】：在己方行动阶段开始时，
+如果场上有人形卡，则将本卡从冥界移回手牌
+</Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>TouhouSpring.Behaviors.Warrior</Name>
-          <Unique>true</Unique>
-          <Attack>2</Attack>
-          <Life>5</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
-          <Name>TouhouSpring.Behaviors.ManaCost</Name>
-          <Cost>4</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
-          <Name>TouhouSpring.Behaviors.SummonWeakness</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_AliceDollSummonByMana+ModelType">
           <Name>人偶召唤（灵力）</Name>
           <SummonType>#Resource2</SummonType>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist_Doom+ModelType">
+          <Name>Assist_Doom</Name>
+          <DamageThreshold>0</DamageThreshold>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>

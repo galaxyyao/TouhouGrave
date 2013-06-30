@@ -89,7 +89,7 @@ namespace TouhouSpring.Behaviors
             m_defenseMod = (original as Passive_AllFriendWarriorAttackUpWhileDefenseUp).m_defenseMod;
         }
 
-        [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpWhileDefenseUp), DefaultName = "御柱特攻")]
+        [BehaviorModel(typeof(Passive_AllFriendWarriorAttackUpWhileDefenseUp), Category = "v0.5/Passive", DefaultName = "攻防光环")]
         public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }

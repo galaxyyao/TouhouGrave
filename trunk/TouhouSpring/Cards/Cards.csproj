@@ -69,21 +69,14 @@
     <None Include="Behaviors\Deprecated\Passive_HeroPenetrate.cs" />
     <None Include="Behaviors\Deprecated\Passive_HeroAttackUpWithCardNumber.cs" />
     <Compile Include="Behaviors\Enhance.cs" />
-    <Compile Include="Behaviors\ManaCost.cs" />
-    <Compile Include="Behaviors\Passive_AliceDollSummon.cs" />
-    <Compile Include="Behaviors\Assault_SingleWarriorBoostForXRounds.cs" />
+    <None Include="Behaviors\Deprecated\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Environment.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
     <Compile Include="Behaviors\LastingEffect.cs" />
-    <Compile Include="Behaviors\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
-    <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
-    <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
-    <Compile Include="Behaviors\Passive_ManaGainUpWhenAttackedByWarrior.cs" />
-    <Compile Include="Behaviors\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
-    <Compile Include="Behaviors\Passive_WarriorAlwaysStandBy.cs" />
-    <Compile Include="Behaviors\Spell_DamageDirectToPlayer.cs" />
-    <Compile Include="Behaviors\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
-    <Compile Include="Behaviors\SummonWeakness.cs" />
+    <None Include="Behaviors\Deprecated\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
+    <None Include="Behaviors\Deprecated\Passive_ManaGainUpWhenAttackedByWarrior.cs" />
+    <None Include="Behaviors\Deprecated\Passive_WarriorAlwaysStandBy.cs" />
+    <None Include="Behaviors\Deprecated\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

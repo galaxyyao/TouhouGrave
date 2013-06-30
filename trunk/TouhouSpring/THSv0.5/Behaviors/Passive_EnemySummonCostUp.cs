@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
-        [BehaviorModel(typeof(Passive_EnemySummonCostUp), DefaultName = "The World")]
+        [BehaviorModel(typeof(Passive_EnemySummonCostUp), DefaultName = "The World", Category = "v0.5/Passive")]
         public class ModelType : BehaviorModel
         { }
     }

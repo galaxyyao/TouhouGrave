@@ -5,8 +5,8 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Assault_SingleWarriorBoostForXRounds :
-        BaseBehavior<Assault_SingleWarriorBoostForXRounds.ModelType>,
+    public sealed class Spell_AttackGrowth_NRounds :
+        BaseBehavior<Spell_AttackGrowth_NRounds.ModelType>,
         ILocalPrerequisiteTrigger<Commands.PlayCard>,
         ILocalEpilogTrigger<Commands.PlayCard>
     {
@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Assault_SingleWarriorBoostForXRounds), DefaultName = "鬼神")]
+        [BehaviorModel(typeof(Spell_AttackGrowth_NRounds), DefaultName = "短时间持续攻击增长", Category = "v0.5/Spell")]
         public class ModelType : BehaviorModel
         {
             public int AttackBoost { get; set; }
