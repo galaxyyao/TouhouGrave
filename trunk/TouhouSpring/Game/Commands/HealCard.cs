@@ -42,7 +42,7 @@ namespace TouhouSpring.Commands
             {
                 FailValidation("Life can only be healed to cards on battlefield.");
             }
-            else if (!Target.Behaviors.Has<Behaviors.Warrior>())
+            else if (Target.Warrior == null)
             {
                 FailValidation("Life can not be healed to non-warrior cards.");
             }
@@ -55,8 +55,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            var warrior = Target.Behaviors.Get<Behaviors.Warrior>();
-            warrior.Life += LifeToHeal;
+            Target.Warrior.Life += LifeToHeal;
         }
     }
 }

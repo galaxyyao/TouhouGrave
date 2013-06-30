@@ -13,10 +13,10 @@ namespace TouhouSpring.Behaviors
         public void RunGlobalEpilog(Commands.StartTurn command)
         {
             if (Host.Owner == Game.ActingPlayer
+                && Host.Warrior != null
                 && Host.IsOnBattlefield)
-                Game.QueueCommands(new Commands.HealCard(Host
-                    , Host.Behaviors.Get<Warrior>().MaxLife - Host.Behaviors.Get<Warrior>().Life
-                    , this));
+                Game.QueueCommands(
+                    new Commands.HealCard(Host, Host.Warrior.MaxLife - Host.Warrior.Life, this));
         }
 
         [BehaviorModel(typeof(Passive_RegenerateFull), Category = "v0.5/Passive", DefaultName = "单卡完全恢复")]

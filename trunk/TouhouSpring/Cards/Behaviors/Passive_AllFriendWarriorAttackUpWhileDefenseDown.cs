@@ -21,12 +21,11 @@ namespace TouhouSpring.Behaviors
                 // enter battlefield
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if (warrior != null)
+                    if (card.Warrior != null)
                     {
                         Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
-                            new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
+                            new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
+                            new Commands.SendBehaviorMessage(card.Warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
                     }
                 }
             }
@@ -36,12 +35,11 @@ namespace TouhouSpring.Behaviors
                 // leave battlefield
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
-                    var warrior = card.Behaviors.Get<Warrior>();
-                    if (warrior != null)
+                    if (card.Warrior != null)
                     {
                         Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }),
-                            new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "remove", m_defenseMod }));
+                            new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "remove", m_attackMod }),
+                            new Commands.SendBehaviorMessage(card.Warrior, "DefenseModifiers", new object[] { "remove", m_defenseMod }));
                     }
                 }
             }
@@ -55,15 +53,12 @@ namespace TouhouSpring.Behaviors
                 // enter battlefield
                 if (command.Subject != Host
                     && command.Subject.Owner == Host.Owner
+                    && Host.Warrior != null
                     && Host.IsOnBattlefield)
                 {
-                    var warrior = command.Subject.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                    {
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
-                            new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
-                    }
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(Host.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }),
+                        new Commands.SendBehaviorMessage(Host.Warrior, "DefenseModifiers", new object[] { "add", m_defenseMod }));
                 }
             }
             else if (command.FromZoneType == ZoneType.OnBattlefield
@@ -72,15 +67,12 @@ namespace TouhouSpring.Behaviors
                 // leave battlefield
                 if (command.Subject != Host
                     && command.Subject.Owner == Host.Owner
+                    && Host.Warrior != null
                     && Host.IsOnBattlefield)
                 {
-                    var warrior = command.Subject.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                    {
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }),
-                            new Commands.SendBehaviorMessage(warrior, "DefenseModifiers", new object[] { "remove", m_defenseMod }));
-                    }
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(Host.Warrior, "AttackModifiers", new object[] { "remove", m_attackMod }),
+                        new Commands.SendBehaviorMessage(Host.Warrior, "DefenseModifiers", new object[] { "remove", m_defenseMod }));
                 }
             }
         }

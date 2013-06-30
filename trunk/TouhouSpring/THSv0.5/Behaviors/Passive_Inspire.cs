@@ -15,17 +15,13 @@ namespace TouhouSpring.Behaviors
 
         void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
         {
-            if (!m_inspired && command.Cause == Host.Behaviors.Get<Warrior>())
+            if (!m_inspired && Host.Warrior != null && command.Cause == Host.Warrior)
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
-                    if (card != Host)
+                    if (card != Host && card.Warrior != null)
                     {
-                        var warrior = card.Behaviors.Get<Warrior>();
-                        if (warrior != null)
-                        {
-                            Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackModifier }));
-                        }
+                        Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "add", m_attackModifier }));
                     }
                 }
                 m_inspired = true;
@@ -38,13 +34,10 @@ namespace TouhouSpring.Behaviors
                 && command.FromZone == SystemZone.Battlefield
                 && command.ToZoneType != ZoneType.OnBattlefield
                 && command.Subject != Host
-                && command.Subject.Owner == Host.Owner)
+                && command.Subject.Owner == Host.Owner
+                && command.Subject.Warrior != null)
             {
-                var warrior = command.Subject.Behaviors.Get<Warrior>();
-                if (warrior != null)
-                {
-                    Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackModifier }));
-                }
+                Game.QueueCommands(new Commands.SendBehaviorMessage(command.Subject.Warrior, "AttackModifiers", new object[] { "remove", m_attackModifier }));
             }
         }
 
@@ -56,13 +49,9 @@ namespace TouhouSpring.Behaviors
             {
                 foreach (var card in Host.Owner.CardsOnBattlefield)
                 {
-                    if (card != Host)
+                    if (card != Host && card.Warrior != null)
                     {
-                        var warrior = card.Behaviors.Get<Warrior>();
-                        if (warrior != null)
-                        {
-                            Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackModifier }));
-                        }
+                        Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "remove", m_attackModifier }));
                     }
                 }
                 m_inspired = false;

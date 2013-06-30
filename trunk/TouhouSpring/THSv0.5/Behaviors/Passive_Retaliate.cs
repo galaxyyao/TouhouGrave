@@ -11,16 +11,14 @@ namespace TouhouSpring.Behaviors
     {
         public void RunLocalEpilog(Commands.DealDamageToCard command)
         {
-            if (command.Cause is Warrior)
+            if (command.Cause is Warrior
+                && Host.Warrior != null
+                && command.Cause != Host.Warrior)
             {
-                var warrior = Host.Behaviors.Get<Warrior>();
-                if (warrior != null)
-                {
                     Game.QueueCommands(new Commands.DealDamageToCard(
                         (command.Cause as Warrior).Host,
-                        warrior.Attack,
+                        Host.Warrior.Attack,
                         this));
-                }
             }
         }
 

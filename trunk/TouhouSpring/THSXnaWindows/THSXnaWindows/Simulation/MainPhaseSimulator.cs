@@ -110,7 +110,7 @@ namespace TouhouSpring.Simulation
                     yield return new PlayCardChoice(
                         indexedCard.Int,
                         indexedCard.Card.Guid,
-                        indexedCard.Card.Behaviors.Has<Behaviors.Warrior>())
+                        indexedCard.Card.Warrior != null)
 #if DEBUG
                     { DebugName = indexedCard.Card.Model.Name }
 #endif

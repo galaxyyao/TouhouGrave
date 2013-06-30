@@ -20,10 +20,9 @@ namespace TouhouSpring.Behaviors
 
         void ILocalEpilogTrigger<Commands.DealDamageToCard>.RunLocalEpilog(Commands.DealDamageToCard command)
         {
-            var warrior = Host.Behaviors.Get<Warrior>();
-            if (warrior != null
-                && warrior.Life > -command.DamageToDeal
-                && warrior.Life <= 0)
+            if (Host.Warrior != null
+                && Host.Warrior.Life > -command.DamageToDeal
+                && Host.Warrior.Life <= 0)
             {
                 m_fatalDamageCause = command.Cause as IBehavior;
             }
@@ -33,10 +32,9 @@ namespace TouhouSpring.Behaviors
         {
             if (m_fatalDamageCause != null)
             {
-                var warrior = Host.Behaviors.Get<Warrior>();
-                if (warrior.Life <= 0)
+                if (Host.Warrior.Life <= 0)
                 {
-                    OnDeath(m_fatalDamageCause, warrior);
+                    OnDeath(m_fatalDamageCause, Host.Warrior);
                 }
             }
             m_fatalDamageCause = null;

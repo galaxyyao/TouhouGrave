@@ -11,12 +11,11 @@ namespace TouhouSpring.Behaviors
     {
         void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
         {
-            // TODO: cache hostwarrior
-            var hostWarrior = Host.Behaviors.Get<Warrior>();
-            if (hostWarrior != null && command.Cause == hostWarrior)
+            if (Host.Warrior != null && command.Cause == Host.Warrior)
             {
-                var overflewDamage = Math.Max(-command.Target.Behaviors.Get<Warrior>().Life, 0);
-                Game.QueueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Math.Min(overflewDamage, hostWarrior.Attack), this));
+                var overflewDamage = Math.Max(-command.Target.Warrior.Life, 0);
+                overflewDamage = Math.Min(overflewDamage, Host.Warrior.Attack);
+                Game.QueueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, overflewDamage, this));
             }
         }
 

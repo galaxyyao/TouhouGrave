@@ -22,7 +22,10 @@ namespace TouhouSpring.Behaviors
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                         .SelectMany(player => player.CardsOnBattlefield))
                 {
-                    AffectByAura(card);
+                    if (card.Warrior != null)
+                    {
+                        AffectByAura(card);
+                    }
                 }
             }
             else if (command.FromZoneType == ZoneType.OnBattlefield
@@ -32,32 +35,31 @@ namespace TouhouSpring.Behaviors
                 foreach (var card in Game.Players.Where(player => player != Host.Owner)
                     .SelectMany(player => player.CardsOnBattlefield))
                 {
-                    LeaveAura(card);
+                    if (card.Warrior != null)
+                    {
+                        LeaveAura(card);
+                    }
                 }
             }
         }
 
         public void RunGlobalEpilog(Commands.IMoveCard command)
         {
-            if (command.FromZoneType != ZoneType.OnBattlefield
-                && command.ToZoneType == ZoneType.OnBattlefield)
+            if (command.Subject != Host
+                && command.Subject.Owner != Host.Owner
+                && command.Subject.Warrior != null
+                && Host.IsOnBattlefield)
             {
-                // enter battlefield
-                if (command.Subject != Host
-                    && command.Subject.Owner != Host.Owner
-                    && Host.IsOnBattlefield)
+                if (command.FromZoneType != ZoneType.OnBattlefield
+                    && command.ToZoneType == ZoneType.OnBattlefield)
                 {
+                    // enter battlefield
                     AffectByAura(command.Subject);
                 }
-            }
-            else if (command.FromZoneType == ZoneType.OnBattlefield
-                     && command.ToZoneType != ZoneType.OnBattlefield)
-            {
-                // leave battlefield
-                if (command.Subject != Host
-                    && command.Subject.Owner != Host.Owner
-                    && Host.IsOnBattlefield)
+                else if (command.FromZoneType == ZoneType.OnBattlefield
+                         && command.ToZoneType != ZoneType.OnBattlefield)
                 {
+                    // leave battlefield
                     LeaveAura(command.Subject);
                 }
             }
@@ -65,20 +67,12 @@ namespace TouhouSpring.Behaviors
 
         private void AffectByAura(CardInstance card)
         {
-            var warrior = card.Behaviors.Get<Warrior>();
-            if (warrior != null)
-            {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
-            }
+            Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
         }
 
         private void LeaveAura(CardInstance card)
         {
-            var warrior = card.Behaviors.Get<Warrior>();
-            if (warrior != null)
-            {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
-            }
+            Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
         }
 
         protected override void OnInitialize()

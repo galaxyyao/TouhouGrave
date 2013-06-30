@@ -13,12 +13,12 @@ namespace TouhouSpring.Behaviors
 
         public void RunLocalEpilog(Commands.AddBehavior command)
         {
-            if (command.Target.Behaviors.Has<Warrior>())
+            if (Host.Warrior != null)
             {
                 if (m_attackModifier != null)
                 {
                     Game.QueueCommands(new Commands.SendBehaviorMessage(
-                        command.Target.Behaviors.Get<Warrior>(),
+                        Host.Warrior,
                         "AttackModifiers",
                         new object[] { "add", m_attackModifier }));
                 }
@@ -34,7 +34,7 @@ namespace TouhouSpring.Behaviors
             if (m_attackModifier != null)
             {
                 Game.QueueCommands(new Commands.SendBehaviorMessage(
-                    Host.Behaviors.Get<Warrior>(),
+                    Host.Warrior,
                     "AttackModifiers",
                     new object[] { "remove", m_attackModifier }));
                 m_attackModifier = null;

@@ -19,10 +19,10 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card.Behaviors.Has<Hero>())
                         continue;
-                    if (!card.Behaviors.Has<Warrior>())
-                        continue;
-
-                    Game.QueueCommands(new Commands.DealDamageToCard(card, Model.Damage, this));
+                    if (card.Warrior != null)
+                    {
+                        Game.QueueCommands(new Commands.DealDamageToCard(card, Model.Damage, this));
+                    }
                 }
             }
         }

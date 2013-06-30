@@ -14,10 +14,9 @@ namespace TouhouSpring.Behaviors
 
     internal interface IInternalBehavior : IBehavior
     {
+        new CardInstance Host { get; set; }
         void Initialize(IBehaviorModel model, bool persistent);
         void TransferFrom(IBehavior original);
-        void Bind(CardInstance host);
-        void Unbind();
         void ReceiveMessage(string message, object[] args);
     }
 }

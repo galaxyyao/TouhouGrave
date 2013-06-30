@@ -27,7 +27,7 @@ namespace TouhouSpring.Behaviors
         CommandResult ILocalPrerequisiteTrigger<Commands.CastSpell>.RunLocalPrerequisite(Commands.CastSpell command)
         {
             Game.NeedTargets(this,
-                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()),
+                Host.Owner.CardsOnBattlefield.Where(card => card.Warrior != null),
                 "Select a card to cast Reckless on.");
             return CommandResult.Pass;
         }
@@ -35,11 +35,10 @@ namespace TouhouSpring.Behaviors
         void ICastableSpell.RunSpell(Commands.CastSpell command)
         {
             var target = Game.GetTargets(this)[0];
-            var warrior = target.Behaviors.Get<Warrior>();
-            if (warrior != null)
+            if (target.Warrior != null)
             {
                 Game.QueueCommands(
-                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackModifier }),
+                    new Commands.SendBehaviorMessage(target.Warrior, "AttackModifiers", new object[] { "add", m_attackModifier }),
                     new Commands.AddBehavior(target, new RecklessnessEffect.ModelType().CreateInitialized()),
                     new Commands.DeactivateAssist(Host));
             }

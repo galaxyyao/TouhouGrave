@@ -44,7 +44,7 @@ namespace TouhouSpring.Commands
             {
                 FailValidation("Damage can only be dealt to cards on battlefield.");
             }
-            else if (!Target.Behaviors.Has<Behaviors.Warrior>())
+            else if (Target.Warrior == null)
             {
                 FailValidation("Damage cannot be dealt to non-warrior cards.");
             }
@@ -57,7 +57,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            Target.Behaviors.Get<Behaviors.Warrior>().Life -= DamageToDeal;
+            Target.Warrior.Life -= DamageToDeal;
         }
     }
 }

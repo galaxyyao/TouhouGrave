@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
         /// </summary>
         public CardInstance Host
         {
-            get; private set;
+            get; internal set;
         }
 
         /// <summary>
@@ -42,6 +42,12 @@ namespace TouhouSpring.Behaviors
         IBehaviorModel IBehavior.Model
         {
             get { return Model; }
+        }
+
+        CardInstance IInternalBehavior.Host
+        {
+            get { return Host; }
+            set { Host = value; }
         }
 
         void IInternalBehavior.Initialize(IBehaviorModel model, bool persistent)
@@ -74,25 +80,6 @@ namespace TouhouSpring.Behaviors
             Model = (T)original.Model;
             Persistent = original.Persistent;
             OnTransferFrom(original);
-        }
-
-        /// <summary>
-        /// Called by CardInstance for binding this behavior to it.
-        /// </summary>
-        /// <param name="host">The hosting card</param>
-        void IInternalBehavior.Bind(CardInstance host)
-        {
-            Debug.Assert(Host == null && host != null);
-            Host = host;
-        }
-
-        /// <summary>
-        /// Called by CardInstance for unbinding this behavior from it.
-        /// </summary>
-        void IInternalBehavior.Unbind()
-        {
-            Debug.Assert(Host != null);
-            Host = null;
         }
 
         void IInternalBehavior.ReceiveMessage(string message, object[] args) { OnMessage(message, args); }

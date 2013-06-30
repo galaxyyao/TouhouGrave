@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
         void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             if (command.Cause is Warrior
-                && command.Cause == Host.Behaviors.Get<Warrior>())
+                && command.Cause == Host.Warrior)
             {
                 m_lastTurnAttacked = true;
             }

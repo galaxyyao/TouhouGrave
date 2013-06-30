@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
             {
                 var selectedCard = new Interactions.SelectCards(
                     Host.Owner,
-                    Game.ActingPlayerEnemies.SelectMany(p => p.CardsOnBattlefield).Where(c => c.Behaviors.Has<Warrior>()),
+                    Game.ActingPlayerEnemies.SelectMany(p => p.CardsOnBattlefield).Where(c => c.Warrior != null),
                     Interactions.SelectCards.SelectMode.Single,
                     "指定1张对手的卡，造成伤害").Run();
                 if (selectedCard.Count > 0)

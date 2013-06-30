@@ -87,7 +87,24 @@ namespace TouhouSpring.Behaviors
             }
 
             m_behaviors.Add(item);
-            (item as IInternalBehavior).Bind(m_host);
+            Debug.Assert(item.Host == null);
+            (item as IInternalBehavior).Host = m_host;
+
+            var warrior = item as Warrior;
+            if (warrior != null)
+            {
+                Debug.Assert(m_host.Warrior == null);
+                m_host.Warrior = warrior;
+            }
+            else
+            {
+                var assist = item as Assist;
+                if (assist != null)
+                {
+                    Debug.Assert(m_host.Assist == null);
+                    m_host.Assist = assist;
+                }
+            }
         }
 
         internal bool Remove(IBehavior item)
@@ -100,9 +117,7 @@ namespace TouhouSpring.Behaviors
             int index = m_behaviors.IndexOf(item);
             if (index != -1)
             {
-                Debug.Assert(item.Host == m_host);
-                (item as IInternalBehavior).Unbind();
-                m_behaviors.RemoveAt(index);
+                RemoveAt(index);
                 return true;
             }
 
@@ -116,9 +131,19 @@ namespace TouhouSpring.Behaviors
                 throw new ArgumentOutOfRangeException("index", "Index is out of range.");
             }
 
-            Debug.Assert(m_behaviors[index].Host == m_host);
-            (m_behaviors[index] as IInternalBehavior).Unbind();
+            var bhv = m_behaviors[index];
+            Debug.Assert(bhv.Host == m_host);
+            (bhv as IInternalBehavior).Host = null;
             m_behaviors.RemoveAt(index);
+
+            if (m_host.Warrior == bhv)
+            {
+                m_host.Warrior = null;
+            }
+            else if (m_host.Assist == bhv)
+            {
+                m_host.Assist = null;
+            }
         }
     }
 }

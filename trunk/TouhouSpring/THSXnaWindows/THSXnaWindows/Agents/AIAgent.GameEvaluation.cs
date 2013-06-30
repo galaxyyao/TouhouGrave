@@ -47,15 +47,14 @@ namespace TouhouSpring.Agents
             double totalCardValues = 0;
             foreach (var card in player.CardsOnBattlefield)
             {
-                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                if (warrior == null)
+                if (card.Warrior == null)
                 {
                     continue;
                 }
 
-                totalCardAttacks += !card.Behaviors.Has<Behaviors.Unattackable>() ? warrior.Attack : 0;
+                totalCardAttacks += !card.Behaviors.Has<Behaviors.Unattackable>() ? card.Warrior.Attack : 0;
 
-                double weight = Math.Max(1 - (double)warrior.Life / warrior.MaxLife, 0);
+                double weight = Math.Max(1 - (double)card.Warrior.Life / card.Warrior.MaxLife, 0);
                 weight = Math.Sqrt(1 - weight * weight);
 
                 totalCardValues += GetScore(card.Model) * weight;
@@ -103,15 +102,14 @@ namespace TouhouSpring.Agents
             double totalCardValues = 0;
             foreach (var card in player.CardsOnBattlefield)
             {
-                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                if (warrior == null)
+                if (card.Warrior == null)
                 {
                     continue;
                 }
 
-                totalCardAttacks += !card.Behaviors.Has<Behaviors.Unattackable>() ? warrior.Attack : 0;
+                totalCardAttacks += !card.Behaviors.Has<Behaviors.Unattackable>() ? card.Warrior.Attack : 0;
 
-                double weight = Math.Max(1 - (double)warrior.Life / warrior.MaxLife, 0);
+                double weight = Math.Max(1 - (double)card.Warrior.Life / card.Warrior.MaxLife, 0);
                 weight = Math.Sqrt(1 - weight * weight);
 
                 totalCardValues += GetScore(card.Model) * weight;

@@ -12,8 +12,9 @@ namespace TouhouSpring.Behaviors
     {
         public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
-            if (Host.IsOnBattlefield
-                && command.Cause == Host.Behaviors.Get<Warrior>())
+            if (Host.Warrior != null
+                && command.Cause == Host.Warrior
+                && Host.IsOnBattlefield)
             {
                 Game.QueueCommands(new Commands.SubtractPlayerLife(command.Target.Owner, Model.DamageToDeal, this));
             }

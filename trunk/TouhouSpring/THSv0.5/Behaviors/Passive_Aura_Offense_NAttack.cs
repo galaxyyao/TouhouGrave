@@ -18,12 +18,11 @@ namespace TouhouSpring.Behaviors
         {
             foreach (var card in Host.Owner.CardsOnBattlefield)
             {
-                var warrior = card.Behaviors.Get<Warrior>();
-                if (warrior == null)
-                    continue;
-
-                Game.QueueCommands(
-                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                if (card.Warrior != null)
+                {
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                }
             }
         }
 
@@ -31,12 +30,11 @@ namespace TouhouSpring.Behaviors
         {
             foreach (var card in Host.Owner.CardsOnBattlefield)
             {
-                var warrior = card.Behaviors.Get<Warrior>();
-                if (warrior == null)
-                    continue;
-
-                Game.QueueCommands(
-                    new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
+                if (card.Warrior != null)
+                {
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
+                }
             }
         }
 
@@ -44,27 +42,20 @@ namespace TouhouSpring.Behaviors
         {
             if (Host.IsActivatedAssist
                 && Host.Owner == command.Subject.Owner
-                && Host != command.Subject)
+                && Host != command.Subject
+                && command.Subject.Warrior != null)
             {
                 if (command.FromZoneType != ZoneType.OnBattlefield
                     && command.ToZoneType == ZoneType.OnBattlefield)
                 {
-                    var warrior = command.Subject.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                    {
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
-                    }
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(command.Subject.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
                 }
                 else if (command.FromZoneType == ZoneType.OnBattlefield
                          && command.ToZoneType != ZoneType.OnBattlefield)
                 {
-                    var warrior = command.Subject.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                    {
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
-                    }
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(command.Subject.Warrior, "AttackModifiers", new object[] { "remove", m_attackMod }));
                 }
             }
         }

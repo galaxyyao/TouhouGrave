@@ -28,6 +28,12 @@ namespace TouhouSpring
             get; internal set;
         }
 
+        // set by Warrior behavior
+        public Behaviors.Warrior Warrior
+        {
+            get; internal set;
+        }
+
         public bool IsOnBattlefield
         {
             get { return Zone == SystemZone.Battlefield; }

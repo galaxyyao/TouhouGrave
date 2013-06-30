@@ -12,9 +12,10 @@ namespace TouhouSpring.Behaviors
     {
         public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
-            if(command.Cause==Host.Behaviors.Get<Warrior>()
+            if (Host.Warrior != null
+                && command.Cause == Host.Warrior
                 && Host.IsOnBattlefield
-                && Game.ActingPlayer==Host.Owner)
+                && Game.ActingPlayer == Host.Owner)
             {
                 Game.QueueCommands(new Commands.HealCard(Host, Model.LifeToHeal, this));
             }

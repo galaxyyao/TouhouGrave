@@ -20,16 +20,15 @@ namespace TouhouSpring.Commands
         {
             foreach (var card in Context.Game.Players
                 .SelectMany(player => player.CardsOnBattlefield)
-                .Where(card => card.Behaviors.Has<Behaviors.Warrior>()))
+                .Where(card => card.Warrior != null))
             {
-                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                if (warrior.Life <= 0)
+                if (card.Warrior.Life <= 0)
                 {
                     Context.QueueCommand(new Commands.MoveCard(card, SystemZone.Graveyard, this));
                 }
-                else if (warrior.Life > warrior.MaxLife)
+                else if (card.Warrior.Life > card.Warrior.MaxLife)
                 {
-                    warrior.Life = warrior.MaxLife;
+                    card.Warrior.Life = card.Warrior.MaxLife;
                 }
             }
         }

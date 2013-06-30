@@ -17,7 +17,7 @@ namespace TouhouSpring.Behaviors
             Game.NeedTargets(this,
                 Game.Players.Where(player => player != Host.Owner)
                 .SelectMany(player => player.CardsOnBattlefield)
-                .Where(card => card.Behaviors.Has<Warrior>()),
+                .Where(card => card.Warrior != null),
                 "指定1张对手的卡，造成伤害");
             return CommandResult.Pass;
         }

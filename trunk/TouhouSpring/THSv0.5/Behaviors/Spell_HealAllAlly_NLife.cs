@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             foreach (var card in Game.ActingPlayer.CardsOnBattlefield)
             {
-                if (card.Behaviors.Has<Warrior>())
+                if (card.Warrior != null)
                 {
                     Game.QueueCommands(new Commands.HealCard(card, Model.LifeToHeal, this));
                 }

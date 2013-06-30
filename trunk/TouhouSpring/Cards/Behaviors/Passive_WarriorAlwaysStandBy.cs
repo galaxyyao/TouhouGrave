@@ -12,9 +12,10 @@ namespace TouhouSpring.Behaviors
         public void RunGlobalEpilog(Commands.StartPhase command)
         {
             if (command.PhaseName == "Cleanup"
-                && Host.IsOnBattlefield && Host.Behaviors.Has<Warrior>())
+                && Host.Warrior != null
+                && Host.IsOnBattlefield)
             {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, "GoStandingBy", null));
             }
         }
 

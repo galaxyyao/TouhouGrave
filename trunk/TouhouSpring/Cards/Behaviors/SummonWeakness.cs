@@ -16,11 +16,11 @@ namespace TouhouSpring.Behaviors
         {
             if (command.ToZoneType == ZoneType.OnBattlefield
                 && command.FromZoneType != ZoneType.OnBattlefield
-                && Host.Behaviors.Has<Warrior>())
+                && Host.Warrior != null)
             {
                 Game.QueueCommands(
                     new Commands.AddBehavior(Host, new Effect.ModelType().CreateInitialized()),
-                    new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
+                    new Commands.SendBehaviorMessage(Host.Warrior, "GoCoolingDown", null));
             }
         }
 
@@ -28,13 +28,13 @@ namespace TouhouSpring.Behaviors
         {
             if (command.PhaseName == "Cleanup"
                 && Game.ActingPlayer == Host.Owner
+                && Host.Warrior != null
                 && Host.IsOnBattlefield
-                && Host.Behaviors.Has<Warrior>()
                 && Host.Behaviors.Has<Effect>())
             {
                 Game.QueueCommands(
                     new Commands.RemoveBehavior(Host, Host.Behaviors.Get<Effect>()),
-                    new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoStandingBy", null));
+                    new Commands.SendBehaviorMessage(Host.Warrior, "GoStandingBy", null));
             }
         }
 

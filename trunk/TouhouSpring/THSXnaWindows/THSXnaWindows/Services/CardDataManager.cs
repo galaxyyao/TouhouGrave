@@ -93,7 +93,7 @@ namespace TouhouSpring.Services
                 var manaCost = card.Behaviors.Get<Behaviors.ManaCost>();
                 SummonCost = manaCost != null ? manaCost.Cost : -1;
 
-                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
+                var warrior = card.Warrior;
                 IsWarrior = warrior != null;
                 AttackAndInitialAttack = new Tuple<int, int>(warrior != null ? warrior.Attack : -1, warrior != null ? warrior.InitialAttack : -1);
                 LifeAndInitialLife = new Tuple<int, int>(warrior != null ? warrior.Life : -1, warrior != null ? warrior.InitialLife : -1);

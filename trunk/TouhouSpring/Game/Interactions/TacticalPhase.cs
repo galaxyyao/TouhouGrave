@@ -403,8 +403,7 @@ namespace TouhouSpring.Interactions
         {
             foreach (var card in player.CardsOnBattlefield)
             {
-                var warrior = card.Behaviors.Get<Behaviors.Warrior>();
-                if (warrior != null && warrior.State == Behaviors.WarriorState.StandingBy
+                if (card.Warrior != null && card.Warrior.State == Behaviors.WarriorState.StandingBy
                     && !card.Behaviors.Has<Behaviors.Unattackable>())
                 {
                     yield return card;
@@ -420,7 +419,7 @@ namespace TouhouSpring.Interactions
                 {
                     foreach (var card in p.CardsOnBattlefield)
                     {
-                        if (card.Behaviors.Has<Behaviors.Warrior>()
+                        if (card.Warrior != null
                             && !card.Behaviors.Has<Behaviors.Undefendable>())
                         {
                             yield return card;

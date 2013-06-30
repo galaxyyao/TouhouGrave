@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
                 }
 
                 var ctx = Game.CreateResolveContext();
-                ctx.QueueCommands(new Commands.DealDamageToCard(command.Target, Host.Behaviors.Get<Warrior>().Attack, this));
+                ctx.QueueCommands(new Commands.DealDamageToCard(command.Target, Host.Warrior.Attack, this));
                 return ctx;
             }
 

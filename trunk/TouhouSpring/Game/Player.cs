@@ -209,8 +209,8 @@ namespace TouhouSpring
             public int Compare(CardInstance card1, CardInstance card2)
             {
                 // Warrior, Spell
-                var isWarrior1 = card1.Behaviors.Has<Behaviors.Warrior>();
-                var isWarrior2 = card2.Behaviors.Has<Behaviors.Warrior>();
+                var isWarrior1 = card1.Warrior != null;
+                var isWarrior2 = card2.Warrior != null;
                 if (isWarrior1 != isWarrior2)
                 {
                     return isWarrior1 ? -1 : 1;

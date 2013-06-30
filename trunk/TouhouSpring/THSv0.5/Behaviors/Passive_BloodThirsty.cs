@@ -14,22 +14,24 @@ namespace TouhouSpring.Behaviors
         public void RunGlobalEpilog(Commands.DealDamageToCard command)
         {
             if (command.DamageToDeal > 0
+                && Host.Warrior != null
                 && Host.IsOnBattlefield
-                && command.Cause == Host.Behaviors.Get<Warrior>())
+                && command.Cause == Host.Warrior)
             {
                 var m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
-                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }
 
         public void RunGlobalEpilog(Commands.SubtractPlayerLife command)
         {
             if (command.FinalAmount > 0
+                && Host.Warrior != null
                 && Host.IsOnBattlefield
-                && command.Cause == Host.Behaviors.Get<Warrior>())
+                && command.Cause == Host.Warrior)
             {
                 var m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
-                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "AttackModifiers", new object[] { "add", m_attackMod }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
             }
         }
 

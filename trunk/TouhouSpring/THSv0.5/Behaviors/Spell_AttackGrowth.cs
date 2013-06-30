@@ -16,7 +16,7 @@ namespace TouhouSpring.Behaviors
         public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
             Game.NeedTargets(this,
-                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()),
+                Host.Owner.CardsOnBattlefield.Where(card => card.Warrior != null),
                 "指定1张己方的卡，增加3点攻击力");
             return CommandResult.Pass;
         }
@@ -24,7 +24,7 @@ namespace TouhouSpring.Behaviors
         public void RunLocalEpilog(Commands.PlayCard command)
         {
             Game.QueueCommands(new Commands.SendBehaviorMessage(
-                Game.GetTargets(this)[0].Behaviors.Get<Warrior>(),
+                Game.GetTargets(this)[0].Warrior,
                 "AttackModifiers",
                 new object[] { "add", m_attackMod }));
         }

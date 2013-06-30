@@ -14,7 +14,7 @@ namespace TouhouSpring.Behaviors
         {
             var warriors = Game.Players.Where(player => player != Host.Owner)
                             .SelectMany(player => player.CardsOnBattlefield)
-                            .Where(card => card.Behaviors.Has<Warrior>());
+                            .Where(card => card.Warrior != null);
 
             foreach (var warrior in warriors)
             {

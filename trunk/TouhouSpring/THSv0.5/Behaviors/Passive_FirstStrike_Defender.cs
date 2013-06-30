@@ -15,10 +15,10 @@ namespace TouhouSpring.Behaviors
             if (firstTimeTriggering
                 && Host.IsOnBattlefield
                 && command.Cause is Warrior
-                && Host.Behaviors.Has<Warrior>())
+                && Host.Warrior != null)
             {
                 var ctx = Game.CreateResolveContext();
-                ctx.QueueCommands(new Commands.DealDamageToCard((command.Cause as Warrior).Host, Host.Behaviors.Get<Warrior>().Attack, this));
+                ctx.QueueCommands(new Commands.DealDamageToCard((command.Cause as Warrior).Host, Host.Warrior.Attack, this));
                 return ctx;
             }
 

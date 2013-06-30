@@ -12,10 +12,10 @@ namespace TouhouSpring.Behaviors
         {
             if (command.PhaseName == "Upkeep"
                 && Game.ActingPlayer == Host.Owner
-                && Host.IsOnBattlefield
-                && Host.Behaviors.Has<Warrior>())
+                && Host.Warrior != null
+                && Host.IsOnBattlefield)
             {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Behaviors.Get<Warrior>(), "GoCoolingDown", null));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, "GoCoolingDown", null));
             }
         }
     }

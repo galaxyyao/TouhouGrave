@@ -13,7 +13,7 @@ namespace TouhouSpring.Behaviors
         {
             Game.NeedTargets(
                 this,
-                Host.Owner.CardsOnBattlefield.Where(card => card.Behaviors.Has<Warrior>()),
+                Host.Owner.CardsOnBattlefield.Where(card => card.Warrior != null),
                 "Select a card to whom the ability is assigned.");
             return CommandResult.Pass;
         }

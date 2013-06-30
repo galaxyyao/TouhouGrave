@@ -21,12 +21,11 @@ namespace TouhouSpring.Behaviors
                 {
                     foreach (var card in player.CardsOnBattlefield)
                     {
-                        var warrior = card.Behaviors.Get<Warrior>();
-                        if (warrior == null)
-                            continue;
-
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_modifier }));
+                        if (card.Warrior != null)
+                        {
+                            Game.QueueCommands(
+                                new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "add", m_modifier }));
+                        }
                     }
                 }
             }
@@ -41,12 +40,11 @@ namespace TouhouSpring.Behaviors
                 {
                     foreach (var card in player.CardsOnBattlefield)
                     {
-                        var warrior = card.Behaviors.Get<Warrior>();
-                        if (warrior == null)
-                            continue;
-
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_modifier }));
+                        if (card.Warrior != null)
+                        {
+                            Game.QueueCommands(
+                                new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "remove", m_modifier }));
+                        }
                     }
                 }
             }
@@ -55,28 +53,21 @@ namespace TouhouSpring.Behaviors
         public void RunGlobalEpilog(Commands.IMoveCard command)
         {
             if (Host.IsActivatedAssist && Host != command.Subject
+                && command.Subject.Warrior != null
                 && (command.Subject.Owner == Host.Owner && (Model.Affects & ModelType.AuraAffects.Ally) != 0
                     || command.Subject.Owner != Host.Owner && (Model.Affects & ModelType.AuraAffects.Enemy) != 0))
             {
                 if (command.FromZoneType != ZoneType.OnBattlefield
                     && command.ToZoneType == ZoneType.OnBattlefield)
                 {
-                    var warrior = command.Subject.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                    {
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", m_modifier }));
-                    }
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(command.Subject.Warrior, "AttackModifiers", new object[] { "add", m_modifier }));
                 }
                 else if (command.FromZoneType == ZoneType.OnBattlefield
                          && command.ToZoneType != ZoneType.OnBattlefield)
                 {
-                    var warrior = command.Subject.Behaviors.Get<Warrior>();
-                    if (warrior != null)
-                    {
-                        Game.QueueCommands(
-                            new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", m_modifier }));
-                    }
+                    Game.QueueCommands(
+                        new Commands.SendBehaviorMessage(command.Subject.Warrior, "AttackModifiers", new object[] { "remove", m_modifier }));
                 }
             }
         }
