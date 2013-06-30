@@ -52,6 +52,7 @@
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Assist_Doom.cs" />
     <Compile Include="Behaviors\Passive_FinalStrike.cs" />
+    <Compile Include="Behaviors\Passive_HealSpring.cs" />
     <Compile Include="Behaviors\Passive_LowProfile.cs" />
     <Compile Include="Behaviors\Passive_OnDeath.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
