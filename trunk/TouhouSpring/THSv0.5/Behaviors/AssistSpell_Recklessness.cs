@@ -22,8 +22,6 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        private ValueModifier m_attackModifier;
-
         CommandResult ILocalPrerequisiteTrigger<Commands.CastSpell>.RunLocalPrerequisite(Commands.CastSpell command)
         {
             Game.NeedTargets(this,
@@ -38,24 +36,37 @@ namespace TouhouSpring.Behaviors
             if (target.Warrior != null)
             {
                 Game.QueueCommands(
-                    new Commands.SendBehaviorMessage(target.Warrior, "AttackModifiers", new object[] { "add", m_attackModifier }),
+                    new Commands.SendBehaviorMessage(target.Warrior, "AttackModifiers", new object[] { "add", Model.Modifier }),
                     new Commands.AddBehavior(target, new RecklessnessEffect.ModelType().CreateInitialized()),
                     new Commands.DeactivateAssist(Host));
             }
         }
 
-        protected override void OnInitialize()
-        {
-            m_attackModifier = new ValueModifier(ValueModifierOperator.Multiply, 2);
-        }
-
-        protected override void OnTransferFrom(IBehavior original)
-        {
-            m_attackModifier = (original as AssistSpell_Recklessness).m_attackModifier;
-        }
-
         [BehaviorModel(typeof(AssistSpell_Recklessness), Category = "v0.5/Assist")]
         public class ModelType : BehaviorModel
-        { }
+        {
+            public ValueModifierOperator Operator
+            {
+                get { return Modifier.Operator; }
+                set { Modifier = new ValueModifier(value, Amount, false); }
+            }
+
+            public int Amount
+            {
+                get { return Modifier.Amount; }
+                set { Modifier = new ValueModifier(Operator, value, false); }
+            }
+
+            [System.ComponentModel.Browsable(false)]
+            public ValueModifier Modifier
+            {
+                get; private set;
+            }
+
+            public ModelType()
+            {
+                Modifier = new ValueModifier(ValueModifierOperator.Multiply, 2);
+            }
+        }
     }
 }

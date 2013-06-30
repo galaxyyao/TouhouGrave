@@ -11,8 +11,6 @@ namespace TouhouSpring.Behaviors
         ILocalPrerequisiteTrigger<Commands.PlayCard>,
         ILocalEpilogTrigger<Commands.PlayCard>
     {
-        private ValueModifier m_attackMod;
-
         public CommandResult RunLocalPrerequisite(Commands.PlayCard command)
         {
             Game.NeedTargets(this,
@@ -26,22 +24,28 @@ namespace TouhouSpring.Behaviors
             Game.QueueCommands(new Commands.SendBehaviorMessage(
                 Game.GetTargets(this)[0].Warrior,
                 "AttackModifiers",
-                new object[] { "add", m_attackMod }));
-        }
-
-        protected override void OnInitialize()
-        {
-            m_attackMod = new ValueModifier(ValueModifierOperator.Add, 3);
-        }
-
-        protected override void OnTransferFrom(IBehavior original)
-        {
-            m_attackMod = (original as Spell_AttackGrowth).m_attackMod;
+                new object[] { "add", Model.Modifier }));
         }
 
         [BehaviorModel(typeof(Spell_AttackGrowth), Category = "v0.5/Spell", DefaultName = "变巨术")]
         public class ModelType : BehaviorModel
         {
+            public int Amount
+            {
+                get { return Modifier.Amount; }
+                set { Modifier = new ValueModifier(ValueModifierOperator.Add, value, false); }
+            }
+
+            [System.ComponentModel.Browsable(false)]
+            public ValueModifier Modifier
+            {
+                get; private set;
+            }
+
+            public ModelType()
+            {
+                Modifier = new ValueModifier(ValueModifierOperator.Add, 1);
+            }
         }
     }
 }

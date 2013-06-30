@@ -347,14 +347,19 @@
           <Name>ManaCost</Name>
           <Cost>5</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_DeterAura_NAttack+ModelType">
-          <Name>灵压</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_GenericAura+ModelType">
+          <Name>灵压</Name>
+          <AffectAlly>false</AffectAlly>
+          <AffectEnemy>true</AffectEnemy>
+          <AffectSelf>false</AffectSelf>
+          <Operator>Add</Operator>
+          <Amount>-1</Amount>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -683,11 +688,16 @@ X等于己方场上本卡的数量
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Aura_Offense_NAttack+ModelType">
-          <Name>进攻光环</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist_GenericAura+ModelType">
+          <Name>进攻光环（支援）</Name>
+          <AffectAlly>true</AffectAlly>
+          <AffectEnemy>false</AffectEnemy>
+          <AffectSelf>false</AffectSelf>
+          <Operator>Add</Operator>
+          <Amount>1</Amount>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
@@ -706,6 +716,7 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Spell_AttackGrowth+ModelType">
           <Name>变巨术</Name>
+          <Amount>3</Amount>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>

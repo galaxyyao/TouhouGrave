@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IGlobalEpilogTrigger<Commands.EndPhase>
     {
         private ValueModifier m_attackModifier;
-        private bool m_inspired = false;
+        private bool m_inspired;
 
         void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
         {

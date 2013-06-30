@@ -48,10 +48,14 @@
     <Compile Include="Behaviors\AssistSpell_Recklessness.cs" />
     <Compile Include="Behaviors\Assist_GenericShield.cs" />
     <Compile Include="Behaviors\Assist_PlayCardRestraint.cs" />
+    <None Include="Behaviors\Deprecated\Passive_Aura_Offense_NAttack.cs" />
+    <None Include="Behaviors\Deprecated\Passive_DeterAura_NAttack.cs" />
+    <Compile Include="Behaviors\GenericAura.cs" />
     <Compile Include="Behaviors\Passive_CantBeRetaliated.cs" />
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Assist_Doom.cs" />
     <Compile Include="Behaviors\Passive_FinalStrike.cs" />
+    <Compile Include="Behaviors\Passive_GenericAura.cs" />
     <Compile Include="Behaviors\Passive_LowProfile.cs" />
     <Compile Include="Behaviors\Passive_OnDeath.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
@@ -70,7 +74,6 @@
     <Compile Include="Behaviors\Passive_Retaliate.cs" />
     <Compile Include="Behaviors\Passive_Sputter_NDamage.cs" />
     <Compile Include="Behaviors\Spell_AttackGrowth.cs" />
-    <Compile Include="Behaviors\Passive_Aura_Offense_NAttack.cs" />
     <Compile Include="Behaviors\Passive_Aura_ReduceDamage_NDamage.cs" />
     <Compile Include="Behaviors\Passive_BloodThirsty.cs" />
     <Compile Include="Behaviors\Passive_Counterattack_NDamage.cs" />
@@ -78,7 +81,6 @@
     <Compile Include="Behaviors\Passive_DeathBomb.cs" />
     <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Passive_Bleed_ToEnemiesNDamageEachTurn.cs" />
-    <Compile Include="Behaviors\Passive_DeterAura_NAttack.cs" />
     <Compile Include="Behaviors\Passive_DrawCardOnPlay.cs" />
     <Compile Include="Behaviors\Passive_FreeRedeem.cs" />
     <Compile Include="Behaviors\Passive_PillSummon.cs" />

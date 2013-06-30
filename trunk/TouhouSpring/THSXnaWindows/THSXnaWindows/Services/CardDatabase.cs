@@ -79,6 +79,31 @@ namespace TouhouSpring.Services
         public override void Startup()
         {
             m_cardModels = GameApp.Service<ResourceManager>().Acquire<CardModel.Database>("TouhouSpring");
+
+            int bhvModels = 0;
+            int staticBhvModel = 0;
+            foreach (var bhvModelType in AssemblyReflection.GetTypesImplements<Behaviors.IBehaviorModel>())
+            {
+                var attr = bhvModelType.GetAttribute<Behaviors.BehaviorModelAttribute>();
+                if (attr == null)
+                {
+                    continue;
+                }
+
+                ++bhvModels;
+                Type bhvType = attr.BehaviorType;
+                var fields = bhvType.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.DeclaredOnly);
+                if (fields.Length == 0)
+                {
+                    ++staticBhvModel;
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine(String.Format("NonStatic behavior : {0}", bhvType.FullName));
+                }
+            }
+
+            System.Diagnostics.Debug.WriteLine("Static/Behaviors {0}/{1}", staticBhvModel, bhvModels);
         }
     }
 }
