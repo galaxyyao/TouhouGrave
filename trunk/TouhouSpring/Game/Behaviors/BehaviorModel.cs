@@ -80,8 +80,9 @@ namespace TouhouSpring.Behaviors
                         m_data.IsBehaviorStatic = true;
                         for (var t = bhvType; !t.IsGenericType || t.GetGenericTypeDefinition() != typeof(BaseBehavior<>); t = t.BaseType)
                         {
-                            if (t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
-                                .Length > 0)
+                            if (t.HasInterface<ICastableSpell>()
+                                || t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+                                    .Length > 0)
                             {
                                 m_data.IsBehaviorStatic = false;
                                 break;
