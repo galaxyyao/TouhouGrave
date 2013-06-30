@@ -28,6 +28,7 @@ namespace TouhouSpring
             var tCommand = command as TCommand;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
+                Behaviors.StaticBehaviorHost.Host = targetList.Host;
                 foreach (var trigger in targetList)
                 {
                     var t = trigger as IGlobalPrerequisiteTrigger<TCommand>;
@@ -42,9 +43,11 @@ namespace TouhouSpring
                 }
             }
 
-            var localTargets = GetLocalTargets(command);
+            CardInstance localHost;
+            var localTargets = GetLocalTargets(command, out localHost);
             if (localTargets != null)
             {
+                Behaviors.StaticBehaviorHost.Host = localHost;
                 foreach (var trigger in localTargets)
                 {
                     var t = trigger as ILocalPrerequisiteTrigger<TCommand>;
@@ -69,6 +72,7 @@ namespace TouhouSpring
             var tCommand = command as TCommand;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
+                Behaviors.StaticBehaviorHost.Host = targetList.Host;
                 foreach (var trigger in targetList)
                 {
                     var t = trigger as IGlobalPrologTrigger<TCommand>;
@@ -79,9 +83,11 @@ namespace TouhouSpring
                 }
             }
 
-            var localTargets = GetLocalTargets(command);
+            CardInstance localHost;
+            var localTargets = GetLocalTargets(command, out localHost);
             if (localTargets != null)
             {
+                Behaviors.StaticBehaviorHost.Host = localHost;
                 foreach (var trigger in localTargets)
                 {
                     var t = trigger as ILocalPrologTrigger<TCommand>;
@@ -100,6 +106,7 @@ namespace TouhouSpring
             var tCommand = command as TCommand;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
+                Behaviors.StaticBehaviorHost.Host = targetList.Host;
                 foreach (var trigger in targetList)
                 {
                     var t = trigger as IGlobalPreemptiveTrigger<TCommand>;
@@ -114,9 +121,11 @@ namespace TouhouSpring
                 }
             }
 
-            var localTargets = GetLocalTargets(command);
+            CardInstance localHost;
+            var localTargets = GetLocalTargets(command, out localHost);
             if (localTargets != null)
             {
+                Behaviors.StaticBehaviorHost.Host = localHost;
                 foreach (var trigger in localTargets)
                 {
                     var t = trigger as ILocalPreemptiveTrigger<TCommand>;
@@ -150,6 +159,7 @@ namespace TouhouSpring
             tCommand.ExecutionPhase = Commands.CommandPhase.Epilog;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
+                Behaviors.StaticBehaviorHost.Host = targetList.Host;
                 foreach (var trigger in targetList)
                 {
                     var t = trigger as IGlobalEpilogTrigger<TCommand>;
@@ -159,9 +169,12 @@ namespace TouhouSpring
                     }
                 }
             }
-            var localTargets = GetLocalTargets(command);
+
+            CardInstance localHost;
+            var localTargets = GetLocalTargets(command, out localHost);
             if (localTargets != null)
             {
+                Behaviors.StaticBehaviorHost.Host = localHost;
                 foreach (var trigger in localTargets)
                 {
                     var t = trigger as ILocalEpilogTrigger<TCommand>;
@@ -173,7 +186,7 @@ namespace TouhouSpring
             }
         }
 
-        private IEnumerable<Behaviors.IBehavior> GetLocalTargets(Commands.BaseCommand command)
+        private IEnumerable<Behaviors.IBehavior> GetLocalTargets(Commands.BaseCommand command, out CardInstance host)
         {
             if (s_singleBehaviorArray == null)
             {
@@ -183,24 +196,29 @@ namespace TouhouSpring
             var moveCard = command as Commands.IMoveCard;
             if (moveCard != null && moveCard.Subject != null)
             {
+                host = moveCard.Subject;
                 return moveCard.Subject.Behaviors;
             }
 
             var dealDamageToCard = command as Commands.DealDamageToCard;
             if (dealDamageToCard != null && dealDamageToCard.Target != null)
             {
+                host = dealDamageToCard.Target;
                 return dealDamageToCard.Target.Behaviors;
             }
 
             var healCard = command as Commands.HealCard;
             if (healCard != null && healCard.Target != null)
             {
+                host = healCard.Target;
                 return healCard.Target.Behaviors;
             }
 
             var castSpell = command as Commands.CastSpell;
             if (castSpell != null)
             {
+                // TODO: include spell host in the command
+                host = null;
                 s_singleBehaviorArray[0] = castSpell.Spell;
                 return s_singleBehaviorArray;
             }
@@ -208,6 +226,7 @@ namespace TouhouSpring
             var addBehavior = command as Commands.AddBehavior;
             if (addBehavior != null)
             {
+                host = addBehavior.Target;
                 s_singleBehaviorArray[0] = addBehavior.Behavior;
                 return s_singleBehaviorArray;
             }
@@ -215,6 +234,7 @@ namespace TouhouSpring
             var removeBehavior = command as Commands.RemoveBehavior;
             if (removeBehavior != null)
             {
+                host = removeBehavior.Target;
                 s_singleBehaviorArray[0] = removeBehavior.Behavior;
                 return s_singleBehaviorArray;
             }
@@ -222,15 +242,18 @@ namespace TouhouSpring
             var activateAssist = command as Commands.ActivateAssist;
             if (activateAssist != null)
             {
+                host = activateAssist.CardToActivate;
                 return activateAssist.CardToActivate.Behaviors;
             }
 
             var deactivateAssist = command as Commands.DeactivateAssist;
             if (deactivateAssist != null)
             {
+                host = deactivateAssist.CardToDeactivate;
                 return deactivateAssist.CardToDeactivate.Behaviors;
             }
 
+            host = null;
             return null;
         }
     }

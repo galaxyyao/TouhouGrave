@@ -9,6 +9,7 @@ namespace TouhouSpring.Behaviors
     {
         string Name { get; set; }
         string BehaviorTypeName { get; }
+        bool IsBehaviorStatic { get; }
         IBehavior CreateInitialized();
     }
 

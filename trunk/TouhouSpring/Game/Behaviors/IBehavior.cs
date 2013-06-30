@@ -10,11 +10,12 @@ namespace TouhouSpring.Behaviors
         CardInstance Host { get; }
         bool Persistent { get; }
         IBehaviorModel Model { get; }
+        bool IsStatic { get; }
     }
 
     internal interface IInternalBehavior : IBehavior
     {
-        new CardInstance Host { get; set; }
+        CardInstance RealHost { get; set; }
         void Initialize(IBehaviorModel model, bool persistent);
         void TransferFrom(IBehavior original);
         void ReceiveMessage(string message, object[] args);

@@ -20,7 +20,8 @@ namespace TouhouSpring
             clonedCard.Behaviors.Reserve(Behaviors.Count);
             for (int i = 0; i < Behaviors.Count; ++i)
             {
-                clonedCard.Behaviors.Add((Behaviors[i].Model as Behaviors.IInternalBehaviorModel).Instantiate());
+                var bhv = Behaviors[i];
+                clonedCard.Behaviors.Add(bhv.IsStatic ? bhv : (bhv.Model as Behaviors.IInternalBehaviorModel).Instantiate());
             }
 
             clonedCard.m_counters.Capacity = m_counters.Capacity;
@@ -36,7 +37,11 @@ namespace TouhouSpring
         {
             for (int i = 0; i < Behaviors.Count; ++i)
             {
-                (Behaviors[i] as Behaviors.IInternalBehavior).TransferFrom(original.Behaviors[i]);
+                var bhv = Behaviors[i];
+                if (!bhv.IsStatic)
+                {
+                    (bhv as Behaviors.IInternalBehavior).TransferFrom(original.Behaviors[i]);
+                }
             }
         }
     }

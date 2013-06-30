@@ -12,8 +12,12 @@ namespace TouhouSpring.Behaviors
     /// </summary>
     public class BehaviorList : IIndexable<IBehavior>
     {
-        private CardInstance m_host;
         private List<IBehavior> m_behaviors = new List<IBehavior>();
+
+        public CardInstance Host
+        {
+            get; private set;
+        }
 
         #region IIndexable<T> interface
 
@@ -63,7 +67,7 @@ namespace TouhouSpring.Behaviors
             {
                 throw new ArgumentNullException("host");
             }
-            m_host = host;
+            Host = host;
         }
 
         internal void Reserve(int capacity)
@@ -77,24 +81,28 @@ namespace TouhouSpring.Behaviors
             {
                 throw new ArgumentNullException("item");
             }
-            else if (item.Host != null)
-            {
-                throw new ArgumentException("Item has already been bound.");
-            }
             else if (m_behaviors.Contains(item))
             {
                 throw new ArgumentException("Item is already in the list.");
             }
 
-            m_behaviors.Add(item);
-            Debug.Assert(item.Host == null);
-            (item as IInternalBehavior).Host = m_host;
+            var bhv = item as IInternalBehavior;
+            if (bhv.RealHost != null)
+            {
+                throw new ArgumentException("Item has already been bound.");
+            }
+
+            m_behaviors.Add(bhv);
+            if (!bhv.IsStatic)
+            {
+                bhv.RealHost = Host;
+            }
 
             var warrior = item as Warrior;
             if (warrior != null)
             {
-                Debug.Assert(m_host.Warrior == null);
-                m_host.Warrior = warrior;
+                Debug.Assert(Host.Warrior == null);
+                Host.Warrior = warrior;
             }
         }
 
@@ -122,14 +130,21 @@ namespace TouhouSpring.Behaviors
                 throw new ArgumentOutOfRangeException("index", "Index is out of range.");
             }
 
-            var bhv = m_behaviors[index];
-            Debug.Assert(bhv.Host == m_host);
-            (bhv as IInternalBehavior).Host = null;
+            var bhv = m_behaviors[index] as IInternalBehavior;
+            if (bhv.IsStatic)
+            {
+                Debug.Assert(bhv.RealHost == null);
+            }
+            else
+            {
+                Debug.Assert(bhv.RealHost == Host);
+                bhv.RealHost = null;
+            }
             m_behaviors.RemoveAt(index);
 
-            if (m_host.Warrior == bhv)
+            if (Host.Warrior == bhv)
             {
-                m_host.Warrior = null;
+                Host.Warrior = null;
             }
         }
     }

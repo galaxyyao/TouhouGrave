@@ -13,12 +13,14 @@ namespace TouhouSpring.Behaviors
     public abstract class BaseBehavior<T> : IInternalBehavior
         where T : IBehaviorModel
     {
+        private CardInstance m_host;
+
         /// <summary>
         /// The hosting card i.e. the card to which this behavior is bound
         /// </summary>
         public CardInstance Host
         {
-            get; internal set;
+            get { return IsStatic ? StaticBehaviorHost.Host : m_host; }
         }
 
         /// <summary>
@@ -27,6 +29,11 @@ namespace TouhouSpring.Behaviors
         public bool Persistent
         {
             get; private set;
+        }
+
+        public bool IsStatic
+        {
+            get { return Persistent && Model.IsBehaviorStatic; }
         }
 
         protected T Model
@@ -44,10 +51,10 @@ namespace TouhouSpring.Behaviors
             get { return Model; }
         }
 
-        CardInstance IInternalBehavior.Host
+        CardInstance IInternalBehavior.RealHost
         {
-            get { return Host; }
-            set { Host = value; }
+            get { return m_host; }
+            set { Debug.Assert(!IsStatic || value == null); m_host = value; }
         }
 
         void IInternalBehavior.Initialize(IBehaviorModel model, bool persistent)
@@ -87,5 +94,11 @@ namespace TouhouSpring.Behaviors
         protected virtual void OnMessage(string message, object[] args) { }
         protected virtual void OnInitialize() { }
         protected virtual void OnTransferFrom(IBehavior original) { }
+    }
+
+    internal static class StaticBehaviorHost
+    {
+        [ThreadStatic]
+        public static CardInstance Host;
     }
 }

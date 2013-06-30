@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -12,6 +13,7 @@ namespace TouhouSpring.Behaviors
         private class BehaviorModelData
         {
             public Type BehaviorType;
+            public bool IsBehaviorStatic;
             public Func<IBehavior> BhvFactory;
             public BehaviorModelAttribute BhvModelAttr;
         }
@@ -44,6 +46,12 @@ namespace TouhouSpring.Behaviors
             }
         }
 
+        [System.ComponentModel.Category("Basic")]
+        public bool IsBehaviorStatic
+        {
+            get { return m_data.IsBehaviorStatic; }
+        }
+
         public BehaviorModel()
         {
             var modelType = GetType();
@@ -68,6 +76,17 @@ namespace TouhouSpring.Behaviors
 
                         m_data.BehaviorType = bhvType;
                         m_data.BhvFactory = (Func<IBehavior>)dynMethod.CreateDelegate(typeof(Func<IBehavior>));
+
+                        m_data.IsBehaviorStatic = true;
+                        for (var t = bhvType; !t.IsGenericType || t.GetGenericTypeDefinition() != typeof(BaseBehavior<>); t = t.BaseType)
+                        {
+                            if (t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+                                .Length > 0)
+                            {
+                                m_data.IsBehaviorStatic = false;
+                                break;
+                            }
+                        }
 
                         s_data.Add(modelType, m_data);
                     }
