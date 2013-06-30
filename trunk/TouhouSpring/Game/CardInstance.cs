@@ -43,11 +43,6 @@ namespace TouhouSpring
             get { return Zone == SystemZone.Graveyard; }
         }
 
-        public bool IsHero
-        {
-            get { return false; }
-        }
-
         internal CardInstance(ICardModel model, Player owner)
             : this(model, owner, true)
         { }

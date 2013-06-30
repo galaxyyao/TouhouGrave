@@ -30,11 +30,7 @@ namespace TouhouSpring.UI
                     replacement = CardData.SummonCost >= 0 ? CardData.SummonCost.ToString() : "";
                     break;
                 case "Card.SystemClass":
-                    if (CardData.IsHero)
-                    {
-                        replacement = "主角";
-                    }
-                    else if (CardData.IsWarrior)
+                    if (CardData.IsWarrior)
                     {
                         replacement = "战士";
                     }

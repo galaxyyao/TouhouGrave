@@ -62,14 +62,7 @@ namespace TouhouSpring.Services
                 }
                 else if (data.Location == CardDataManager.CardLocation.Battlefield)
                 {
-                    if (data.IsHero)
-                    {
-                        locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Hero, 0);
-                    }
-                    else
-                    {
-                        locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Battlefield, data.LocationIndex);
-                    }
+                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Battlefield, data.LocationIndex);
                     newDesignName = "NoResource";
                 }
                 else if (data.Location == CardDataManager.CardLocation.Sacrifice)
@@ -77,15 +70,15 @@ namespace TouhouSpring.Services
                     locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Sacrifice, data.LocationIndex);
                     newDesignName = "NoResource";
                 }
-                else if (data.Location == CardDataManager.CardLocation.Hand || data.IsHero)
+                else if (data.Location == CardDataManager.CardLocation.Hand)
                 {
                     if (ShallPlayerBeRevealed(data.OwnerPlayerIndex))
                     {
-                        locationAnim.SetNextLocation(m_actingLocalPlayerHandZone, data.IsHero ? 0 : data.LocationIndex + 1);
+                        locationAnim.SetNextLocation(m_actingLocalPlayerHandZone, data.LocationIndex);
                     }
                     else
                     {
-                        locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Hand, data.IsHero ? 0 : data.LocationIndex + 1);
+                        locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Hand, data.LocationIndex);
                     }
                 }
                 else if (data.Location == CardDataManager.CardLocation.Assist)

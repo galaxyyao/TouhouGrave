@@ -35,7 +35,6 @@ namespace TouhouSpring.Services
             string Description { get; }
             string ArtworkUri { get; }
             int SummonCost { get; }
-            bool IsHero { get; }
             bool IsWarrior { get; }
             Tuple<int, int> AttackAndInitialAttack { get; }
             Tuple<int, int> LifeAndInitialLife { get; }
@@ -71,7 +70,6 @@ namespace TouhouSpring.Services
             public string Description { get; private set; }
             public string ArtworkUri { get; private set; }
             public int SummonCost { get; private set; }
-            public bool IsHero { get; private set; }
             public bool IsWarrior { get; private set; }
             public Tuple<int, int> AttackAndInitialAttack { get; private set; }
             public Tuple<int, int> LifeAndInitialLife { get; private set; }
@@ -94,8 +92,6 @@ namespace TouhouSpring.Services
 
                 var manaCost = card.Behaviors.Get<Behaviors.ManaCost>();
                 SummonCost = manaCost != null ? manaCost.Cost : -1;
-
-                IsHero = card.IsHero;
 
                 var warrior = card.Behaviors.Get<Behaviors.Warrior>();
                 IsWarrior = warrior != null;
