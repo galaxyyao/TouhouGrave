@@ -96,15 +96,6 @@ namespace TouhouSpring.Behaviors
                 Debug.Assert(m_host.Warrior == null);
                 m_host.Warrior = warrior;
             }
-            else
-            {
-                var assist = item as Assist;
-                if (assist != null)
-                {
-                    Debug.Assert(m_host.Assist == null);
-                    m_host.Assist = assist;
-                }
-            }
         }
 
         internal bool Remove(IBehavior item)
@@ -139,10 +130,6 @@ namespace TouhouSpring.Behaviors
             if (m_host.Warrior == bhv)
             {
                 m_host.Warrior = null;
-            }
-            else if (m_host.Assist == bhv)
-            {
-                m_host.Assist = null;
             }
         }
     }

@@ -28,7 +28,7 @@ namespace TouhouSpring
             get; internal set;
         }
 
-        // set by Warrior behavior
+        // set by BehaviorList
         public Behaviors.Warrior Warrior
         {
             get; internal set;
