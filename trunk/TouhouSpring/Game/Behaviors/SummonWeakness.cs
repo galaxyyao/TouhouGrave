@@ -38,7 +38,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(SummonWeakness))]
+        [BehaviorModel(typeof(SummonWeakness), Category = "Core", Description = "召唤虚弱")]
         public class ModelType : BehaviorModel
         { }
     }

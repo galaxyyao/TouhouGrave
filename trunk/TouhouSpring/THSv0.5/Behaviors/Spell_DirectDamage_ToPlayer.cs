@@ -5,8 +5,8 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Spell_DamageDirectToPlayer :
-        BaseBehavior<Spell_DamageDirectToPlayer.ModelType>,
+    public sealed class Spell_DirectDamage_ToPlayer :
+        BaseBehavior<Spell_DirectDamage_ToPlayer.ModelType>,
         Commands.ICause,
         ICastableSpell
     {
@@ -18,7 +18,7 @@ namespace TouhouSpring.Behaviors
                 Model.Damage, this));
         }
 
-        [BehaviorModel(typeof(Spell_DamageDirectToPlayer), DefaultName = "五道难题")]
+        [BehaviorModel(typeof(Spell_DirectDamage_ToPlayer), DefaultName = "直击", Category = "v0.5/Spell")]
         public class ModelType : BehaviorModel
         {
             public int Damage { get; set; }
