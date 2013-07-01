@@ -18,6 +18,7 @@ namespace TouhouSpring
     public class GameApp : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager m_graphics;
+        private Dictionary<string, string> m_commandlineArgs = new Dictionary<string, string>();
 
         public MouseState MouseState
         {
@@ -48,6 +49,35 @@ namespace TouhouSpring
             Content.RootDirectory = "Content";
             Window.Title = "TouhouSpring";
             IsMouseVisible = true;
+
+            foreach (var arg in Environment.GetCommandLineArgs().Skip(1))
+            {
+                var argStr = arg;
+                if (argStr.StartsWith("--"))
+                {
+                    argStr = argStr.Substring(2);
+                }
+                else if (arg.StartsWith("-"))
+                {
+                    argStr = argStr.Substring(1);
+                }
+
+                int delimiter = argStr.IndexOfAny(new char[] { '=', ':' });
+                if (delimiter == -1)
+                {
+                    m_commandlineArgs.Add(argStr, String.Empty);
+                }
+                else
+                {
+                    m_commandlineArgs.Add(argStr.Substring(0, delimiter), argStr.Substring(delimiter + 1));
+                }
+            }
+        }
+
+        public string GetCommandLineArgValue(string arg)
+        {
+            string value;
+            return m_commandlineArgs.TryGetValue(arg, out value) ? value : null;
         }
 
         /// <summary>

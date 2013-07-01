@@ -47,7 +47,7 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public Game(List<string> playerNames, BaseController controller, int seed)
+        public Game(List<string> playerNames, BaseController controller)
         {
             if (playerNames == null)
             {
@@ -80,7 +80,7 @@ namespace TouhouSpring
             CurrentPhase = "";
 
             Players = m_players.ToIndexable();
-            Random = (seed == -1) ? new Random() : new Random(seed);
+            Random = new Random(controller.GetRandomSeed());
             Controller = controller;
             LetterBox = new Messaging.LetterBox();
         }

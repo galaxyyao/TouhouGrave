@@ -27,7 +27,7 @@ namespace TouhouSpring
 
         public GameStartupParameters()
         {
-            Seed = -1;
+            Seed = Environment.TickCount;
             PlayerDecks = new List<Deck>();
             PlayerIds = new List<string>();
         }

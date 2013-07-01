@@ -26,5 +26,7 @@ namespace TouhouSpring
         {
             InitializeMessaging(syncMode);
         }
+
+        public virtual int GetRandomSeed() { return -1; }
     }
 }

@@ -43,7 +43,7 @@ namespace TouhouSpring.Services
 
             Agents = agents.ToIndexable();
 
-            m_game = new Game(parameters.PlayerIds, new XnaUIController(agents), parameters.Seed);
+            m_game = new Game(parameters.PlayerIds, new XnaUIController(agents, parameters.Seed));
             m_game.Initialize(parameters.PlayerDecks);
 
             GameApp.Service<GameUI>().GameCreated(m_game);
