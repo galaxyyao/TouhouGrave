@@ -292,7 +292,7 @@ namespace TouhouSpring
                 if (m_recording != null && !(m_agents[(io as Interactions.SelectNumber).Player.Index] is Agents.AIAgent))
                 {
                     var si = result as int?;
-                    m_recording.WriteLine("sn:" + si == null ? "null" : si.ToString());
+                    m_recording.WriteLine("sn:" + (si == null ? "null" : si.ToString()));
                 }
 
                 m_agents[(io as Interactions.SelectNumber).Player.Index].OnRespondBack(io, result);
