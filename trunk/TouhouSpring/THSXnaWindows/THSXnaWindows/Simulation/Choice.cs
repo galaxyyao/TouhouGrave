@@ -34,6 +34,11 @@ namespace TouhouSpring.Simulation
         {
             (io as Interactions.TacticalPhase).RespondPass();
         }
+
+        public override int GetHashCode()
+        {
+            return "Kill".GetHashCode();
+        }
     }
 
     class SacrificeChoice : Choice
@@ -63,6 +68,11 @@ namespace TouhouSpring.Simulation
         public override string Print(Interactions.BaseInteraction io)
         {
             return "Sacrifice: " + (io as Interactions.TacticalPhase).SacrificeCandidates[CardIndex].Model.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return CardIndex.GetHashCode() ^ CardModel.Id.GetHashCode();
         }
     }
 
@@ -100,6 +110,11 @@ namespace TouhouSpring.Simulation
         {
             return "Play: " + (io as Interactions.TacticalPhase).PlayCardCandidates[CardIndex].Model.Name;
         }
+
+        public override int GetHashCode()
+        {
+            return "Play".GetHashCode() ^ CardGuid.GetHashCode();
+        }
     }
 
     class RedeemChoice : Choice
@@ -130,6 +145,11 @@ namespace TouhouSpring.Simulation
         {
             return "Redeem: " + (io as Interactions.TacticalPhase).RedeemCandidates[CardIndex].Model.Name;
         }
+
+        public override int GetHashCode()
+        {
+            return "Redeem".GetHashCode() ^ CardGuid.GetHashCode();
+        }
     }
 
     class ActivateAssistChoice : Choice
@@ -139,9 +159,15 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public ActivateAssistChoice(int cardIndex) : base(4)
+        public int CardGuid
+        {
+            get; private set;
+        }
+
+        public ActivateAssistChoice(int cardIndex, int cardGuid) : base(4)
         {
             CardIndex = cardIndex;
+            CardGuid = cardGuid;
         }
 
         public override void Make(Interactions.BaseInteraction io)
@@ -153,6 +179,11 @@ namespace TouhouSpring.Simulation
         public override string Print(Interactions.BaseInteraction io)
         {
             return "Activate: " + (io as Interactions.TacticalPhase).ActivateAssistCandidates[CardIndex].Model.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return "Activate".GetHashCode() ^ CardGuid.GetHashCode();
         }
     }
 
@@ -178,6 +209,11 @@ namespace TouhouSpring.Simulation
         {
             return "Cast: " + (io as Interactions.TacticalPhase).CastSpellCandidates[SpellIndex].Model.Name;
         }
+
+        public override int GetHashCode()
+        {
+            return "Cast".GetHashCode() ^ SpellIndex.GetHashCode();
+        }
     }
 
     class AttackCardChoice : Choice
@@ -192,7 +228,7 @@ namespace TouhouSpring.Simulation
             get; private set;
         }
 
-        public Int32 DefenderGuid
+        public int DefenderGuid
         {
             get; private set;
         }
@@ -215,6 +251,11 @@ namespace TouhouSpring.Simulation
             var tacticalPhase = io as Interactions.TacticalPhase;
             return "Attack: " + tacticalPhase.AttackerCandidates[AttackerIndex].Model.Name
                     + "->" + tacticalPhase.DefenderCandidates[DefenderIndex].Model.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return "Attack".GetHashCode() ^ AttackerIndex.GetHashCode() ^ DefenderGuid.GetHashCode();
         }
     }
 
@@ -248,6 +289,11 @@ namespace TouhouSpring.Simulation
             return "AttackPlayer: " + tacticalPhase.AttackerCandidates[AttackerIndex].Model.Name
                     + "->" + tacticalPhase.Game.Players[PlayerIndex].Name;
         }
+
+        public override int GetHashCode()
+        {
+            return "AttackPlayer".GetHashCode() ^ AttackerIndex.GetHashCode() ^ PlayerIndex.GetHashCode();
+        }
     }
 
     class PassChoice : Choice
@@ -263,6 +309,11 @@ namespace TouhouSpring.Simulation
         public override string Print(Interactions.BaseInteraction io)
         {
             return "Pass";
+        }
+
+        public override int GetHashCode()
+        {
+            return "Pass".GetHashCode();
         }
     }
 
@@ -288,6 +339,11 @@ namespace TouhouSpring.Simulation
         {
             return "SelectCard: " + (io as Interactions.SelectCards).Candidates[CardIndex].Model.Name;
         }
+
+        public override int GetHashCode()
+        {
+            return "SelectCard".GetHashCode() ^ CardIndex.GetHashCode();
+        }
     }
 
     class SelectNumberChoice : Choice
@@ -311,6 +367,11 @@ namespace TouhouSpring.Simulation
         public override string Print(Interactions.BaseInteraction io)
         {
             return "SelectNumber: " + Selection.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return "SelectNumber".GetHashCode() ^ Selection.GetHashCode();
         }
     }
 }

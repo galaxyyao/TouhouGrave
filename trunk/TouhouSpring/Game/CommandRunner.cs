@@ -18,7 +18,7 @@ namespace TouhouSpring
         where TCommand : Commands.BaseCommand
     {
         [ThreadStatic]
-        private Behaviors.IBehavior[] s_singleBehaviorArray;
+        private static Behaviors.IBehavior[] s_singleBehaviorArray;
 
         public CommandResult RunPrerequisite(Commands.BaseCommand command)
         {
