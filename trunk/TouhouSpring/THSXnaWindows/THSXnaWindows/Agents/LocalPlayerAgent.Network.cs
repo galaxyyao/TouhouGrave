@@ -20,6 +20,16 @@ namespace TouhouSpring.Agents
             }
         }
 
+        public LocalPlayerAgent(int pid, int seed)
+            : base(pid, seed)
+        {
+            var client = GameApp.Service<Services.Network>().THSClient;
+            if (client.NetworkStatus == Network.Client.NetworkStatusEnum.Connected)
+            {
+                m_NetworkClient = client;
+            }
+        }
+
         public override void OnInitiativeCommandEnd()
         {
             if (m_NetworkClient != null)
@@ -40,6 +50,8 @@ namespace TouhouSpring.Agents
 
         public override void OnRespondBack(Interactions.BaseInteraction io, object result)
         {
+            base.OnRespondBack(io, result);
+
             if (m_NetworkClient == null)
             {
                 return;
