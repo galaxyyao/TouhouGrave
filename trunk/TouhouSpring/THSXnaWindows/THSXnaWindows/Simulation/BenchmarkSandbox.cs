@@ -86,25 +86,30 @@ namespace TouhouSpring.Simulation
 
             while (TryMoveNextBranch())
             {
+                bool aborted = false;
+
                 if (m_currentBranch.Root != null)
                 {
                     CurrentBranchDepth = m_currentBranch.Depth;
                     CurrentBranchOrder = m_currentBranch.Order;
-                    m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
+                    aborted = !m_currentBranch.Root.RunTurnFromMainPhase(m_currentBranch.Response);
                 }
                 else
                 {
                     CurrentBranchDepth = 0;
                     CurrentBranchOrder = 0;
                     m_currentBranch.Root = RootGame.CloneWithController(this);
-                    m_currentBranch.Root.RunTurn();
+                    aborted = !m_currentBranch.Root.RunTurn();
                 }
 
-                m_branches.Add(new Branch
+                if (!aborted)
                 {
-                    ChoicePath = m_currentBranch.ChoicePath,
-                    Result = m_currentBranch.Root
-                });
+                    m_branches.Add(new Branch
+                    {
+                        ChoicePath = m_currentBranch.ChoicePath,
+                        Result = m_currentBranch.Root
+                    });
+                }
             }
         }
 
@@ -113,9 +118,7 @@ namespace TouhouSpring.Simulation
             var newChoicePath = new Choice[CurrentBranchChoicePath.Length + 1];
             Array.Copy(CurrentBranchChoicePath, newChoicePath, CurrentBranchChoicePath.Length);
             newChoicePath[CurrentBranchChoicePath.Length] = choice;
-            var newBranch = new PendingBranch { ChoicePath = newChoicePath };
-            m_pendingBranches.Insert(0, newBranch);
-            return newBranch;
+            return new PendingBranch { ChoicePath = newChoicePath };
         }
 
         private bool TryMoveNextBranch()
@@ -138,9 +141,15 @@ namespace TouhouSpring.Simulation
             if (!ChoiceMade)
             {
                 var mainPhase = io as Interactions.TacticalPhase;
+                PendingBranch firstBranch = null;
 
                 foreach (var choice in choices)
                 {
+                    if (mainPhase != null && choice is KillBranchChoice)
+                    {
+                        continue;
+                    }
+
                     var branch = ForkBranch(choice);
 
                     if (mainPhase != null)
@@ -187,14 +196,26 @@ namespace TouhouSpring.Simulation
                                 mainPhase.AttackerCandidates[(choice as AttackPlayerChoice).AttackerIndex],
                                 mainPhase.Game.Players[(choice as AttackPlayerChoice).PlayerIndex]);
                         }
-                        else if (choice is PassChoice || choice is KillBranchChoice)
+                        else if (choice is PassChoice)
                         {
                             branch.Response = mainPhase.CompiledRespondPass();
                         }
                     }
+
+                    if (firstBranch == null)
+                    {
+                        firstBranch = branch;
+                    }
+                    else
+                    {
+                        m_pendingBranches.Add(branch);
+                    }
                 }
 
-                TryMoveNextBranch();
+                if (firstBranch != null)
+                {
+                    m_currentBranch = firstBranch;
+                }
             }
 
             if (ChoiceMade)
@@ -205,7 +226,9 @@ namespace TouhouSpring.Simulation
             }
             else
             {
-                throw new NotImplementedException();
+                // no choice generated
+                System.Diagnostics.Debug.Assert(io is Interactions.TacticalPhase);
+                (io as Interactions.TacticalPhase).RespondAbort();
             }
         }
 

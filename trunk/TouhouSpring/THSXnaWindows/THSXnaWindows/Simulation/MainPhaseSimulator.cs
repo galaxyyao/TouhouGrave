@@ -84,7 +84,7 @@ namespace TouhouSpring.Simulation
             {
                 for (int i = 0; i < io.ActivateAssistCandidates.Count; ++i)
                 {
-                    yield return new ActivateAssistChoice(i);
+                    yield return new ActivateAssistChoice(i, io.ActivateAssistCandidates[i].Guid);
                 }
             }
 

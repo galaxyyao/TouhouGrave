@@ -12,10 +12,12 @@ namespace TouhouSpring.Agents
         {
             public Simulation.Branch Branch;
             public double Score;
+            public int Hash;
 
             public int CompareTo(ScoredBranch other)
             {
-                return Score.CompareTo(other.Score);
+                int scoreCompare = Score.CompareTo(other.Score);
+                return scoreCompare == 0 ? Hash.CompareTo(other.Hash) : scoreCompare;
             }
         }
 
@@ -104,7 +106,7 @@ namespace TouhouSpring.Agents
             Simulation.ISandbox simSandbox = new Simulation.StpSandbox(game, new Simulation.MainPhaseSimulator());
             simSandbox.Run();
 
-            var scoredBranches = simSandbox.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, PlayerIndex) });
+            var scoredBranches = simSandbox.Branches.Select(branch => new ScoredBranch { Branch = branch, Score = Evaluate(branch.Result, PlayerIndex), Hash = Hash(branch) });
             m_plan = scoredBranches.Max().Branch;
             m_planProgress = 0;
 
@@ -112,6 +114,17 @@ namespace TouhouSpring.Agents
 
             Trace.WriteLine(String.Format("Plan (total {0}, {1:0.000}ms)", simSandbox.BranchCount, (double)(endTime - startTime) / (double)freq * 1000.0));
             PrintEvaluate(m_plan.Result.Players[PlayerIndex]);
+        }
+
+        private int Hash(Simulation.Branch branch)
+        {
+            // return a hash of the choice path
+            int hash = 1234567;
+            foreach (var choice in branch.ChoicePath)
+            {
+                hash = unchecked(hash.GetHashCode() + choice.GetHashCode()).GetHashCode();
+            }
+            return hash;
         }
 
         private void RespondInteraction(Interactions.BaseInteraction io)

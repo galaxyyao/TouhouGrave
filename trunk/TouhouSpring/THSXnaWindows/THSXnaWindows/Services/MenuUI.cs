@@ -104,25 +104,37 @@ namespace TouhouSpring.Services
                         // detach menu ui
                         Root.Dispatcher = null;
 
+                        Agents.BaseAgent agent0;
+                        Agents.BaseAgent agent1;
+
                         switch (id)
                         {
                             case "vsai":
-                                GameApp.Service<GameManager>().StartGame(param
-                                    , new Agents.BaseAgent[] {
-                                    new Agents.LocalPlayerAgent(0),
-                                    new Agents.AIAgent(1)
-                                });
+                                if (GameApp.Instance.GetCommandLineArgValue("playback") != null)
+                                {
+                                    var pbAgent = new Agents.PlaybackAgent(0);
+                                    param.Seed = pbAgent.RandomSeed;
+                                    agent0 = pbAgent;
+                                }
+                                else if (GameApp.Instance.GetCommandLineArgValue("record") != null)
+                                {
+                                    agent0 = new Agents.LocalPlayerAgent(0, param.Seed);
+                                }
+                                else
+                                {
+                                    agent0 = new Agents.LocalPlayerAgent(0);
+                                }
+                                agent1 = new Agents.AIAgent(1);
                                 break;
                             case "hotseat":
-                                GameApp.Service<GameManager>().StartGame(param
-                                    , new Agents.BaseAgent[] {
-                                    new Agents.LocalPlayerAgent(0),
-                                    new Agents.LocalPlayerAgent(1)
-                                });
+                                agent0 = new Agents.LocalPlayerAgent(0);
+                                agent1 = new Agents.LocalPlayerAgent(1);
                                 break;
                             default:
                                 throw new InvalidOperationException("Invalid menu item");
                         }
+
+                        GameApp.Service<GameManager>().StartGame(param, new Agents.BaseAgent[] { agent0, agent1 });
                     }
                     else if (id == "vsnetwork")
                     {
