@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -42,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AssemblyReflection.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="ExtSerialization.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="Messaging\Exceptions.cs" />
     <Compile Include="Messaging\LetterBox.cs" />

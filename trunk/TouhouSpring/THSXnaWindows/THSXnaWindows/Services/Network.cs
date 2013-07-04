@@ -20,8 +20,8 @@ namespace TouhouSpring.Services
         public override void Startup()
         {
             THSClient = new THSNetwork.Client();
-            THSClient.RemoteServerIp = AppSettings.Instance.RemoteServerIp;
-            THSClient.RemoteServerPort = AppSettings.Instance.RemoteServerPort;
+            THSClient.RemoteServerIp = Settings.Instance.MyAppSettings.GameSettings.RemoteServerIp;
+            THSClient.RemoteServerPort = Settings.Instance.MyAppSettings.GameSettings.RemoteServerPort;
         }
 
         public override void Shutdown()

@@ -109,6 +109,13 @@ namespace TouhouSpring
             return top;
         }
 
+        public ICardModel RemoveAtIndex(int index)
+        {
+            var cardModelToRemove = m_orderedCardModels[index];
+            m_orderedCardModels.RemoveAt(index);
+            return cardModelToRemove;
+        }
+
         /// <summary>
         /// Shuffle the cards in the pile.
         /// </summary>

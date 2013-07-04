@@ -29,7 +29,7 @@ namespace TouhouSpring
 
 				string deckName = parms[0];
 
-				Deck deck = new Deck(deckName);
+				Deck deck = new Deck();
 				if (s_decks.ContainsKey(deckName))
 				{
 					s_decks[deckName] = deck;
