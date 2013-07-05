@@ -54,7 +54,7 @@ namespace TouhouSpring.Simulation
             }
 
             public Task(ParallelSandbox sandbox, PendingBranch pendingBranch)
-                : base(true)
+                : base(false, true)
             {
                 m_sandbox = sandbox;
                 m_pendingBranches.Add(pendingBranch);

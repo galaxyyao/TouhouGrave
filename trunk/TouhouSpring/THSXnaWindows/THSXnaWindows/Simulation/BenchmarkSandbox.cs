@@ -65,7 +65,7 @@ namespace TouhouSpring.Simulation
         }
 
         public BenchmarkSandbox(Game game, BaseSimulator simulator)
-            : base(true)
+            : base(false, true)
         {
             if (game == null)
             {

@@ -10,6 +10,8 @@ namespace TouhouSpring
     /// </summary>
     public partial class BaseController
     {
+        private bool m_sendNotifications;
+
         /// <summary>
         /// Get the Game
         /// </summary>
@@ -19,11 +21,13 @@ namespace TouhouSpring
         }
 
         protected BaseController()
-            : this(false)
+            : this(true, false)
         { }
 
-        protected BaseController(bool syncMode)
+        protected BaseController(bool sendNotifications, bool syncMode)
         {
+            m_sendNotifications = sendNotifications;
+
             InitializeMessaging(syncMode);
         }
 
