@@ -29,6 +29,8 @@ namespace TouhouSpring.Simulation
 
         public override IEnumerable<Choice> TacticalPhase(Interactions.TacticalPhase io, IContext context)
         {
+            bool choiceYielded = false;
+
             // sacrifice
             if (context.CurrentBranchOrder <= 1)
             {
@@ -38,6 +40,7 @@ namespace TouhouSpring.Simulation
                 if (redundantGroup != null)
                 {
                     var indexedCard = redundantGroup.First();
+                    choiceYielded = true;
                     yield return new SacrificeChoice(indexedCard.Int, indexedCard.Card.Model)
 #if DEBUG
                     { DebugName = indexedCard.Card.Model.Name }
@@ -50,6 +53,7 @@ namespace TouhouSpring.Simulation
                                                     .Select((card, index) => new CardIntPair { Card = card, Int = index })
                                                     .Distinct(new CardModelComparer()))
                     {
+                        choiceYielded = true;
                         yield return new SacrificeChoice(indexedCard.Int, indexedCard.Card.Model)
 #if DEBUG
                         { DebugName = indexedCard.Card.Model.Name }
@@ -69,6 +73,7 @@ namespace TouhouSpring.Simulation
                                             .Distinct(new CardModelComparer())
                                             .Where(ic => ic.Card.Model != lastSacrificedCardModel))
                 {
+                    choiceYielded = true;
                     yield return new RedeemChoice(indexedCard.Int, indexedCard.Card.Guid)
 #if DEBUG
                     { DebugName = indexedCard.Card.Model.Name }
@@ -84,6 +89,7 @@ namespace TouhouSpring.Simulation
             {
                 for (int i = 0; i < io.ActivateAssistCandidates.Count; ++i)
                 {
+                    choiceYielded = true;
                     yield return new ActivateAssistChoice(i, io.ActivateAssistCandidates[i].Guid);
                 }
             }
@@ -107,6 +113,7 @@ namespace TouhouSpring.Simulation
 
                 foreach (var indexedCard in distinctCardsOnHand)
                 {
+                    choiceYielded = true;
                     yield return new PlayCardChoice(
                         indexedCard.Int,
                         indexedCard.Card.Guid,
@@ -119,6 +126,7 @@ namespace TouhouSpring.Simulation
 
                 for (int i = 0; i < io.CastSpellCandidates.Count; ++i)
                 {
+                    choiceYielded = true;
                     yield return new CastSpellChoice(i);
                 }
             }
@@ -134,6 +142,12 @@ namespace TouhouSpring.Simulation
                     yield return new KillBranchChoice();
                     yield break;
                 }
+            }
+
+            // stop yielding new choice if choices were yielded already (kill branches that skip sacrifce/redeem/playcard/activateassit/castspells)
+            if (choiceYielded && context.CurrentBranchOrder == 0)
+            {
+                yield break;
             }
 
             // attack card
