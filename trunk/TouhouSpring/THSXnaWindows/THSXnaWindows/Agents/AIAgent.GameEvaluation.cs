@@ -52,7 +52,7 @@ namespace TouhouSpring.Agents
                     continue;
                 }
 
-                totalCardAttacks += !card.Behaviors.Has<Behaviors.Unattackable>() ? card.Warrior.Attack : 0;
+                totalCardAttacks += !card.Behaviors.Has<Behaviors.IUnattackable>() ? card.Warrior.Attack : 0;
 
                 double weight = Math.Max(1 - (double)card.Warrior.Life / card.Warrior.MaxLife, 0);
                 weight = Math.Sqrt(1 - weight * weight);
@@ -107,7 +107,7 @@ namespace TouhouSpring.Agents
                     continue;
                 }
 
-                totalCardAttacks += !card.Behaviors.Has<Behaviors.Unattackable>() ? card.Warrior.Attack : 0;
+                totalCardAttacks += !card.Behaviors.Has<Behaviors.IUnattackable>() ? card.Warrior.Attack : 0;
 
                 double weight = Math.Max(1 - (double)card.Warrior.Life / card.Warrior.MaxLife, 0);
                 weight = Math.Sqrt(1 - weight * weight);

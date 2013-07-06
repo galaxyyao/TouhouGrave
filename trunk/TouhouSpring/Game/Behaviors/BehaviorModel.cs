@@ -76,19 +76,7 @@ namespace TouhouSpring.Behaviors
 
                         m_data.BehaviorType = bhvType;
                         m_data.BhvFactory = (Func<IBehavior>)dynMethod.CreateDelegate(typeof(Func<IBehavior>));
-
-                        m_data.IsBehaviorStatic = true;
-                        for (var t = bhvType; !t.IsGenericType || t.GetGenericTypeDefinition() != typeof(BaseBehavior<>); t = t.BaseType)
-                        {
-                            if (t.HasInterface<ICastableSpell>()
-                                || t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
-                                    .Length > 0)
-                            {
-                                m_data.IsBehaviorStatic = false;
-                                break;
-                            }
-                        }
-
+                        m_data.IsBehaviorStatic = BehaviorModel.GetIsBehaviorStatic(bhvType);
                         s_data.Add(modelType, m_data);
                     }
                 }
@@ -117,6 +105,20 @@ namespace TouhouSpring.Behaviors
             var bhv = (this as IInternalBehaviorModel).Instantiate();
             (bhv as IInternalBehavior).Initialize(this, persistent);
             return bhv;
+        }
+
+        public static bool GetIsBehaviorStatic(Type behaviorType)
+        {
+            for (var t = behaviorType; !t.IsGenericType || t.GetGenericTypeDefinition() != typeof(BaseBehavior<>); t = t.BaseType)
+            {
+                if (t.HasInterface<ICastableSpell>()
+                    || t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+                        .Length > 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 

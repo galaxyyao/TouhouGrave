@@ -61,7 +61,6 @@
     <Compile Include="Behaviors\Passive_FinalStrike.cs" />
     <Compile Include="Behaviors\Passive_GenericAura.cs" />
     <Compile Include="Behaviors\Passive_HealSpring.cs" />
-    <Compile Include="Behaviors\Passive_LowProfile.cs" />
     <Compile Include="Behaviors\Passive_OnDeath.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
     <Compile Include="Behaviors\ManaOrLifeCost.cs" />
@@ -74,7 +73,6 @@
     <Compile Include="Behaviors\Passive_Rebirth.cs" />
     <Compile Include="Behaviors\Passive_SpiritForm.cs" />
     <Compile Include="Behaviors\Passive_Stealth.cs" />
-    <Compile Include="Behaviors\Passive_Taunt.cs" />
     <Compile Include="Behaviors\Passive_Trample.cs" />
     <Compile Include="Behaviors\Passive_Retaliate.cs" />
     <Compile Include="Behaviors\Passive_Sputter_NDamage.cs" />
@@ -101,7 +99,12 @@
     <Compile Include="Behaviors\Spell_AssignAbility.cs" />
     <Compile Include="Behaviors\Spell_HealAllAlly_NLife.cs" />
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
+    <Compile Include="Passive\BeGuarded.cs" />
     <Compile Include="Passive\Bloom.cs" />
+    <Compile Include="Passive\ForceAttack.cs" />
+    <Compile Include="Passive\LowProfile.cs" />
+    <Compile Include="Passive\Taunt.cs" />
+    <Compile Include="Passive\Transcend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

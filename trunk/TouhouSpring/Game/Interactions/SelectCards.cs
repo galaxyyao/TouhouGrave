@@ -38,7 +38,7 @@ namespace TouhouSpring.Interactions
         { }
 
         public SelectCards(Player player, IEnumerable<CardInstance> candidates, SelectMode mode, string message)
-            : this(player, candidates.Where(card => !card.Behaviors.Has<Behaviors.Unselectable>()).ToArray().ToIndexable(), mode, message)
+            : this(player, candidates.Where(card => !card.Behaviors.Has<Behaviors.IUnselectable>()).ToArray().ToIndexable(), mode, message)
         { }
 
         internal SelectCards(Player player, IIndexable<CardInstance> filteredCandidates, SelectMode mode, string message)

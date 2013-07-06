@@ -419,18 +419,18 @@ namespace TouhouSpring.Interactions
 
         private IIndexable<CardInstance> GetAttackerCandidates()
         {
-            return GetAttackerBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.Unattackable>()).ToList().ToIndexable();
+            return GetAttackerBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.IUnattackable>()).ToList().ToIndexable();
         }
 
         private IIndexable<CardInstance> GetDefenderCandidates()
         {
             if (AttackerCandidates.Count != 0)
             {
-                var defendersArr = GetDefenderBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.Undefendable>()).ToList();
-                var protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.Taunt>()).ToList();
+                var defendersArr = GetDefenderBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.IUndefendable>()).ToList();
+                var protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.ITaunt>()).ToList();
                 if (protectorsArr.Count == 0)
                 {
-                    protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToList();
+                    protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.IProtector>()).ToList();
                 }
                 return (protectorsArr.Count != 0 ? protectorsArr : defendersArr).ToIndexable();
             }
@@ -443,8 +443,8 @@ namespace TouhouSpring.Interactions
         private bool GetCanPass()
         {
             return AttackerCandidates.Count == 0
-                   || !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>())
-                      && !DefenderCandidates.Any(card => card.Behaviors.Has<Behaviors.Taunt>());
+                   || !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.IForceAttack>())
+                      && !DefenderCandidates.Any(card => card.Behaviors.Has<Behaviors.ITaunt>());
         }
 
         private static IEnumerable<CardInstance> GetPlayCardBaseSet(Player player)
