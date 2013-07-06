@@ -118,8 +118,6 @@
     <Compile Include="Game.Players.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\BaseInteraction.cs" />
-    <Compile Include="Interactions\MessageHandlerAttribute.cs" />
-    <Compile Include="Interactions\MessageMap.cs" />
     <Compile Include="Interactions\NotifyCardEvent.cs" />
     <Compile Include="Interactions\NotifyGameEvent.cs" />
     <Compile Include="Interactions\NotifyOnly.cs" />

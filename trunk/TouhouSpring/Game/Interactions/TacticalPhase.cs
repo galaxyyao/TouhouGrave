@@ -413,26 +413,26 @@ namespace TouhouSpring.Interactions
         private IIndexable<CardInstance> GetRedeemCandidates()
         {
             return !Game.DidRedeem
-                   ? Player.CardsSacrificed.Where(card => Player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
+                   ? Player.CardsSacrificed.Where(card => Player.Game.IsCardRedeemable(card)).ToList().ToIndexable()
                    : Indexable.Empty<CardInstance>();
         }
 
         private IIndexable<CardInstance> GetAttackerCandidates()
         {
-            return GetAttackerBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.Unattackable>()).ToArray().ToIndexable();
+            return GetAttackerBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.Unattackable>()).ToList().ToIndexable();
         }
 
         private IIndexable<CardInstance> GetDefenderCandidates()
         {
             if (AttackerCandidates.Count != 0)
             {
-                var defendersArr = GetDefenderBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.Undefendable>()).ToArray();
-                var protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.Taunt>()).ToArray();
-                if (protectorsArr.Length == 0)
+                var defendersArr = GetDefenderBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.Undefendable>()).ToList();
+                var protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.Taunt>()).ToList();
+                if (protectorsArr.Count == 0)
                 {
-                    protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
+                    protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToList();
                 }
-                return (protectorsArr.Length != 0 ? protectorsArr : defendersArr).ToIndexable();
+                return (protectorsArr.Count != 0 ? protectorsArr : defendersArr).ToIndexable();
             }
             else
             {
