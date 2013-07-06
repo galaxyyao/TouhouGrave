@@ -51,7 +51,7 @@ namespace TouhouSpring
         {
             Debug.Assert(m_zones == null);
 
-            m_zones = new List<Zone>();
+            m_zones = new List<Zone>(zoneConfig.Count);
             foreach (var kvp in zoneConfig)
             {
                 m_zones.Add(new Zone(kvp.Key, kvp.Value, player));

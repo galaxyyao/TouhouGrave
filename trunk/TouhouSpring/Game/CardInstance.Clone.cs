@@ -17,7 +17,7 @@ namespace TouhouSpring
                 Zone = Zone
             };
 
-            clonedCard.Behaviors.Reserve(Behaviors.Count);
+            clonedCard.Behaviors.Capacity = Behaviors.Capacity;
             for (int i = 0; i < Behaviors.Count; ++i)
             {
                 var bhv = Behaviors[i];

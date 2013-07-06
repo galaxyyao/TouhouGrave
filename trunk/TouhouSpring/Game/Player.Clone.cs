@@ -31,36 +31,43 @@ namespace TouhouSpring
             clonedPlayer.Library = new Pile(clonedPlayer.m_library);
             clonedPlayer.Graveyard = new Pile(clonedPlayer.m_graveyard);
 
+            clonedPlayer.m_manaAddModifiers.Capacity = m_manaAddModifiers.Capacity;
             foreach (var mod in m_manaAddModifiers)
             {
                 clonedPlayer.m_manaAddModifiers.Add(mod);
             }
 
+            clonedPlayer.m_manaSubtractModifiers.Capacity = m_manaSubtractModifiers.Capacity;
             foreach (var mod in m_manaSubtractModifiers)
             {
                 clonedPlayer.m_manaSubtractModifiers.Add(mod);
             }
 
+            clonedPlayer.m_lifeAddModifiers.Capacity = m_lifeAddModifiers.Capacity;
             foreach (var mod in m_lifeAddModifiers)
             {
                 clonedPlayer.m_lifeAddModifiers.Add(mod);
             }
 
+            clonedPlayer.m_lifeSubtractModifiers.Capacity = m_lifeSubtractModifiers.Capacity;
             foreach (var mod in m_lifeSubtractModifiers)
             {
                 clonedPlayer.m_lifeSubtractModifiers.Add(mod);
             }
 
+            clonedPlayer.m_handSet.Capacity = m_handSet.Capacity;
             for (int i = 0; i < m_handSet.Count; ++i)
             {
                 clonedPlayer.m_handSet.Add(m_handSet[i].Clone(clonedPlayer));
             }
 
+            clonedPlayer.m_sacrifices.Capacity = m_sacrifices.Capacity;
             for (int i = 0; i < m_sacrifices.Count; ++i)
             {
                 clonedPlayer.m_sacrifices.Add(m_sacrifices[i].Clone(clonedPlayer));
             }
 
+            clonedPlayer.m_battlefieldCards.Capacity = m_battlefieldCards.Capacity;
             for (int i = 0; i < m_battlefieldCards.Count; ++i)
             {
                 var clonedCard = m_battlefieldCards[i].Clone(clonedPlayer);
@@ -73,22 +80,26 @@ namespace TouhouSpring
                 throw new NotImplementedException("Hero clone not implemented");
             }
 
+            clonedPlayer.m_assists.Capacity = m_assists.Capacity;
             for (int i = 0; i < m_assists.Count; ++i)
             {
                 clonedPlayer.m_assists.Add(m_assists[i].Clone(clonedPlayer));
             }
 
+            clonedPlayer.m_activatedAssists.Capacity = m_activatedAssists.Capacity;
             for (int i = 0; i < m_activatedAssists.Count; ++i)
             {
                 clonedPlayer.m_activatedAssists.Add(clonedPlayer.m_assists[m_assists.IndexOf(m_activatedAssists[i])]);
                 clonedPlayer.Game.SubscribeCardToCommands(clonedPlayer.m_activatedAssists[i]);
             }
 
+            clonedPlayer.m_library.Capacity = m_library.Capacity;
             for (int i = 0; i < m_library.Count; ++i)
             {
                 clonedPlayer.m_library.Add(m_library[i]);
             }
 
+            clonedPlayer.m_graveyard.Capacity = m_graveyard.Capacity;
             for (int i = 0; i < m_graveyard.Count; ++i)
             {
                 clonedPlayer.m_graveyard.Add(m_graveyard[i]);

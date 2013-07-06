@@ -89,7 +89,10 @@ namespace TouhouSpring.Simulation
             private PendingBranch ForkBranch(Choice choice)
             {
                 var newChoicePath = new Choice[CurrentBranchChoicePath.Length + 1];
-                Array.Copy(CurrentBranchChoicePath, newChoicePath, CurrentBranchChoicePath.Length);
+                for (int i = 0; i < CurrentBranchChoicePath.Length; ++i)
+                {
+                    newChoicePath[i] = CurrentBranchChoicePath[i];
+                }
                 newChoicePath[CurrentBranchChoicePath.Length] = choice;
                 return new PendingBranch { ChoicePath = newChoicePath };
             }

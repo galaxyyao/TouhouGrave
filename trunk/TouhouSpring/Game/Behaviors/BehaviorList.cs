@@ -31,6 +31,12 @@ namespace TouhouSpring.Behaviors
             get { return m_behaviors.Count; }
         }
 
+        public int Capacity
+        {
+            get { return m_behaviors.Capacity; }
+            set { m_behaviors.Capacity = value; }
+        }
+
         #endregion
 
         #region IEnumerable<T> interface
@@ -68,11 +74,6 @@ namespace TouhouSpring.Behaviors
                 throw new ArgumentNullException("host");
             }
             Host = host;
-        }
-
-        internal void Reserve(int capacity)
-        {
-            m_behaviors.Capacity = capacity;
         }
 
         internal void Add(IBehavior item)
