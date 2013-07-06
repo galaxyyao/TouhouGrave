@@ -7,11 +7,12 @@ using System.Xml;
 
 namespace TouhouSpring.Services
 {
+    [LifetimeDependency(typeof(CardDatabase))]
     public class CurrentProfile : GameService
     {
         public override void Startup()
         {
-            AppSettings.Instance.ReadProfile();
+            Settings.Instance.LoadSettings();
         }
     }
 }

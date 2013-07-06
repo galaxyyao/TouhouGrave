@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<root>
-  <Settings>
+<AppSettings  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GameSettings>
     <!--<RemoteServerIp>42.96.144.161</RemoteServerIp>-->
     <RemoteServerIp>127.0.0.1</RemoteServerIp>
     <RemoteServerPort>13389</RemoteServerPort>
-    <IsMusicOn>False</IsMusicOn>
-    <IsSoundOn>False</IsSoundOn>
+    <IsMusicOn>false</IsMusicOn>
+    <IsSoundOn>false</IsSoundOn>
     <MusicVolume>0.3</MusicVolume>
     <SoundVolume>1</SoundVolume>
-  </Settings>
+  </GameSettings>
   <Profiles>
     <Profile>
       <GUID></GUID>
@@ -97,9 +97,6 @@
             <Model>alice_2</Model>
             <Model>alice_2</Model>
             <Model>alice_2</Model>
-            <Model>sakuya</Model>
-            <Model>sakuya</Model>
-            <Model>sakuya</Model>
           </Card>
           <Assist>
             <Model>yakumo</Model>
@@ -201,4 +198,4 @@
       </Decks>
     </Profile>
   </Profiles>
-</root>
+</AppSettings>

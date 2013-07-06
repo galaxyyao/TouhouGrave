@@ -14,7 +14,6 @@ namespace TouhouSpring
         private Document m_document;
         private const int ASSIST_MAXNUM = 3;
         private const int CARD_MAXNUM = 3;
-        private bool m_isDeckModified = false;
 
         private bool IsDocumentCardLibraryOpened
         {

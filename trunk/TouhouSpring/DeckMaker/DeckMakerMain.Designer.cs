@@ -413,7 +413,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ListBox lbAssistLibrary;
         private System.Windows.Forms.ListBox lbAssistDeck;
         private System.Windows.Forms.Label label1;

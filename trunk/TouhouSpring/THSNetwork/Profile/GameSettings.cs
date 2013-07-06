@@ -2,55 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace TouhouSpring
 {
-    /// <summary>
-    /// Describes a game user's preference, like name, decks, etc.
-    /// </summary>
-    public class Profile
+    public class GameSettings
     {
-        public string GUID
+        public string RemoteServerIp
         {
             get;
             set;
         }
 
-        public string Uid
+        public int RemoteServerPort
         {
             get;
             set;
         }
 
-        public string Email
+        public bool IsMusicOn
         {
             get;
             set;
         }
 
-        public int Deck1Id
+        public bool IsSoundOn
         {
             get;
             set;
         }
 
-        public int Deck2Id
+        public float MusicVolume
         {
             get;
             set;
         }
 
-        [XmlElement("Decks")]
-        public Decks Decks
+        public float SoundVolume
         {
             get;
             set;
-        }
-
-        public Profile()
-        {
-            Decks = new Decks();
         }
     }
 }

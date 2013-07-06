@@ -136,7 +136,7 @@ namespace TouhouSpring.Services
         {
             var cardDb = GameApp.Service<CardDatabase>();
 
-            Deck deck1 = new Deck("Profile1");
+            Deck deck1 = new Deck();
             deck1.Add(cardDb.GetModel("hatate"));
             deck1.Add(cardDb.GetModel("hatate"));
             deck1.Add(cardDb.GetModel("hatate"));
@@ -170,7 +170,7 @@ namespace TouhouSpring.Services
             deck1.Assists.Add(cardDb.GetModel("eirin"));
             deck1.Assists.Add(cardDb.GetModel("patchouli"));
 
-            Deck deck2 = new Deck("Profile2");
+            Deck deck2 = new Deck();
             deck2.Add(cardDb.GetModel("lunar"));
             deck2.Add(cardDb.GetModel("lunar"));
             deck2.Add(cardDb.GetModel("lunar"));

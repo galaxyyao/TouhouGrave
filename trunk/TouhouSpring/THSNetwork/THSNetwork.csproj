@@ -47,9 +47,12 @@
     <Compile Include="Network\Client.InboxMessage.cs" />
     <Compile Include="Network\Client.Room.cs" />
     <Compile Include="Profile\AppSettings.cs" />
-    <Compile Include="Profile\AppSettings.Profile.cs" />
+    <Compile Include="Profile\Decks.cs" />
+    <Compile Include="Profile\Profiles.cs" />
+    <Compile Include="Profile\GameSettings.cs" />
     <Compile Include="Profile\GameStartupParameters.cs" />
     <Compile Include="Profile\Profile.cs" />
+    <Compile Include="Profile\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

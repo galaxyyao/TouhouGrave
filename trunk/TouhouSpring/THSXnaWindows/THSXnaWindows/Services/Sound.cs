@@ -53,20 +53,20 @@ namespace TouhouSpring.Services
 
         public void PlaySound(SoundEffectEnum sound)
         {
-            if (!AppSettings.Instance.IsSoundOn)
+            if (!Settings.Instance.MyAppSettings.GameSettings.IsSoundOn)
                 return;
             m_soundEffectInstance = m_sounds[sound];
-            m_soundEffectInstance.Volume = AppSettings.Instance.SoundVolume;
+            m_soundEffectInstance.Volume = Settings.Instance.MyAppSettings.GameSettings.SoundVolume;
             m_soundEffectInstance.Play();
         }
 
         public void PlayMusic(MusicEnum music)
         {
-            if (!AppSettings.Instance.IsMusicOn)
+            if (!Settings.Instance.MyAppSettings.GameSettings.IsMusicOn)
                 return;
             m_songInstance = m_musics[music];
             MediaPlayer.Play(m_songInstance);
-            MediaPlayer.Volume = AppSettings.Instance.MusicVolume;
+            MediaPlayer.Volume = Settings.Instance.MyAppSettings.GameSettings.MusicVolume;
             MediaPlayer.IsRepeating = true;
         }
     }

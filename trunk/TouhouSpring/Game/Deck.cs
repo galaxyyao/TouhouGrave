@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace TouhouSpring
 {
     /// <summary>
     /// A preselected set of cards.
     /// </summary>
-    public class Deck : IIndexable<ICardModel>
+    public class Deck
     {
         public enum ValidationResult
         {
@@ -25,26 +26,51 @@ namespace TouhouSpring
 
         private List<ICardModel> m_cards = new List<ICardModel>();
 
+        [XmlIgnore]
         public ICardModel this[int index]
         {
             get { return m_cards[index]; }
         }
 
+        [XmlIgnore]
         public ICardModel Hero
         {
             get; set;
         }
 
+        [XmlIgnore]
         public IList<ICardModel> Assists
         {
             get; private set;
         }
 
-        public string Id
+        public int Id
         {
-            get; private set;
+            get;
+            set;
         }
 
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        [XmlElement("Card")]
+        public CardIdList DeckCardIdList
+        {
+            get;
+            set;
+        }
+
+        [XmlElement("Assist")]
+        public AssistIdList DeckAssistIdList
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
         public int Count
         {
             get { return m_cards.Count; }
@@ -55,14 +81,8 @@ namespace TouhouSpring
             return m_cards.IndexOf(element);
         }
 
-        public Deck(string id)
+        public Deck()
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException("id");
-            }
-
-            Id = id;
             Assists = new List<ICardModel>();
         }
 
@@ -115,9 +135,29 @@ namespace TouhouSpring
             return m_cards.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return m_cards.GetEnumerator();
+        //}
+    }
+
+    public class CardIdList
+    {
+        [XmlElement("Model")]
+        public List<string> Model
         {
-            return m_cards.GetEnumerator();
+            get;
+            set;
+        }
+    }
+
+    public class AssistIdList
+    {
+        [XmlElement("Model")]
+        public List<string> Model
+        {
+            get;
+            set;
         }
     }
 }

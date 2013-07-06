@@ -220,29 +220,29 @@ namespace TouhouSpring.Services
         private void PrepareGameStartupParam()
         {
             var cardDb = GameApp.Service<CardDatabase>();
-            int i = AppSettings.Instance.ReadProfile().Deck1Id;
-            List<Profile.CardBuild> cardBuilds = AppSettings.Instance.ReadProfile().CardBuilds;
-            Profile.CardBuild cardBuild1 = AppSettings.Instance.ReadProfile().CardBuilds.Find(
-                cardBuild => cardBuild.Id == AppSettings.Instance.ReadProfile().Deck1Id);
-            Profile.CardBuild cardBuild2 = AppSettings.Instance.ReadProfile().CardBuilds.Find(
-                cardBuild => cardBuild.Id == AppSettings.Instance.ReadProfile().Deck2Id);
+            int deck1Id = Settings.Instance.MyAppSettings.Profiles.CurrentProfile.Deck1Id;
+            int deck2Id = Settings.Instance.MyAppSettings.Profiles.CurrentProfile.Deck2Id;
 
-            Deck deck1 = new Deck(cardBuild1.Id.ToString());
-            foreach (var cardModelId in cardBuild1.CardModelIds)
+            Deck deck1 = (from deck in Settings.Instance.MyAppSettings.Profiles.CurrentProfile.Decks.MyDecks
+                          where deck.Id == deck1Id
+                          select deck).FirstOrDefault();
+            foreach (var cardModelId in deck1.DeckCardIdList.Model)
             {
                 deck1.Add(cardDb.GetModel(cardModelId));
             }
-            foreach (var assistModelId in cardBuild1.AssistModelIds)
+            foreach (var assistModelId in deck1.DeckAssistIdList.Model)
             {
                 deck1.Assists.Add(cardDb.GetModel(assistModelId));
             }
 
-            Deck deck2 = new Deck(cardBuild2.Id.ToString());
-            foreach (var cardModelId in cardBuild2.CardModelIds)
+            Deck deck2 = (from deck in Settings.Instance.MyAppSettings.Profiles.CurrentProfile.Decks.MyDecks
+                          where deck.Id == deck2Id
+                          select deck).FirstOrDefault();
+            foreach (var cardModelId in deck2.DeckCardIdList.Model)
             {
                 deck2.Add(cardDb.GetModel(cardModelId));
             }
-            foreach (var assistModelId in cardBuild2.AssistModelIds)
+            foreach (var assistModelId in deck2.DeckAssistIdList.Model)
             {
                 deck2.Assists.Add(cardDb.GetModel(assistModelId));
             }
@@ -258,7 +258,7 @@ namespace TouhouSpring.Services
         {
             var pageStyle = new Style.PageStyle(GameApp.Service<Styler>().GetPageStyle(id));
             pageStyle.Initialize();
-            if(!m_pages.ContainsKey(id))
+            if (!m_pages.ContainsKey(id))
                 m_pages.Add(id, new MenuPage(pageStyle.TypedTarget));
         }
 

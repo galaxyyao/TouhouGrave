@@ -891,10 +891,6 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Assist_Doom+ModelType">
-          <Name>Assist_Doom</Name>
-          <DamageThreshold>0</DamageThreshold>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
