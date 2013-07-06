@@ -19,8 +19,8 @@ namespace TouhouSpring.Behaviors
                 {
                     Game.QueueCommands(new Commands.SendBehaviorMessage(
                         Host.Warrior,
-                        "AttackModifiers",
-                        new object[] { "add", m_attackModifier }));
+                        WarriorMessage.AddAttackModifier,
+                        m_attackModifier));
                 }
             }
             else
@@ -35,8 +35,8 @@ namespace TouhouSpring.Behaviors
             {
                 Game.QueueCommands(new Commands.SendBehaviorMessage(
                     Host.Warrior,
-                    "AttackModifiers",
-                    new object[] { "remove", m_attackModifier }));
+                    WarriorMessage.RemoveAttackModifier,
+                    m_attackModifier));
                 m_attackModifier = null;
             }
         }

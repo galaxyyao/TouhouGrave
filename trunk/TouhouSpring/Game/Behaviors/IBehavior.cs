@@ -18,6 +18,6 @@ namespace TouhouSpring.Behaviors
         CardInstance RealHost { get; set; }
         void Initialize(IBehaviorModel model, bool persistent);
         void TransferFrom(IBehavior original);
-        void ReceiveMessage(string message, object[] args);
+        void ReceiveMessage(int messageId, object arg);
     }
 }

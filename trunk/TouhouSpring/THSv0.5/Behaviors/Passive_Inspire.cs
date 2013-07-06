@@ -21,7 +21,7 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card != Host && card.Warrior != null)
                     {
-                        Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "add", m_attackModifier }));
+                        Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, WarriorMessage.AddAttackModifier, m_attackModifier));
                     }
                 }
                 m_inspired = true;
@@ -37,7 +37,7 @@ namespace TouhouSpring.Behaviors
                 && command.Subject.Owner == Host.Owner
                 && command.Subject.Warrior != null)
             {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(command.Subject.Warrior, "AttackModifiers", new object[] { "remove", m_attackModifier }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(command.Subject.Warrior, WarriorMessage.RemoveAttackModifier, m_attackModifier));
             }
         }
 
@@ -51,7 +51,7 @@ namespace TouhouSpring.Behaviors
                 {
                     if (card != Host && card.Warrior != null)
                     {
-                        Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, "AttackModifiers", new object[] { "remove", m_attackModifier }));
+                        Game.QueueCommands(new Commands.SendBehaviorMessage(card.Warrior, WarriorMessage.RemoveAttackModifier, m_attackModifier));
                     }
                 }
                 m_inspired = false;

@@ -36,7 +36,7 @@ namespace TouhouSpring.Behaviors
             if (target.Warrior != null)
             {
                 Game.QueueCommands(
-                    new Commands.SendBehaviorMessage(target.Warrior, "AttackModifiers", new object[] { "add", Model.Modifier }),
+                    new Commands.SendBehaviorMessage(target.Warrior, WarriorMessage.AddAttackModifier, Model.Modifier),
                     new Commands.AddBehavior(target, new RecklessnessEffect.ModelType().CreateInitialized()),
                     new Commands.DeactivateAssist(Host));
             }

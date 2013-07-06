@@ -8,7 +8,7 @@
     <ProjectGuid>{8772ADE0-B78C-47B5-8C24-E43C1C685732}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TouhouSpring</RootNamespace>
+    <RootNamespace>TouhouSpring.Behaviors</RootNamespace>
     <AssemblyName>THSv0.5</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -101,6 +101,7 @@
     <Compile Include="Behaviors\Spell_AssignAbility.cs" />
     <Compile Include="Behaviors\Spell_HealAllAlly_NLife.cs" />
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
+    <Compile Include="Passive\Bloom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

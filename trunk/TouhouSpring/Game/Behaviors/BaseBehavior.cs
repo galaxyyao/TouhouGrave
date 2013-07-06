@@ -89,9 +89,9 @@ namespace TouhouSpring.Behaviors
             OnTransferFrom(original);
         }
 
-        void IInternalBehavior.ReceiveMessage(string message, object[] args) { OnMessage(message, args); }
+        void IInternalBehavior.ReceiveMessage(int messageId, object arg) { OnMessage(messageId, arg); }
 
-        protected virtual void OnMessage(string message, object[] args) { }
+        protected virtual void OnMessage(int messageId, object arg) { }
         protected virtual void OnInitialize() { }
         protected virtual void OnTransferFrom(IBehavior original) { }
     }
