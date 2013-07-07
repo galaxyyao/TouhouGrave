@@ -59,12 +59,28 @@ namespace TouhouSpring.Behaviors
 
         public T Get<T>() where T : class, IBehavior
         {
-            return m_behaviors.FirstOrDefault(bhv => bhv is T) as T;
+            foreach (var bhv in m_behaviors)
+            {
+                var t = bhv as T;
+                if (t != null)
+                {
+                    return t;
+                }
+            }
+
+            return null;
         }
 
         public bool Has<T>() where T : class, IBehavior
         {
-            return m_behaviors.Any(bhv => bhv is T);
+            foreach (var bhv in m_behaviors)
+            {
+                if (bhv is T)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         internal BehaviorList(CardInstance host)

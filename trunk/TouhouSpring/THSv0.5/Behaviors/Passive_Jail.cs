@@ -11,20 +11,9 @@ namespace TouhouSpring.Behaviors
         IGlobalEpilogTrigger<Commands.IMoveCard>,
         ILocalEpilogTrigger<Commands.IMoveCard>
     {
-        class JailEffect : BaseBehavior<JailEffect.ModelType>, IUnattackable,
-            IGlobalPrologTrigger<Commands.DealDamageToCard>
-        {
-            void IGlobalPrologTrigger<Commands.DealDamageToCard>.RunGlobalProlog(Commands.DealDamageToCard command)
-            {
-                if (command.Cause is Passive_Retaliate && (command.Cause as IBehavior).Host == Host)
-                {
-                    command.PatchDamageToDeal(0);
-                }
-            }
-
-            [BehaviorModel(typeof(JailEffect), HideFromEditor = true)]
-            public class ModelType : BehaviorModel { }
-        }
+        class JailEffect : SimpleBehavior<JailEffect>,
+            IUnattackable, IUnretaliatable
+        { }
 
         private CardInstance m_prisoner;
 

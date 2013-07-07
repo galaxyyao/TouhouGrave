@@ -53,7 +53,6 @@
     <None Include="Behaviors\Deprecated\Passive_DeterAura_NAttack.cs" />
     <None Include="Behaviors\Deprecated\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
     <Compile Include="Behaviors\GenericAura.cs" />
-    <Compile Include="Behaviors\Passive_CantBeRetaliated.cs" />
     <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Assist_Doom.cs" />
@@ -74,7 +73,6 @@
     <Compile Include="Behaviors\Passive_SpiritForm.cs" />
     <Compile Include="Behaviors\Passive_Stealth.cs" />
     <Compile Include="Behaviors\Passive_Trample.cs" />
-    <Compile Include="Behaviors\Passive_Retaliate.cs" />
     <Compile Include="Behaviors\Passive_Sputter_NDamage.cs" />
     <Compile Include="Behaviors\Spell_AttackGrowth.cs" />
     <Compile Include="Behaviors\Passive_Aura_ReduceDamage_NDamage.cs" />
@@ -101,6 +99,7 @@
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
     <Compile Include="Passive\BeGuarded.cs" />
     <Compile Include="Passive\Bloom.cs" />
+    <Compile Include="Passive\CantBeRetaliated.cs" />
     <Compile Include="Passive\ForceAttack.cs" />
     <Compile Include="Passive\LowProfile.cs" />
     <Compile Include="Passive\Taunt.cs" />

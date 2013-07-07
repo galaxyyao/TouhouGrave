@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\ManaCost.cs" />
+    <Compile Include="Behaviors\Retaliate.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
     <Compile Include="Behaviors\UIBehaviors.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />

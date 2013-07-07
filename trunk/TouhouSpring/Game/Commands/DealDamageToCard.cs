@@ -52,7 +52,7 @@ namespace TouhouSpring.Commands
 
         internal override bool ValidateOnRun()
         {
-            return DamageToDeal >= 0 && !Target.IsDestroyed && Target.Owner.CardsOnBattlefield.Contains(Target);
+            return DamageToDeal >= 0 && !Target.IsDestroyed && Target.IsOnBattlefield;
         }
 
         internal override void RunMain()
