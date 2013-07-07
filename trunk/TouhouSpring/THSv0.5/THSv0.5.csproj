@@ -102,6 +102,8 @@
     <Compile Include="Passive\CantBeRetaliated.cs" />
     <Compile Include="Passive\ForceAttack.cs" />
     <Compile Include="Passive\LowProfile.cs" />
+    <Compile Include="Passive\Stiffness.cs" />
+    <Compile Include="Passive\StiffnessSpread.cs" />
     <Compile Include="Passive\Taunt.cs" />
     <Compile Include="Passive\Transcend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
