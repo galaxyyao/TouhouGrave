@@ -52,6 +52,15 @@
     <Compile Include="CardModelReferenceTypeConverter.cs" />
     <Compile Include="ContentPipelineClasses.cs" />
     <Compile Include="BehaviorModelReferenceTypeConverter.cs" />
+    <Compile Include="DeckMaker.Operations.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeckMaker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeckMaker.Designer.cs">
+      <DependentUpon>DeckMaker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Document.cs" />
     <Compile Include="EditorCardModel.cs" />
     <Compile Include="Main.cs">
@@ -75,6 +84,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers.cs" />
+    <EmbeddedResource Include="DeckMaker.resx">
+      <DependentUpon>DeckMaker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,6 +131,10 @@
       <Project>{8606AF10-183B-408C-92FA-A03264E3A9A7}</Project>
       <Name>Game</Name>
     </ProjectReference>
+    <ProjectReference Include="..\THSNetwork\THSNetwork.csproj">
+      <Project>{364B21A8-2FCA-46BE-91B5-22106D7A5DAE}</Project>
+      <Name>THSNetwork</Name>
+    </ProjectReference>
     <ProjectReference Include="..\THSv0.5\THSv0.5.csproj">
       <Project>{8772ADE0-B78C-47B5-8C24-E43C1C685732}</Project>
       <Name>THSv0.5</Name>
@@ -141,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Behavior_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Arrow_Right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

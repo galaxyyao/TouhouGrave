@@ -255,5 +255,13 @@ namespace TouhouSpring
             m_isModified = true;
             UpdateTitle();
         }
+
+        private void toolStripButtonMakeDeck_Click(object sender, EventArgs e)
+        {
+            if (m_deckMakerForm == null)
+                m_deckMakerForm = new DeckMaker();
+            m_deckMakerForm.OpenCardLibrary(m_document);
+            m_deckMakerForm.Show();
+        }
     }
 }

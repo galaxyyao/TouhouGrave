@@ -40,12 +40,11 @@ namespace TouhouSpring
                 (from profile in MyAppSettings.Profiles.ProfileList
                  where profile.Uid == "default"
                  select profile).FirstOrDefault();
-            ExtSerialization.XmlSerializeToXml(MyAppSettings, "C:\\2.xml");
         }
 
         public void SaveSettings()
         {
-
+            ExtSerialization.XmlSerializeToXml<AppSettings>(MyAppSettings, ProfileFilePath);
         }
     }
 }

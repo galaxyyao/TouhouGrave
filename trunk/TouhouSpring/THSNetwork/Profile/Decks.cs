@@ -19,5 +19,14 @@ namespace TouhouSpring
         {
             MyDecks = new List<Deck>();
         }
+
+        public int MaxDeckId
+        {
+            get
+            {
+                return (from deck in MyDecks
+                        select deck).Max<Deck>(deck => deck.Id);
+            }
+        }
     }
 }

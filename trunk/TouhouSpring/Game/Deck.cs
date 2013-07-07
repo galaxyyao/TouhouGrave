@@ -24,24 +24,33 @@ namespace TouhouSpring
             InvalidCard,            // invalid card selected (hero and assist)
         }
 
-        private List<ICardModel> m_cards = new List<ICardModel>();
+
 
         [XmlIgnore]
         public ICardModel this[int index]
         {
-            get { return m_cards[index]; }
+            get { return Cards[index]; }
         }
 
         [XmlIgnore]
         public ICardModel Hero
         {
-            get; set;
+            get;
+            set;
         }
 
         [XmlIgnore]
         public IList<ICardModel> Assists
         {
-            get; private set;
+            get;
+            private set;
+        }
+
+        [XmlIgnore]
+        public IList<ICardModel> Cards
+        {
+            get;
+            private set;
         }
 
         public int Id
@@ -73,17 +82,18 @@ namespace TouhouSpring
         [XmlIgnore]
         public int Count
         {
-            get { return m_cards.Count; }
+            get { return Cards.Count; }
         }
 
         public int IndexOf(ICardModel element)
         {
-            return m_cards.IndexOf(element);
+            return Cards.IndexOf(element);
         }
 
         public Deck()
         {
             Assists = new List<ICardModel>();
+            Cards = new List<ICardModel>();
         }
 
         public ValidationResult Validate()
@@ -92,7 +102,8 @@ namespace TouhouSpring
             {
                 return ValidationResult.NoHero;
             }
-            else*/ if (Assists.Any(card => !card.Behaviors.Any(bhvMdl => bhvMdl is Behaviors.Assist.ModelType)))
+            else*/
+            if (Assists.Any(card => !card.Behaviors.Any(bhvMdl => bhvMdl is Behaviors.Assist.ModelType)))
             {
                 return ValidationResult.InvalidAssist;
             }
@@ -109,11 +120,11 @@ namespace TouhouSpring
             //{
             //    return ValidationResult.TooLessCards;
             //}
-            else if (m_cards.GroupBy(card => card).Any(grp => grp.Count() > 3))
+            else if (Cards.GroupBy(card => card).Any(grp => grp.Count() > 3))
             {
                 return ValidationResult.TooManyIdenticalCards;
             }
-            else if (m_cards.Any(card => card == Hero || card.Behaviors.Any(bhvMdl => bhvMdl is Behaviors.Assist.ModelType)))
+            else if (Cards.Any(card => card == Hero || card.Behaviors.Any(bhvMdl => bhvMdl is Behaviors.Assist.ModelType)))
             {
                 return ValidationResult.InvalidCard;
             }
@@ -127,12 +138,12 @@ namespace TouhouSpring
             {
                 throw new ArgumentNullException("cardModel");
             }
-            m_cards.Add(cardModel);
+            Cards.Add(cardModel);
         }
 
         public IEnumerator<ICardModel> GetEnumerator()
         {
-            return m_cards.GetEnumerator();
+            return Cards.GetEnumerator();
         }
 
         //IEnumerator IEnumerable.GetEnumerator()
