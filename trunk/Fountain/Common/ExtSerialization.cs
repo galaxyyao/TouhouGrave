@@ -13,9 +13,11 @@ namespace TouhouSpring
         public static void XmlSerializeToXml<T>(T obj, string fileName)
         {
             XmlSerializer ser = new XmlSerializer(typeof(T));
-            FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate);
-            ser.Serialize(fileStream, obj);
-            fileStream.Close();
+            using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
+            {
+                ser.Serialize(fileStream, obj);
+                fileStream.Close();
+            }
         }
 
         public static T XmlDeserializeFromXml<T>(string xml)
