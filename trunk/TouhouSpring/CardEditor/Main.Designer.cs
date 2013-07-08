@@ -51,6 +51,8 @@
             this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.toolStripButtonMakeDeck = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip.SuspendLayout();
@@ -64,12 +66,12 @@
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            toolStripMenuItem1.Size = new System.Drawing.Size(120, 6);
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(120, 6);
             // 
             // menuStrip
             // 
@@ -99,14 +101,14 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -114,7 +116,7 @@
             // 
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -122,13 +124,13 @@
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -201,7 +203,9 @@
             this.toolStripButtonNewCard,
             this.toolStripDropDownButtonNewBehavior,
             this.toolStripSeparator,
-            this.toolStripButtonDelete});
+            this.toolStripButtonDelete,
+            this.toolStripSeparator1,
+            this.toolStripButtonMakeDeck});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(874, 25);
@@ -251,6 +255,20 @@
             // 
             this.saveFileDialog.Filter = "Card database file (*.xml)|*.xml";
             // 
+            // toolStripButtonMakeDeck
+            // 
+            this.toolStripButtonMakeDeck.Image = global::TouhouSpring.Properties.Resources.Card_16x16;
+            this.toolStripButtonMakeDeck.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonMakeDeck.Name = "toolStripButtonMakeDeck";
+            this.toolStripButtonMakeDeck.Size = new System.Drawing.Size(85, 22);
+            this.toolStripButtonMakeDeck.Text = "Make Deck";
+            this.toolStripButtonMakeDeck.Click += new System.EventHandler(this.toolStripButtonMakeDeck_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -298,6 +316,8 @@
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripButton toolStripButtonDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonMakeDeck;
     }
 }
 

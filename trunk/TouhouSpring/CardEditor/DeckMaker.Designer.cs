@@ -1,6 +1,6 @@
 ﻿namespace TouhouSpring
 {
-    partial class DeckMakerMain
+    partial class DeckMaker
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeckMakerMain));
             this.lbCardLibrary = new System.Windows.Forms.ListBox();
             this.lbCardDeck = new System.Windows.Forms.ListBox();
             this.btnAddAssist = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openCardLibraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDeckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +83,7 @@
             // 
             // btnAddAssist
             // 
-            this.btnAddAssist.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAssist.Image")));
+            this.btnAddAssist.Image = global::TouhouSpring.Properties.Resources.Arrow_Right;
             this.btnAddAssist.Location = new System.Drawing.Point(669, 266);
             this.btnAddAssist.Name = "btnAddAssist";
             this.btnAddAssist.Size = new System.Drawing.Size(49, 49);
@@ -106,7 +104,6 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openCardLibraryToolStripMenuItem,
             this.openDeckToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
@@ -114,29 +111,22 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // openCardLibraryToolStripMenuItem
-            // 
-            this.openCardLibraryToolStripMenuItem.Name = "openCardLibraryToolStripMenuItem";
-            this.openCardLibraryToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.openCardLibraryToolStripMenuItem.Text = "Open Card Library";
-            this.openCardLibraryToolStripMenuItem.Click += new System.EventHandler(this.openCardLibraryToolStripMenuItem_Click);
-            // 
             // openDeckToolStripMenuItem
             // 
             this.openDeckToolStripMenuItem.Name = "openDeckToolStripMenuItem";
-            this.openDeckToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.openDeckToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openDeckToolStripMenuItem.Text = "Open Deck";
             this.openDeckToolStripMenuItem.Click += new System.EventHandler(this.openDeckToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -178,7 +168,7 @@
             // 
             // btnAddCard
             // 
-            this.btnAddCard.Image = ((System.Drawing.Image)(resources.GetObject("btnAddCard.Image")));
+            this.btnAddCard.Image = global::TouhouSpring.Properties.Resources.Arrow_Right;
             this.btnAddCard.Location = new System.Drawing.Point(669, 555);
             this.btnAddCard.Name = "btnAddCard";
             this.btnAddCard.Size = new System.Drawing.Size(49, 49);
@@ -358,7 +348,7 @@
             this.btnSaveDeck.UseVisualStyleBackColor = true;
             this.btnSaveDeck.Click += new System.EventHandler(this.btnSaveDeck_Click);
             // 
-            // DeckMakerMain
+            // DeckMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -392,7 +382,7 @@
             this.Controls.Add(this.lbCardLibrary);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "DeckMakerMain";
+            this.Name = "DeckMaker";
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -408,7 +398,6 @@
         private System.Windows.Forms.Button btnAddAssist;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openCardLibraryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openDeckToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;

@@ -10,6 +10,7 @@ namespace TouhouSpring
     partial class Main
     {
         private string m_defaultTitle;
+        private DeckMaker m_deckMakerForm;
 
         private Document m_document;
         private bool m_isModified = false;
