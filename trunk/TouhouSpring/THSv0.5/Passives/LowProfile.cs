@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Behaviors;
 
-namespace TouhouSpring.Behaviors
+namespace TouhouSpring.THSv0_5.Passives
 {
     public static class LowProfile
     {

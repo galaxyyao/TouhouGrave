@@ -100,16 +100,16 @@
     <Compile Include="Behaviors\Spell_AssignAbility.cs" />
     <Compile Include="Behaviors\Spell_HealAllAlly_NLife.cs" />
     <Compile Include="Behaviors\Spell_ManaCannon.cs" />
-    <Compile Include="Passive\BeGuarded.cs" />
-    <Compile Include="Passive\Bloom.cs" />
-    <Compile Include="Passive\CantBeRetaliated.cs" />
-    <Compile Include="Passive\DestroySacrifice.cs" />
-    <Compile Include="Passive\ForceAttack.cs" />
-    <Compile Include="Passive\LowProfile.cs" />
-    <Compile Include="Passive\Stiffness.cs" />
-    <Compile Include="Passive\StiffnessSpread.cs" />
-    <Compile Include="Passive\Taunt.cs" />
-    <Compile Include="Passive\Transcend.cs" />
+    <Compile Include="Passives\BeGuarded.cs" />
+    <Compile Include="Passives\Bloom.cs" />
+    <Compile Include="Passives\CantBeRetaliated.cs" />
+    <Compile Include="Passives\DestroySacrifice.cs" />
+    <Compile Include="Passives\ForceAttack.cs" />
+    <Compile Include="Passives\LowProfile.cs" />
+    <Compile Include="Passives\Stiffness.cs" />
+    <Compile Include="Passives\StiffnessSpread.cs" />
+    <Compile Include="Passives\Taunt.cs" />
+    <Compile Include="Passives\Transcend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

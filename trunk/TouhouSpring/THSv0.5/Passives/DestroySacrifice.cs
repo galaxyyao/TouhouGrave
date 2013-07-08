@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Behaviors;
 
-namespace TouhouSpring.Behaviors.Passive
+namespace TouhouSpring.THSv0_5.Passives
 {
     public sealed class DestroySacrifice : BaseBehavior<DestroySacrifice.ModelType>,
         ILocalEpilogTrigger<Commands.PlayCard>,
