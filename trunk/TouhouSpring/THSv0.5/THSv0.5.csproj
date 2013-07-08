@@ -8,7 +8,7 @@
     <ProjectGuid>{8772ADE0-B78C-47B5-8C24-E43C1C685732}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TouhouSpring.Behaviors</RootNamespace>
+    <RootNamespace>TouhouSpring.THSv0_5</RootNamespace>
     <AssemblyName>THSv0.5</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assists\PaidDrawOnKill.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Behaviors\Assist_GenericAura.cs" />
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
@@ -100,6 +103,7 @@
     <Compile Include="Passive\BeGuarded.cs" />
     <Compile Include="Passive\Bloom.cs" />
     <Compile Include="Passive\CantBeRetaliated.cs" />
+    <Compile Include="Passive\DestroySacrifice.cs" />
     <Compile Include="Passive\ForceAttack.cs" />
     <Compile Include="Passive\LowProfile.cs" />
     <Compile Include="Passive\Stiffness.cs" />
