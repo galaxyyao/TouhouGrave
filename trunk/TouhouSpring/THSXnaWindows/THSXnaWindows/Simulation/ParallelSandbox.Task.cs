@@ -54,7 +54,7 @@ namespace TouhouSpring.Simulation
             }
 
             public Task(ParallelSandbox sandbox, PendingBranch pendingBranch)
-                : base(true)
+                : base(false, true)
             {
                 m_sandbox = sandbox;
                 m_pendingBranches.Add(pendingBranch);
@@ -89,7 +89,10 @@ namespace TouhouSpring.Simulation
             private PendingBranch ForkBranch(Choice choice)
             {
                 var newChoicePath = new Choice[CurrentBranchChoicePath.Length + 1];
-                Array.Copy(CurrentBranchChoicePath, newChoicePath, CurrentBranchChoicePath.Length);
+                for (int i = 0; i < CurrentBranchChoicePath.Length; ++i)
+                {
+                    newChoicePath[i] = CurrentBranchChoicePath[i];
+                }
                 newChoicePath[CurrentBranchChoicePath.Length] = choice;
                 return new PendingBranch { ChoicePath = newChoicePath };
             }
@@ -201,29 +204,25 @@ namespace TouhouSpring.Simulation
 
             #region major interactions
 
-            [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
-            private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
+            protected override bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
             {
                 OnInteraction(interactionObj, m_sandbox.m_simulator.TacticalPhase(interactionObj, this));
                 return false;
             }
 
-            [Interactions.MessageHandler(typeof(Interactions.SelectCards))]
-            private bool OnSelectCards(Interactions.SelectCards interactionObj)
+            protected override bool OnSelectCards(Interactions.SelectCards interactionObj)
             {
                 OnInteraction(interactionObj, m_sandbox.m_simulator.SelectCards(interactionObj, this));
                 return false;
             }
 
-            [Interactions.MessageHandler(typeof(Interactions.MessageBox))]
-            private bool OnMessageBox(Interactions.MessageBox interactionObj)
+            protected override bool OnMessageBox(Interactions.MessageBox interactionObj)
             {
                 OnInteraction(interactionObj, m_sandbox.m_simulator.MessageBox(interactionObj, this));
                 return false;
             }
 
-            [Interactions.MessageHandler(typeof(Interactions.SelectNumber))]
-            private bool OnSelectNumber(Interactions.SelectNumber interactionObj)
+            protected override bool OnSelectNumber(Interactions.SelectNumber interactionObj)
             {
                 OnInteraction(interactionObj, m_sandbox.m_simulator.SelectNumber(interactionObj, this));
                 return false;
@@ -233,29 +232,25 @@ namespace TouhouSpring.Simulation
 
             #region notifications
 
-            [Interactions.MessageHandler(typeof(Interactions.NotifyCardEvent))]
-            private bool OnNotified(Interactions.NotifyCardEvent interactionObj)
+            protected override bool OnNotified(Interactions.NotifyCardEvent interactionObj)
             {
                 interactionObj.Respond();
                 return false;
             }
 
-            [Interactions.MessageHandler(typeof(Interactions.NotifyGameEvent))]
-            private bool OnNotified(Interactions.NotifyGameEvent interactionObj)
+            protected override bool OnNotified(Interactions.NotifyGameEvent interactionObj)
             {
                 interactionObj.Respond();
                 return false;
             }
 
-            [Interactions.MessageHandler(typeof(Interactions.NotifyPlayerEvent))]
-            private bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
+            protected override bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
             {
                 interactionObj.Respond();
                 return false;
             }
 
-            [Interactions.MessageHandler(typeof(Interactions.NotifySpellEvent))]
-            private bool OnNotified(Interactions.NotifySpellEvent interactionObj)
+            protected override bool OnNotified(Interactions.NotifySpellEvent interactionObj)
             {
                 interactionObj.Respond();
                 return false;

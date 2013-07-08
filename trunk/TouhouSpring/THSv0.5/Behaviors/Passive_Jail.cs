@@ -11,7 +11,7 @@ namespace TouhouSpring.Behaviors
         IGlobalEpilogTrigger<Commands.IMoveCard>,
         ILocalEpilogTrigger<Commands.IMoveCard>
     {
-        class JailEffect : Unattackable,
+        class JailEffect : BaseBehavior<JailEffect.ModelType>, IUnattackable,
             IGlobalPrologTrigger<Commands.DealDamageToCard>
         {
             void IGlobalPrologTrigger<Commands.DealDamageToCard>.RunGlobalProlog(Commands.DealDamageToCard command)
@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
             }
 
             [BehaviorModel(typeof(JailEffect), HideFromEditor = true)]
-            new public class ModelType : Unattackable.ModelType { }
+            public class ModelType : BehaviorModel { }
         }
 
         private CardInstance m_prisoner;

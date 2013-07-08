@@ -70,12 +70,12 @@ namespace TouhouSpring.Behaviors
 
         private void EnterAura(Warrior warrior)
         {
-            Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "add", Model.Modifier }));
+            Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, WarriorMessage.AddAttackModifier, Model.Modifier));
         }
 
         private void LeaveAura(Warrior warrior)
         {
-            Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, "AttackModifiers", new object[] { "remove", Model.Modifier }));
+            Game.QueueCommands(new Commands.SendBehaviorMessage(warrior, WarriorMessage.RemoveAttackModifier, Model.Modifier));
         }
     }
 

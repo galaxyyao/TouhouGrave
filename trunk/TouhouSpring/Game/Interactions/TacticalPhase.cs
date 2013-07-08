@@ -13,6 +13,14 @@ namespace TouhouSpring.Interactions
             public object Data;
         }
 
+        private IIndexable<CardInstance> m_playCardCandidatesCache;
+        private IIndexable<CardInstance> m_activateAssistCandidatesCache;
+        private IIndexable<Behaviors.ICastableSpell> m_castSpellCandidatesCache;
+        private IIndexable<CardInstance> m_redeemCandidatesCache;
+        private IIndexable<CardInstance> m_attackerCandidatesCache;
+        private IIndexable<CardInstance> m_defenderCandidatesCache;
+        private bool? m_canPassCache;
+
         public Player Player
         {
             get; private set;
@@ -20,17 +28,38 @@ namespace TouhouSpring.Interactions
 
         public IIndexable<CardInstance> PlayCardCandidates
         {
-            get; private set;
+            get
+            {
+                if (m_playCardCandidatesCache == null)
+                {
+                    m_playCardCandidatesCache = GetPlayCardCandidates();
+                }
+                return m_playCardCandidatesCache;
+            }
         }
 
         public IIndexable<CardInstance> ActivateAssistCandidates
         {
-            get; private set;
+            get
+            {
+                if (m_activateAssistCandidatesCache == null)
+                {
+                    m_activateAssistCandidatesCache = GetActivateAssistCandidates();
+                }
+                return m_activateAssistCandidatesCache;
+            }
         }
 
         public IIndexable<Behaviors.ICastableSpell> CastSpellCandidates
         {
-            get; private set;
+            get
+            {
+                if (m_castSpellCandidatesCache == null)
+                {
+                    m_castSpellCandidatesCache = GetCastSpellCandidates();
+                }
+                return m_castSpellCandidatesCache;
+            }
         }
 
         public IIndexable<CardInstance> SacrificeCandidates
@@ -40,22 +69,50 @@ namespace TouhouSpring.Interactions
 
         public IIndexable<CardInstance> RedeemCandidates
         {
-            get; private set;
+            get
+            {
+                if (m_redeemCandidatesCache == null)
+                {
+                    m_redeemCandidatesCache = GetRedeemCandidates();
+                }
+                return m_redeemCandidatesCache;
+            }
         }
 
         public IIndexable<CardInstance> AttackerCandidates
         {
-            get; private set;
+            get
+            {
+                if (m_attackerCandidatesCache == null)
+                {
+                    m_attackerCandidatesCache = GetAttackerCandidates();
+                }
+                return m_attackerCandidatesCache;
+            }
         }
 
         public IIndexable<CardInstance> DefenderCandidates
         {
-            get; private set;
+            get
+            {
+                if (m_defenderCandidatesCache == null)
+                {
+                    m_defenderCandidatesCache = GetDefenderCandidates();
+                }
+                return m_defenderCandidatesCache;
+            }
         }
 
         public bool CanPass
         {
-            get; private set;
+            get
+            {
+                if (m_canPassCache == null)
+                {
+                    m_canPassCache = GetCanPass();
+                }
+                return m_canPassCache.Value;
+            }
         }
 
         internal TacticalPhase(Player player)
@@ -71,34 +128,8 @@ namespace TouhouSpring.Interactions
             }
 
             Player = player;
-            PlayCardCandidates = GetPlayCardBaseSet(player)
-                                    .Where(card => player.Game.IsCardPlayable(card)).ToArray().ToIndexable();
-            ActivateAssistCandidates = GetActivateAssistBaseSet(player)
-                                    .Where(card => player.Game.IsCardActivatable(card)).ToArray().ToIndexable();
-            CastSpellCandidates = GetCastSpellBaseSet(player).SelectMany(card => card.Spells)
-                                    .Where(spell => player.Game.IsSpellCastable(spell)).ToArray().ToIndexable();
-            SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand.Clone() : Indexable.Empty<CardInstance>();
-            RedeemCandidates = !Game.DidRedeem
-                               ? player.CardsSacrificed.Where(card => player.Game.IsCardRedeemable(card)).ToArray().ToIndexable()
-                               : Indexable.Empty<CardInstance>();
-            AttackerCandidates = GetAttackerBaseSet(player).ToArray().ToIndexable();
-            if (AttackerCandidates.Count != 0)
-            {
-                var defenders = GetDefenderBaseSet(player).ToArray();
-                var protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Taunt>()).ToArray();
-                if (protectors.Length == 0)
-                {
-                    protectors = defenders.Where(card => card.Behaviors.Has<Behaviors.Protector>()).ToArray();
-                }
-                DefenderCandidates = (protectors.Length != 0 ? protectors : defenders).ToIndexable();
-            }
-            else
-            {
-                DefenderCandidates = Indexable.Empty<CardInstance>();
-            }
 
-            CanPass = !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.ForceAttack>())
-                      && (!DefenderCandidates.Any(card => card.Behaviors.Has<Behaviors.Taunt>()) || AttackerCandidates.Count == 0);
+            SacrificeCandidates = !Game.DidSacrifice ? player.CardsOnHand : Indexable.Empty<CardInstance>();
         }
 
         internal Result Run()
@@ -364,6 +395,58 @@ namespace TouhouSpring.Interactions
             }
         }
 
+        private IIndexable<CardInstance> GetPlayCardCandidates()
+        {
+            return GetPlayCardBaseSet(Player).Where(card => Player.Game.IsCardPlayable(card)).ToList().ToIndexable();
+        }
+
+        private IIndexable<CardInstance> GetActivateAssistCandidates()
+        {
+            return GetActivateAssistBaseSet(Player).Where(card => Player.Game.IsCardActivatable(card)).ToList().ToIndexable();
+        }
+
+        private IIndexable<Behaviors.ICastableSpell> GetCastSpellCandidates()
+        {
+            return GetCastSpellBaseSet(Player).SelectMany(card => card.Spells).Where(spell => Player.Game.IsSpellCastable(spell)).ToList().ToIndexable();
+        }
+
+        private IIndexable<CardInstance> GetRedeemCandidates()
+        {
+            return !Game.DidRedeem
+                   ? Player.CardsSacrificed.Where(card => Player.Game.IsCardRedeemable(card)).ToList().ToIndexable()
+                   : Indexable.Empty<CardInstance>();
+        }
+
+        private IIndexable<CardInstance> GetAttackerCandidates()
+        {
+            return GetAttackerBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.IUnattackable>()).ToList().ToIndexable();
+        }
+
+        private IIndexable<CardInstance> GetDefenderCandidates()
+        {
+            if (AttackerCandidates.Count != 0)
+            {
+                var defendersArr = GetDefenderBaseSet(Player).Where(card => !card.Behaviors.Has<Behaviors.IUndefendable>()).ToList();
+                var protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.ITaunt>()).ToList();
+                if (protectorsArr.Count == 0)
+                {
+                    protectorsArr = defendersArr.Where(card => card.Behaviors.Has<Behaviors.IProtector>()).ToList();
+                }
+                return (protectorsArr.Count != 0 ? protectorsArr : defendersArr).ToIndexable();
+            }
+            else
+            {
+                return Indexable.Empty<CardInstance>();
+            }
+        }
+
+        private bool GetCanPass()
+        {
+            return AttackerCandidates.Count == 0
+                   || !AttackerCandidates.Any(card => card.Behaviors.Has<Behaviors.IForceAttack>())
+                      && !DefenderCandidates.Any(card => card.Behaviors.Has<Behaviors.ITaunt>());
+        }
+
         private static IEnumerable<CardInstance> GetPlayCardBaseSet(Player player)
         {
             if (!player.CardsOnBattlefield.Contains(player.Hero) && player.Hero != null)
@@ -403,8 +486,7 @@ namespace TouhouSpring.Interactions
         {
             foreach (var card in player.CardsOnBattlefield)
             {
-                if (card.Warrior != null && card.Warrior.State == Behaviors.WarriorState.StandingBy
-                    && !card.Behaviors.Has<Behaviors.Unattackable>())
+                if (card.Warrior != null && card.Warrior.State == Behaviors.WarriorState.StandingBy)
                 {
                     yield return card;
                 }
@@ -419,8 +501,7 @@ namespace TouhouSpring.Interactions
                 {
                     foreach (var card in p.CardsOnBattlefield)
                     {
-                        if (card.Warrior != null
-                            && !card.Behaviors.Has<Behaviors.Undefendable>())
+                        if (card.Warrior != null)
                         {
                             yield return card;
                         }

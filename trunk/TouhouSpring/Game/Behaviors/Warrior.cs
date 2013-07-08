@@ -12,6 +12,15 @@ namespace TouhouSpring.Behaviors
         CoolingDown
     }
 
+    public struct WarriorMessage
+    {
+        public const int GoCoolingDown          = 0;
+        public const int GoStandingBy           = 1;
+        public const int AddAttackModifier      = 2;
+        public const int RemoveAttackModifier   = 3;
+        public const int ResetMaxLife           = 4;
+    }
+
     public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
         Commands.ICause,
         ILocalPrerequisiteTrigger<Commands.IInitiativeMoveCard>,
@@ -98,50 +107,67 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        protected override void OnMessage(string message, object[] args)
+        protected override void OnMessage(int messageId, object arg)
         {
-            if (message == "GoCoolingDown")
+            switch (messageId)
             {
-                if (args != null)
-                {
-                    throw new ArgumentException("Formation of args is not expected.");
-                }
-
-                State = WarriorState.CoolingDown;
-            }
-            else if (message == "GoStandingBy")
-            {
-                if (args != null)
-                {
-                    throw new ArgumentException("Formation of args is not expected.");
-                }
-
-                State = WarriorState.StandingBy;
-            }
-            else if (message == "AttackModifiers")
-            {
-                if (args == null || args.Length != 2
-                    || args[0].GetType() != typeof(string) || args[1].GetType() != typeof(ValueModifier))
-                {
-                    throw new ArgumentException("Formation of args is not expected.");
-                }
-                if ((string)args[0] == "add")
-                {
-                    var mod = (ValueModifier)args[1];
-                    if (!m_attackModifiers.Contains(mod))
+                case WarriorMessage.GoCoolingDown:
                     {
+                        if (arg != null)
+                        {
+                            throw new ArgumentException("Warrior::GoCoolingDown: arg must be null.");
+                        }
+                        State = WarriorState.CoolingDown;
+                    }
+                    break;
+                case WarriorMessage.GoStandingBy:
+                    {
+                        if (arg != null)
+                        {
+                            throw new ArgumentException("Warrior::GoStandingBy: arg must be null.");
+                        }
+                        State = WarriorState.StandingBy;
+                    }
+                    break;
+                case WarriorMessage.AddAttackModifier:
+                    {
+                        var mod = arg as ValueModifier;
+                        if (mod == null)
+                        {
+                            throw new ArgumentException("Warrior::AddAttackModifier: arg must be ValueModifier.");
+                        }
                         m_attackModifiers.Add(mod);
+                        Attack = m_attackModifiers.Aggregate(InitialAttack, (i, v) => v.Process(i));
                     }
-                }
-                else if ((string)args[0] == "remove")
-                {
-                    var mod = (ValueModifier)args[1];
-                    if (m_attackModifiers.Contains(mod))
+                    break;
+                case WarriorMessage.RemoveAttackModifier:
                     {
+                        var mod = arg as ValueModifier;
+                        if (mod == null)
+                        {
+                            throw new ArgumentException("Warrior::AddAttackModifier: arg must be ValueModifier.");
+                        }
                         m_attackModifiers.Remove(mod);
+                        Attack = m_attackModifiers.Aggregate(InitialAttack, (i, v) => v.Process(i));
                     }
-                }
-                Attack = m_attackModifiers.Aggregate(InitialAttack, (i, v) => v.Process(i));
+                    break;
+                case WarriorMessage.ResetMaxLife:
+                    {
+                        if (arg.GetType() != typeof(int))
+                        {
+                            throw new ArgumentException("Warrior::ResetMaxLife: arg must be int.");
+                        }
+                        int value = (int)arg;
+                        if (value <= 0)
+                        {
+                            throw new ArgumentException("Warrior::ResetMaxLife: arg must be greater than zero.");
+                        }
+                        MaxLife = (int)arg;
+                        Life = MaxLife;
+                    }
+                    break;
+                default:
+                    throw new NotSupportedException("Unknown message.");
             }
         }
 

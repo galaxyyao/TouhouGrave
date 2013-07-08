@@ -107,7 +107,7 @@ namespace TouhouSpring
             {
                 m_user = user,
                 m_compulsory = compulsory,
-                m_candidates = candidates.Where(card => !card.Behaviors.Has<Behaviors.Unselectable>()).ToArray().ToIndexable(),
+                m_candidates = candidates.Where(card => !card.Behaviors.Has<Behaviors.IUnselectable>()).ToArray().ToIndexable(),
                 m_message = message,
                 m_selection = null
             });

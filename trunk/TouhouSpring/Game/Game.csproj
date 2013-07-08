@@ -40,15 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\ForceAttack.cs" />
-    <Compile Include="Behaviors\ICounter.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
-    <Compile Include="Behaviors\Taunt.cs" />
-    <Compile Include="Behaviors\Unattackable.cs" />
-    <Compile Include="Behaviors\Undefendable.cs" />
-    <Compile Include="Behaviors\IStatusEffect.cs" />
-    <Compile Include="Behaviors\Unselectable.cs" />
+    <Compile Include="Behaviors\UIBehaviors.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />
     <Compile Include="CardInstance.cs" />
@@ -90,7 +84,6 @@
     <Compile Include="Behaviors\IBehaviorModel.cs" />
     <Compile Include="Behaviors\ICastableSpell.cs" />
     <Compile Include="Behaviors\Instant.cs" />
-    <Compile Include="Behaviors\Protector.cs" />
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="CardModel.cs" />
@@ -118,8 +111,6 @@
     <Compile Include="Game.Players.cs" />
     <Compile Include="Interactions\MessageBox.cs" />
     <Compile Include="Interactions\BaseInteraction.cs" />
-    <Compile Include="Interactions\MessageHandlerAttribute.cs" />
-    <Compile Include="Interactions\MessageMap.cs" />
     <Compile Include="Interactions\NotifyCardEvent.cs" />
     <Compile Include="Interactions\NotifyGameEvent.cs" />
     <Compile Include="Interactions\NotifyOnly.cs" />

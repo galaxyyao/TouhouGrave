@@ -19,7 +19,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause == Host.Warrior)
             {
                 var m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
-                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, WarriorMessage.AddAttackModifier, m_attackMod));
             }
         }
 
@@ -31,7 +31,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause == Host.Warrior)
             {
                 var m_attackMod = new ValueModifier(ValueModifierOperator.Add, 1);
-                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, "AttackModifiers", new object[] { "add", m_attackMod }));
+                Game.QueueCommands(new Commands.SendBehaviorMessage(Host.Warrior, WarriorMessage.AddAttackModifier, m_attackMod));
             }
         }
 

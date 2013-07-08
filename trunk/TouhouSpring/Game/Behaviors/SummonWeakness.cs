@@ -20,7 +20,7 @@ namespace TouhouSpring.Behaviors
             {
                 Game.QueueCommands(
                     new Commands.AddBehavior(Host, new Effect.ModelType().CreateInitialized()),
-                    new Commands.SendBehaviorMessage(Host.Warrior, "GoCoolingDown", null));
+                    new Commands.SendBehaviorMessage(Host.Warrior, WarriorMessage.GoCoolingDown, null));
             }
         }
 
@@ -34,7 +34,7 @@ namespace TouhouSpring.Behaviors
             {
                 Game.QueueCommands(
                     new Commands.RemoveBehavior(Host, Host.Behaviors.Get<Effect>()),
-                    new Commands.SendBehaviorMessage(Host.Warrior, "GoStandingBy", null));
+                    new Commands.SendBehaviorMessage(Host.Warrior, WarriorMessage.GoStandingBy, null));
             }
         }
 

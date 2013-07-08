@@ -34,6 +34,7 @@
     <Item>#Resource31</Item>
     <Item>#Resource32</Item>
     <Item>#Resource33</Item>
+    <Item>#Resource34</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
@@ -70,8 +71,11 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ForceAttack+ModelType">
+        <Behavior Type="TouhouSpring.Behaviors.Passive.ForceAttack+ModelType">
           <Name>狂热</Name>
+          <IconUri>atlas:Textures/Icons/Icons0$frenzy</IconUri>
+          <Text>狂热
+该角色必须进攻。</Text>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
@@ -893,6 +897,24 @@ X等于己方场上本卡的数量
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource34" Type="TouhouSpring.EditorCardModel">
+      <Id>himawari</Id>
+      <Name>向日葵</Name>
+      <Description></Description>
+      <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>false</Unique>
+          <Attack>0</Attack>
+          <Life>0</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
   </Resources>
 </XnaContent>

@@ -23,8 +23,8 @@ namespace TouhouSpring.Behaviors
         {
             Game.QueueCommands(new Commands.SendBehaviorMessage(
                 Game.GetTargets(this)[0].Warrior,
-                "AttackModifiers",
-                new object[] { "add", Model.Modifier }));
+                WarriorMessage.AddAttackModifier,
+                Model.Modifier));
         }
 
         [BehaviorModel(typeof(Spell_AttackGrowth), Category = "v0.5/Spell", DefaultName = "变巨术")]

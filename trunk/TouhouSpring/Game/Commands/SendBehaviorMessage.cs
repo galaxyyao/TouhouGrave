@@ -18,45 +18,37 @@ namespace TouhouSpring.Commands
             get; private set;
         }
 
-        public string Message
+        public int MessageId
         {
             get; private set;
         }
 
-        public object[] Args
+        public object Arg
         {
             get; private set;
         }
 
-        public SendBehaviorMessage(Behaviors.IBehavior target, string message, object[] args)
+        public SendBehaviorMessage(Behaviors.IBehavior target, int messageId, object arg)
         {
             if (target == null)
             {
                 throw new ArgumentNullException("target");
             }
-            else if (String.IsNullOrEmpty(message))
-            {
-                throw new ArgumentNullException("message");
-            }
 
             Target = target;
-            Message = message;
-            Args = args;
+            MessageId = messageId;
+            Arg = arg;
         }
 
-        public void PatchMessageArgs(object[] args)
+        public void PatchMessageArg(object arg)
         {
-            CheckPatchable("Args");
-            Args = args;
+            CheckPatchable("Arg");
+            Arg = arg;
         }
 
         internal override void ValidateOnIssue()
         {
             Validate(Target);
-            if (String.IsNullOrEmpty(Message))
-            {
-                FailValidation("Message can't be empty.");
-            }
         }
 
         internal override bool ValidateOnRun()
@@ -66,7 +58,7 @@ namespace TouhouSpring.Commands
 
         internal override void RunMain()
         {
-            (Target as Behaviors.IInternalBehavior).ReceiveMessage(Message, Args);
+            (Target as Behaviors.IInternalBehavior).ReceiveMessage(MessageId, Arg);
         }
     }
 }

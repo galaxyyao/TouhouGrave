@@ -45,7 +45,7 @@ namespace TouhouSpring
             ActingPlayer.CardsOnBattlefield
                 .Where(card => card.Warrior != null)
                 .ForEach(card => ctx.QueueCommand(
-                    new Commands.SendBehaviorMessage(card.Warrior, "GoStandingBy", null)));
+                    new Commands.SendBehaviorMessage(card.Warrior, Behaviors.WarriorMessage.GoStandingBy, null)));
             ctx.QueueCommand(new Commands.EndPhase());
             StackAndFlush(ctx);
 
@@ -119,7 +119,7 @@ namespace TouhouSpring
                     var attackerWarrior = pair[0].Warrior;
                     StackAndFlush(
                         new Commands.DealDamageToCard(pair[1], attackerWarrior.Attack, attackerWarrior),
-                        new Commands.SendBehaviorMessage(attackerWarrior, "GoCoolingDown", null));
+                        new Commands.SendBehaviorMessage(attackerWarrior, Behaviors.WarriorMessage.GoCoolingDown, null));
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.AttackPlayer)
                 {
@@ -127,7 +127,7 @@ namespace TouhouSpring
                     var attackerWarrior = (pair[0] as CardInstance).Warrior;
                     StackAndFlush(
                         new Commands.SubtractPlayerLife(pair[1] as Player, attackerWarrior.Attack, attackerWarrior),
-                        new Commands.SendBehaviorMessage(attackerWarrior, "GoCoolingDown", null));
+                        new Commands.SendBehaviorMessage(attackerWarrior, Behaviors.WarriorMessage.GoCoolingDown, null));
                 }
                 else if (result.ActionType == Interactions.BaseInteraction.PlayerAction.Pass)
                 {

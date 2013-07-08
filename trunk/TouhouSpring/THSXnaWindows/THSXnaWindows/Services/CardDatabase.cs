@@ -91,9 +91,8 @@ namespace TouhouSpring.Services
                 }
 
                 ++bhvModels;
-                Type bhvType = attr.BehaviorType;
-                var fields = bhvType.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.DeclaredOnly);
-                if (fields.Length == 0)
+                var bhvType = attr.BehaviorType;
+                if (Behaviors.BehaviorModel.GetIsBehaviorStatic(bhvType))
                 {
                     ++staticBhvModel;
                 }

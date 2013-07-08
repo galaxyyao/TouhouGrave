@@ -40,14 +40,7 @@ namespace TouhouSpring
             return RandomSeed;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.NotifyOnly))]
-        private bool OnNotified(Interactions.NotifyOnly interactionObj)
-        {
-            throw new InvalidOperationException("NotifyOnly shall not occur.");
-        }
-
-        [Interactions.MessageHandler(typeof(Interactions.NotifyCardEvent))]
-        private bool OnNotified(Interactions.NotifyCardEvent interactionObj)
+        protected override bool OnNotified(Interactions.NotifyCardEvent interactionObj)
         {
             switch (interactionObj.Notification)
             {
@@ -68,8 +61,7 @@ namespace TouhouSpring
             return false;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.NotifyGameEvent))]
-        private bool OnNotified(Interactions.NotifyGameEvent interactionObj)
+        protected override bool OnNotified(Interactions.NotifyGameEvent interactionObj)
         {
             switch (interactionObj.Notification)
             {
@@ -87,8 +79,7 @@ namespace TouhouSpring
             return false;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.NotifyPlayerEvent))]
-        private bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
+        protected override bool OnNotified(Interactions.NotifyPlayerEvent interactionObj)
         {
             switch (interactionObj.Notification)
             {
@@ -112,8 +103,7 @@ namespace TouhouSpring
             return false;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.NotifySpellEvent))]
-        private bool OnNotified(Interactions.NotifySpellEvent interactionObj)
+        protected override bool OnNotified(Interactions.NotifySpellEvent interactionObj)
         {
             switch (interactionObj.Notification)
             {
@@ -133,29 +123,25 @@ namespace TouhouSpring
             return false;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.TacticalPhase))]
-        private bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
+        protected override bool OnTacticalPhase(Interactions.TacticalPhase interactionObj)
         {
             m_agents[interactionObj.Player.Index].OnTacticalPhase(interactionObj);
             return true;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.SelectCards))]
-        private bool OnSelectCards(Interactions.SelectCards interactionObj)
+        protected override bool OnSelectCards(Interactions.SelectCards interactionObj)
         {
             m_agents[interactionObj.Player.Index].OnSelectCards(interactionObj);
             return true;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.MessageBox))]
-        private bool OnMessageBox(Interactions.MessageBox interactionObj)
+        protected override bool OnMessageBox(Interactions.MessageBox interactionObj)
         {
             m_agents[interactionObj.Player.Index].OnMessageBox(interactionObj);
             return true;
         }
 
-        [Interactions.MessageHandler(typeof(Interactions.SelectNumber))]
-        private bool OnSelectNumber(Interactions.SelectNumber interactionObj)
+        protected override bool OnSelectNumber(Interactions.SelectNumber interactionObj)
         {
             m_agents[interactionObj.Player.Index].OnSelectNumber(interactionObj);
             return true;

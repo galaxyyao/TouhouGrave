@@ -8,7 +8,7 @@ namespace TouhouSpring
 {
     partial class Game
     {
-        private Stack<ResolveContext> m_resolveContextStack = new Stack<ResolveContext>();
+        private Stack<ResolveContext> m_resolveContextStack = new Stack<ResolveContext>(1);
 
         public ResolveContext CreateResolveContext()
         {

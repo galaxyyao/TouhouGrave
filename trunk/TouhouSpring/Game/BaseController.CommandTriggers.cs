@@ -10,6 +10,11 @@ namespace TouhouSpring
     {
         internal void OnCommandEnd(Commands.BaseCommand command)
         {
+            if (!m_sendNotifications)
+            {
+                return;
+            }
+
             if (command is Commands.CastSpell)
             {
                 var spell = (command as Commands.CastSpell).Spell;
@@ -45,6 +50,11 @@ namespace TouhouSpring
 
         internal void OnCommandCanceled(Commands.BaseCommand command, string reason)
         {
+            if (!m_sendNotifications)
+            {
+                return;
+            }
+
             var castSpell = command as Commands.CastSpell;
             if (castSpell != null)
             {
