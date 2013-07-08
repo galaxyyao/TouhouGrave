@@ -41,9 +41,9 @@ namespace TouhouSpring
 
         internal void NeedMana(int amount)
         {
-            if (amount <= 0)
+            if (amount == 0)
             {
-                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than zero.");
+                throw new ArgumentOutOfRangeException("amount", "Amount must be other than zero.");
             }
 
             CheckInPrerequisite();
@@ -52,9 +52,9 @@ namespace TouhouSpring
 
         internal void NeedLife(int amount)
         {
-            if (amount <= 0)
+            if (amount == 0)
             {
-                throw new ArgumentOutOfRangeException("amount", "Amount must be greater than zero.");
+                throw new ArgumentOutOfRangeException("amount", "Amount must be other than zero.");
             }
 
             CheckInPrerequisite();
@@ -153,7 +153,7 @@ namespace TouhouSpring
             Debug.Assert(RunningCommand.ExecutionPhase == Commands.CommandPhase.Condition);
             var initiator = (RunningCommand as Commands.IInitiativeCommand).Initiator;
 
-            if (m_resourceConditions.m_manaNeeded != 0)
+            if (m_resourceConditions.m_manaNeeded > 0)
             {
                 m_resourceConditions.m_manaNeeded = initiator.CalculateFinalManaSubtract(m_resourceConditions.m_manaNeeded);
                 if (initiator.Mana < m_resourceConditions.m_manaNeeded)
@@ -161,7 +161,7 @@ namespace TouhouSpring
                     return CommandResult.Cancel("Insufficient mana.");
                 }
             }
-            if (m_resourceConditions.m_lifeNeeded != 0)
+            if (m_resourceConditions.m_lifeNeeded > 0)
             {
                 m_resourceConditions.m_lifeNeeded = initiator.CalculateFinalLifeSubtract(m_resourceConditions.m_lifeNeeded);
                 if (initiator.Health < m_resourceConditions.m_lifeNeeded)
@@ -175,7 +175,7 @@ namespace TouhouSpring
                 m_resourceConditions.m_manaOrLifeFinalMana = initiator.CalculateFinalManaSubtract(m_resourceConditions.m_manaOrLifeMana);
                 m_resourceConditions.m_manaOrLifeFinalLife = initiator.CalculateFinalManaSubtract(m_resourceConditions.m_manaOrLifeLife);
                 if (initiator.Mana < m_resourceConditions.m_manaNeeded + m_resourceConditions.m_manaOrLifeFinalMana
-                    && initiator.Health < m_resourceConditions.m_lifeNeeded + m_resourceConditions.m_manaOrLifeFinalLife)
+                    && initiator.Health < m_resourceConditions.m_lifeNeeded + m_resourceConditions.m_manaOrLifeFinalLife + 1)
                 {
                     return CommandResult.Cancel("Insufficient mana or life.");
                 }

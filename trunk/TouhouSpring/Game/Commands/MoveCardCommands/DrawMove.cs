@@ -64,6 +64,13 @@ namespace TouhouSpring.Commands
             Player = player;
         }
 
+        public void PatchZoneMoveTo(int newToZone)
+        {
+            CheckPatchable("ToZone");
+            m_toZone = Subject.Owner.m_zones.GetZone(newToZone);
+            ValidateOnIssue();
+        }
+
         internal override void ValidateOnIssue()
         {
             if (!ValidateOnRun())

@@ -12,6 +12,8 @@ namespace TouhouSpring.Commands
         ZoneType FromZoneType { get; }
         int ToZone { get; }
         ZoneType ToZoneType { get; }
+
+        void PatchZoneMoveTo(int newToZone);
     }
 
     public interface IInitiativeMoveCard : IMoveCard, IInitiativeCommand
