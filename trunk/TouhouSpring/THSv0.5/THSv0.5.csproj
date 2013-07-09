@@ -87,7 +87,6 @@
     <Compile Include="Behaviors\Passive_Bleed_ToEnemiesNDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DrawCardOnPlay.cs" />
     <Compile Include="Behaviors\Passive_FreeRedeem.cs" />
-    <Compile Include="Behaviors\Passive_PillSummon.cs" />
     <Compile Include="Behaviors\Passive_RegenerateFull.cs" />
     <Compile Include="Behaviors\Passive_Shield_NDamage.cs" />
     <Compile Include="Behaviors\Passive_UnRedeemable.cs" />
@@ -106,6 +105,7 @@
     <Compile Include="Passives\DestroySacrifice.cs" />
     <Compile Include="Passives\ForceAttack.cs" />
     <Compile Include="Passives\LowProfile.cs" />
+    <Compile Include="Passives\PillSummon.cs" />
     <Compile Include="Passives\SacrificeOnKill.cs" />
     <Compile Include="Passives\SpellHarmony.cs" />
     <Compile Include="Passives\Stiffness.cs" />

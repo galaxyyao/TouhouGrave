@@ -737,7 +737,7 @@ X等于己方场上本卡的数量
           <Name>ManaCost</Name>
           <Cost>2</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_PillSummon+ModelType">
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.PillSummon+ModelType">
           <Name>毛玉召唤</Name>
           <SummonType>#Resource32</SummonType>
           <NumToSummon>2</NumToSummon>
