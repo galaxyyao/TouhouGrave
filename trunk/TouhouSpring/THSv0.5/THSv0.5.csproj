@@ -106,6 +106,7 @@
     <Compile Include="Passives\DestroySacrifice.cs" />
     <Compile Include="Passives\ForceAttack.cs" />
     <Compile Include="Passives\LowProfile.cs" />
+    <Compile Include="Passives\Plague.cs" />
     <Compile Include="Passives\SacrificeOnKill.cs" />
     <Compile Include="Passives\SpellHarmony.cs" />
     <Compile Include="Passives\Stiffness.cs" />
