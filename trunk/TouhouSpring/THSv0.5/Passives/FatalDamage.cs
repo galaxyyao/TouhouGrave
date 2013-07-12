@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Behaviors;
 
-namespace TouhouSpring.Behaviors
+namespace TouhouSpring.THSv0_5.Passives
 {
-    public class Passive_OnDeath<T> : BaseBehavior<T>,
+    public class FatalDamage<T> : BaseBehavior<T>,
         ILocalEpilogTrigger<Commands.DealDamageToCard>,
         IGlobalEpilogTrigger<Commands.Resolve>
         where T : IBehaviorModel
@@ -34,7 +35,7 @@ namespace TouhouSpring.Behaviors
             {
                 if (Host.Warrior.Life <= 0)
                 {
-                    OnDeath(m_fatalDamageCause, Host.Warrior);
+                    OnFatalDamage(m_fatalDamageCause, Host.Warrior);
                 }
             }
             m_fatalDamageCause = null;
@@ -48,6 +49,6 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        protected virtual void OnDeath(IBehavior fatalDamageCause, Warrior hostWarrior) { }
+        protected virtual void OnFatalDamage(IBehavior fatalDamageCause, Warrior hostWarrior) { }
     }
 }

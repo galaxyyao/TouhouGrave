@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TouhouSpring.Behaviors;
 
-namespace TouhouSpring.Behaviors
+namespace TouhouSpring.THSv0_5.Passives
 {
-    public sealed class Passive_DeathBomb : Passive_OnDeath<Passive_DeathBomb.ModelType>,
+    public sealed class DeathBomb : FatalDamage<DeathBomb.ModelType>,
         Commands.ICause
     {
-        protected override void OnDeath(IBehavior fatalDamageCause, Warrior hostWarrior)
+        protected override void OnFatalDamage(IBehavior fatalDamageCause, Warrior hostWarrior)
         {
             var warrior = fatalDamageCause as Warrior;
             if (warrior != null)
@@ -17,7 +18,7 @@ namespace TouhouSpring.Behaviors
             }
         }
 
-        [BehaviorModel(typeof(Passive_DeathBomb), Category = "v0.5/Passive", DefaultName = "自爆")]
+        [BehaviorModel(typeof(DeathBomb), Category = "v0.5/Passive", DefaultName = "自爆")]
         public class ModelType : BehaviorModel
         {
             public int Damage { get; set; }

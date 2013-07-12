@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assists\Banshee.cs" />
     <Compile Include="Assists\PaidDrawOnKill.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -60,10 +61,8 @@
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Assist_Doom.cs" />
     <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
-    <Compile Include="Behaviors\Passive_FinalStrike.cs" />
     <Compile Include="Behaviors\Passive_GenericAura.cs" />
     <Compile Include="Behaviors\Passive_HealSpring.cs" />
-    <Compile Include="Behaviors\Passive_OnDeath.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
     <Compile Include="Behaviors\ManaOrLifeCost.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummonByMana.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="Behaviors\Passive_BloodThirsty.cs" />
     <Compile Include="Behaviors\Passive_Counterattack_NDamage.cs" />
     <Compile Include="Behaviors\Passive_DamageToSelectedCard_NDamageEachTurn.cs" />
-    <Compile Include="Behaviors\Passive_DeathBomb.cs" />
     <Compile Include="Behaviors\Passive_DeathTouch.cs" />
     <Compile Include="Behaviors\Passive_Bleed_ToEnemiesNDamageEachTurn.cs" />
     <Compile Include="Behaviors\Passive_DrawCardOnPlay.cs" />
@@ -102,7 +100,11 @@
     <Compile Include="Passives\BeGuarded.cs" />
     <Compile Include="Passives\Bloom.cs" />
     <Compile Include="Passives\CantBeRetaliated.cs" />
+    <Compile Include="Passives\DamageEnemyPlayerOnKill.cs" />
+    <Compile Include="Passives\DeathBomb.cs" />
     <Compile Include="Passives\DestroySacrifice.cs" />
+    <Compile Include="Passives\FatalDamage.cs" />
+    <Compile Include="Passives\FinalStrike.cs" />
     <Compile Include="Passives\ForceAttack.cs" />
     <Compile Include="Passives\LowProfile.cs" />
     <Compile Include="Passives\PillSummon.cs" />
