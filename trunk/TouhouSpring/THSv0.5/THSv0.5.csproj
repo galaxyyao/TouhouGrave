@@ -107,6 +107,7 @@
     <Compile Include="Passives\FinalStrike.cs" />
     <Compile Include="Passives\ForceAttack.cs" />
     <Compile Include="Passives\LowProfile.cs" />
+    <Compile Include="Passives\MassiveAttack.cs" />
     <Compile Include="Passives\PillSummon.cs" />
     <Compile Include="Passives\SacrificeOnKill.cs" />
     <Compile Include="Passives\SpellHarmony.cs" />

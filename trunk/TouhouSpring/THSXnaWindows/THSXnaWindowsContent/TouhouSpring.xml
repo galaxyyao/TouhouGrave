@@ -524,7 +524,7 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_DeathBomb+ModelType">
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.DeathBomb+ModelType">
           <Name>自爆</Name>
           <Damage>4</Damage>
         </Behavior>
