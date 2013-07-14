@@ -95,6 +95,20 @@ namespace TouhouSpring.Commands
             Validate(behavior.Host);
         }
 
+        protected void Validate(Behaviors.IBehavior behavior, CardInstance host)
+        {
+            if (behavior == null)
+            {
+                FailValidation("Behavior to be added can't be null.");
+            }
+            else if (behavior.Host == null
+                && host == null)
+            {
+                FailValidation("Behavior's host should not be null");
+            }
+            Validate(host);
+        }
+
         protected void ValidateOrNull(Behaviors.IBehavior behavior)
         {
             if (behavior != null)

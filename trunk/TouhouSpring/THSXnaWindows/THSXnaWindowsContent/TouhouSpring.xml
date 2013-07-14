@@ -770,6 +770,12 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Flying+ModelType">
+          <Name>飞行状态</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -793,6 +799,12 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
           <Name>反击</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Flying+ModelType">
+          <Name>飞行状态</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>

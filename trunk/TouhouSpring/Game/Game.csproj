@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\Fly.cs" />
+    <Compile Include="Behaviors\Flying.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\Retaliate.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />

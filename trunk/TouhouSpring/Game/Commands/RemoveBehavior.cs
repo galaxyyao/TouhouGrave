@@ -37,7 +37,7 @@ namespace TouhouSpring.Commands
         internal override void ValidateOnIssue()
         {
             Validate(Target);
-            Validate(Behavior);
+            Validate(Behavior, Target);
         }
 
         internal override bool ValidateOnRun()
