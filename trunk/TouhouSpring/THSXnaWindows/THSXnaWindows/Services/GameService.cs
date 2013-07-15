@@ -10,6 +10,7 @@ namespace TouhouSpring.Services
         public virtual void Startup() { }
         public virtual void Shutdown() { }
         public virtual void Update(float deltaTime) { }
+        public virtual void PreRender() { }
         public virtual void Render() { }
         public virtual void PreDeviceReset() { }
         public virtual void PostDeviceReset() { }

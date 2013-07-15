@@ -7,7 +7,7 @@ using TextRenderer = TouhouSpring.Graphics.TextRenderer;
 
 namespace TouhouSpring.UI.ModalDialogs
 {
-    class NumberSelector : TransformNode, IRenderable
+    class NumberSelector : TransformNode, ModalDialog.IContent, IRenderable
     {
         public const int ButtonOK       = 0;
         public const int ButtonCancel   = ButtonOK + 1;
@@ -424,6 +424,9 @@ namespace TouhouSpring.UI.ModalDialogs
         {
             m_commonButtons.SetEnabled(CommonButtons.ButtonOK, m_currentValue >= MinValue && m_currentValue <= MaxValue);
         }
+
+        void ModalDialog.IContent.OnUpdate(float deltaTime) { }
+        void ModalDialog.IContent.OnPreRender() { }
 
         void IRenderable.OnRender(RenderEventArgs e)
         {

@@ -44,7 +44,7 @@ namespace TouhouSpring.Services
                 Opacity = opacity
             };
 
-            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher);
+            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher, null);
             m_dialogStack.Push(modalDialog);
         }
 
@@ -70,11 +70,6 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("message");
             }
 
-            var modalDialog = new UI.ModalDialog
-            {
-                Opacity = opacity
-            };
-
             var buttonTexts = new TextRenderer.IFormattedText[MessageBox.NumButtons];
             for (int i = 0; i < MessageBox.NumButtons; ++i)
             {
@@ -82,8 +77,7 @@ namespace TouhouSpring.Services
             }
             var messageBox = new MessageBox(m_buttonFace, buttonTexts)
             {
-                Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont)),
-                Dispatcher = modalDialog
+                Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont))
             };
             messageBox.ButtonClicked += button =>
             {
@@ -91,11 +85,15 @@ namespace TouhouSpring.Services
                 {
                     action(button);
                 }
-                System.Diagnostics.Debug.Assert(m_dialogStack.Peek() == modalDialog);
+                System.Diagnostics.Debug.Assert(m_dialogStack.Peek().Content == messageBox);
                 PopTopDialog();
             };
 
-            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher);
+            var modalDialog = new UI.ModalDialog
+            {
+                Opacity = opacity
+            };
+            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher, messageBox);
             m_dialogStack.Push(modalDialog);
         }
 
@@ -111,16 +109,10 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("message");
             }
 
-            var modalDialog = new UI.ModalDialog
-            {
-                Opacity = opacity
-            };
-
             var numberSelector = new NumberSelector(m_digits, m_signs, m_upButtonFace, m_downButtonFace, m_buttonFace, m_okCancelTexts)
             {
                 Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont)),
-                OkCancelButtonFaceDisabled = m_buttonFaceDisabled,
-                Dispatcher = modalDialog
+                OkCancelButtonFaceDisabled = m_buttonFaceDisabled
             };
             numberSelector.SetRange(min, max);
             numberSelector.ButtonClicked += (btn, value) =>
@@ -129,11 +121,15 @@ namespace TouhouSpring.Services
                 {
                     action(btn, value);
                 }
-                System.Diagnostics.Debug.Assert(m_dialogStack.Peek() == modalDialog);
+                System.Diagnostics.Debug.Assert(m_dialogStack.Peek().Content == numberSelector);
                 PopTopDialog();
             };
 
-            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher);
+            var modalDialog = new UI.ModalDialog
+            {
+                Opacity = opacity
+            };
+            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher, numberSelector);
             m_dialogStack.Push(modalDialog);
         }
 
@@ -149,16 +145,10 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("message");
             }
 
-            var modalDialog = new UI.ModalDialog
-            {
-                Opacity = opacity
-            };
-
             var cardModelSelector = new CardModelSelector(m_buttonFace, m_buttonTexts[MessageBox.ButtonCancel],
                 m_leftButtonFace, null, m_rightButtonFace, null)
             {
-                Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont)),
-                Dispatcher = modalDialog
+                Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont))
             };
             cardModelSelector.CancelClicked += (btn) =>
             {
@@ -166,12 +156,16 @@ namespace TouhouSpring.Services
                 {
                     action(btn);
                 }
-                System.Diagnostics.Debug.Assert(m_dialogStack.Peek() == modalDialog);
+                System.Diagnostics.Debug.Assert(m_dialogStack.Peek().Content == cardModelSelector);
                 PopTopDialog();
             };
             cardModelSelector.AddCardControl(candidates[0]);
 
-            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher);
+            var modalDialog = new UI.ModalDialog
+            {
+                Opacity = opacity
+            };
+            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher, cardModelSelector);
             m_dialogStack.Push(modalDialog);
         }
 
@@ -222,6 +216,28 @@ namespace TouhouSpring.Services
             GameApp.Service<ResourceManager>().Release(m_upButtonFace.Texture);
             GameApp.Service<ResourceManager>().Release(m_buttonFaceDisabled.Texture);
             GameApp.Service<ResourceManager>().Release(m_buttonFace.Texture);
+        }
+
+        public override void Update(float deltaTime)
+        {
+            foreach (var dlg in m_dialogStack)
+            {
+                if (dlg.Content != null)
+                {
+                    dlg.Content.OnUpdate(deltaTime);
+                }
+            }
+        }
+
+        public override void PreRender()
+        {
+            foreach (var dlg in m_dialogStack)
+            {
+                if (dlg.Content != null)
+                {
+                    dlg.Content.OnPreRender();
+                }
+            }
         }
     }
 }

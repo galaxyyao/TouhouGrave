@@ -7,7 +7,7 @@ using TextRenderer = TouhouSpring.Graphics.TextRenderer;
 
 namespace TouhouSpring.UI.ModalDialogs
 {
-    partial class CardModelSelector : TransformNode, IRenderable
+    partial class CardModelSelector : TransformNode, ModalDialog.IContent, IRenderable
     {
         public const int ButtonCancel = 0;
         public const int NumButtons = ButtonCancel + 1;
@@ -115,7 +115,19 @@ namespace TouhouSpring.UI.ModalDialogs
             m_commonButtons.Transform = MatrixHelper.Translate(x, y + CancelButtonLineFromMiddle);
         }
 
-        public void OnRender(RenderEventArgs e)
+        void ModalDialog.IContent.OnUpdate(float deltaTime)
+        {
+            foreach (var cc in m_cardControls)
+            {
+                cc.Update(deltaTime);
+            }
+        }
+
+        void ModalDialog.IContent.OnPreRender()
+        {
+        }
+
+        void IRenderable.OnRender(RenderEventArgs e)
         {
             if (m_text != null)
             {
@@ -132,13 +144,6 @@ namespace TouhouSpring.UI.ModalDialogs
                 drawOptions.OutlineColor = XnaColor.Black.ToVector4();
                 drawOptions.Offset = new Point(textLeft, textTop);
                 e.TextRenderer.DrawText(m_text, transform, drawOptions);
-            }
-
-            e.RenderManager.Device.SetRenderTarget(null);
-
-            foreach (var cc in m_cardControls)
-            {
-                cc.Update(0.033f);
             }
         }
     }

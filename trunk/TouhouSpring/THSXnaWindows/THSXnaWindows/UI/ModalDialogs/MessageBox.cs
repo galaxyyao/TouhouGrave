@@ -7,7 +7,7 @@ using TextRenderer = TouhouSpring.Graphics.TextRenderer;
 
 namespace TouhouSpring.UI.ModalDialogs
 {
-    class MessageBox : TransformNode, IRenderable
+    class MessageBox : TransformNode, ModalDialog.IContent, IRenderable
     {
         public const int ButtonOK       = CommonButtons.ButtonOK;
         public const int ButtonCancel   = CommonButtons.ButtonCancel;
@@ -69,7 +69,21 @@ namespace TouhouSpring.UI.ModalDialogs
             m_renderableProxy = new RenderableProxy(this);
         }
 
-        public void OnRender(RenderEventArgs e)
+        private void LayoutButtons()
+        {
+            var screenWidth = GameApp.Service<Services.UIManager>().ViewportWidth;
+            var screenHeight = GameApp.Service<Services.UIManager>().ViewportHeight;
+
+            const float intervalV = 20;
+            float x = screenWidth / 2;
+            float y = m_text != null ? (screenHeight + m_text.Size.Height + m_commonButtons.Height) / 2 + intervalV : 0;
+            m_commonButtons.Transform = MatrixHelper.Translate(x, y);
+        }
+
+        void ModalDialog.IContent.OnUpdate(float deltaTime) { }
+        void ModalDialog.IContent.OnPreRender() { }
+
+        void IRenderable.OnRender(RenderEventArgs e)
         {
             if (m_text != null)
             {
@@ -87,17 +101,6 @@ namespace TouhouSpring.UI.ModalDialogs
                 drawOptions.Offset = new Point(textLeft, textTop);
                 e.TextRenderer.DrawText(m_text, transform, drawOptions);
             }
-        }
-
-        private void LayoutButtons()
-        {
-            var screenWidth = GameApp.Service<Services.UIManager>().ViewportWidth;
-            var screenHeight = GameApp.Service<Services.UIManager>().ViewportHeight;
-
-            const float intervalV = 20;
-            float x = screenWidth / 2;
-            float y = m_text != null ? (screenHeight + m_text.Size.Height + m_commonButtons.Height) / 2 + intervalV : 0;
-            m_commonButtons.Transform = MatrixHelper.Translate(x, y);
         }
     }
 }
