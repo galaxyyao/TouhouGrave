@@ -147,6 +147,12 @@ namespace TouhouSpring
             return true;
         }
 
+        protected override bool OnSelectCardModel(Interactions.SelectCardModel interactionObj)
+        {
+            m_agents[interactionObj.Player.Index].OnSelectCardModel(interactionObj);
+            return true;
+        }
+
         public override void OnRespondBack(Interactions.BaseInteraction io, object result)
         {
             if (io is Interactions.TacticalPhase)

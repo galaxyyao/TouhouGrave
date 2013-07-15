@@ -196,6 +196,7 @@
     <Compile Include="UI\CardControlAddins\LocationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\Pile.cs" />
     <Compile Include="UI\CardControlAddins\RotationAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\SelectorLocationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\ToneAnimation.cs" />
     <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />
     <None Include="UI\CardControlAddins\SpellButtons.cs" />
@@ -206,6 +207,8 @@
     <Compile Include="UI\KeyboardState.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\MenuItem.cs" />
+    <Compile Include="UI\ModalDialogs\CardModelSelector.CardControl.cs" />
+    <Compile Include="UI\ModalDialogs\CardModelSelector.cs" />
     <Compile Include="UI\ModalDialogs\CommonButtons.cs" />
     <Compile Include="UI\ModalDialogs\MessageBox.cs" />
     <Compile Include="UI\ModalDialog.cs" />

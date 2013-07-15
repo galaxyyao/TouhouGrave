@@ -69,6 +69,12 @@ namespace TouhouSpring.UI
                 case "PileBackOffset":
                     replacement = "0";
                     break;
+                case "CardAnimator.LocationTransform":
+                case "CardAnimator.InstantRotation":
+                case "CardAnimator.HighlightTransform":
+                case "CardAnimator.Flip":
+                    replacement = "identity";
+                    break;
                 default:
                     replacement = null;
                     return false;

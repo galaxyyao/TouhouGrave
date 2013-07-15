@@ -103,6 +103,11 @@ namespace TouhouSpring
 
         public static Matrix Deserialize(string str)
         {
+            if (String.Compare(str, "identity", true, System.Globalization.CultureInfo.InvariantCulture) == 0)
+            {
+                return Matrix.Identity;
+            }
+
             string[] tokens = str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             if (tokens.Length != 16)
             {

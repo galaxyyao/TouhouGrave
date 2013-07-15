@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MessageBox = TouhouSpring.UI.ModalDialogs.MessageBox;
 using NumberSelector = TouhouSpring.UI.ModalDialogs.NumberSelector;
+using CardModelSelector = TouhouSpring.UI.ModalDialogs.CardModelSelector;
 using TextRenderer = TouhouSpring.Graphics.TextRenderer;
 
 namespace TouhouSpring.Services
@@ -24,6 +25,10 @@ namespace TouhouSpring.Services
         private TextRenderer.IFormattedText[] m_okCancelTexts = new Graphics.TextRenderer.IFormattedText[NumberSelector.NumButtons];
         private Graphics.TexturedQuad m_upButtonFace;
         private Graphics.TexturedQuad m_downButtonFace;
+
+        // card selector
+        private Graphics.TexturedQuad m_leftButtonFace;
+        private Graphics.TexturedQuad m_rightButtonFace;
 
         private Stack<UI.ModalDialog> m_dialogStack = new Stack<UI.ModalDialog>();
 
@@ -51,11 +56,6 @@ namespace TouhouSpring.Services
         public void PushMessageBox(string message, Action action)
         {
             PushMessageBox(message, MessageBox.ButtonFlags.OK, UI.ModalDialog.DefaultOpacity, action != null ? (btn) => action() : (Action<int>)null);
-        }
-
-        public void PushMessageBox(string message, MessageBox.ButtonFlags buttons, Action action)
-        {
-            PushMessageBox(message, buttons, UI.ModalDialog.DefaultOpacity, action != null ? (btn) => action() : (Action<int>)null);
         }
 
         public void PushMessageBox(string message, MessageBox.ButtonFlags buttons, Action<int> action)
@@ -137,6 +137,44 @@ namespace TouhouSpring.Services
             m_dialogStack.Push(modalDialog);
         }
 
+        public void PushCardModelSelector(string message, IIndexable<ICardModel> candidates, Action<int> action)
+        {
+            PushCardModelSelector(message, candidates, UI.ModalDialog.DefaultOpacity, action);
+        }
+
+        public void PushCardModelSelector(string message, IIndexable<ICardModel> candidates, float opacity, Action<int> action)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException("message");
+            }
+
+            var modalDialog = new UI.ModalDialog
+            {
+                Opacity = opacity
+            };
+
+            var cardModelSelector = new CardModelSelector(m_buttonFace, m_buttonTexts[MessageBox.ButtonCancel],
+                m_leftButtonFace, null, m_rightButtonFace, null)
+            {
+                Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont)),
+                Dispatcher = modalDialog
+            };
+            cardModelSelector.CancelClicked += (btn) =>
+            {
+                if (action != null)
+                {
+                    action(btn);
+                }
+                System.Diagnostics.Debug.Assert(m_dialogStack.Peek() == modalDialog);
+                PopTopDialog();
+            };
+            cardModelSelector.AddCardControl(candidates[0]);
+
+            modalDialog.Begin(GameApp.Service<UIManager>().Root.Listeners.Last(l => l is UI.EventDispatcher) as UI.EventDispatcher);
+            m_dialogStack.Push(modalDialog);
+        }
+
         public void PopTopDialog()
         {
             if (m_dialogStack.Count == 0)
@@ -170,11 +208,16 @@ namespace TouhouSpring.Services
             m_upButtonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$Up"));
             m_downButtonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$Down"));
 
+            m_leftButtonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$LeftArrow"));
+            m_rightButtonFace = new Graphics.TexturedQuad(resourceMgr.Acquire<Graphics.VirtualTexture>("atlas:Textures/UI/InGame/Atlas0$RightArrow"));
+
             m_msgFont = new TextRenderer.FontDescriptor("Microsoft YaHei", 32);
         }
 
         public override void Shutdown()
         {
+            GameApp.Service<ResourceManager>().Release(m_rightButtonFace.Texture);
+            GameApp.Service<ResourceManager>().Release(m_leftButtonFace.Texture);
             GameApp.Service<ResourceManager>().Release(m_downButtonFace.Texture);
             GameApp.Service<ResourceManager>().Release(m_upButtonFace.Texture);
             GameApp.Service<ResourceManager>().Release(m_buttonFaceDisabled.Texture);

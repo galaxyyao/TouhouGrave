@@ -114,5 +114,13 @@ namespace TouhouSpring.Agents
                 io.Respond(btn == UI.ModalDialogs.NumberSelector.ButtonOK ? (int?)value : null);
             });
         }
+
+        public override void OnSelectCardModel(Interactions.SelectCardModel io)
+        {
+            GameApp.Service<Services.PopupDialog>().PushCardModelSelector(io.Message, io.Candidates, btn =>
+            {
+                io.Respond(null);
+            });
+        }
     }
 }

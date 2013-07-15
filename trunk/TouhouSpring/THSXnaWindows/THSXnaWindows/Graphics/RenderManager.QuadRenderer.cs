@@ -85,16 +85,17 @@ namespace TouhouSpring.Graphics
             }
 
             m_paramTransform.SetValue(transform);
+            if (quad.Flags.HasFlag(TextureQuadFlags.OffsetByHalfTexel))
+            {
+                rect.Left -= 0.5f;
+                rect.Top -= 0.5f;
+            }
             m_paramPosAdjust.SetValue(new Vector4(rect.Width, rect.Height, rect.Left, rect.Top));
 
             float uvWidth = quad.Texture != null ? quad.Texture.XnaTexture.Width : Device.Viewport.Width;
             float uvHeight = quad.Texture != null ? quad.Texture.XnaTexture.Height : Device.Viewport.Height;
-            float uvLeft = quad.UVBounds.Left
-                           + (quad.Texture != null ? quad.Texture.Bounds.Left : 0)
-                           + (quad.Flags.HasFlag(TextureQuadFlags.OffsetByHalfTexel) ? 0.5f : 0.0f);
-            float uvTop = quad.UVBounds.Top
-                          + (quad.Texture != null ? quad.Texture.Bounds.Top : 0)
-                          + (quad.Flags.HasFlag(TextureQuadFlags.OffsetByHalfTexel) ? 0.5f : 0.0f);
+            float uvLeft = quad.UVBounds.Left + (quad.Texture != null ? quad.Texture.Bounds.Left : 0);
+            float uvTop = quad.UVBounds.Top + (quad.Texture != null ? quad.Texture.Bounds.Top : 0);
             m_paramUVAdjust.SetValue(new Vector4(quad.UVBounds.Width / uvWidth, quad.UVBounds.Height / uvHeight,
                                                  uvLeft / uvWidth, uvTop / uvHeight));
 

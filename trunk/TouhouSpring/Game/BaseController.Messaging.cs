@@ -13,6 +13,7 @@ namespace TouhouSpring
         private static readonly string MsgSelectCards       = BaseInteraction.GetMessageText(typeof(SelectCards));
         private static readonly string MsgMessageBox        = BaseInteraction.GetMessageText(typeof(MessageBox));
         private static readonly string MsgSelectNumber      = BaseInteraction.GetMessageText(typeof(SelectNumber));
+        private static readonly string MsgSelectCardModel   = BaseInteraction.GetMessageText(typeof(SelectCardModel));
         private static readonly string MsgNotifyCardEvent   = BaseInteraction.GetMessageText(typeof(NotifyCardEvent));
         private static readonly string MsgNotifyGameEvent   = BaseInteraction.GetMessageText(typeof(NotifyGameEvent));
         private static readonly string MsgNotifyPlayerEvent = BaseInteraction.GetMessageText(typeof(NotifyPlayerEvent));
@@ -54,6 +55,7 @@ namespace TouhouSpring
         protected virtual bool OnSelectCards(SelectCards io) { return false; }
         protected virtual bool OnMessageBox(MessageBox io) { return false; }
         protected virtual bool OnSelectNumber(SelectNumber io) { return false; }
+        protected virtual bool OnSelectCardModel(SelectCardModel io) { return false; }
         protected virtual bool OnNotified(NotifyCardEvent io) { return false; }
         protected virtual bool OnNotified(NotifyGameEvent io) { return false; }
         protected virtual bool OnNotified(NotifyPlayerEvent io) { return false; }
@@ -88,6 +90,10 @@ namespace TouhouSpring
                 else if (message.Text == MsgSelectNumber)
                 {
                     return OnSelectNumber(message.Attachment as SelectNumber);
+                }
+                else if (message.Text == MsgSelectCardModel)
+                {
+                    return OnSelectCardModel(message.Attachment as SelectCardModel);
                 }
                 else if (message.Text == MsgNotifyCardEvent)
                 {

@@ -19,8 +19,8 @@
         <Key>AvatarBorderInactive</Key>
         <Value>
           <SourceFile>AvatarBorderInactive.png</SourceFile>
-          <Left>270</Left>
-          <Top>0</Top>
+          <Left>0</Left>
+          <Top>270</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -33,7 +33,7 @@
         <Value>
           <SourceFile>Button.png</SourceFile>
           <Left>0</Left>
-          <Top>270</Top>
+          <Top>590</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -45,8 +45,8 @@
         <Key>Up</Key>
         <Value>
           <SourceFile>Up.png</SourceFile>
-          <Left>128</Left>
-          <Top>270</Top>
+          <Left>60</Left>
+          <Top>540</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -58,8 +58,8 @@
         <Key>Down</Key>
         <Value>
           <SourceFile>Down.png</SourceFile>
-          <Left>176</Left>
-          <Top>270</Top>
+          <Left>108</Left>
+          <Top>540</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -71,8 +71,8 @@
         <Key>ButtonDisable</Key>
         <Value>
           <SourceFile>ButtonDisable.png</SourceFile>
-          <Left>224</Left>
-          <Top>270</Top>
+          <Left>128</Left>
+          <Top>572</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -80,9 +80,35 @@
           <SourceHeight>32</SourceHeight>
         </Value>
       </Item>
+      <Item>
+        <Key>RightArrow</Key>
+        <Value>
+          <SourceFile>RightArrow.png</SourceFile>
+          <Left>0</Left>
+          <Top>540</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>30</SourceWidth>
+          <SourceHeight>50</SourceHeight>
+        </Value>
+      </Item>
+      <Item>
+        <Key>LeftArrow</Key>
+        <Value>
+          <SourceFile>LeftArrow.png</SourceFile>
+          <Left>30</Left>
+          <Top>540</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>30</SourceWidth>
+          <SourceHeight>50</SourceHeight>
+        </Value>
+      </Item>
     </SubTextures>
-    <Width>1024</Width>
-    <Height>512</Height>
+    <Width>512</Width>
+    <Height>1024</Height>
     <Texture Null="true" />
   </Asset>
 </XnaContent>
