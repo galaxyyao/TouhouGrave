@@ -82,6 +82,7 @@ namespace TouhouSpring.UI.ModalDialogs
 
         void ModalDialog.IContent.OnUpdate(float deltaTime) { }
         void ModalDialog.IContent.OnPreRender() { }
+        void ModalDialog.IContent.OnEnd() { }
 
         void IRenderable.OnRender(RenderEventArgs e)
         {

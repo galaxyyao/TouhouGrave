@@ -176,7 +176,12 @@ namespace TouhouSpring.Services
                 throw new InvalidOperationException("No modal dialog to be popped.");
             }
 
-            m_dialogStack.Pop().End();
+            var dlg = m_dialogStack.Pop();
+            dlg.End();
+            if (dlg.Content != null)
+            {
+                dlg.Content.OnEnd();
+            }
         }
 
         public override void Startup()

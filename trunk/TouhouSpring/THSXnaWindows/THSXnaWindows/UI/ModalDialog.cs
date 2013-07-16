@@ -13,6 +13,7 @@ namespace TouhouSpring.UI
             EventDispatcher Dispatcher { set; }
             void OnUpdate(float deltaTime);
             void OnPreRender();
+            void OnEnd();
         }
 
         private MouseEventRelay m_eventRelay;

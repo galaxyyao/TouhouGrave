@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using XnaColor = Microsoft.Xna.Framework.Color;
 using TextRenderer = TouhouSpring.Graphics.TextRenderer;
 
 namespace TouhouSpring.UI.ModalDialogs
 {
-    partial class CardModelSelector : TransformNode, ModalDialog.IContent, IRenderable
+    partial class CardModelSelector : TransformNode, ModalDialog.IContent, IEventListener<RenderEventArgs>
     {
         public const int ButtonCancel = 0;
         public const int NumButtons = ButtonCancel + 1;
@@ -17,14 +18,19 @@ namespace TouhouSpring.UI.ModalDialogs
         private const int LeftRightButtonInterval = 180;
         private const int CancelButtonLineFromMiddle = 200;
         private const float CardWidth = 150;
+        private const float FadingRegionWidth = 200;
 
         private TextRenderer.IFormattedText m_text;
         private Button m_leftButton;
         private Button m_rightButton;
 
         private CommonButtons m_commonButtons;
-        private RenderableProxy m_renderableProxy;
         private TransformNode m_cardContainer;
+
+        private RenderTarget2D m_composeBuffer;
+        private Graphics.VirtualTexture m_fadeMaskL;
+        private Graphics.VirtualTexture m_fadeMaskR;
+        private BlendState m_maskBlendState;
 
         public event Action<int> CancelClicked;
 
@@ -90,12 +96,32 @@ namespace TouhouSpring.UI.ModalDialogs
                 ++Center;
             };
 
-            m_renderableProxy = new RenderableProxy(this);
             m_cardContainer = new TransformNode
             {
                 Dispatcher = this
             };
             Layout();
+
+            m_composeBuffer = new RenderTarget2D(GameApp.Instance.GraphicsDevice,
+                GameApp.Instance.GraphicsDevice.Viewport.Width,
+                GameApp.Instance.GraphicsDevice.Viewport.Height,
+                false,
+                SurfaceFormat.Color,
+                DepthFormat.Depth24Stencil8,
+                0,
+                RenderTargetUsage.DiscardContents);
+            m_fadeMaskL = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/UI/InGame/FadeMaskL");
+            m_fadeMaskR = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/UI/InGame/FadeMaskR");
+            m_maskBlendState = new BlendState
+            {
+                ColorBlendFunction = BlendFunction.Add,
+                ColorSourceBlend = Blend.Zero,
+                ColorDestinationBlend = Blend.One,
+                AlphaBlendFunction = BlendFunction.Add,
+                AlphaSourceBlend = Blend.Zero,
+                AlphaDestinationBlend = Blend.SourceAlpha,
+                ColorWriteChannels = ColorWriteChannels.All
+            };
         }
 
         private void Layout()
@@ -125,16 +151,19 @@ namespace TouhouSpring.UI.ModalDialogs
 
         void ModalDialog.IContent.OnPreRender()
         {
-        }
+            var e = new RenderEventArgs();
+            var device = e.RenderManager.Device;
+            var modalDialog = Dispatcher as ModalDialog;
 
-        void IRenderable.OnRender(RenderEventArgs e)
-        {
+            device.SetRenderTarget(m_composeBuffer);
+            device.Clear(new XnaColor(0, 0, 0, 0));
+
             if (m_text != null)
             {
                 var transform = TransformToGlobal;
 
-                var textLeft = (int)(e.RenderManager.Device.Viewport.Width - m_text.Size.Width) / 2;
-                var textTop = (int)(e.RenderManager.Device.Viewport.Height - m_text.Size.Height) / 2 + TextLineFromMiddle;
+                var textLeft = (int)(device.Viewport.Width - m_text.Size.Width) / 2;
+                var textTop = (int)(device.Viewport.Height - m_text.Size.Height) / 2 + TextLineFromMiddle;
 
                 var drawOptions = Graphics.TextRenderer.DrawOptions.Default;
                 drawOptions.ColorScaling = XnaColor.Black.ToVector4();
@@ -145,6 +174,38 @@ namespace TouhouSpring.UI.ModalDialogs
                 drawOptions.Offset = new Point(textLeft, textTop);
                 e.TextRenderer.DrawText(m_text, transform, drawOptions);
             }
+
+            Dispatch(e);
+
+            var mtx = MatrixHelper.Identity;
+            mtx.M11 = 2.0f / device.Viewport.Width;
+            mtx.M22 = -2.0f / device.Viewport.Height;
+            mtx.M41 = -1.0f;
+            mtx.M42 = 1.0f;
+
+            var quad = new Graphics.TexturedQuad(m_fadeMaskR) { BlendState = m_maskBlendState };
+            quad.UVBounds.Width = FadingRegionWidth;
+            e.RenderManager.Draw(quad, new Rectangle(device.Viewport.Width - FadingRegionWidth, 300, FadingRegionWidth, 160), mtx);
+            quad = new Graphics.TexturedQuad(m_fadeMaskL) { BlendState = m_maskBlendState };
+            quad.UVBounds.Left = quad.UVBounds.Width - FadingRegionWidth;
+            quad.UVBounds.Width = FadingRegionWidth;
+            e.RenderManager.Draw(quad, new Rectangle(0, 300, FadingRegionWidth, 160), mtx);
+
+            device.SetRenderTarget(null);
+        }
+
+        void ModalDialog.IContent.OnEnd()
+        {
+            GameApp.Service<Services.ResourceManager>().Release(m_fadeMaskL);
+            GameApp.Service<Services.ResourceManager>().Release(m_fadeMaskR);
+            m_composeBuffer.Dispose();
+        }
+
+        void IEventListener<RenderEventArgs>.RaiseEvent(RenderEventArgs e)
+        {
+            var quad = new Graphics.TexturedQuad(new Graphics.VirtualTexture(m_composeBuffer, m_composeBuffer.Bounds));
+            quad.BlendState = BlendState.NonPremultiplied;
+            e.RenderManager.Draw(quad, new Point(0, 0), TransformToGlobal);
         }
     }
 }
