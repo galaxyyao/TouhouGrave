@@ -5,7 +5,10 @@ using System.Text;
 
 namespace TouhouSpring.Behaviors
 {
-    public sealed class Flying : BaseBehavior<Flying.ModelType>, IStatusEffect
+    public sealed class Flying :
+        BaseBehavior<Flying.ModelType>,
+        IUndefendable,
+        IStatusEffect
     {
         public string IconUri { get { return "atlas:Textures/Icons/Icons0$wing"; } }
         public string Text { get { return "飞行状态"; } }

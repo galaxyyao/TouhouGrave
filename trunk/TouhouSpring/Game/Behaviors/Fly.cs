@@ -9,13 +9,49 @@ namespace TouhouSpring.Behaviors
         Commands.ICause,
         ILocalPrerequisiteTrigger<Commands.CastSpell>,
         IGlobalEpilogTrigger<Commands.EndPhase>,
+        ILocalEpilogTrigger<Commands.PlayCard>,
+        IGlobalEpilogTrigger<Commands.DealDamageToCard>,
+        IGlobalEpilogTrigger<Commands.SubtractPlayerLife>,
         ICastableSpell
     {
         bool m_isFlyStatusChanged = false;
+        private IBehavior m_flying;
+        private IBehavior m_unattackable;
 
         void IGlobalEpilogTrigger<Commands.EndPhase>.RunGlobalEpilog(Commands.EndPhase command)
         {
-            m_isFlyStatusChanged = false;
+            if (Game.ActingPlayer == Host.Owner && command.PreviousPhase == "Main")
+            {
+                m_isFlyStatusChanged = false;
+                if (Host.Behaviors.Contains(m_unattackable))
+                    Game.QueueCommands(new Commands.RemoveBehavior(Host, m_unattackable));
+            }
+        }
+
+
+        void ILocalEpilogTrigger<Commands.PlayCard>.RunLocalEpilog(Commands.PlayCard command)
+        {
+            Game.QueueCommands(new Commands.AddBehavior(Host, m_flying));
+        }
+
+        void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
+        {
+            if (Host.Behaviors.Contains(m_flying)
+                && command.Cause == Host.Warrior)
+            {
+                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_flying));
+                m_isFlyStatusChanged = true;
+            }
+        }
+
+        void IGlobalEpilogTrigger<Commands.SubtractPlayerLife>.RunGlobalEpilog(Commands.SubtractPlayerLife command)
+        {
+            if (Host.Behaviors.Contains(m_flying)
+                && command.Cause == Host.Warrior)
+            {
+                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_flying));
+                m_isFlyStatusChanged = true;
+            }
         }
 
         public CommandResult RunLocalPrerequisite(Commands.CastSpell command)
@@ -25,16 +61,22 @@ namespace TouhouSpring.Behaviors
             return CommandResult.Pass;
         }
 
+        protected override void OnInitialize()
+        {
+            m_flying = new Flying.ModelType().CreateInitialized();
+            m_unattackable = new Unattackable.ModelType().CreateInitialized();
+        }
+
         public void RunSpell(Commands.CastSpell command)
         {
-            if (Host.Behaviors.Has<Flying>())
+            if (Host.Behaviors.Contains(m_flying))
             {
-                Game.QueueCommands(new Commands.RemoveBehavior(Host, Host.Behaviors.Get<Flying>()));
+                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_flying));
             }
             else
             {
-                var flying = new Flying.ModelType().CreateInitialized();
-                Game.QueueCommands(new Commands.AddBehavior(Host, flying));
+                Game.QueueCommands(new Commands.AddBehavior(Host, m_flying));
+                Game.QueueCommands(new Commands.AddBehavior(Host, m_unattackable));
             }
             m_isFlyStatusChanged = true;
         }
