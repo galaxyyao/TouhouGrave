@@ -63,30 +63,77 @@ namespace TouhouSpring.UI.ModalDialogs
         }
 
         private const int VisibleItems = 7;
-        private CardControl[] m_cardControls = new CardControl[VisibleItems];
+        private const int HalfWindow = (VisibleItems - 1) / 2;
+        private List<CardControl> m_cardControlPool = new List<CardControl>();
+        private List<CardControl> m_aliveCardControls = new List<CardControl>();
 
-        public void AddCardControl(ICardModel cardModel)
+        private CardControl TakeCardControl()
         {
-            var cardStyle = GameApp.Service<Services.Styler>().GetCardStyle("Normal");
-
-            for (int i = 0; i < m_cardControls.Length; ++i)
+            CardControl cc;
+            if (m_cardControlPool.Count != 0)
             {
+                cc = m_cardControlPool[m_cardControlPool.Count - 1];
+                m_cardControlPool.RemoveAt(m_cardControlPool.Count - 1);
+            }
+            else
+            {
+                var cardStyle = GameApp.Service<Services.Styler>().GetCardStyle("Normal");
                 var ccStyle = new Style.CardControlStyle(cardStyle, -1);
                 ccStyle.Initialize();
-                
-                var cardControl = ccStyle.TypedTarget;
-                cardControl.CardData = new CardModelData { CardModel = cardModel };
-                cardControl.Addins.Add(new CardControlAddins.SelectorLocationAnimation(cardControl, i, this));
+
+                cc = ccStyle.TypedTarget;
+                cc.Addins.Add(new CardControlAddins.SelectorLocationAnimation(cc, this));
+            }
+
+            return cc;
+        }
+
+        private void RecycleCardControl(CardControl cardControl)
+        {
+            cardControl.Dispatcher = null;
+            cardControl.SetCardDesign(null);
+            m_cardControlPool.Add(cardControl);
+        }
+
+        void ModalDialog.IContent.OnUpdate(float deltaTime)
+        {
+            for (int i = 0; i < m_aliveCardControls.Count; ++i)
+            {
+                var cc = m_aliveCardControls[i];
+                cc.Update(deltaTime);
+                var locationAnim = cc.GetAddin<CardControlAddins.SelectorLocationAnimation>();
+                if (Math.Abs(locationAnim.LocationIndex - Center) > HalfWindow + 1)
+                {
+                    m_aliveCardControls.RemoveAt(i--);
+                    RecycleCardControl(cc);
+                    System.Diagnostics.Debug.WriteLine("Alive:" + m_aliveCardControls.Count.ToString());
+                }
+            }
+
+            for (int i = Center - HalfWindow - 1; i <= Center + HalfWindow + 1; i++)
+            {
+                if (i < 0 || i >= Candidates.Count)
+                {
+                    continue;
+                }
+
+                if (m_aliveCardControls.Any(cc => cc.GetAddin<CardControlAddins.SelectorLocationAnimation>().LocationIndex == i))
+                {
+                    continue;
+                }
+
+                var cardControl = TakeCardControl();
+                cardControl.CardData = new CardModelData { CardModel = Candidates[i] };
+                cardControl.GetAddin<CardControlAddins.SelectorLocationAnimation>().ResetLocationIndex(i);
                 cardControl.SetCardDesign("Full");
                 cardControl.Dispatcher = m_cardContainer;
-
-                m_cardControls[i] = cardControl;
+                m_aliveCardControls.Add(cardControl);
+                System.Diagnostics.Debug.WriteLine("Alive:" + m_aliveCardControls.Count.ToString());
             }
         }
 
         public XnaMatrix GetLocation(int index)
         {
-            const int HalfWindow = (VisibleItems - 1) / 2;
             const float Interval = 1f;
             const float ShrinkRatio = 0.7f;
 

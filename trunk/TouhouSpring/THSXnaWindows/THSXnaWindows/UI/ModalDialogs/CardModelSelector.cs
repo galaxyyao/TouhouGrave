@@ -47,11 +47,17 @@ namespace TouhouSpring.UI.ModalDialogs
             }
         }
 
+        public IIndexable<ICardModel> Candidates
+        {
+            get; private set;
+        }
+
         public int Center { get; set; }
 
         public CardModelSelector(Graphics.TexturedQuad cancelButtonFace, TextRenderer.IFormattedText cancelButtonText,
             Graphics.TexturedQuad leftButtonFace, TextRenderer.IFormattedText leftButtonText,
-            Graphics.TexturedQuad rightButtonFace, TextRenderer.IFormattedText rightButtonText)
+            Graphics.TexturedQuad rightButtonFace, TextRenderer.IFormattedText rightButtonText,
+            IIndexable<ICardModel> candidates)
         {
             if (cancelButtonFace == null)
             {
@@ -61,18 +67,24 @@ namespace TouhouSpring.UI.ModalDialogs
             {
                 throw new ArgumentNullException("cancelButtonText");
             }
+            else if (leftButtonFace == null)
+            {
+                throw new ArgumentNullException("leftButtonFace");
+            }
+            else if (rightButtonFace == null)
+            {
+                throw new ArgumentNullException("rightButtonFace");
+            }
+            else if (candidates == null)
+            {
+                throw new ArgumentNullException("candidates");
+            }
 
             var buttonTexts = new TextRenderer.IFormattedText[CommonButtons.NumButtons];
             buttonTexts[CommonButtons.ButtonCancel] = cancelButtonText;
             m_commonButtons = new CommonButtons(cancelButtonFace, buttonTexts);
             m_commonButtons.Dispatcher = this;
-            m_commonButtons.ButtonClicked += btn =>
-            {
-                if (CancelClicked != null)
-                {
-                    CancelClicked(btn);
-                }
-            };
+            m_commonButtons.ButtonClicked += CancelButton_OnClicked;
 
             m_leftButton = new Button
             {
@@ -80,10 +92,7 @@ namespace TouhouSpring.UI.ModalDialogs
                 NormalFace = leftButtonFace,
                 Dispatcher = this
             };
-            m_leftButton.MouseButton1Down += (sender, e) =>
-            {
-                --Center;
-            };
+            m_leftButton.MouseButton1Down += LeftButton_OnClicked;
 
             m_rightButton = new Button
             {
@@ -91,16 +100,15 @@ namespace TouhouSpring.UI.ModalDialogs
                 NormalFace = rightButtonFace,
                 Dispatcher = this
             };
-            m_rightButton.MouseButton1Down += (sender, e) =>
-            {
-                ++Center;
-            };
+            m_rightButton.MouseButton1Down += RightButton_OnClicked;
 
             m_cardContainer = new TransformNode
             {
                 Dispatcher = this
             };
             Layout();
+
+            Candidates = candidates;
 
             m_composeBuffer = new RenderTarget2D(GameApp.Instance.GraphicsDevice,
                 GameApp.Instance.GraphicsDevice.Viewport.Width,
@@ -141,11 +149,21 @@ namespace TouhouSpring.UI.ModalDialogs
             m_commonButtons.Transform = MatrixHelper.Translate(x, y + CancelButtonLineFromMiddle);
         }
 
-        void ModalDialog.IContent.OnUpdate(float deltaTime)
+        private void LeftButton_OnClicked(object sender, MouseEventArgs e)
         {
-            foreach (var cc in m_cardControls)
+            Center = Math.Max(0, Center - 1);
+        }
+
+        private void RightButton_OnClicked(object sender, MouseEventArgs e)
+        {
+            Center = Math.Min(Candidates.Count - 1, Center + 1);
+        }
+
+        private void CancelButton_OnClicked(int btn)
+        {
+            if (CancelClicked != null)
             {
-                cc.Update(deltaTime);
+                CancelClicked(btn);
             }
         }
 

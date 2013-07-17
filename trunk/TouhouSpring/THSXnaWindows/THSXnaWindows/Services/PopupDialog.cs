@@ -146,7 +146,7 @@ namespace TouhouSpring.Services
             }
 
             var cardModelSelector = new CardModelSelector(m_buttonFace, m_buttonTexts[MessageBox.ButtonCancel],
-                m_leftButtonFace, null, m_rightButtonFace, null)
+                m_leftButtonFace, null, m_rightButtonFace, null, candidates)
             {
                 Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont))
             };
@@ -159,7 +159,6 @@ namespace TouhouSpring.Services
                 System.Diagnostics.Debug.Assert(m_dialogStack.Peek().Content == cardModelSelector);
                 PopTopDialog();
             };
-            cardModelSelector.AddCardControl(candidates[0]);
 
             var modalDialog = new UI.ModalDialog
             {
