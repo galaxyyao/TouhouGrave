@@ -10,6 +10,39 @@ namespace TouhouSpring.UI.CardControlAddins
 {
     class Highlight : CardControl.Addin, Style.IBindingProvider
     {
+        [Services.LifetimeDependency(typeof(Services.ResourceManager))]
+        private class Resources : Services.GameService
+        {
+            public Graphics.VirtualTexture CardHighlight
+            {
+                get; private set;
+            }
+
+            public Curve CardFloat
+            {
+                get; private set;
+            }
+
+            public Curve CardEnlarge
+            {
+                get; private set;
+            }
+
+            public override void Startup()
+            {
+                CardHighlight = GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/CardHighlight");
+                CardFloat = GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardFloat");
+                CardEnlarge = GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardEnlarge");
+            }
+
+            public override void Shutdown()
+            {
+                GameApp.Service<Services.ResourceManager>().Release(CardEnlarge);
+                GameApp.Service<Services.ResourceManager>().Release(CardFloat);
+                GameApp.Service<Services.ResourceManager>().Release(CardHighlight);
+            }
+        }
+
         private Graphics.TexturedQuad m_quadHighlight;
         private Animation.Track m_borderBlinkTrack;
         private Animation.Track m_enlargeTrack;
@@ -19,14 +52,14 @@ namespace TouhouSpring.UI.CardControlAddins
         {
             Control.Style.RegisterBinding(this);
 
-            m_quadHighlight = new Graphics.TexturedQuad(GameApp.Service<Services.ResourceManager>().Acquire<Graphics.VirtualTexture>("Textures/CardHighlight"));
+            m_quadHighlight = new Graphics.TexturedQuad(GameApp.Service<Resources>().CardHighlight);
             m_quadHighlight.BlendState = new BlendState { ColorSourceBlend = Blend.SourceAlpha, ColorDestinationBlend = Blend.One };
 
-            m_borderBlinkTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardFloat"));
+            m_borderBlinkTrack = new Animation.CurveTrack(GameApp.Service<Resources>().CardFloat);
             m_borderBlinkTrack.Loop = true;
             m_borderBlinkTrack.Play();
 
-            m_enlargeTrack = new Animation.CurveTrack(GameApp.Service<Services.ResourceManager>().Acquire<Curve>("Curves/CardEnlarge"));
+            m_enlargeTrack = new Animation.CurveTrack(GameApp.Service<Resources>().CardEnlarge);
         }
 
         public override void Update(float deltaTime)
@@ -62,11 +95,6 @@ namespace TouhouSpring.UI.CardControlAddins
             }
 
             m_borderBlinkTrack.Elapse(deltaTime);
-        }
-
-        public override void Dispose()
-        {
-            GameApp.Service<Services.ResourceManager>().Release(m_quadHighlight.Texture);
         }
 
         public override void RenderPostMain(Matrix transform, RenderEventArgs e)

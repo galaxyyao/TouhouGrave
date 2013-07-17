@@ -125,9 +125,10 @@ namespace TouhouSpring.UI
                 layoutGizmo.Target.Dispatcher = null;
                 BodyContainer.Listeners.Insert(0, layoutGizmo.Target);
                 layoutGizmo.BindingProvider = this;
-                m_designName = designName;
                 m_cardDesignStyle = layoutGizmo;
             }
+
+            m_designName = designName;
         }
 
         public void OnStyleInitialized()
@@ -216,7 +217,7 @@ namespace TouhouSpring.UI
                 Dispatcher = null;
 
                 m_resourceContainer.ReleaseAll();
-                Addins.ForEach(addin => addin.Dispose());
+                (m_cardDesignStyle.Target as CardDesignContainer).Dispose();
 
                 m_disposed = true;
             }
