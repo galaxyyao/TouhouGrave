@@ -28,9 +28,6 @@ namespace TouhouSpring.Services
             private set;
         }
 
-        private Graphics.SwfInstance m_testAnimation;
-        private Graphics.SwfInstance m_testAnimation2;
-
         public override void Startup()
         {
             #region Initialize Page

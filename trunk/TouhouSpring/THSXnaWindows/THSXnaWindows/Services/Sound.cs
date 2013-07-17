@@ -12,11 +12,6 @@ namespace TouhouSpring.Services
     [LifetimeDependency(typeof(CurrentProfile))]
     partial class Sound : GameService
     {
-        bool m_isMusicOn = false;
-        bool m_isSoundOn = false;
-        float m_musicVolume = 0;
-        float m_soundVolume = 0;
-
         public enum SoundEffectEnum
         {
             Menu
