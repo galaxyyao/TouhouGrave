@@ -6,7 +6,8 @@ using XnaMatrix = Microsoft.Xna.Framework.Matrix;
 
 namespace TouhouSpring.UI.ModalDialogs
 {
-    partial class CardModelSelector : CardControlAddins.SelectorLocationAnimation.IWindow
+    partial class CardModelSelector : CardControlAddins.SelectorLocationAnimation.IWindow,
+        CardControlAddins.SelectorHighlight.IControlUI
     {
         private class CardModelData : Services.CardDataManager.ICardData
         {
@@ -66,6 +67,7 @@ namespace TouhouSpring.UI.ModalDialogs
         private const int HalfWindow = (VisibleItems - 1) / 2;
         private List<CardControl> m_cardControlPool = new List<CardControl>();
         private List<CardControl> m_aliveCardControls = new List<CardControl>();
+        private CardControl m_mouseHoverControl = null;
 
         private CardControl TakeCardControl()
         {
@@ -83,6 +85,22 @@ namespace TouhouSpring.UI.ModalDialogs
 
                 cc = ccStyle.TypedTarget;
                 cc.Addins.Add(new CardControlAddins.SelectorLocationAnimation(cc, this));
+                cc.Addins.Add(new CardControlAddins.SelectorHighlight(cc, this));
+                cc.MouseTracked.MouseEnter += (s, e) =>
+                {
+                    m_mouseHoverControl = cc;
+                };
+                cc.MouseTracked.MouseLeave += (s, e) =>
+                {
+                    if (m_mouseHoverControl == cc)
+                    {
+                        m_mouseHoverControl = null;
+                    }
+                };
+                cc.MouseTracked.MouseButton1Down += (s, e) =>
+                {
+                    Center = cc.GetAddin<CardControlAddins.SelectorLocationAnimation>().LocationIndex;
+                };
             }
 
             return cc;
@@ -97,19 +115,6 @@ namespace TouhouSpring.UI.ModalDialogs
 
         void ModalDialog.IContent.OnUpdate(float deltaTime)
         {
-            for (int i = 0; i < m_aliveCardControls.Count; ++i)
-            {
-                var cc = m_aliveCardControls[i];
-                cc.Update(deltaTime);
-                var locationAnim = cc.GetAddin<CardControlAddins.SelectorLocationAnimation>();
-                if (Math.Abs(locationAnim.LocationIndex - Center) > HalfWindow + 1)
-                {
-                    m_aliveCardControls.RemoveAt(i--);
-                    RecycleCardControl(cc);
-                    System.Diagnostics.Debug.WriteLine("Alive:" + m_aliveCardControls.Count.ToString());
-                }
-            }
-
             for (int i = Center - HalfWindow - 1; i <= Center + HalfWindow + 1; i++)
             {
                 if (i < 0 || i >= Candidates.Count)
@@ -128,7 +133,29 @@ namespace TouhouSpring.UI.ModalDialogs
                 cardControl.SetCardDesign("Full");
                 cardControl.Dispatcher = m_cardContainer;
                 m_aliveCardControls.Add(cardControl);
-                System.Diagnostics.Debug.WriteLine("Alive:" + m_aliveCardControls.Count.ToString());
+            }
+
+            for (int i = 0; i < m_aliveCardControls.Count; ++i)
+            {
+                var cc = m_aliveCardControls[i];
+                cc.Update(deltaTime);
+                var locationAnim = cc.GetAddin<CardControlAddins.SelectorLocationAnimation>();
+                if (Math.Abs(locationAnim.LocationIndex - Center) > HalfWindow)
+                {
+                    if (Math.Abs(locationAnim.LocationIndex - Center) > HalfWindow + 1)
+                    {
+                        m_aliveCardControls.RemoveAt(i--);
+                        RecycleCardControl(cc);
+                    }
+                    else
+                    {
+                        cc.MouseTracked.Enabled = false;
+                    }
+                }
+                else
+                {
+                    cc.MouseTracked.Enabled = true;
+                }
             }
         }
 
@@ -152,6 +179,13 @@ namespace TouhouSpring.UI.ModalDialogs
             t *= Interval * signDiff;
 
             return MatrixHelper.Translate(-0.5f, 0.5f * (300.0f / 210.0f)) * MatrixHelper.Scale(s, s) * MatrixHelper.Translate(t, 0);
+        }
+
+        bool CardControlAddins.SelectorHighlight.IControlUI.IsCardSelected(CardControl cardControl)
+        {
+            return m_mouseHoverControl == null
+                   ? cardControl.GetAddin<CardControlAddins.SelectorLocationAnimation>().LocationIndex == Center
+                   : m_mouseHoverControl == cardControl;
         }
     }
 }

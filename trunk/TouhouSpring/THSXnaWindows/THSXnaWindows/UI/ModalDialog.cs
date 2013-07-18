@@ -6,7 +6,11 @@ using Microsoft.Xna.Framework;
 
 namespace TouhouSpring.UI
 {
-    class ModalDialog : MouseTrackedControl, IRenderable
+    class ModalDialog : TransformNode,
+        IEventListener<MouseMoveEventArgs>,
+        IEventListener<MouseButton1EventArgs>,
+        IEventListener<MouseButton2EventArgs>,
+        IRenderable
     {
         public interface IContent
         {
@@ -16,7 +20,6 @@ namespace TouhouSpring.UI
             void OnEnd();
         }
 
-        private MouseEventRelay m_eventRelay;
         private RenderableProxy m_renderableProxy;
 
         public const float DefaultOpacity = 0.75f;
@@ -44,8 +47,6 @@ namespace TouhouSpring.UI
 
         public ModalDialog()
         {
-            m_eventRelay = new MouseEventRelay(this);
-            m_eventRelay.SetHandledAfterRelay = true;
             m_renderableProxy = new RenderableProxy(this);
 
             Opacity = DefaultOpacity;
@@ -61,7 +62,6 @@ namespace TouhouSpring.UI
             // reset size
             float screenWidth = GameApp.Service<Services.UIManager>().ViewportWidth;
             float screenHeight = GameApp.Service<Services.UIManager>().ViewportHeight;
-            base.Region = new Rectangle(0, 0, screenWidth, screenHeight);
 
             var parentTransform = parent is ITransformNode ? (parent as ITransformNode).TransformToGlobal : Matrix.Identity;
             var toScreenSpace = Matrix.Identity;
@@ -72,7 +72,6 @@ namespace TouhouSpring.UI
             Transform = toScreenSpace * parentTransform.Invert();
 
             base.Dispatcher = parent;
-            m_eventRelay.Dispatcher = Dispatcher;
 
             Content = content;
             if (content != null)
@@ -86,11 +85,28 @@ namespace TouhouSpring.UI
         public void End()
         {
             HasBegun = false;
-            Dispatcher.Listeners.Remove(m_eventRelay);
             Dispatcher.Listeners.Remove(this);
         }
 
-        public void OnRender(RenderEventArgs e)
+        void IEventListener<MouseMoveEventArgs>.RaiseEvent(MouseMoveEventArgs e)
+        {
+            Dispatch(e);
+            e.SetHandled();
+        }
+
+        void IEventListener<MouseButton1EventArgs>.RaiseEvent(MouseButton1EventArgs e)
+        {
+            Dispatch(e);
+            e.SetHandled();
+        }
+
+        void IEventListener<MouseButton2EventArgs>.RaiseEvent(MouseButton2EventArgs e)
+        {
+            Dispatch(e);
+            e.SetHandled();
+        }
+
+        void IRenderable.OnRender(RenderEventArgs e)
         {
             float screenWidth = e.RenderManager.Device.Viewport.Width;
             float screenHeight = e.RenderManager.Device.Viewport.Height;

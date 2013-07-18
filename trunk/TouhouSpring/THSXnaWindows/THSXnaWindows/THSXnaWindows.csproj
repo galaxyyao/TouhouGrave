@@ -196,6 +196,7 @@
     <Compile Include="UI\CardControlAddins\LocationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\Pile.cs" />
     <Compile Include="UI\CardControlAddins\RotationAnimation.cs" />
+    <Compile Include="UI\CardControlAddins\SelectorHighlight.cs" />
     <Compile Include="UI\CardControlAddins\SelectorLocationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\ToneAnimation.cs" />
     <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />

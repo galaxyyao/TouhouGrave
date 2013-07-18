@@ -11,7 +11,7 @@ namespace TouhouSpring.UI.CardControlAddins
     class Highlight : CardControl.Addin, Style.IBindingProvider
     {
         [Services.LifetimeDependency(typeof(Services.ResourceManager))]
-        private class Resources : Services.GameService
+        public class Resources : Services.GameService
         {
             public Graphics.VirtualTexture CardHighlight
             {
