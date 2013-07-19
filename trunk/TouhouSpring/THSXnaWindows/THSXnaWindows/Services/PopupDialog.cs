@@ -133,28 +133,29 @@ namespace TouhouSpring.Services
             m_dialogStack.Push(modalDialog);
         }
 
-        public void PushCardModelSelector(string message, IIndexable<ICardModel> candidates, Action<int> action)
+        public void PushCardModelSelector(string message, IIndexable<ICardModel> candidates, Action<ICardModel> action)
         {
             PushCardModelSelector(message, candidates, UI.ModalDialog.DefaultOpacity, action);
         }
 
-        public void PushCardModelSelector(string message, IIndexable<ICardModel> candidates, float opacity, Action<int> action)
+        public void PushCardModelSelector(string message, IIndexable<ICardModel> candidates, float opacity, Action<ICardModel> action)
         {
             if (message == null)
             {
                 throw new ArgumentNullException("message");
             }
 
-            var cardModelSelector = new CardModelSelector(m_buttonFace, m_buttonTexts[MessageBox.ButtonCancel],
+            var cardModelSelector = new CardModelSelector(m_buttonFace,
+                m_buttonTexts[MessageBox.ButtonOK], m_buttonTexts[MessageBox.ButtonCancel],
                 m_leftButtonFace, null, m_rightButtonFace, null, candidates)
             {
                 Text = GameApp.Service<TextRenderer>().FormatText(message, new Graphics.TextRenderer.FormatOptions(m_msgFont))
             };
-            cardModelSelector.CancelClicked += (btn) =>
+            cardModelSelector.DialogClosed += card =>
             {
                 if (action != null)
                 {
-                    action(btn);
+                    action(card);
                 }
                 System.Diagnostics.Debug.Assert(m_dialogStack.Peek().Content == cardModelSelector);
                 PopTopDialog();

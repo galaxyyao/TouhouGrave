@@ -167,6 +167,10 @@ namespace TouhouSpring
             {
                 m_agents[(io as Interactions.SelectNumber).Player.Index].OnRespondBack(io, result);
             }
+            else if (io is Interactions.SelectCardModel)
+            {
+                m_agents[(io as Interactions.SelectCardModel).Player.Index].OnRespondBack(io, result);
+            }
             else if (io is Interactions.NotifyOnly
                 || io is Interactions.NotifyCardEvent
                 || io is Interactions.NotifyPlayerEvent

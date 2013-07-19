@@ -10,7 +10,8 @@ namespace TouhouSpring.UI.ModalDialogs
 {
     partial class CardModelSelector : TransformNode, ModalDialog.IContent, IEventListener<RenderEventArgs>
     {
-        public const int ButtonCancel = 0;
+        public const int ButtonOK = 0;
+        public const int ButtonCancel = 1;
         public const int NumButtons = ButtonCancel + 1;
 
         private const int TextLineFromMiddle = -150;
@@ -32,7 +33,7 @@ namespace TouhouSpring.UI.ModalDialogs
         private Graphics.VirtualTexture m_fadeMaskR;
         private BlendState m_maskBlendState;
 
-        public event Action<int> CancelClicked;
+        public event Action<ICardModel> DialogClosed;
 
         public TextRenderer.IFormattedText Text
         {
@@ -54,14 +55,19 @@ namespace TouhouSpring.UI.ModalDialogs
 
         public int Center { get; set; }
 
-        public CardModelSelector(Graphics.TexturedQuad cancelButtonFace, TextRenderer.IFormattedText cancelButtonText,
+        public CardModelSelector(Graphics.TexturedQuad okCancelButtonFace,
+            TextRenderer.IFormattedText okButtonText, TextRenderer.IFormattedText cancelButtonText,
             Graphics.TexturedQuad leftButtonFace, TextRenderer.IFormattedText leftButtonText,
             Graphics.TexturedQuad rightButtonFace, TextRenderer.IFormattedText rightButtonText,
             IIndexable<ICardModel> candidates)
         {
-            if (cancelButtonFace == null)
+            if (okCancelButtonFace == null)
             {
-                throw new ArgumentNullException("cancelButtonFace");
+                throw new ArgumentNullException("okButtonFace");
+            }
+            else if (okButtonText == null)
+            {
+                throw new ArgumentNullException("okButtonText");
             }
             else if (cancelButtonText == null)
             {
@@ -81,10 +87,11 @@ namespace TouhouSpring.UI.ModalDialogs
             }
 
             var buttonTexts = new TextRenderer.IFormattedText[CommonButtons.NumButtons];
+            buttonTexts[CommonButtons.ButtonOK] = okButtonText;
             buttonTexts[CommonButtons.ButtonCancel] = cancelButtonText;
-            m_commonButtons = new CommonButtons(cancelButtonFace, buttonTexts);
+            m_commonButtons = new CommonButtons(okCancelButtonFace, buttonTexts);
             m_commonButtons.Dispatcher = this;
-            m_commonButtons.ButtonClicked += CancelButton_OnClicked;
+            m_commonButtons.ButtonClicked += CommonButton_OnClicked;
 
             m_leftButton = new Button
             {
@@ -159,11 +166,21 @@ namespace TouhouSpring.UI.ModalDialogs
             Center = Math.Min(Candidates.Count - 1, Center + 1);
         }
 
-        private void CancelButton_OnClicked(int btn)
+        private void CommonButton_OnClicked(int btn)
         {
-            if (CancelClicked != null)
+            if (DialogClosed != null)
             {
-                CancelClicked(btn);
+                switch (btn)
+                {
+                    case CommonButtons.ButtonOK:
+                        DialogClosed(Candidates[Center]);
+                        break;
+                    case CommonButtons.ButtonCancel:
+                        DialogClosed(null);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 

@@ -93,5 +93,18 @@ namespace TouhouSpring.Agents
                 throw new NotSupportedException(String.Format("Unrecognized verb {0}", respond[0]));
             }
         }
+
+        public override void OnSelectCardModel(Interactions.SelectCardModel io)
+        {
+            var respond = m_playingBack.ReadLine().Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+            if (respond[0] == "sc")
+            {
+                io.Respond(respond[1] == "null" ? (ICardModel)null : io.Candidates[Int32.Parse(respond[1])]);
+            }
+            else
+            {
+                throw new NotSupportedException(String.Format("Unrecognized verb {0}", respond[0]));
+            }
+        }
     }
 }

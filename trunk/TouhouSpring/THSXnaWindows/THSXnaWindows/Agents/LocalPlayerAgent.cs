@@ -117,9 +117,9 @@ namespace TouhouSpring.Agents
 
         public override void OnSelectCardModel(Interactions.SelectCardModel io)
         {
-            GameApp.Service<Services.PopupDialog>().PushCardModelSelector(io.Message, io.Candidates, btn =>
+            GameApp.Service<Services.PopupDialog>().PushCardModelSelector(io.Message, io.Candidates, card =>
             {
-                io.Respond(null);
+                io.Respond(card);
             });
         }
     }

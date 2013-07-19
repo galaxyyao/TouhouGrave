@@ -92,6 +92,10 @@ namespace TouhouSpring.Agents
                 var si = result as int?;
                 m_recording.WriteLine("sn:" + (si == null ? "null" : si.ToString()));
             }
+            else if (io is Interactions.SelectCardModel)
+            {
+                m_recording.WriteLine("sc:" + result == null ? "null" : (io as Interactions.SelectCardModel).Candidates.IndexOf(result as ICardModel).ToString());
+            }
         }
         public virtual void OnInitiativeCommandEnd() { }
         public virtual void OnInitiativeCommandCanceled() { }
