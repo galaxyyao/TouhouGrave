@@ -51,6 +51,7 @@
     <Compile Include="Commands\MoveCardCommands\IMoveCard.cs" />
     <Compile Include="Commands\MoveCardCommands\DrawMove.cs" />
     <Compile Include="Commands\MoveCardCommands\MoveCard.cs" />
+    <Compile Include="Commands\MoveCardCommands\ReviveMove.cs" />
     <Compile Include="Commands\MoveCardCommands\SummonMove.cs" />
     <Compile Include="CommandQueue.cs" />
     <Compile Include="CommandRunner.cs" />

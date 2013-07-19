@@ -306,12 +306,11 @@
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_HealAllAlly_NLife+ModelType">
-          <Name>全体治愈</Name>
-          <LifeToHeal>1</LifeToHeal>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Spells.RecallBySacrifice+ModelType">
+          <Name>RecallBySacrifice</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>

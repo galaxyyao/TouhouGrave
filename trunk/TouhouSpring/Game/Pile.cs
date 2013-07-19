@@ -132,5 +132,10 @@ namespace TouhouSpring
                 }
             }
         }
+
+        public IEnumerable<ICardModel> Filter(Func<ICardModel, bool> pred)
+        {
+            return m_orderedCardModels.Where(pred);
+        }
     }
 }

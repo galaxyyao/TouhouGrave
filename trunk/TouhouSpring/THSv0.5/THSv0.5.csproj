@@ -49,6 +49,7 @@
     <Compile Include="Behaviors\Passive_Armor.cs" />
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
+    <Compile Include="Spells\RecallBySacrifice.cs" />
     <None Include="Behaviors\Deprecated\Passive_AttackFirst.cs" />
     <None Include="Behaviors\Deprecated\Passive_AttackGrowth.cs" />
     <Compile Include="Behaviors\AssistSpell_Recklessness.cs" />
