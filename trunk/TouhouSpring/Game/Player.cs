@@ -167,7 +167,7 @@ namespace TouhouSpring
         /// <param name="deck">The deck from which a library pile is generated.</param>
         internal void Initialize(Deck deck)
         {
-            m_zones = new Zones(Game.m_zoneConfig, this);
+            m_zones = new Zones(Game.ZoneConfigs, this);
             m_handSet = m_zones.GetZone(SystemZone.Hand).CardInstances;
             m_sacrifices = m_zones.GetZone(SystemZone.Sacrifice).CardInstances;
             m_battlefieldCards = m_zones.GetZone(SystemZone.Battlefield).CardInstances;
@@ -197,7 +197,9 @@ namespace TouhouSpring
             // initialize assists
             foreach (var cardModel in deck.Assists)
             {
-                m_assists.Add(new CardInstance(cardModel, this));
+                var assistCard = new CardInstance(cardModel, this);
+                assistCard.Zone = SystemZone.Assist;
+                m_assists.Add(assistCard);
             }
 
             Health = 20;

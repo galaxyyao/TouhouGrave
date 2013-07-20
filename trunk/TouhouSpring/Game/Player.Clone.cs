@@ -14,7 +14,7 @@ namespace TouhouSpring
             clonedPlayer.Health = Health;
             clonedPlayer.Mana = Mana;
 
-            clonedPlayer.m_zones = new Zones(Game.m_zoneConfig, clonedPlayer);
+            clonedPlayer.m_zones = new Zones(Game.ZoneConfigs, clonedPlayer);
             clonedPlayer.m_handSet = clonedPlayer.m_zones.GetZone(SystemZone.Hand).CardInstances;
             clonedPlayer.m_sacrifices = clonedPlayer.m_zones.GetZone(SystemZone.Sacrifice).CardInstances;
             clonedPlayer.m_battlefieldCards = clonedPlayer.m_zones.GetZone(SystemZone.Battlefield).CardInstances;

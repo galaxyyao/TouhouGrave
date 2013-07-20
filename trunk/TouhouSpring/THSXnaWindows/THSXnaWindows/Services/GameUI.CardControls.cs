@@ -60,30 +60,30 @@ namespace TouhouSpring.Services
                     locationAnim.SetNextLocation(m_zoomedInZone, 0);
                     newDesignName = "Full";
                 }
-                else if (data.Location == CardDataManager.CardLocation.Battlefield)
+                else if (data.Zone == SystemZone.Battlefield)
                 {
-                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Battlefield, data.LocationIndex);
+                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Battlefield, data.ZonePosition);
                     newDesignName = "NoResource";
                 }
-                else if (data.Location == CardDataManager.CardLocation.Sacrifice)
+                else if (data.Zone == SystemZone.Sacrifice)
                 {
-                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Sacrifice, data.LocationIndex);
+                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Sacrifice, data.ZonePosition);
                     newDesignName = "NoResource";
                 }
-                else if (data.Location == CardDataManager.CardLocation.Hand)
+                else if (data.Zone == SystemZone.Hand)
                 {
-                    if (ShallPlayerBeRevealed(data.OwnerPlayerIndex))
+                    if (ShallCardBeRevealed(data))
                     {
-                        locationAnim.SetNextLocation(m_actingLocalPlayerHandZone, data.LocationIndex);
+                        locationAnim.SetNextLocation(m_actingLocalPlayerHandZone, data.ZonePosition);
                     }
                     else
                     {
-                        locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Hand, data.LocationIndex);
+                        locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Hand, data.ZonePosition);
                     }
                 }
-                else if (data.Location == CardDataManager.CardLocation.Assist)
+                else if (data.Zone == SystemZone.Assist)
                 {
-                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Assists, data.LocationIndex);
+                    locationAnim.SetNextLocation(m_playerZones[data.OwnerPlayerIndex].Assists, data.ZonePosition);
                     newDesignName = "NoResource";
                 }
 
@@ -113,7 +113,7 @@ namespace TouhouSpring.Services
                 cardControl.Addins.Add(new UI.CardControlAddins.CardIcons(cardControl));
                 m_cardControls.Add(cardControl);
 
-                if (cardData.Location == CardDataManager.CardLocation.Hand)
+                if (cardData.Zone == SystemZone.Hand)
                 {
                     PutToLibrary(cardControl);
                 }

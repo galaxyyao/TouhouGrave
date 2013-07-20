@@ -17,8 +17,12 @@ namespace TouhouSpring.Services
 
         public IIndexable<Agents.BaseAgent> Agents
         {
-            get;
-            private set;
+            get; private set;
+        }
+
+        public IIndexable<ZoneConfig> GameZoneConfigs
+        {
+            get { return m_game.ZoneConfigs; }
         }
 
         public override void Startup()

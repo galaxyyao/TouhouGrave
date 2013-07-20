@@ -8,16 +8,6 @@ namespace TouhouSpring.Services
     [LifetimeDependency(typeof(GameManager))]
     class CardDataManager : GameService
     {
-        public enum CardLocation
-        {
-            Offboard,
-            Hand,
-            Sacrifice,
-            Assist,
-            Battlefield,
-            Graveyard
-        }
-
         public interface ICounterData
         {
             string Name { get; }
@@ -28,8 +18,8 @@ namespace TouhouSpring.Services
         public interface ICardData
         {
             int Guid { get; }
-            CardLocation Location { get; }
-            int LocationIndex { get; }
+            int Zone { get; }
+            int ZonePosition { get; }
             int OwnerPlayerIndex { get; }
             string ModelName { get; }
             string Description { get; }
@@ -63,8 +53,8 @@ namespace TouhouSpring.Services
         private class InternalCardData : ICardData
         {
             public int Guid { get; private set; }
-            public CardLocation Location { get; private set; }
-            public int LocationIndex { get; private set; }
+            public int Zone { get; private set; }
+            public int ZonePosition { get; private set; }
             public int OwnerPlayerIndex { get; private set; }
             public string ModelName { get; private set; }
             public string Description { get; private set; }
@@ -79,11 +69,11 @@ namespace TouhouSpring.Services
             public bool IsInstant { get; private set; }
             public IIndexable<ICounterData> Counters { get; private set; }
 
-            public InternalCardData(CardInstance card, CardLocation location, int locationIndex)
+            public InternalCardData(CardInstance card, int zonePosition)
             {
                 Guid = card.Guid;
-                Location = location;
-                LocationIndex = locationIndex;
+                Zone = card.Zone;
+                ZonePosition = zonePosition;
 
                 OwnerPlayerIndex = card.Owner.Index;
                 ModelName = card.Model.Name ?? String.Empty;
@@ -157,43 +147,35 @@ namespace TouhouSpring.Services
             foreach (var cardAndLocation in EnumerateGameCards(game))
             {
                 var card = cardAndLocation.Item1;
-                newCards.Add(card.Guid, new InternalCardData(card, cardAndLocation.Item2, cardAndLocation.Item3));
+                newCards.Add(card.Guid, new InternalCardData(card, cardAndLocation.Item2));
             }
 
             m_cards = newCards;
         }
 
-        private IEnumerable<Tuple<CardInstance, CardLocation, int>> EnumerateGameCards(Game game)
+        private IEnumerable<Tuple<CardInstance, int>> EnumerateGameCards(Game game)
         {
             foreach (var player in game.Players)
             {
+                int i = 0;
                 foreach (var card in player.CardsOnHand)
                 {
-                    yield return new Tuple<CardInstance, CardLocation, int>(
-                        card,
-                        CardLocation.Hand,
-                        player.CardsOnHand.IndexOf(card));
+                    yield return new Tuple<CardInstance, int>(card, i++);
                 }
+                i = 0;
                 foreach (var card in player.CardsSacrificed)
                 {
-                    yield return new Tuple<CardInstance, CardLocation, int>(
-                        card,
-                        CardLocation.Sacrifice,
-                        player.CardsSacrificed.IndexOf(card));
+                    yield return new Tuple<CardInstance, int>(card, i++);
                 }
+                i = 0;
                 foreach (var card in player.CardsOnBattlefield)
                 {
-                    yield return new Tuple<CardInstance, CardLocation, int>(
-                        card,
-                        CardLocation.Battlefield,
-                        player.CardsOnBattlefield.IndexOf(card));
+                    yield return new Tuple<CardInstance, int>(card, i++);
                 }
+                i = 0;
                 foreach (var card in player.Assists)
                 {
-                    yield return new Tuple<CardInstance, CardLocation, int>(
-                        card,
-                        CardLocation.Assist,
-                        player.Assists.IndexOf(card));
+                    yield return new Tuple<CardInstance, int>(card, i++);
                 }
             }
         }

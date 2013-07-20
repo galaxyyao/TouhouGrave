@@ -27,8 +27,8 @@ namespace TouhouSpring.UI.ModalDialogs
             }
 
             public int Guid { get { return -1; } }
-            public Services.CardDataManager.CardLocation Location { get { return Services.CardDataManager.CardLocation.Offboard; } }
-            public int LocationIndex { get { return -1; } }
+            public int Zone { get { return SystemZone.Unknown; } }
+            public int ZonePosition { get { return -1; } }
             public int OwnerPlayerIndex { get { return -1; } }
             public string ModelName { get { return CardModel.Name; } }
             public string Description { get { return CardModel.Description; } }

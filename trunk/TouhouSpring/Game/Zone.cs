@@ -25,19 +25,35 @@ namespace TouhouSpring
         OffBattlefield
     }
 
+    public enum ZoneVisibility
+    {
+        VisibleToOwner,
+        Visible,
+        Invisible
+    }
+
+    public struct ZoneConfig
+    {
+        public int Id;
+        public ZoneType Type;
+        public ZoneVisibility Visibility;
+    }
+
     public class Zone
     {
+        public Player Owner { get; private set; }
         public int Id { get; private set; }
         public ZoneType Type { get; private set; }
-        public Player Player { get; private set; }
+        public ZoneVisibility Visibility { get; private set; }
         public List<CardInstance> CardInstances { get; private set; }
         public List<ICardModel> CardModels { get; private set; }
 
-        internal Zone(int id, ZoneType type, Player player)
+        internal Zone(Player owner, int id, ZoneType type, ZoneVisibility visibility)
         {
+            Owner = owner;
             Id = id;
             Type = type;
-            Player = player;
+            Visibility = visibility;
             CardInstances = type != ZoneType.Library ? new List<CardInstance>() : null;
             CardModels = type == ZoneType.Library ? new List<ICardModel>() : null;
         }
@@ -45,22 +61,29 @@ namespace TouhouSpring
 
     class Zones
     {
-        private List<Zone> m_zones;
+        private Zone[] m_zones;
 
-        internal Zones(Dictionary<int, ZoneType> zoneConfig, Player player)
+        internal Zones(IIndexable<ZoneConfig> zoneConfigs, Player owner)
         {
             Debug.Assert(m_zones == null);
 
-            m_zones = new List<Zone>(zoneConfig.Count);
-            foreach (var kvp in zoneConfig)
+            m_zones = new Zone[zoneConfigs.Count];
+            for (int i = 0; i < zoneConfigs.Count; ++i)
             {
-                m_zones.Add(new Zone(kvp.Key, kvp.Value, player));
+                m_zones[i] = new Zone(owner, zoneConfigs[i].Id, zoneConfigs[i].Type, zoneConfigs[i].Visibility);
             }
         }
 
         internal Zone GetZone(int zoneId)
         {
-            return m_zones.Find(zone => zone.Id == zoneId);
+            for (int i = 0; i < m_zones.Length; ++i)
+            {
+                if (m_zones[i].Id == zoneId)
+                {
+                    return m_zones[i];
+                }
+            }
+            throw new ArgumentException("Zone with the specified Id can't be found.");
         }
     }
 }

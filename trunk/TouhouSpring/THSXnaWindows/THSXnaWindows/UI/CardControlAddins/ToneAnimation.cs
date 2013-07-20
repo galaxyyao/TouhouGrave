@@ -32,7 +32,7 @@ namespace TouhouSpring.UI.CardControlAddins
             bool darken = gameUI.ZoomedInCard != Control
                           && (CardData.IsWarriorCoolingDown
                               || CardData.IsAssist && !CardData.IsAssistActivated
-                              || CardData.Location == Services.CardDataManager.CardLocation.Sacrifice);
+                              || CardData.Zone == SystemZone.Sacrifice);
 
             if (darken != m_lastDarken)
             {

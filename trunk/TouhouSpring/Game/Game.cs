@@ -14,7 +14,11 @@ namespace TouhouSpring
     {
         private Int32 m_nextCardGuid;
         private Thread m_gameFlowThread;
-        internal Dictionary<int, ZoneType> m_zoneConfig;
+
+        public IIndexable<ZoneConfig> ZoneConfigs
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Give a random number generator for this game.
@@ -87,15 +91,15 @@ namespace TouhouSpring
 
         public void Initialize(List<Deck> playerDecks)
         {
-            m_zoneConfig = new Dictionary<int, ZoneType>()
+            ZoneConfigs = new ZoneConfig[]
             {
-                {SystemZone.Library,        ZoneType.Library},
-                {SystemZone.Hand,           ZoneType.OffBattlefield},
-                {SystemZone.Sacrifice,      ZoneType.OffBattlefield},
-                {SystemZone.Battlefield,    ZoneType.OnBattlefield},
-                {SystemZone.Graveyard,      ZoneType.Library},
-                {SystemZone.Assist,         ZoneType.OffBattlefield},
-            };
+                new ZoneConfig { Id = SystemZone.Library,       Type = ZoneType.Library,        Visibility = ZoneVisibility.VisibleToOwner },
+                new ZoneConfig { Id = SystemZone.Hand,          Type = ZoneType.OffBattlefield, Visibility = ZoneVisibility.VisibleToOwner },
+                new ZoneConfig { Id = SystemZone.Sacrifice,     Type = ZoneType.OffBattlefield, Visibility = ZoneVisibility.VisibleToOwner },
+                new ZoneConfig { Id = SystemZone.Battlefield,   Type = ZoneType.OnBattlefield,  Visibility = ZoneVisibility.Visible },
+                new ZoneConfig { Id = SystemZone.Graveyard,     Type = ZoneType.Library,        Visibility = ZoneVisibility.Visible },
+                new ZoneConfig { Id = SystemZone.Assist,        Type = ZoneType.OffBattlefield, Visibility = ZoneVisibility.Visible }
+            }.ToIndexable();
 
             for (int i = 0; i < m_players.Length; ++i)
             {

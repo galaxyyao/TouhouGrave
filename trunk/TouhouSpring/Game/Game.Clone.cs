@@ -23,7 +23,7 @@ namespace TouhouSpring
             clonedGame.Players = clonedGame.m_players.ToIndexable();
             clonedGame.Random = new Random(Random);
             clonedGame.m_nextCardGuid = m_nextCardGuid;
-            clonedGame.m_zoneConfig = m_zoneConfig;
+            clonedGame.ZoneConfigs = ZoneConfigs;
 
             if (controller != null)
             {

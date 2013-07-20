@@ -125,12 +125,31 @@ namespace TouhouSpring.Services
             UIState = null;
         }
 
-        public bool ShallPlayerBeRevealed(int playerIndex)
+        public bool IsPlayerInControl(int playerIndex)
         {
             var gameManager = GameApp.Service<GameManager>();
             var pid = gameManager.ActingPlayerIndex;
             bool actingPlayerIsLocalPlayer = pid != -1 && gameManager.Agents[pid] is Agents.LocalPlayerAgent;
             return actingPlayerIsLocalPlayer == (playerIndex == pid);
+        }
+
+        public bool ShallCardBeRevealed(CardDataManager.ICardData cardData)
+        {
+            var gameManager = GameApp.Service<GameManager>();
+            // throws exception if not found
+            var zone = gameManager.GameZoneConfigs.First(zc => zc.Id == cardData.Zone);
+            if (zone.Visibility == ZoneVisibility.VisibleToOwner)
+            {
+                return IsPlayerInControl(cardData.OwnerPlayerIndex);
+            }
+            else if (zone.Visibility == ZoneVisibility.Visible)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // Called by GameManager

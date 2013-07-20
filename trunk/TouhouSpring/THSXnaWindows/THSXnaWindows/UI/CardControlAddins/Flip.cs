@@ -35,12 +35,8 @@ namespace TouhouSpring.UI.CardControlAddins
 
         public override void Update(float deltaTime)
         {
-            //TEMP: If want opponent's card shown, add "return;" here
-            //return;
             var gameui = GameApp.Service<Services.GameUI>();
-            var needFlip = gameui.ZoomedInCard != Control
-                           && !gameui.ShallPlayerBeRevealed(CardData.OwnerPlayerIndex)
-                           && CardData.Location == Services.CardDataManager.CardLocation.Hand;
+            var needFlip = !gameui.ShallCardBeRevealed(CardData);
 
             if (needFlip != Flipped)
             {
