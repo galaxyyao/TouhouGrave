@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-    public class SelectCardModel : BaseInteraction
+    public class SelectCardModel : BaseInteraction, IQuickInteraction
     {
         public Player Player
         {
@@ -52,6 +52,16 @@ namespace TouhouSpring.Interactions
         {
             Validate(selectedCard);
             RespondBack(selectedCard);
+        }
+
+        object IQuickInteraction.Run()
+        {
+            return Run();
+        }
+
+        bool IQuickInteraction.HasCandidates()
+        {
+            return Candidates.Count != 0;
         }
 
         private void Validate(ICardModel selectedCard)

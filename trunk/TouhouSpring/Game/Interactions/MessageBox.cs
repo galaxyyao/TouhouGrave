@@ -16,7 +16,7 @@ namespace TouhouSpring.Interactions
         No = 0x08,
     }
 
-    public class MessageBox : BaseInteraction
+    public class MessageBox : BaseInteraction, IQuickInteraction
     {
         public Player Player
         {
@@ -55,6 +55,17 @@ namespace TouhouSpring.Interactions
             Player = player;
             Text = text;
             Buttons = buttons;
+        }
+
+        object IQuickInteraction.Run()
+        {
+            var result = Run();
+            return result != MessageBoxButtons.Cancel ? (MessageBoxButtons?)result : null;
+        }
+
+        bool IQuickInteraction.HasCandidates()
+        {
+            return Buttons != 0;
         }
     }
 }

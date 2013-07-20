@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-    public class SelectCards : BaseInteraction
+    public class SelectCards : BaseInteraction, IQuickInteraction
     {
         public enum SelectMode
         {
@@ -38,23 +38,19 @@ namespace TouhouSpring.Interactions
         { }
 
         public SelectCards(Player player, IEnumerable<CardInstance> candidates, SelectMode mode, string message)
-            : this(player, candidates.Where(card => !card.Behaviors.Has<Behaviors.IUnselectable>()).ToArray().ToIndexable(), mode, message)
-        { }
-
-        internal SelectCards(Player player, IIndexable<CardInstance> filteredCandidates, SelectMode mode, string message)
             : base(player.Game)
         {
             if (player == null)
             {
                 throw new ArgumentNullException("player");
             }
-            else if (filteredCandidates == null)
+            else if (candidates == null)
             {
                 throw new ArgumentNullException("candidates");
             }
 
             Player = player;
-            Candidates = filteredCandidates;
+            Candidates = candidates.Where(card => !card.Behaviors.Has<Behaviors.IUnselectable>()).ToList().ToIndexable();
             Message = message ?? String.Empty;
             Mode = mode;
         }
@@ -72,6 +68,16 @@ namespace TouhouSpring.Interactions
         {
             Validate(selectedCards);
             RespondBack(selectedCards);
+        }
+
+        object IQuickInteraction.Run()
+        {
+            return Run();
+        }
+
+        bool IQuickInteraction.HasCandidates()
+        {
+            return Candidates.Count != 0;
         }
 
         protected void Validate(IIndexable<CardInstance> selectedCards)

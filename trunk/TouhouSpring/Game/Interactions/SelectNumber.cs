@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Interactions
 {
-    public class SelectNumber : BaseInteraction
+    public class SelectNumber : BaseInteraction, IQuickInteraction
     {
         public Player Player
         {
@@ -60,6 +60,16 @@ namespace TouhouSpring.Interactions
         {
             Validate(number);
             RespondBack(number);
+        }
+
+        object IQuickInteraction.Run()
+        {
+            return Run();
+        }
+
+        bool IQuickInteraction.HasCandidates()
+        {
+            return true;
         }
 
         protected void Validate(int? number)

@@ -10,6 +10,8 @@ namespace TouhouSpring
 {
     public partial class Game
     {
+        public readonly int DefaultTargetTicket = 0;
+
         public void QueueCommands(params Commands.BaseCommand[] commands)
         {
             m_resolveContextStack.Peek().QueueCommands(commands);
@@ -32,17 +34,46 @@ namespace TouhouSpring
 
         public void NeedTargets(Behaviors.IBehavior user, IEnumerable<CardInstance> candidates, string message)
         {
-            m_resolveContextStack.Peek().NeedTargets(user, true, candidates, message);
+            var ctx = m_resolveContextStack.Peek();
+            var initiativeCmd = ctx.RunningCommand as Commands.IInitiativeCommand;
+            if (initiativeCmd == null)
+            {
+                throw new InvalidOperationException("Running command is not an initiative command.");
+            }
+            ctx.NeedInteraction(user, DefaultTargetTicket, true,
+                new Interactions.SelectCards(initiativeCmd.Initiator, candidates, Interactions.SelectCards.SelectMode.Single, message));
         }
 
         public void NeedOptionalTargets(Behaviors.IBehavior user, IEnumerable<CardInstance> candidates, string message)
         {
-            m_resolveContextStack.Peek().NeedTargets(user, false, candidates, message);
+            var ctx = m_resolveContextStack.Peek();
+            var initiativeCmd = ctx.RunningCommand as Commands.IInitiativeCommand;
+            if (initiativeCmd == null)
+            {
+                throw new InvalidOperationException("Running command is not an initiative command.");
+            }
+            ctx.NeedInteraction(user, DefaultTargetTicket, false,
+                new Interactions.SelectCards(initiativeCmd.Initiator, candidates, Interactions.SelectCards.SelectMode.Single, message));
         }
 
         public IIndexable<CardInstance> GetTargets(Behaviors.IBehavior user)
         {
-            return m_resolveContextStack.Peek().GetTargets(user);
+            return m_resolveContextStack.Peek().GetInteractionResult(user, 0) as IIndexable<CardInstance>;
+        }
+
+        public void NeedInteraction(Behaviors.IBehavior user, int ticket, bool compulsory, Interactions.IQuickInteraction io)
+        {
+            m_resolveContextStack.Peek().NeedInteraction(user, ticket, compulsory, io);
+        }
+
+        public void NeedInteraction(Behaviors.IBehavior user, int ticket, bool compulsory, Func<Interactions.IQuickInteraction> deferredIO)
+        {
+            m_resolveContextStack.Peek().NeedInteraction(user, ticket, compulsory, deferredIO);
+        }
+
+        public object GetInteractionResult(Behaviors.IBehavior user, int ticket)
+        {
+            return m_resolveContextStack.Peek().GetInteractionResult(user, ticket);
         }
 
         internal bool IsCardPlayable(CardInstance card)

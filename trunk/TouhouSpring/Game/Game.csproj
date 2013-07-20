@@ -66,6 +66,7 @@
     <Compile Include="CardModelReference.cs" />
     <Compile Include="Game.CommandTargets.cs" />
     <Compile Include="Game.ResolveContext.cs" />
+    <Compile Include="Interactions\IQuickInteraction.cs" />
     <Compile Include="Interactions\SelectCardModel.cs" />
     <Compile Include="ResolveContext.CommandQueue.cs" />
     <Compile Include="ResolveContext.cs" />

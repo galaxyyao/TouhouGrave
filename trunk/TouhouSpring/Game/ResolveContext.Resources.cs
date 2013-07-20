@@ -27,17 +27,18 @@ namespace TouhouSpring
             public int m_manaOrLifeFinalLife;
         }
 
-        private class TargetCondition
+        private class InteractionCondition
         {
             public Behaviors.IBehavior m_user;
+            public int m_ticket;
             public bool m_compulsory;
-            public IIndexable<CardInstance> m_candidates;
-            public string m_message;
-            public IIndexable<CardInstance> m_selection;
+            public Interactions.IQuickInteraction m_io;
+            public Func<Interactions.IQuickInteraction> m_deferredIO;
+            public object m_result;
         }
 
         private ResourceConditions m_resourceConditions;
-        private List<TargetCondition> m_targetConditions = new List<TargetCondition>();
+        private List<InteractionCondition> m_interactionConditions = new List<InteractionCondition>();
 
         internal void NeedMana(int amount)
         {
@@ -82,51 +83,46 @@ namespace TouhouSpring
             m_resourceConditions.m_manaOrLifeLife = life;
         }
 
-        internal void NeedTargets(Behaviors.IBehavior user, bool compulsory, IEnumerable<CardInstance> candidates, string message)
+        internal void NeedInteraction(Behaviors.IBehavior user, int ticket, bool compulsory, Interactions.IQuickInteraction io)
         {
-            if (user == null)
+            if (io == null)
             {
-                throw new ArgumentNullException("user");
-            }
-            else if (candidates == null)
-            {
-                throw new ArgumentNullException("candidates");
-            }
-            else if (String.IsNullOrEmpty(message))
-            {
-                throw new ArgumentNullException("message");
-            }
-            CheckInPrerequisite();
-
-            if (m_targetConditions.Any(tgt => tgt.m_user == user))
-            {
-                throw new InvalidOperationException("Multiple target conditions can't be registered for one behavior.");
+                throw new ArgumentNullException("io");
             }
 
-            m_targetConditions.Add(new TargetCondition
-            {
-                m_user = user,
-                m_compulsory = compulsory,
-                m_candidates = candidates.Where(card => !card.Behaviors.Has<Behaviors.IUnselectable>()).ToArray().ToIndexable(),
-                m_message = message,
-                m_selection = null
-            });
+            AddInteractionCondition(user, ticket, compulsory, io, null);
         }
 
-        internal IIndexable<CardInstance> GetTargets(Behaviors.IBehavior user)
+        internal void NeedInteraction(Behaviors.IBehavior user, int ticket, bool compulsory, Func<Interactions.IQuickInteraction> deferredIO)
         {
-            CheckNotInPrerequisite();
-            var targetCondition = m_targetConditions.FirstOrDefault(tgt => tgt.m_user == user);
-            return targetCondition != null ? targetCondition.m_selection : null;
+            if (deferredIO == null)
+            {
+                throw new ArgumentNullException("deferredIO");
+            }
+
+            AddInteractionCondition(user, ticket, compulsory, null, deferredIO);
+        }
+
+        internal object GetInteractionResult(Behaviors.IBehavior user, int ticket)
+        {
+            foreach (var cond in m_interactionConditions)
+            {
+                if (cond.m_user == user && cond.m_ticket == ticket)
+                {
+                    return cond.m_result;
+                }
+            }
+            throw new InvalidOperationException("Interaction condition with the ticket is not registered for the behavior.");
         }
 
         internal bool CheckCompulsoryTargets()
         {
-            foreach (var tgtCondition in m_targetConditions)
+            foreach (var cond in m_interactionConditions)
             {
-                if (tgtCondition.m_compulsory)
+                if (cond.m_compulsory
+                    && cond.m_result is IIndexable<CardInstance>)
                 {
-                    foreach (var card in tgtCondition.m_selection)
+                    foreach (var card in (IIndexable<CardInstance>)cond.m_result)
                     {
                         if (card.IsDestroyed)
                         {
@@ -138,6 +134,33 @@ namespace TouhouSpring
             return true;
         }
 
+        private void AddInteractionCondition(Behaviors.IBehavior user, int ticket, bool compulsory, Interactions.IQuickInteraction io, Func<Interactions.IQuickInteraction> deferredIO)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+            CheckInPrerequisite();
+
+            foreach (var cond in m_interactionConditions)
+            {
+                if (cond.m_user == user && cond.m_ticket == ticket)
+                {
+                    throw new InvalidOperationException("Interaction condition with the same ticket has already been registered for the behavior.");
+                }
+            }
+
+            m_interactionConditions.Add(new InteractionCondition
+            {
+                m_user = user,
+                m_ticket = ticket,
+                m_compulsory = compulsory,
+                m_io = io,
+                m_deferredIO = deferredIO,
+                m_result = null
+            });
+        }
+
         private void ClearConditions()
         {
             m_resourceConditions.m_manaNeeded = 0;
@@ -145,7 +168,7 @@ namespace TouhouSpring
             m_resourceConditions.m_manaOrLifeNeeded = false;
             m_resourceConditions.m_manaOrLifeMana = 0;
             m_resourceConditions.m_manaOrLifeLife = 0;
-            m_targetConditions.Clear();
+            m_interactionConditions.Clear();
         }
 
         private CommandResult ResolveConditions(bool prerequisiteOnly)
@@ -181,9 +204,9 @@ namespace TouhouSpring
                 }
             }
 
-            foreach (var tgt in m_targetConditions)
+            foreach (var cond in m_interactionConditions)
             {
-                if (tgt.m_compulsory && tgt.m_candidates.Count == 0)
+                if (cond.m_compulsory && cond.m_io != null && !cond.m_io.HasCandidates())
                 {
                     return CommandResult.Cancel("No target.");
                 }
@@ -219,14 +242,20 @@ namespace TouhouSpring
                     }
                 }
 
-                foreach (var tgt in m_targetConditions)
+                foreach (var cond in m_interactionConditions)
                 {
-                    tgt.m_selection = new Interactions.SelectCards(
-                        initiator,
-                        tgt.m_candidates,
-                        Interactions.SelectCards.SelectMode.Single,
-                        tgt.m_message).Run();
-                    if (tgt.m_selection.Count == 0 && tgt.m_compulsory)
+                    if (cond.m_io == null)
+                    {
+                        Debug.Assert(cond.m_deferredIO != null);
+                        cond.m_io = cond.m_deferredIO();
+                        if (cond.m_io == null)
+                        {
+                            continue;
+                        }
+                    }
+
+                    cond.m_result = cond.m_io.HasCandidates() ? cond.m_io.Run() : null;
+                    if (cond.m_result == null && cond.m_compulsory)
                     {
                         return CommandResult.Cancel("Canceled.");
                     }
