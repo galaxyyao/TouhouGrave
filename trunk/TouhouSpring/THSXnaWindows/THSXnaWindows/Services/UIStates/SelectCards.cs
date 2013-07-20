@@ -75,7 +75,7 @@ namespace TouhouSpring.Services.UIStates
 
         private void ContextButton_OnSkip(string text)
         {
-            m_io.Respond(m_selectedCards.MapToCards(m_io.Candidates).ToIndexable());
+            m_io.Respond(m_selectedCards.Count != 0 ? m_selectedCards.MapToCards(m_io.Candidates).ToIndexable() : null);
             m_gameUI.LeaveState();
         }
     }

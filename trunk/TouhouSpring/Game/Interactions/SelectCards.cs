@@ -63,7 +63,7 @@ namespace TouhouSpring.Interactions
         {
             var result = Candidates.Count != 0
                          ? NotifyAndWait<IIndexable<CardInstance>>()
-                         : Indexable.Empty<CardInstance>();
+                         : null;
             Validate(result);
             return result;
         }
@@ -78,11 +78,16 @@ namespace TouhouSpring.Interactions
         {
             if (selectedCards == null)
             {
-                throw new InteractionValidationFailException("selectedCards");
+                return;
             }
-            else if (Mode == SelectMode.Single && selectedCards.Count != 0 && selectedCards.Count != 1)
+
+            if (selectedCards.Count == 0)
             {
-                throw new InteractionValidationFailException("Only one or zero card can be selected.");
+                throw new InteractionValidationFailException("Zero-length array is not allowed.");
+            }
+            else if (Mode == SelectMode.Single && selectedCards.Count > 1)
+            {
+                throw new InteractionValidationFailException("Only one card can be selected.");
             }
             else if (!selectedCards.Unique())
             {

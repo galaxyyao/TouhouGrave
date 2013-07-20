@@ -68,12 +68,19 @@ namespace TouhouSpring.Agents
             var respond = m_playingBack.ReadLine().Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
             if (respond[0] == "se")
             {
-                CardInstance[] cards = new CardInstance[respond.Length - 1];
-                for (int i = 1; i < respond.Length; ++i)
+                if (respond[1] == "null")
                 {
-                    cards[i - 1] = io.Candidates.First(c => c.Guid == Int32.Parse(respond[i]));
+                    io.Respond(null);
                 }
-                io.Respond(cards.ToIndexable());
+                else
+                {
+                    CardInstance[] cards = new CardInstance[respond.Length - 1];
+                    for (int i = 1; i < respond.Length; ++i)
+                    {
+                        cards[i - 1] = io.Candidates.First(c => c.Guid == Int32.Parse(respond[i]));
+                    }
+                    io.Respond(cards.ToIndexable());
+                }
             }
             else
             {

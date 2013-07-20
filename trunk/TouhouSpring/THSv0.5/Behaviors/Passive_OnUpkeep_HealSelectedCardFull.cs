@@ -23,7 +23,7 @@ namespace TouhouSpring.Behaviors
                     Interactions.SelectCards.SelectMode.Single
                     , "指定场上1张角色卡，将其体力回复至上限"
                     ).Run();
-                if (selectedCard.Count > 0)
+                if (selectedCard != null)
                 {
                     int lifeToHeal = selectedCard[0].Warrior.MaxLife - selectedCard[0].Behaviors.Get<Warrior>().Life;
                     Game.QueueCommands(new Commands.HealCard(selectedCard[0]

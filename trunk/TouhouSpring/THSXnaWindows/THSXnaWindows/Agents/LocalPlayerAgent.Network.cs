@@ -80,12 +80,12 @@ namespace TouhouSpring.Agents
                 // queue
                 if (io is Interactions.SelectCards)
                 {
-                    var selectCardsResult = (IIndexable<CardInstance>)result;
+                    var selectCardsResult = result as IIndexable<CardInstance>;
                     m_NetworkClient.LocalLeaveInteraction(Interactions.BaseInteraction.PlayerAction.SelectCards, io, result);
                 }
                 else if (io is Interactions.SelectNumber)
                 {
-                    var selectCardsResult = (int?)result;
+                    var selectCardsResult = result as int?;
                     m_NetworkClient.LocalLeaveInteraction(Interactions.BaseInteraction.PlayerAction.SelectNumber, io, result);
                 }
                 else
