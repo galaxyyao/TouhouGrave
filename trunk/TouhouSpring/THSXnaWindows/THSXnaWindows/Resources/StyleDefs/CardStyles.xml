@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CardStyles>
+  <CardStyle Id="Normal" Width="210" Height="300">
+    <Transform Matrix="#CardAnimator.LocationTransform#" />
+    <Layout Id="Main">
+      <Transform Translation="0,0,#PileBackOffset#" />
+      <Transform Matrix="#CardAnimator.InstantRotation#" />
+      <Transform Matrix="#CardAnimator.HighlightTransform#" />
+      <Transform Scaling="0.0048,-0.0048,0.0048" />
+      <Transform Matrix="#CardAnimator.Flip#" />
+      <Layout Id="Body">
+        <Image Id="CardBack" Uri="Textures/CardBack">
+          <Transform Translation="-105" />
+          <Transform Scaling="-1,1" />
+          <Transform Translation="105" />
+        </Image>
+      </Layout>
+    </Layout>
+  </CardStyle>
+  <CardStyle Id="PileBack" Width="210" Height="300">
+    <Layout Id="Main">
+      <Transform Matrix="#CardAnimator.InstantRotation#" />
+      <Transform Scaling="0.0048,-0.0048,0.0048" />
+      <Layout Id="Body">
+        <Transform Translation="0,0,#PileBackOffset#" />
+        <!-- frame -->
+        <Image Id="CardBack" Uri="Textures/CardBack" />
+      </Layout>
+    </Layout>
+  </CardStyle>
+</CardStyles>

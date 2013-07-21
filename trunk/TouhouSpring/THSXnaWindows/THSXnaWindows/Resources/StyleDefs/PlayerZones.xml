@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PlayerZones Id="/">
+  <Layout Id="Battlefield" Left="-1" Top="-0.2">
+    <Transform Scaling="0.2" />
+    <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+  </Layout>
+  <Layout Left="-0.5" Top="-0.55">
+    <Transform Scaling="0.12" />
+    <Layout Id="Sacrifice">
+      <Zone Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+    </Layout>
+    <Layout>
+      <Transform Scaling="0.02,-0.02" />
+      <Label Font="DFKai-SB,20" AnsiFont="Constantia,20" Text="灵力 #Player.ManaPoolText#" Color="Black" Left="1" Top="1" />
+      <Label Font="DFKai-SB,20" AnsiFont="Constantia,20" Text="灵力 #Player.ManaPoolText#" Color="White" />
+    </Layout>
+  </Layout>
+  <Layout Id="Hero" Left="-1.05" Top="-0.2">
+    <Transform Scaling="0.25" />
+    <Zone />
+  </Layout>
+  <Layout Id="Assists" Left="-1.08" Top="-0.6">
+    <Transform Scaling="0.1" />
+    <Zone Span="3" Intervals="1.1" IntervalReductionLevels="0" />
+  </Layout>
+  <Layout Id="Library" Left="0.85" Top="-0.2">
+    <Transform Scaling="0.20" />
+    <Zone />
+  </Layout>
+  <Layout Id="Graveyard" Left="0.85" Top="-0.6">
+    <Transform Scaling="0.20" />
+    <Zone />
+  </Layout>
+  <Layout Id="Hand" Left="-1" Top="-0.8">
+    <Transform Scaling="0.20" />
+    <Zone Span="10" Intervals="1.1,0.7,0.5" IntervalReductionLevels="0,7,11" />
+  </Layout>
+</PlayerZones>

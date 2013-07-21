@@ -239,7 +239,16 @@
     <EmbeddedResource Include="Resources\Conversations.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\UIStyles.xml">
+    <EmbeddedResource Include="Resources\StyleDefs\CardDesigns.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StyleDefs\CardStyles.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StyleDefs\Pages.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StyleDefs\PlayerZones.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

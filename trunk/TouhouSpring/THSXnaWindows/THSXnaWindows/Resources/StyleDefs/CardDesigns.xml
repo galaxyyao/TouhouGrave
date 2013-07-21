@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CardDesigns>
+  <CardDesign Name="Normal">
+    <!-- card's artwork -->
+    <Layout Width="192" HorizontalAlignment="Center">
+      <Image Uri="#Card.ImageUri#" Blend="Opaque">
+        <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+        <Bounds Top="28" Width="100%" Height="142" />
+      </Image>
+    </Layout>
+    <!-- frame -->
+    <Image Uri="Textures/CardFrame" />
+    <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
+      <Bounds Top="240" HorizontalAlignment="Center" />
+    </Label>
+    <Label Font="Constantia,28,bold,5" Text="#Card.SummonCost#" Color="White" OutlineColor="Black" Right="10" Top="0" />
+  </CardDesign>
+  <CardDesign Name="NoResource">
+    <!-- card's artwork -->
+    <Layout Width="192" HorizontalAlignment="Center">
+      <Image Uri="#Card.ImageUri#" Blend="Opaque">
+        <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+        <Bounds Top="28" Width="100%" Height="142" />
+      </Image>
+    </Layout>
+    <!-- frame -->
+    <Image Uri="Textures/CardFrame" />
+    <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
+      <Bounds Top="240" HorizontalAlignment="Center" />
+    </Label>
+  </CardDesign>
+  <CardDesign Name="Full">
+    <!-- card's artwork -->
+    <Layout Width="192" HorizontalAlignment="Center">
+      <Image Uri="#Card.ImageUri#" Blend="Opaque">
+        <Content Stretch="UniformToFill" VerticalAlignment="Top" />
+        <Bounds Top="28" Width="100%" Height="142" />
+      </Image>
+    </Layout>
+    <!-- frame -->
+    <Image Uri="Textures/CardFrame" />
+    <!-- name -->
+    <Label Font="DFKai-SB,20" AnsiFont="Constantia,20" Text="#Card.Name#" Color="Black">
+      <Bounds Left="12" Top="12" />
+      <Transform Scaling="0.5,0.5" />
+    </Label>
+    <Label Font="Constantia,24" Text="#Card.Values#" Color="White">
+      <Bounds Top="240" HorizontalAlignment="Center" />
+    </Label>
+    <Label Font="Constantia,28,bold,5" Text="#Card.SummonCost#" Color="White" OutlineColor="Black" Right="10" Top="0" />
+  </CardDesign>
+</CardDesigns>

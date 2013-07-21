@@ -10,7 +10,10 @@ namespace TouhouSpring.Services
 {
     class Styler : GameService
     {
-        private XDocument m_document;
+        private XDocument m_cardDesignsDoc;
+        private XDocument m_cardStylesDoc;
+        private XDocument m_pagesDoc;
+        private XDocument m_playerZonesDoc;
 
         public XElement GetCardStyle(string styleId)
         {
@@ -19,7 +22,7 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("styleId");
             }
 
-            return m_document.Root.Elements("Card").First(elem => elem.Attribute("Id").Value == styleId);
+            return m_cardStylesDoc.Root.Elements("CardStyle").First(elem => elem.Attribute("Id").Value == styleId);
         }
 
         public XElement GetCardDesign(string designId)
@@ -29,7 +32,7 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("designId");
             }
 
-            return m_document.Root.Elements("CardDesign").First(elem => elem.Attribute("Name").Value == designId);
+            return m_cardDesignsDoc.Root.Elements("CardDesign").First(elem => elem.Attribute("Name").Value == designId);
         }
 
         public XElement GetPageStyle(string pageId)
@@ -39,22 +42,28 @@ namespace TouhouSpring.Services
                 throw new ArgumentNullException("pageId");
             }
 
-            return m_document.Root.Elements("Page").First(elem => elem.Attribute("Id").Value == pageId);
+            return m_pagesDoc.Root.Elements("Page").First(elem => elem.Attribute("Id").Value == pageId);
         }
 
         public XElement GetPlayerZonesStyle()
         {
-            return m_document.Root.Elements("PlayerZones").First();
+            return m_playerZonesDoc.Root;
         }
 
         public override void Startup()
         {
-            m_document = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("TouhouSpring.Resources.UIStyles.xml"));
+            m_cardDesignsDoc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("TouhouSpring.Resources.StyleDefs.CardDesigns.xml"));
+            m_cardStylesDoc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("TouhouSpring.Resources.StyleDefs.CardStyles.xml"));
+            m_pagesDoc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("TouhouSpring.Resources.StyleDefs.Pages.xml"));
+            m_playerZonesDoc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("TouhouSpring.Resources.StyleDefs.PlayerZones.xml"));
         }
 
         public override void Shutdown()
         {
-            m_document = null;
+            m_playerZonesDoc = null;
+            m_pagesDoc = null;
+            m_cardStylesDoc = null;
+            m_cardDesignsDoc = null;
         }
     }
 }
