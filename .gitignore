@@ -24,7 +24,6 @@
 /trunk/NetServer/GameServerChan/obj/*
 /trunk/NetServer/ServerCore/bin/*
 /trunk/NetServer/ServerCore/obj/*
-/trunk/NetServer/NetServer.suo
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/bin/*
 /trunk/Third-parties/CurveEditor_4_0/CurveControl/obj/*
 /trunk/Third-parties/CurveEditor_4_0/CurveEditor/bin/*
@@ -51,13 +50,10 @@
 /trunk/Third-parties/Swf2XNA/VexTo2DPhysics/obj/*
 /trunk/TouhouSpring/THSNetwork/bin/*
 /trunk/TouhouSpring/THSNetwork/obj/*
-/trunk/TouhouSpring.suo
 /trunk/TouhouSpring/CardEditor/bin/*
-/trunk/TouhouSpring/CardEditor/CardEditor.suo
 /trunk/TouhouSpring/CardEditor/obj/*
 /trunk/TouhouSpring/DeckMaker/bin/*
 /trunk/TouhouSpring/DeckMaker/obj/*
-/trunk/TouhouSpring/DeckMaker/DeckMaker.suo
 /trunk/TouhouSpring/Cards/bin/*
 /trunk/TouhouSpring/Cards/obj/*
 /trunk/TouhouSpring/Console/bin/*
@@ -80,6 +76,7 @@
 *.contentproj.user
 *.DotSettings.user
 *.vcxproj.user
+*.suo
 *.opensdf
 *.sdf
 *.aps
