@@ -49,9 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BehaviorModelReferenceEditor.CustomPropertyDescriptor.cs" />
+    <Compile Include="BehaviorModelReferenceEditor.CustomTypeConverter.cs" />
     <Compile Include="CardModelReferenceTypeConverter.cs" />
     <Compile Include="ContentPipelineClasses.cs" />
-    <Compile Include="BehaviorModelReferenceTypeConverter.cs" />
     <Compile Include="DeckMaker.Operations.cs">
       <SubType>Form</SubType>
     </Compile>

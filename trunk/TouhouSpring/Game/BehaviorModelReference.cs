@@ -27,14 +27,9 @@ namespace TouhouSpring
         }
 #endif
 
-        public Type ModelType
+        public Behaviors.IBehaviorModel Value
         {
             get; set;
-        }
-
-        public Behaviors.IBehaviorModel Instantiate()
-        {
-            return ModelType.Assembly.CreateInstance(ModelType.FullName) as Behaviors.IBehaviorModel;
         }
     }
 }

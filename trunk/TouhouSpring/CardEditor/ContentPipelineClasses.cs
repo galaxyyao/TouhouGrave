@@ -82,23 +82,4 @@ namespace TouhouSpring
             output.WriteSharedResource(CardModelProcessor.CardModelMapping[(value.Value as EditorCardModel)]);
         }
     }
-
-    [ContentTypeWriter]
-    class BehaviorModelReferenceWriter : ContentTypeWriter<BehaviorModelReference>
-    {
-        public override bool CanDeserializeIntoExistingObject
-        {
-            get { return true; }
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "TouhouSpring.Services.CardDatabase+BehaviorModelReferenceReader, TouhouSpring.XnaWindows";
-        }
-
-        protected override void Write(ContentWriter output, BehaviorModelReference value)
-        {
-            output.Write(value.ModelType.FullName);
-        }
-    }
 }

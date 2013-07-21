@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BehaviorModelReference.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
     <Compile Include="Behaviors\Retaliate.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="Behaviors\SimpleBehavior.cs" />
     <Compile Include="Behaviors\Warrior.cs" />
     <Compile Include="CardModel.cs" />
-    <Compile Include="BehaviorModelReference.cs" />
     <Compile Include="Commands\ActivateAssist.cs" />
     <Compile Include="Commands\AddBehavior.cs" />
     <Compile Include="Commands\BaseCommand.cs" />

@@ -20,29 +20,13 @@ namespace TouhouSpring.Behaviors
 
         void ILocalEpilogTrigger<Commands.PlayCard>.RunLocalEpilog(Commands.PlayCard command)
         {
-            Game.QueueCommands(new Commands.AddBehavior(Game.GetTargets(this)[0], Model.GetBehaviorModel().CreateInitialized()));
+            Game.QueueCommands(new Commands.AddBehavior(Game.GetTargets(this)[0], Model.AssignedBehaviorModel.Value.CreateInitialized()));
         }
 
         [BehaviorModel(typeof(Spell_AssignAbility), Category = "v0.5/Spell", DefaultName = "赋予技能")]
         public class ModelType : BehaviorModel
         {
-            private IBehaviorModel m_behaviorModel = null;
-
-            public BehaviorModelReference BehaviorType { get; set; }
-
-            public IBehaviorModel GetBehaviorModel()
-            {
-                if (BehaviorType == null)
-                {
-                    throw new InvalidOperationException("BehaviorType is null.");
-                }
-
-                if (m_behaviorModel == null || m_behaviorModel.GetType() != BehaviorType.ModelType)
-                {
-                    m_behaviorModel = BehaviorType.Instantiate();
-                }
-                return m_behaviorModel;
-            }
+            public BehaviorModelReference AssignedBehaviorModel { get; set; }
         }
     }
 }

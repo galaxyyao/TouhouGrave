@@ -73,5 +73,23 @@ namespace TouhouSpring
             }
             return base.GetStandardValues(context);
         }
+
+        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+        {
+            if (GetProxy() != null)
+            {
+                return GetProxy().GetProperties(context, value, attributes);
+            }
+            return base.GetProperties(context, value, attributes);
+        }
+
+        public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+        {
+            if (GetProxy() != null)
+            {
+                return GetProxy().GetPropertiesSupported(context);
+            }
+            return base.GetPropertiesSupported(context);
+        }
     }
 }

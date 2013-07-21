@@ -35,7 +35,7 @@ namespace TouhouSpring
                        : m_document.Cards;
             });
 
-            BehaviorModelReference.TypeConverter = new BehaviorModelReferenceTypeConverter(() =>
+            BehaviorModelReference.TypeConverter = new BehaviorModelReferenceEditor.CustomTypeConverter(() =>
             {
                 return behaviorModelTypes;
             });
