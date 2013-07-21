@@ -93,6 +93,19 @@
           <SourceHeight>64</SourceHeight>
         </Value>
       </Item>
+      <Item>
+        <Key>BTNRegeneration</Key>
+        <Value>
+          <SourceFile>BTNRegeneration.png</SourceFile>
+          <Left>448</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
     </SubTextures>
     <Width>512</Width>
     <Height>64</Height>

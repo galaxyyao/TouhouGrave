@@ -68,15 +68,15 @@
     <None Include="Behaviors\Deprecated\Spell_PreventAllDamageInOneRound.cs" />
     <None Include="Behaviors\Deprecated\Passive_HeroPenetrate.cs" />
     <None Include="Behaviors\Deprecated\Passive_HeroAttackUpWithCardNumber.cs" />
-    <Compile Include="Behaviors\Enhance.cs" />
+    <None Include="Behaviors\Deprecated\Enhance.cs" />
     <None Include="Behaviors\Deprecated\Passive_AliceDollSummon.cs" />
     <Compile Include="Behaviors\Environment.cs" />
     <Compile Include="Behaviors\Immobilize.cs" />
-    <Compile Include="Behaviors\LastingEffect.cs" />
     <None Include="Behaviors\Deprecated\Passive_AllFieldDealDamageWhenWarriorDestroyed.cs" />
     <None Include="Behaviors\Deprecated\Passive_ManaGainUpWhenAttackedByWarrior.cs" />
     <None Include="Behaviors\Deprecated\Passive_WarriorAlwaysStandBy.cs" />
     <None Include="Behaviors\Deprecated\Spell_MassDamageToWarriorOnEnemyBattlefield.cs" />
+    <None Include="Behaviors\Deprecated\LastingEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
