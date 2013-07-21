@@ -29,7 +29,12 @@ namespace TouhouSpring
             if (command.ValidateOnRun() && command.DefaultValidateOnRun(this))
             {
                 command.ExecutionPhase = Commands.CommandPhase.Main;
-                GetCommandRunner(command.GetType()).RunMainAndEpilog(command);
+                command.RunMain();
+                if (!(command is Commands.ISilentCommand))
+                {
+                    command.ExecutionPhase = Commands.CommandPhase.Epilog;
+                    GetCommandRunner(command.GetType()).RunEpilog(command);
+                }
             }
             Game.Controller.OnCommandEnd(command);
             RunningCommand = null;
@@ -39,6 +44,13 @@ namespace TouhouSpring
         {
             Debug.Assert(command.Context == this);
             Debug.Assert(RunningCommand == null);
+
+            if (command is Commands.ISilentCommand)
+            {
+                // epilog will be skipped
+                RunMainAndEpilog(command);
+                return;
+            }
 
             //////////////////////////////////////////////
             // Prolog

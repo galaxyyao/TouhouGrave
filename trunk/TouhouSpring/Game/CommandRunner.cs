@@ -11,7 +11,7 @@ namespace TouhouSpring
         CommandResult RunPrerequisite(Commands.BaseCommand command);
         void RunProlog(Commands.BaseCommand command);
         ResolveContext RunPreemptive(Commands.BaseCommand command, bool firstTimeTriggering);
-        void RunMainAndEpilog(Commands.BaseCommand command);
+        void RunEpilog(Commands.BaseCommand command);
     }
 
     internal class CommandRunner<TCommand> : ICommandRunner
@@ -143,20 +143,12 @@ namespace TouhouSpring
             return null;
         }
 
-        public void RunMainAndEpilog(Commands.BaseCommand command)
+        public void RunEpilog(Commands.BaseCommand command)
         {
-            Debug.Assert(command.ExecutionPhase == Commands.CommandPhase.Main);
+            Debug.Assert(command.ExecutionPhase == Commands.CommandPhase.Epilog);
 
             var tCommand = command as TCommand;
 
-            ////////////////////////////////////////////
-
-            tCommand.ExecutionPhase = Commands.CommandPhase.Main;
-            tCommand.RunMain();
-
-            ////////////////////////////////////////////
-
-            tCommand.ExecutionPhase = Commands.CommandPhase.Epilog;
             foreach (var targetList in command.Context.Game.m_globalTargetLists)
             {
                 Behaviors.StaticBehaviorHost.Host = targetList.Host;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class SendBehaviorMessage : BaseCommand
+    public class SendBehaviorMessage : BaseCommand, ISilentCommand
     {
         private static readonly Type[] s_simpleTypes = new Type[]
         {

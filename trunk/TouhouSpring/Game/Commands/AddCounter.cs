@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TouhouSpring.Commands
 {
-    public class AddCounter : BaseCommand
+    public class AddCounter : BaseCommand, ISilentCommand
     {
         // TODO: change to serialization-friendly ID
         public CardInstance Target

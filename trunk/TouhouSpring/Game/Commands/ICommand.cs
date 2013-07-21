@@ -18,14 +18,18 @@ namespace TouhouSpring.Commands
 
     public interface ICause { }
 
-    public interface IInitiativeCommand
-    {
-        Player Initiator { get; }
-    }
-
     public interface ICommand
     {
         CommandPhase ExecutionPhase { get; }
         ICause Cause { get; }
     }
+
+    public interface IInitiativeCommand : ICommand
+    {
+        Player Initiator { get; }
+    }
+
+    // Silent command won't trigger any triggers
+    public interface ISilentCommand : ICommand
+    { }
 }
