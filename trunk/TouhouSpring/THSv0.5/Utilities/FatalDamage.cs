@@ -8,7 +8,7 @@ namespace TouhouSpring.THSv0_5.Utilities
 {
     public class FatalDamage<T> : BaseBehavior<T>,
         ILocalEpilogTrigger<Commands.DealDamageToCard>,
-        IGlobalEpilogTrigger<Commands.Resolve>
+        ILocalEpilogTrigger<Commands.IMoveCard>
         where T : IBehaviorModel
     {
         // 1, listen to DealDamageToCard command
@@ -29,16 +29,18 @@ namespace TouhouSpring.THSv0_5.Utilities
             }
         }
 
-        void IGlobalEpilogTrigger<Commands.Resolve>.RunGlobalEpilog(Commands.Resolve command)
+        void ILocalEpilogTrigger<Commands.IMoveCard>.RunLocalEpilog(Commands.IMoveCard command)
         {
-            if (m_fatalDamageCause != null)
+            if (command.ToZone == SystemZone.Graveyard
+                && command.Cause is Commands.Resolve
+                && m_fatalDamageCause != null)
             {
                 if (Host.Warrior.Life <= 0)
                 {
                     OnFatalDamage(m_fatalDamageCause, Host.Warrior);
                 }
+                m_fatalDamageCause = null;
             }
-            m_fatalDamageCause = null;
         }
 
         protected override void OnTransferFrom(IBehavior original)
