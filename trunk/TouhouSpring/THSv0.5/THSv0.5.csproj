@@ -50,6 +50,8 @@
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
     <Compile Include="Spells\RecallBySacrifice.cs" />
+    <Compile Include="Utilities\FatalDamage.cs" />
+    <Compile Include="Utilities\LowProfile.cs" />
     <None Include="Behaviors\Deprecated\Passive_AttackFirst.cs" />
     <None Include="Behaviors\Deprecated\Passive_AttackGrowth.cs" />
     <Compile Include="Behaviors\AssistSpell_Recklessness.cs" />
@@ -105,10 +107,8 @@
     <Compile Include="Passives\DamageEnemyPlayerOnKill.cs" />
     <Compile Include="Passives\DeathBomb.cs" />
     <Compile Include="Passives\DestroySacrifice.cs" />
-    <Compile Include="Passives\FatalDamage.cs" />
     <Compile Include="Passives\FinalStrike.cs" />
     <Compile Include="Passives\ForceAttack.cs" />
-    <Compile Include="Passives\LowProfile.cs" />
     <Compile Include="Passives\MassiveAttack.cs" />
     <Compile Include="Passives\PillSummon.cs" />
     <Compile Include="Passives\Plague.cs" />

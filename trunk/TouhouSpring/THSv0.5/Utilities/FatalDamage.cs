@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using TouhouSpring.Behaviors;
 
-namespace TouhouSpring.THSv0_5.Passives
+namespace TouhouSpring.THSv0_5.Utilities
 {
     public class FatalDamage<T> : BaseBehavior<T>,
         ILocalEpilogTrigger<Commands.DealDamageToCard>,

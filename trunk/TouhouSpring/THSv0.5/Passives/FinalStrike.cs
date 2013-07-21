@@ -6,7 +6,7 @@ using TouhouSpring.Behaviors;
 
 namespace TouhouSpring.THSv0_5.Passives
 {
-    public sealed class FinalStrike : FatalDamage<FinalStrike.ModelType>,
+    public sealed class FinalStrike : Utilities.FatalDamage<FinalStrike.ModelType>,
         Commands.ICause
     {
         protected override void OnFatalDamage(IBehavior fatalDamageCause, Warrior hostWarrior)
@@ -24,7 +24,6 @@ namespace TouhouSpring.THSv0_5.Passives
 
         [BehaviorModel(typeof(FinalStrike), Category = "v0.5/Passive", DefaultName = "自焚")]
         public class ModelType : BehaviorModel
-        {
-        }
+        { }
     }
 }

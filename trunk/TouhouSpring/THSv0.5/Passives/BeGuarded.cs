@@ -6,7 +6,7 @@ using TouhouSpring.Behaviors;
 
 namespace TouhouSpring.THSv0_5.Passives
 {
-    public class BeGuarded : LowProfile.Behavior<BeGuarded.ModelType>
+    public class BeGuarded : Utilities.LowProfile.Behavior<BeGuarded.ModelType>
     {
         protected override bool IsEffective()
         {
@@ -14,7 +14,7 @@ namespace TouhouSpring.THSv0_5.Passives
         }
 
         [BehaviorModel(typeof(BeGuarded), Category = "v0.5/Passive", DefaultName = "花隐")]
-        public class ModelType : LowProfile.ModelType
+        public class ModelType : Utilities.LowProfile.ModelType
         {
             public CardModelReference BeGuardedBy
             {

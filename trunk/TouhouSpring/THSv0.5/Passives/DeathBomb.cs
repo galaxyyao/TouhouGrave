@@ -6,7 +6,7 @@ using TouhouSpring.Behaviors;
 
 namespace TouhouSpring.THSv0_5.Passives
 {
-    public sealed class DeathBomb : FatalDamage<DeathBomb.ModelType>,
+    public sealed class DeathBomb : Utilities.FatalDamage<DeathBomb.ModelType>,
         Commands.ICause
     {
         protected override void OnFatalDamage(IBehavior fatalDamageCause, Warrior hostWarrior)

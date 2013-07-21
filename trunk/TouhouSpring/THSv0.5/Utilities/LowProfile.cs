@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using TouhouSpring.Behaviors;
 
-namespace TouhouSpring.THSv0_5.Passives
+namespace TouhouSpring.THSv0_5.Utilities
 {
     public static class LowProfile
     {
