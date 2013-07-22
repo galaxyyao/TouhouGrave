@@ -45,6 +45,7 @@
     <Compile Include="Assists\PaidDrawOnKill.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assists\SummonToHandOnTurnStart.cs" />
     <Compile Include="Behaviors\Assist_GenericAura.cs" />
     <Compile Include="Behaviors\Passive_Armor.cs" />
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
