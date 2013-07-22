@@ -11,12 +11,15 @@ namespace TouhouSpring
 {
     public partial class Main : Form
     {
+        private List<Type> m_behaviorModelTypes = new List<Type>();
+
         public Main()
         {
             InitializeComponent();
             m_defaultTitle = Text;
 
-            var behaviorModelTypes = new List<Type>();
+            Font = SystemFonts.MessageBoxFont;
+
             foreach (var t in AssemblyReflection.GetTypesImplements<Behaviors.IBehaviorModel>().Where(t => !t.IsAbstract))
             {
                 var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
@@ -25,8 +28,19 @@ namespace TouhouSpring
                     continue;
                 }
 
-                behaviorModelTypes.Add(t);
+                m_behaviorModelTypes.Add(t);
             }
+
+            m_behaviorModelTypes.Sort((t1, t2) =>
+            {
+                var bhvAttr1 = t1.GetAttribute<Behaviors.BehaviorModelAttribute>();
+                var bhvAttr2 = t2.GetAttribute<Behaviors.BehaviorModelAttribute>();
+                if (bhvAttr1.Category != bhvAttr2.Category)
+                {
+                    return String.Compare(bhvAttr1.Category, bhvAttr2.Category, false, System.Globalization.CultureInfo.CurrentCulture);
+                }
+                return String.Compare(bhvAttr1.DefaultName, bhvAttr2.DefaultName, false, System.Globalization.CultureInfo.CurrentCulture);
+            });
 
             CardModelReference.TypeConverter = new CardModelReferenceTypeConverter(() =>
             {
@@ -37,7 +51,7 @@ namespace TouhouSpring
 
             BehaviorModelReference.TypeConverter = new BehaviorModelReferenceEditor.CustomTypeConverter(() =>
             {
-                return behaviorModelTypes;
+                return m_behaviorModelTypes;
             });
 
             imageList.Images.Add("Card", Properties.Resources.Card_16x16);
@@ -46,7 +60,7 @@ namespace TouhouSpring
 
             var itemList = new List<ToolStripMenuItem>();
 
-            foreach (var t in behaviorModelTypes)
+            foreach (var t in m_behaviorModelTypes)
             {
                 var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
                 var category = bhvAttr.Category.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
@@ -73,10 +87,26 @@ namespace TouhouSpring
                 rootMenu.Add(item);
             }
 
-            SortMenu(toolStripDropDownButtonNewBehavior.DropDownItems);
+            var bhvEditorItem = new ToolStripMenuItem("...");
+            bhvEditorItem.Click += new EventHandler(NewBehavior_Editor_Click);
+            toolStripDropDownButtonNewBehavior.DropDownItems.Add(bhvEditorItem);
 
             openFileDialog.InitialDirectory = Program.PathUtils.ContentRootDirectory;
             saveFileDialog.InitialDirectory = Program.PathUtils.ContentRootDirectory;
+        }
+
+        private void AddBehaviorToCurrentCardNode(Behaviors.IBehaviorModel bhvModel)
+        {
+            var cardNode = treeViewCards.SelectedNode.Tag is EditorCardModel
+                           ? treeViewCards.SelectedNode
+                           : treeViewCards.SelectedNode.Parent;
+            var cardModel = cardNode.Tag as EditorCardModel;
+
+            cardModel.Behaviors.Add(bhvModel);
+            AddBehavior(bhvModel, cardNode, true);
+
+            m_isModified = true;
+            UpdateTitle();
         }
 
         #region menu items
@@ -137,18 +167,19 @@ namespace TouhouSpring
 
         private void NewBehavior_Click(object sender, EventArgs e)
         {
-            var cardNode = treeViewCards.SelectedNode.Tag is EditorCardModel
-                           ? treeViewCards.SelectedNode
-                           : treeViewCards.SelectedNode.Parent;
-            var cardModel = cardNode.Tag as EditorCardModel;
             var bhvType = (sender as ToolStripMenuItem).Tag as Type;
             var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as Behaviors.IBehaviorModel;
+            AddBehaviorToCurrentCardNode(bhv);
+        }
 
-            cardModel.Behaviors.Add(bhv);
-            AddBehavior(bhv, cardNode, true);
-
-            m_isModified = true;
-            UpdateTitle();
+        private void NewBehavior_Editor_Click(object sender, EventArgs e)
+        {
+            var bhvEditor = new BehaviorEditor(m_behaviorModelTypes);
+            if (bhvEditor.ShowDialog() == System.Windows.Forms.DialogResult.OK
+                && bhvEditor.EditedBehaviorModel != null)
+            {
+                AddBehaviorToCurrentCardNode(bhvEditor.EditedBehaviorModel);
+            }
         }
 
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
@@ -184,26 +215,6 @@ namespace TouhouSpring
         }
 
         #endregion
-
-        private void SortMenu(ToolStripItemCollection menuItems)
-        {
-            var arr = menuItems.Cast<ToolStripMenuItem>().ToArray();
-            Array.Sort(arr, (i1, i2) =>
-                i1.HasDropDownItems != i2.HasDropDownItems
-                ? i1.HasDropDownItems ? -1 : 1
-                : String.Compare(i1.Text, i2.Text));
-            menuItems.Clear();
-            menuItems.AddRange(arr);
-
-            foreach (var subMenu in arr)
-            {
-                if (subMenu is ToolStripMenuItem
-                    && subMenu.HasDropDownItems)
-                {
-                    SortMenu(subMenu.DropDownItems);
-                }
-            }
-        }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
