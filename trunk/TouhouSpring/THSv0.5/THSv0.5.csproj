@@ -53,6 +53,8 @@
     <Compile Include="Passives\MassiveHeal.cs" />
     <Compile Include="Passives\PoisonousArrow.cs" />
     <Compile Include="Passives\EffectOnAttack.cs" />
+    <Compile Include="Spells\HealWarrior.cs" />
+    <Compile Include="Spells\HealPlayer.cs" />
     <Compile Include="Utilities\SuppressHeal.cs" />
     <Compile Include="Spells\RecallBySacrifice.cs" />
     <Compile Include="Utilities\FatalDamage.cs" />

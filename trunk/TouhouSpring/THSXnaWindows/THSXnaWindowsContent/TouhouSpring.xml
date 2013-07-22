@@ -165,6 +165,9 @@
         <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_RegenerateFull+ModelType">
+          <Name>单卡完全恢复</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -314,13 +317,14 @@
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.THSv0_5.Spells.RecallBySacrifice+ModelType">
-          <Name>RecallBySacrifice</Name>
+        <Behavior Type="TouhouSpring.THSv0_5.Spells.HealWarrior+ModelType">
+          <Name>治疗（单体）</Name>
+          <Amount>3</Amount>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>

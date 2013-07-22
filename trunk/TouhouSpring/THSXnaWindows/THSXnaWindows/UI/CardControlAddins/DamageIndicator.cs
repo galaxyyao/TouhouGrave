@@ -43,7 +43,7 @@ namespace TouhouSpring.UI.CardControlAddins
             }
         }
 
-        private int m_lastLife = -1;
+        private int m_lastLife = Int32.MinValue;
         private Vector2 m_offset = new Vector2(20, -80);
 
         public DamageIndicator(CardControl control) : base(control)
@@ -54,7 +54,7 @@ namespace TouhouSpring.UI.CardControlAddins
         {
             var life = CardData.IsWarrior && !Control.IsCardDead
                        ? CardData.LifeAndInitialLife.Item1 : 0;
-            if (CardData.IsWarrior && m_lastLife > life)
+            if (CardData.IsWarrior && m_lastLife != life && m_lastLife != Int32.MinValue)
             {
                 // get the center position of the card in screen space
                 var pt = new Vector3(Control.Region.Width / 2, Control.Region.Height / 2, 0);
@@ -64,13 +64,23 @@ namespace TouhouSpring.UI.CardControlAddins
                 var screenPt = new Vector2(pt.X * halfVpWidth + halfVpWidth, halfVpHeight - pt.Y * halfVpHeight);
 
                 var resources = GameApp.Service<Resources>();
-                var text = GameApp.Service<Graphics.TextRenderer>().FormatText("[color:Red]-" + (m_lastLife - life).ToString() + "[/color]", resources.FormatOptions);
+                string textStr;
+                if (m_lastLife > life)
+                {
+                    textStr = "[color:Red]-" + (m_lastLife - life).ToString() + "[/color]";
+                }
+                else
+                {
+                    textStr = "[color:Green]+" + (life - m_lastLife).ToString() + "[/color]";
+                }
+
+                var text = GameApp.Service<Graphics.TextRenderer>().FormatText(textStr, resources.FormatOptions);
                 GameApp.Service<Graphics.FloatingText>().Register(text, resources.DrawOptions,
                     screenPt, screenPt + m_offset,
                     new Animation.CurveTrack(resources.MoveCurve), new Animation.CurveTrack(resources.FadeCurve));
             }
 
-            m_lastLife = CardData.IsWarrior ? life : -1;
+            m_lastLife = CardData.IsWarrior ? life : Int32.MinValue;
         }
     }
 }
