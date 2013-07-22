@@ -41,9 +41,9 @@ namespace TouhouSpring
 
         internal void NeedMana(int amount)
         {
-            if (amount == 0)
+            if (amount < 0)
             {
-                throw new ArgumentOutOfRangeException("amount", "Amount must be other than zero.");
+                throw new ArgumentOutOfRangeException("amount", "Amount must be larger than zero.");
             }
 
             CheckInPrerequisite();

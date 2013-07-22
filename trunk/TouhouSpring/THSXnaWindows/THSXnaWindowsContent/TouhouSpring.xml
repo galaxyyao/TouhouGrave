@@ -68,9 +68,6 @@
           <Attack>1</Attack>
           <Life>1</Life>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.THSv0_5.Passives.ForceAttack+ModelType">
           <Name>狂热</Name>
           <IconUri>atlas:Textures/Icons/Icons0$frenzy</IconUri>
@@ -96,7 +93,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
+          <Cost>0</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_VampireNLife+ModelType">
           <Name>吸血鬼</Name>
@@ -105,8 +102,12 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -152,9 +153,6 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -175,7 +173,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>4</Cost>
+          <Cost>0</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -260,9 +258,6 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -287,9 +282,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -338,9 +330,6 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_GenericAura+ModelType">
           <Name>灵压</Name>
           <AffectAlly>false</AffectAlly>
@@ -374,9 +363,6 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -401,9 +387,6 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -433,9 +416,6 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType">
           <Name>抽卡增加</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -462,9 +442,6 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
         <Behavior Type="TouhouSpring.THSv0_5.Passives.CantBeRetaliated+ModelType">
           <Name>闪避</Name>
         </Behavior>
@@ -483,16 +460,12 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>0</Attack>
+          <Attack>1</Attack>
           <Life>7</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>5</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Counterattack_NDamage+ModelType">
-          <Name>Passive_Counterattack_NDamage</Name>
-          <DamageToDeal>1</DamageToDeal>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -528,9 +501,6 @@ X等于己方场上本卡的数量
           <Name>自爆</Name>
           <Damage>4</Damage>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -553,9 +523,6 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -599,9 +566,6 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
-        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -629,9 +593,6 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathTouch+ModelType">
           <Name>死神</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -762,13 +723,10 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>1</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
           <Name>切换飞行/降落</Name>
@@ -792,13 +750,17 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>1</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
+          <Cost>0</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
           <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -847,9 +809,6 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathOnAccumulatedCounter+ModelType">
           <Name>诱亡</Name>
@@ -915,9 +874,6 @@ X等于己方场上本卡的数量
           <Unique>false</Unique>
           <Attack>0</Attack>
           <Life>0</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
-          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>

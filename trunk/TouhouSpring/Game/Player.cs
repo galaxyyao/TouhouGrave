@@ -92,7 +92,7 @@ namespace TouhouSpring
 
         public int MaxMana
         {
-            get { return CardsSacrificed.Count; }
+            get; internal set;
         }
 
         public int Index

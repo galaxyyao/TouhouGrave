@@ -106,8 +106,47 @@
           <SourceHeight>64</SourceHeight>
         </Value>
       </Item>
+      <Item>
+        <Key>Minus0</Key>
+        <Value>
+          <SourceFile>Minus0.png</SourceFile>
+          <Left>512</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
+      <Item>
+        <Key>Minus1</Key>
+        <Value>
+          <SourceFile>Minus1.png</SourceFile>
+          <Left>576</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
+      <Item>
+        <Key>Plus1</Key>
+        <Value>
+          <SourceFile>Plus1.png</SourceFile>
+          <Left>640</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
     </SubTextures>
-    <Width>512</Width>
+    <Width>1024</Width>
     <Height>64</Height>
     <Texture Null="true" />
   </Asset>

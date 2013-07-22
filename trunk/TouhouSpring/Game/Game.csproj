@@ -40,15 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\AddMaxMana.cs" />
     <Compile Include="Behaviors\Fly.cs" />
     <Compile Include="Behaviors\Flying.cs" />
     <Compile Include="Behaviors\ManaCost.cs" />
+    <Compile Include="Behaviors\PoolChangeIcon.cs" />
     <Compile Include="Behaviors\Retaliate.cs" />
+    <Compile Include="Behaviors\SubtractMaxMana.cs" />
     <Compile Include="Behaviors\SummonWeakness.cs" />
     <Compile Include="Behaviors\UIBehaviors.cs" />
     <Compile Include="CardInstance.Behaviors.cs" />
     <Compile Include="CardInstance.Clone.cs" />
     <Compile Include="CardInstance.cs" />
+    <Compile Include="Commands\AddPlayerMaxMana.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\MoveCardCommands\IMoveCard.cs" />
     <Compile Include="Commands\MoveCardCommands\DrawMove.cs" />
@@ -62,6 +66,7 @@
     <Compile Include="Commands\AddPlayerModifier.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />
     <Compile Include="Commands\RemoveCounter.cs" />
+    <Compile Include="Commands\SubtractPlayerMaxMana.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
     <Compile Include="CardModelReference.cs" />

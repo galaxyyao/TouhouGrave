@@ -94,10 +94,6 @@ namespace TouhouSpring.Services.UIStates
                     });
                 }
             }
-            if (m_io.SacrificeCandidates.Contains(cardGuid))
-            {
-                m_gameUI.AddContextButton("牺牲", ContextButton_OnSacrifice);
-            }
             if (m_io.RedeemCandidates.Contains(cardGuid))
             {
                 m_gameUI.AddContextButton("赎回", ContextButton_OnRedeem);
@@ -115,7 +111,7 @@ namespace TouhouSpring.Services.UIStates
             return m_io.PlayCardCandidates.Contains(cardGuid)
                    || m_io.ActivateAssistCandidates.Contains(cardGuid)
                    || m_castFromCards.Contains(cardGuid)
-                   || m_io.SacrificeCandidates.Contains(cardGuid)
+                   //|| m_io.SacrificeCandidates.Contains(cardGuid)
                    || m_io.RedeemCandidates.Contains(cardGuid)
                    || m_io.AttackerCandidates.Contains(cardGuid)
                    || AttackerSelected && m_io.DefenderCandidates.Contains(cardGuid);
