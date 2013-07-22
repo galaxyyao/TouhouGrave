@@ -108,6 +108,16 @@
         <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
           <Name>反击</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.EffectOnAttack+ModelType">
+          <Name>攻击时给予效果</Name>
+          <Effect>
+            <Value Type="TouhouSpring.THSv0_5.Passives.PoisonousArrow+ModelType">
+              <Name>毒箭（效果）</Name>
+              <Amount>0</Amount>
+            </Value>
+          </Effect>
+          <Unique>true</Unique>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
