@@ -13,6 +13,7 @@ namespace TouhouSpring
     public partial class BehaviorEditor : Form
     {
         private List<Type> m_bhvTypes;
+        private string m_lastSearchString = null;
 
         public Behaviors.IBehaviorModel EditedBehaviorModel
         {
@@ -30,12 +31,36 @@ namespace TouhouSpring
 
         private void BehaviorEditor_Load(object sender, EventArgs e)
         {
-            PopulateTreeView(String.Empty);
+            UpdateTreeView(String.Empty);
         }
 
         private void textBoxSearchBox_TextChanged(object sender, EventArgs e)
         {
-            PopulateTreeView(textBoxSearchBox.Text);
+            UpdateTreeView(textBoxSearchBox.Text);
+        }
+
+        private void UpdateTreeView(string searchString)
+        {
+            if (m_lastSearchString != null
+                && CultureInfo.CurrentCulture.CompareInfo.IndexOf(searchString, m_lastSearchString, CompareOptions.IgnoreCase) != -1)
+            {
+                FilterTreeView(searchString, treeViewBehaviors.Nodes);
+            }
+            else
+            {
+                PopulateTreeView(searchString);
+            }
+
+            treeViewBehaviors.ExpandAll();
+            m_lastSearchString = searchString;
+        }
+
+        private bool Match(Type bhvType, string searchString)
+        {
+            var bhvAttr = bhvType.GetAttribute<Behaviors.BehaviorModelAttribute>();
+
+            return CultureInfo.CurrentCulture.CompareInfo.IndexOf(bhvAttr.DefaultName, searchString, CompareOptions.IgnoreCase) >= 0
+                   || CultureInfo.CurrentCulture.CompareInfo.IndexOf(bhvType.FullName, searchString, CompareOptions.IgnoreCase) >= 0;
         }
 
         private void PopulateTreeView(string searchString)
@@ -44,14 +69,12 @@ namespace TouhouSpring
 
             foreach (var t in m_bhvTypes)
             {
-                var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
-
-                if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(bhvAttr.DefaultName, searchString, CompareOptions.IgnoreCase) == -1
-                    && CultureInfo.CurrentCulture.CompareInfo.IndexOf(t.FullName, searchString, CompareOptions.IgnoreCase) == -1)
+                if (!Match(t, searchString))
                 {
                     continue;
                 }
 
+                var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
                 var category = bhvAttr.Category.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
                 var root = treeViewBehaviors.Nodes;
                 for (int i = 0; i < category.Length; ++i)
@@ -75,8 +98,27 @@ namespace TouhouSpring
                     Tag = t
                 });
             }
+        }
 
-            treeViewBehaviors.ExpandAll();
+        private void FilterTreeView(string searchString, TreeNodeCollection nodes)
+        {
+            for (int i = 0; i < nodes.Count; ++i)
+            {
+                var node = nodes[i];
+                if (node.Nodes.Count > 0)
+                {
+                    FilterTreeView(searchString, node.Nodes);
+                }
+                else
+                {
+                    var bhvType = node.Tag as Type;
+                    if (bhvType != null
+                        && !Match(bhvType, searchString))
+                    {
+                        nodes.RemoveAt(i--);
+                    }
+                }
+            }
         }
 
         private void treeViewBehaviors_AfterSelect(object sender, TreeViewEventArgs e)
