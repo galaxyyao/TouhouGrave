@@ -12,7 +12,9 @@ namespace TouhouSpring
 {
     public partial class BehaviorEditor : Form
     {
-        private List<Type> m_bhvTypes;
+        public static List<Type> BehaviorTypes;
+
+        private bool m_hasNull;
         private string m_lastSearchString = null;
 
         public Behaviors.IBehaviorModel EditedBehaviorModel
@@ -20,18 +22,28 @@ namespace TouhouSpring
             get; private set;
         }
 
-        public BehaviorEditor(List<Type> behaviorTypes)
+        public BehaviorEditor(bool hasNull, Behaviors.IBehaviorModel initialValue)
         {
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
 
-            m_bhvTypes = behaviorTypes;
+            m_hasNull = hasNull;
+            EditedBehaviorModel = initialValue;
         }
 
         private void BehaviorEditor_Load(object sender, EventArgs e)
         {
             UpdateTreeView(String.Empty);
+            if (EditedBehaviorModel != null)
+            {
+                propertyGrid1.SelectedObject = EditedBehaviorModel;
+                var findNodes = treeViewBehaviors.Nodes.Find(EditedBehaviorModel.GetType().FullName, true);
+                if (findNodes.Length > 0)
+                {
+                    treeViewBehaviors.SelectedNode = findNodes[0];
+                }
+            }
         }
 
         private void textBoxSearchBox_TextChanged(object sender, EventArgs e)
@@ -67,7 +79,12 @@ namespace TouhouSpring
         {
             treeViewBehaviors.Nodes.Clear();
 
-            foreach (var t in m_bhvTypes)
+            if (m_hasNull)
+            {
+                treeViewBehaviors.Nodes.Add(new TreeNode("{null}"));
+            }
+
+            foreach (var t in BehaviorTypes)
             {
                 if (!Match(t, searchString))
                 {
@@ -95,6 +112,7 @@ namespace TouhouSpring
 
                 root.Add(new TreeNode(bhvAttr.DefaultName)
                 {
+                    Name = t.FullName,
                     Tag = t
                 });
             }
@@ -128,6 +146,11 @@ namespace TouhouSpring
             {
                 EditedBehaviorModel = bhvType.Assembly.CreateInstance(bhvType.FullName) as Behaviors.IBehaviorModel;
                 propertyGrid1.SelectedObject = EditedBehaviorModel;
+            }
+            else if (e.Node.Text == "{null}")
+            {
+                EditedBehaviorModel = null;
+                propertyGrid1.SelectedObject = null;
             }
         }
     }

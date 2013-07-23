@@ -63,6 +63,7 @@
             // treeViewBehaviors
             // 
             this.treeViewBehaviors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewBehaviors.HideSelection = false;
             this.treeViewBehaviors.Location = new System.Drawing.Point(0, 20);
             this.treeViewBehaviors.Name = "treeViewBehaviors";
             this.treeViewBehaviors.Size = new System.Drawing.Size(280, 338);

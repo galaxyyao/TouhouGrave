@@ -10,8 +10,6 @@ namespace TouhouSpring
     {
         public class CustomTypeConverter : TypeConverter
         {
-            private Func<IEnumerable<Type>> m_bhvModelTypeIterator;
-
             public static string GetBehaviorName(Type behaviorModelType)
             {
                 if (behaviorModelType == null)
@@ -24,11 +22,6 @@ namespace TouhouSpring
                     throw new ArgumentException("behaviorModelType");
                 }
                 return bhvAttr.DefaultName;
-            }
-
-            public CustomTypeConverter(Func<IEnumerable<Type>> iterator)
-            {
-                m_bhvModelTypeIterator = iterator;
             }
 
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
@@ -59,47 +52,6 @@ namespace TouhouSpring
                 return base.ConvertTo(context, culture, value, destinationType);
             }
 
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            {
-                if (sourceType == typeof(string))
-                {
-                    return true;
-                }
-                return base.CanConvertFrom(context, sourceType);
-            }
-
-            public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-            {
-                if (value is string)
-                {
-                    var str = value as string;
-                    if (str == "{null}")
-                    {
-                        return null;
-                    }
-
-                    var bhvModel = m_bhvModelTypeIterator().FirstOrDefault(bm => GetBehaviorName(bm) == str);
-                    return bhvModel != null ? new BehaviorModelReference { Value = bhvModel.Assembly.CreateInstance(bhvModel.FullName) as Behaviors.IBehaviorModel } : null;
-                }
-
-                return base.ConvertFrom(context, culture, value);
-            }
-
-            public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
-            {
-                return true;
-            }
-
-            public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
-            {
-                return true;
-            }
-
-            public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-            {
-                return new StandardValuesCollection(IterateOptions().ToArray());
-            }
-
             public override bool GetPropertiesSupported(ITypeDescriptorContext context)
             {
                 return true;
@@ -119,15 +71,6 @@ namespace TouhouSpring
                     return new PropertyDescriptorCollection(pds);
                 }
                 return base.GetProperties(context, value, attributes);
-            }
-
-            private IEnumerable<string> IterateOptions()
-            {
-                yield return null;
-                foreach (var bm in m_bhvModelTypeIterator())
-                {
-                    yield return GetBehaviorName(bm);
-                }
             }
         }
     }

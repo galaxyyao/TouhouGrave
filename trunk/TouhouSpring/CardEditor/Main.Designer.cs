@@ -46,13 +46,13 @@
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonNewCard = new System.Windows.Forms.ToolStripButton();
-            this.toolStripDropDownButtonNewBehavior = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripButtonNewBehavior = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonMakeDeck = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripButtonMakeDeck = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip.SuspendLayout();
@@ -201,7 +201,7 @@
             this.toolStrip.Enabled = false;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonNewCard,
-            this.toolStripDropDownButtonNewBehavior,
+            this.toolStripButtonNewBehavior,
             this.toolStripSeparator,
             this.toolStripButtonDelete,
             this.toolStripSeparator1,
@@ -221,14 +221,15 @@
             this.toolStripButtonNewCard.Text = "New Card";
             this.toolStripButtonNewCard.Click += new System.EventHandler(this.toolStripButtonNewCard_Click);
             // 
-            // toolStripDropDownButtonNewBehavior
+            // toolStripButtonNewBehavior
             // 
-            this.toolStripDropDownButtonNewBehavior.Image = global::TouhouSpring.Properties.Resources.Add_16x16;
-            this.toolStripDropDownButtonNewBehavior.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButtonNewBehavior.Name = "toolStripDropDownButtonNewBehavior";
-            this.toolStripDropDownButtonNewBehavior.Size = new System.Drawing.Size(109, 22);
-            this.toolStripDropDownButtonNewBehavior.Text = "New Behavior";
-            this.toolStripDropDownButtonNewBehavior.Visible = false;
+            this.toolStripButtonNewBehavior.Image = global::TouhouSpring.Properties.Resources.Add_16x16;
+            this.toolStripButtonNewBehavior.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonNewBehavior.Name = "toolStripButtonNewBehavior";
+            this.toolStripButtonNewBehavior.Size = new System.Drawing.Size(100, 22);
+            this.toolStripButtonNewBehavior.Text = "New Behavior";
+            this.toolStripButtonNewBehavior.Visible = false;
+            this.toolStripButtonNewBehavior.Click += new System.EventHandler(this.NewBehavior_Click);
             // 
             // toolStripSeparator
             // 
@@ -247,13 +248,10 @@
             this.toolStripButtonDelete.Visible = false;
             this.toolStripButtonDelete.Click += new System.EventHandler(this.toolStripButtonDelete_Click);
             // 
-            // openFileDialog
+            // toolStripSeparator1
             // 
-            this.openFileDialog.Filter = "Card database file (*.xml)|*.xml";
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.Filter = "Card database file (*.xml)|*.xml";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripButtonMakeDeck
             // 
@@ -264,10 +262,13 @@
             this.toolStripButtonMakeDeck.Text = "Make Deck";
             this.toolStripButtonMakeDeck.Click += new System.EventHandler(this.toolStripButtonMakeDeck_Click);
             // 
-            // toolStripSeparator1
+            // openFileDialog
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.openFileDialog.Filter = "Card database file (*.xml)|*.xml";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Card database file (*.xml)|*.xml";
             // 
             // Main
             // 
@@ -312,7 +313,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ToolStripButton toolStripButtonNewCard;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonNewBehavior;
+        private System.Windows.Forms.ToolStripButton toolStripButtonNewBehavior;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripButton toolStripButtonDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;

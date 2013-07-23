@@ -55,7 +55,7 @@ namespace TouhouSpring
 
             public override bool ShouldSerializeValue(object component)
             {
-                return m_pd.ShouldSerializeValue((component as BehaviorModelReference).Value);
+                return false;
             }
         }
     }

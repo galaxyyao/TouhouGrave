@@ -48,48 +48,17 @@ namespace TouhouSpring
                        ? Enumerable.Empty<ICardModel>()
                        : m_document.Cards;
             });
+            BehaviorModelReference.TypeConverter = new BehaviorModelReferenceEditor.CustomTypeConverter();
 
-            BehaviorModelReference.TypeConverter = new BehaviorModelReferenceEditor.CustomTypeConverter(() =>
-            {
-                return m_behaviorModelTypes;
-            });
+            BehaviorEditor.BehaviorTypes = m_behaviorModelTypes;
+
+            TypeDescriptor.AddAttributes(
+                typeof(BehaviorModelReference),
+                new EditorAttribute(typeof(BehaviorModelReferenceEditor.TypeEditor), typeof(System.Drawing.Design.UITypeEditor)));
 
             imageList.Images.Add("Card", Properties.Resources.Card_16x16);
             imageList.Images.Add("Folder_Closed", Properties.Resources.Folder_Closed_16x16);
             imageList.Images.Add("Behavior", Properties.Resources.Behavior_16x16);
-
-            var itemList = new List<ToolStripMenuItem>();
-
-            foreach (var t in m_behaviorModelTypes)
-            {
-                var bhvAttr = t.GetAttribute<Behaviors.BehaviorModelAttribute>();
-                var category = bhvAttr.Category.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
-                var rootMenu = toolStripDropDownButtonNewBehavior.DropDownItems;
-                for (int i = 0; i < category.Length; ++i)
-                {
-                    var subMenu = rootMenu.Find(category[i], false);
-                    if (subMenu.Length == 0)
-                    {
-                        var newSubMenu = new ToolStripMenuItem(category[i]);
-                        newSubMenu.Name = category[i];
-                        rootMenu.Add(newSubMenu);
-                        rootMenu = newSubMenu.DropDownItems;
-                    }
-                    else
-                    {
-                        rootMenu = (subMenu[0] as ToolStripMenuItem).DropDownItems;
-                    }
-                }
-
-                var item = new ToolStripMenuItem(bhvAttr.DefaultName);
-                item.Tag = t;
-                item.Click += new EventHandler(NewBehavior_Click);
-                rootMenu.Add(item);
-            }
-
-            var bhvEditorItem = new ToolStripMenuItem("...");
-            bhvEditorItem.Click += new EventHandler(NewBehavior_Editor_Click);
-            toolStripDropDownButtonNewBehavior.DropDownItems.Add(bhvEditorItem);
 
             openFileDialog.InitialDirectory = Program.PathUtils.ContentRootDirectory;
             saveFileDialog.InitialDirectory = Program.PathUtils.ContentRootDirectory;
@@ -167,14 +136,7 @@ namespace TouhouSpring
 
         private void NewBehavior_Click(object sender, EventArgs e)
         {
-            var bhvType = (sender as ToolStripMenuItem).Tag as Type;
-            var bhv = bhvType.Assembly.CreateInstance(bhvType.FullName) as Behaviors.IBehaviorModel;
-            AddBehaviorToCurrentCardNode(bhv);
-        }
-
-        private void NewBehavior_Editor_Click(object sender, EventArgs e)
-        {
-            var bhvEditor = new BehaviorEditor(m_behaviorModelTypes);
+            var bhvEditor = new BehaviorEditor(false, null);
             if (bhvEditor.ShowDialog() == System.Windows.Forms.DialogResult.OK
                 && bhvEditor.EditedBehaviorModel != null)
             {
