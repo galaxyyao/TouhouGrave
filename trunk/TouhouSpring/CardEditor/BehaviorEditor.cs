@@ -44,6 +44,10 @@ namespace TouhouSpring
                     treeViewBehaviors.SelectedNode = findNodes[0];
                 }
             }
+            else if (m_hasNull)
+            {
+                treeViewBehaviors.SelectedNode = treeViewBehaviors.Nodes[0];
+            }
         }
 
         private void textBoxSearchBox_TextChanged(object sender, EventArgs e)

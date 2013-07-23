@@ -42,15 +42,16 @@ namespace TouhouSpring
                 return String.Compare(bhvAttr1.DefaultName, bhvAttr2.DefaultName, false, System.Globalization.CultureInfo.CurrentCulture);
             });
 
-            CardModelReference.TypeConverter = new CardModelReferenceTypeConverter(() =>
-            {
-                return m_document == null
-                       ? Enumerable.Empty<ICardModel>()
-                       : m_document.Cards;
-            });
-            BehaviorModelReference.TypeConverter = new BehaviorModelReferenceEditor.CustomTypeConverter();
-
+            CardModelReferenceTypeConverter.CardModelIterator = () => m_document == null ? Enumerable.Empty<ICardModel>() : m_document.Cards;
             BehaviorEditor.BehaviorTypes = m_behaviorModelTypes;
+
+            TypeDescriptor.AddAttributes(
+                typeof(CardModelReference),
+                new TypeConverterAttribute(typeof(CardModelReferenceTypeConverter)));
+
+            TypeDescriptor.AddAttributes(
+                typeof(BehaviorModelReference),
+                new TypeConverterAttribute(typeof(BehaviorModelReferenceEditor.CustomTypeConverter)));
 
             TypeDescriptor.AddAttributes(
                 typeof(BehaviorModelReference),

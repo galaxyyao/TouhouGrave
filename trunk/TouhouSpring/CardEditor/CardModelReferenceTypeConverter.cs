@@ -8,12 +8,7 @@ namespace TouhouSpring
 {
     class CardModelReferenceTypeConverter : TypeConverter
     {
-        private Func<IEnumerable<ICardModel>> m_cardModelIterator;
-
-        public CardModelReferenceTypeConverter(Func<IEnumerable<ICardModel>> iterator)
-        {
-            m_cardModelIterator = iterator;
-        }
+        public static Func<IEnumerable<ICardModel>> CardModelIterator;
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
@@ -62,7 +57,7 @@ namespace TouhouSpring
                     return null;
                 }
 
-                var cardModel = m_cardModelIterator().FirstOrDefault(cm => cm.Id == str);
+                var cardModel = CardModelIterator().FirstOrDefault(cm => cm.Id == str);
                 return cardModel != null ? new CardModelReference { Value = cardModel } : null;
             }
 
@@ -87,7 +82,7 @@ namespace TouhouSpring
         private IEnumerable<string> IterateOptions()
         {
             yield return null;
-            foreach (var cm in m_cardModelIterator())
+            foreach (var cm in CardModelIterator())
             {
                 yield return cm.Id;
             }
