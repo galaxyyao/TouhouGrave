@@ -50,12 +50,12 @@ namespace TouhouSpring
                 new TypeConverterAttribute(typeof(CardModelReferenceTypeConverter)));
 
             TypeDescriptor.AddAttributes(
-                typeof(BehaviorModelReference),
-                new TypeConverterAttribute(typeof(BehaviorModelReferenceEditor.CustomTypeConverter)));
+                typeof(Behaviors.IBehaviorModel),
+                new TypeConverterAttribute(typeof(BehaviorModelEditor.CustomTypeConverter)));
 
             TypeDescriptor.AddAttributes(
-                typeof(BehaviorModelReference),
-                new EditorAttribute(typeof(BehaviorModelReferenceEditor.TypeEditor), typeof(System.Drawing.Design.UITypeEditor)));
+                typeof(Behaviors.IBehaviorModel),
+                new EditorAttribute(typeof(BehaviorModelEditor.TypeEditor), typeof(System.Drawing.Design.UITypeEditor)));
 
             imageList.Images.Add("Card", Properties.Resources.Card_16x16);
             imageList.Images.Add("Folder_Closed", Properties.Resources.Folder_Closed_16x16);

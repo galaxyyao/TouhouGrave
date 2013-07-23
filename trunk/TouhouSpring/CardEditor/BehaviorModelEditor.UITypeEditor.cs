@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 
 namespace TouhouSpring
 {
-    static partial class BehaviorModelReferenceEditor
+    static partial class BehaviorModelEditor
     {
         public class TypeEditor : UITypeEditor
         {
@@ -20,10 +20,10 @@ namespace TouhouSpring
 
             public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
             {
-                var bhvRef = value as BehaviorModelReference;
-                var dlg = new BehaviorEditor(true, bhvRef != null && bhvRef.Value != null ? CloneBehaviorModel(bhvRef.Value) : null);
+                var bhvModel = value as Behaviors.IBehaviorModel;
+                var dlg = new BehaviorEditor(true, bhvModel != null ? CloneBehaviorModel(bhvModel) : null);
                 return dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK
-                       ? new BehaviorModelReference { Value = dlg.EditedBehaviorModel }
+                       ? dlg.EditedBehaviorModel
                        : value;
             }
 

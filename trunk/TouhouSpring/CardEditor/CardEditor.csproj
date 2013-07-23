@@ -56,9 +56,8 @@
     <Compile Include="BehaviorEditor.Designer.cs">
       <DependentUpon>BehaviorEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="BehaviorModelReferenceEditor.CustomPropertyDescriptor.cs" />
-    <Compile Include="BehaviorModelReferenceEditor.CustomTypeConverter.cs" />
-    <Compile Include="BehaviorModelReferenceEditor.UITypeEditor.cs" />
+    <Compile Include="BehaviorModelEditor.CustomTypeConverter.cs" />
+    <Compile Include="BehaviorModelEditor.UITypeEditor.cs" />
     <Compile Include="CardModelReferenceTypeConverter.cs" />
     <Compile Include="ContentPipelineClasses.cs" />
     <Compile Include="DeckMaker.Operations.cs">

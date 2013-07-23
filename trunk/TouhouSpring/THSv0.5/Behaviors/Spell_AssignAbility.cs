@@ -20,13 +20,13 @@ namespace TouhouSpring.Behaviors
 
         void ILocalEpilogTrigger<Commands.PlayCard>.RunLocalEpilog(Commands.PlayCard command)
         {
-            Game.QueueCommands(new Commands.AddBehavior(Game.GetTargets(this)[0], Model.AssignedBehaviorModel.Value.CreateInitialized()));
+            Game.QueueCommands(new Commands.AddBehavior(Game.GetTargets(this)[0], Model.AssignedBehaviorModel.CreateInitialized()));
         }
 
         [BehaviorModel(typeof(Spell_AssignAbility), Category = "v0.5/Spell", DefaultName = "赋予技能")]
         public class ModelType : BehaviorModel
         {
-            public BehaviorModelReference AssignedBehaviorModel { get; set; }
+            public IBehaviorModel AssignedBehaviorModel { get; set; }
         }
     }
 }

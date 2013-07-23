@@ -6,9 +6,9 @@ using System.Text;
 
 namespace TouhouSpring
 {
-    static partial class BehaviorModelReferenceEditor
+    static partial class BehaviorModelEditor
     {
-        public class CustomTypeConverter : TypeConverter
+        public class CustomTypeConverter : ExpandableObjectConverter
         {
             public static string GetBehaviorName(Type behaviorModelType)
             {
@@ -42,35 +42,14 @@ namespace TouhouSpring
                         return value;
                     }
 
-                    var bmRef = value as BehaviorModelReference;
+                    var bhvModel = value as Behaviors.IBehaviorModel;
 
-                    return bmRef == null || bmRef.Value == null
+                    return bhvModel == null
                            ? "{null}"
-                           : GetBehaviorName(bmRef.Value.GetType());
+                           : GetBehaviorName(bhvModel.GetType());
                 }
 
                 return base.ConvertTo(context, culture, value, destinationType);
-            }
-
-            public override bool GetPropertiesSupported(ITypeDescriptorContext context)
-            {
-                return true;
-            }
-
-            public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
-            {
-                var bhvModelRef = value as BehaviorModelReference;
-                if (bhvModelRef != null && bhvModelRef.Value != null)
-                {
-                    var bhvModelProps = TypeDescriptor.GetProperties(bhvModelRef.Value);
-                    var pds = new PropertyDescriptor[bhvModelProps.Count];
-                    for (int i = 0; i < pds.Length; ++i)
-                    {
-                        pds[i] = new CustomPropertyDescriptor(bhvModelProps[i]);
-                    }
-                    return new PropertyDescriptorCollection(pds);
-                }
-                return base.GetProperties(context, value, attributes);
             }
         }
     }
