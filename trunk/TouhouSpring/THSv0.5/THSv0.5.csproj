@@ -46,7 +46,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assists\SummonToHandOnTurnStart.cs" />
-    <Compile Include="Behaviors\Assist_GenericAura.cs" />
+    <Compile Include="Assists\GenericAura.cs" />
     <Compile Include="Behaviors\Passive_Armor.cs" />
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
@@ -68,12 +68,12 @@
     <None Include="Behaviors\Deprecated\Passive_Aura_Offense_NAttack.cs" />
     <None Include="Behaviors\Deprecated\Passive_DeterAura_NAttack.cs" />
     <None Include="Behaviors\Deprecated\Passive_AllFriendWarriorAttackUpWhileDefenseDown.cs" />
-    <Compile Include="Behaviors\GenericAura.cs" />
+    <Compile Include="Utilities\GenericAura.cs" />
     <Compile Include="Behaviors\Passive_CardDrawnNumberUp.cs" />
     <Compile Include="Behaviors\Passive_Dismiss.cs" />
     <Compile Include="Behaviors\Assist_Doom.cs" />
     <Compile Include="Behaviors\Passive_EnemySummonCostUp.cs" />
-    <Compile Include="Behaviors\Passive_GenericAura.cs" />
+    <Compile Include="Passives\GenericAura.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Defender.cs" />
     <Compile Include="Behaviors\ManaOrLifeCost.cs" />
     <Compile Include="Behaviors\Passive_AliceDollSummonByMana.cs" />

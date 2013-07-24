@@ -21,8 +21,7 @@ namespace TouhouSpring
         /// </summary>
         public Behaviors.BehaviorList Behaviors
         {
-            get;
-            private set;
+            get; private set;
         }
 
         /// <summary>

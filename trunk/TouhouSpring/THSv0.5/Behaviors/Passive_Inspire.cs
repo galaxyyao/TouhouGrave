@@ -7,7 +7,6 @@ namespace TouhouSpring.Behaviors
 {
     public sealed class Passive_Inspire : BaseBehavior<Passive_Inspire.ModelType>,
         IGlobalEpilogTrigger<Commands.DealDamageToCard>,
-        IGlobalEpilogTrigger<Commands.IMoveCard>,
         IGlobalEpilogTrigger<Commands.EndPhase>
     {
         private ValueModifier m_attackModifier;
@@ -25,19 +24,6 @@ namespace TouhouSpring.Behaviors
                     }
                 }
                 m_inspired = true;
-            }
-        }
-
-        void IGlobalEpilogTrigger<Commands.IMoveCard>.RunGlobalEpilog(Commands.IMoveCard command)
-        {
-            if (m_inspired
-                && command.FromZone == SystemZone.Battlefield
-                && command.ToZoneType != ZoneType.OnBattlefield
-                && command.Subject != Host
-                && command.Subject.Owner == Host.Owner
-                && command.Subject.Warrior != null)
-            {
-                Game.QueueCommands(new Commands.SendBehaviorMessage(command.Subject.Warrior, WarriorMessage.RemoveAttackModifier, m_attackModifier));
             }
         }
 

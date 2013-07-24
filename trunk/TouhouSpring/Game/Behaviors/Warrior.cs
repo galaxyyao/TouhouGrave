@@ -23,8 +23,7 @@ namespace TouhouSpring.Behaviors
 
     public sealed partial class Warrior : BaseBehavior<Warrior.ModelType>,
         Commands.ICause,
-        ILocalPrerequisiteTrigger<Commands.IInitiativeMoveCard>,
-        ILocalEpilogTrigger<Commands.IMoveCard>
+        ILocalPrerequisiteTrigger<Commands.IInitiativeMoveCard>
     {
         private List<ValueModifier> m_attackModifiers = new List<ValueModifier>();
 
@@ -70,18 +69,6 @@ namespace TouhouSpring.Behaviors
                 }
             }
             return CommandResult.Pass;
-        }
-
-        public void RunLocalEpilog(Commands.IMoveCard command)
-        {
-            if (command.FromZoneType == ZoneType.OnBattlefield
-                && command.ToZoneType != ZoneType.OnBattlefield)
-            {
-                State = WarriorState.StandingBy;
-                m_attackModifiers.Clear();
-                Attack = Model.Attack;
-                Life = Model.Life;
-            }
         }
 
         protected override void OnInitialize()

@@ -40,7 +40,6 @@ namespace TouhouSpring.Behaviors
                 && command.FromZoneType == ZoneType.OnBattlefield
                 && command.ToZoneType != ZoneType.OnBattlefield)
             {
-                Game.QueueCommands(new Commands.RemoveBehavior(m_prisoner, m_prisoner.Behaviors.Get<JailEffect>()));
                 m_prisoner = null;
             }
         }

@@ -96,6 +96,7 @@ namespace TouhouSpring.Commands
             }
             else if (m_fromZone.Type == ZoneType.OnBattlefield && m_toZone.Type != ZoneType.OnBattlefield)
             {
+                Subject.Reset(null);
                 Context.Game.UnsubscribeCardFromCommands(Subject);
             }
         }

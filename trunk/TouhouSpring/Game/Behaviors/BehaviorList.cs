@@ -164,5 +164,11 @@ namespace TouhouSpring.Behaviors
                 Host.Warrior = null;
             }
         }
+
+        internal void RemoveAll()
+        {
+            m_behaviors.Clear();
+            Host.Warrior = null;
+        }
     }
 }

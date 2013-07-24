@@ -21,11 +21,6 @@ namespace TouhouSpring.Behaviors
             {
                 Game.QueueCommands(new Commands.AddBehavior(Host, m_undefendable));
             }
-            else if (command.FromZoneType == ZoneType.OnBattlefield
-                     && command.ToZoneType != ZoneType.OnBattlefield)
-            {
-                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_undefendable));
-            }
         }
 
         void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)

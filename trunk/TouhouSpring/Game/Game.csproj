@@ -61,9 +61,11 @@
     <Compile Include="Commands\AddPlayerModifier.cs" />
     <Compile Include="Commands\DeactivateAssist.cs" />
     <Compile Include="Commands\RemoveCounter.cs" />
+    <Compile Include="Commands\ResetCard.cs" />
     <Compile Include="Commands\SubtractPlayerLife.cs" />
     <Compile Include="Commands\SubtractPlayerMana.cs" />
     <Compile Include="CardModelReference.cs" />
+    <Compile Include="Commands\Transform.cs" />
     <Compile Include="Game.CommandTargets.cs" />
     <Compile Include="Game.ResolveContext.cs" />
     <Compile Include="Interactions\IQuickInteraction.cs" />
