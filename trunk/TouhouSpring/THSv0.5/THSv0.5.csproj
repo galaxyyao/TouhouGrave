@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assists\Banshee.cs" />
+    <Compile Include="Assists\SummonOnActivate.cs" />
     <Compile Include="Assists\PaidDrawOnKill.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -53,6 +54,7 @@
     <Compile Include="Passives\MassiveHeal.cs" />
     <Compile Include="Passives\PoisonousArrow.cs" />
     <Compile Include="Passives\EffectOnAttack.cs" />
+    <Compile Include="Spells\GenericTransform.cs" />
     <Compile Include="Spells\HealWarrior.cs" />
     <Compile Include="Spells\HealPlayer.cs" />
     <Compile Include="Utilities\SuppressHeal.cs" />

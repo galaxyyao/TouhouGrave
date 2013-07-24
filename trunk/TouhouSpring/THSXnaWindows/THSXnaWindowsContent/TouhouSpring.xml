@@ -35,6 +35,12 @@
     <Item>#Resource32</Item>
     <Item>#Resource33</Item>
     <Item>#Resource34</Item>
+    <Item>#Resource35</Item>
+    <Item>#Resource36</Item>
+    <Item>#Resource37</Item>
+    <Item>#Resource38</Item>
+    <Item>#Resource39</Item>
+    <Item>#Resource40</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
@@ -928,6 +934,121 @@ X等于己方场上本卡的数量
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource35" Type="TouhouSpring.EditorCardModel">
+      <Id>alicedoll_1</Id>
+      <Name>博爱的法兰西人偶</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alicedoll_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>false</Unique>
+          <Attack>0</Attack>
+          <Life>5</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Taunt+ModelType">
+          <Name>Taunt</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource36" Type="TouhouSpring.EditorCardModel">
+      <Id>alicedoll_2</Id>
+      <Name>轮回的西藏人偶</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alicedoll_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>false</Unique>
+          <Attack>3</Attack>
+          <Life>3</Life>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource37" Type="TouhouSpring.EditorCardModel">
+      <Id>alicedoll_3</Id>
+      <Name>魔彩的上海人偶</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alicedoll_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>false</Unique>
+          <Attack>4</Attack>
+          <Life>4</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Unretaliatable+ModelType">
+          <Name>不能反击</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource38" Type="TouhouSpring.EditorCardModel">
+      <Id>alicedoll_4</Id>
+      <Name>上吊的蓬莱人偶</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alicedoll_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>false</Unique>
+          <Attack>7</Attack>
+          <Life>1</Life>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource39" Type="TouhouSpring.EditorCardModel">
+      <Id>alicedoll_0</Id>
+      <Name>丑了吧唧的人偶</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alicedoll_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>false</Unique>
+          <Attack>1</Attack>
+          <Life>1</Life>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource40" Type="TouhouSpring.EditorCardModel">
+      <Id>alice_3</Id>
+      <Name>爱丽丝·玛格特罗依德（人形师）</Name>
+      <Description></Description>
+      <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>1</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Assists.SummonOnActivate+ModelType">
+          <Name>人形制作</Name>
+          <SummonType>#Resource39</SummonType>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Spells.GenericTransform+ModelType">
+          <Name>转化</Name>
+          <ManaCost>4</ManaCost>
+          <OfCertainType>#Resource39</OfCertainType>
+          <ToTypeChoiceA>#Resource35</ToTypeChoiceA>
+          <ToTypeChoiceB>#Resource36</ToTypeChoiceB>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Spells.GenericTransform+ModelType">
+          <Name>转化</Name>
+          <ManaCost>6</ManaCost>
+          <OfCertainType>#Resource39</OfCertainType>
+          <ToTypeChoiceA>#Resource37</ToTypeChoiceA>
+          <ToTypeChoiceB>#Resource38</ToTypeChoiceB>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
   </Resources>
 </XnaContent>
