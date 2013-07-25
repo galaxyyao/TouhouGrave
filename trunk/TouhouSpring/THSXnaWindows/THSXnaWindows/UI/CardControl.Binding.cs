@@ -12,10 +12,10 @@ namespace TouhouSpring.UI
             switch (id)
             {
                 case "Card.Description":
-                    replacement = CardData.Description;
+                    replacement = CardData.Model.Description ?? String.Empty;
                     break;
                 case "Card.ImageUri":
-                    replacement = !String.IsNullOrEmpty(CardData.ArtworkUri) ? CardData.ArtworkUri : "Textures/DefaultArtwork";
+                    replacement = !String.IsNullOrEmpty(CardData.Model.ArtworkUri) ? CardData.Model.ArtworkUri : "Textures/DefaultArtwork";
                     break;
                 case "Card.InitialAttack":
                     replacement = CardData.AttackAndInitialAttack.Item2 >= 0 ? CardData.AttackAndInitialAttack.Item2.ToString() : "";
@@ -24,7 +24,7 @@ namespace TouhouSpring.UI
                     replacement = CardData.LifeAndInitialLife.Item2 >= 0 ? CardData.LifeAndInitialLife.Item2.ToString() : "";
                     break;
                 case "Card.Name":
-                    replacement = CardData.ModelName;
+                    replacement = CardData.Model.Name ?? String.Empty;
                     break;
                 case "Card.SummonCost":
                     replacement = CardData.SummonCost >= 0 ? CardData.SummonCost.ToString() : "";

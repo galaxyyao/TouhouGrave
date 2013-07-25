@@ -13,7 +13,12 @@ namespace TouhouSpring.UI.ModalDialogs
         {
             private ICardModel m_cardModel;
 
-            public ICardModel CardModel
+            public int Guid { get { return -1; } }
+            public int Zone { get { return SystemZone.Unknown; } }
+            public int ZonePosition { get { return -1; } }
+            public int OwnerPlayerIndex { get { return -1; } }
+
+            public ICardModel Model
             {
                 get { return m_cardModel; }
                 set
@@ -26,13 +31,6 @@ namespace TouhouSpring.UI.ModalDialogs
                 }
             }
 
-            public int Guid { get { return -1; } }
-            public int Zone { get { return SystemZone.Unknown; } }
-            public int ZonePosition { get { return -1; } }
-            public int OwnerPlayerIndex { get { return -1; } }
-            public string ModelName { get { return CardModel.Name; } }
-            public string Description { get { return CardModel.Description; } }
-            public string ArtworkUri { get { return CardModel.ArtworkUri; } }
             public int SummonCost { get; private set; }
             public bool IsWarrior { get; private set; }
             public Tuple<int, int> AttackAndInitialAttack { get; private set; }
@@ -128,7 +126,7 @@ namespace TouhouSpring.UI.ModalDialogs
                 }
 
                 var cardControl = TakeCardControl();
-                cardControl.CardData = new CardModelData { CardModel = Candidates[i] };
+                cardControl.CardData = new CardModelData { Model = Candidates[i] };
                 cardControl.GetAddin<CardControlAddins.SelectorLocationAnimation>().ResetLocationIndex(i);
                 cardControl.SetCardDesign("Full");
                 cardControl.Dispatcher = m_cardContainer;

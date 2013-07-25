@@ -16,7 +16,7 @@ namespace TouhouSpring.Services
                     break;
                 case "Game.DetailText1":
                     replacement = ZoomedInCard != null
-                                  ? ZoomedInCard.CardData.ModelName : "";
+                                  ? (ZoomedInCard.CardData.Model.Name ?? String.Empty) : "";
                     break;
                 case "Game.DetailText2":
                     if (ZoomedInCard != null)
@@ -33,7 +33,7 @@ namespace TouhouSpring.Services
                             sb.Append("体力　　　【[color:Red]#Card.InitialLife#[/color]】\n");
                         }
                         sb.Append("\n");
-                        sb.Append(ZoomedInCard.CardData.Description);
+                        sb.Append(ZoomedInCard.CardData.Model.Description ?? String.Empty);
                         replacement = sb.ToString();
                     }
                     else

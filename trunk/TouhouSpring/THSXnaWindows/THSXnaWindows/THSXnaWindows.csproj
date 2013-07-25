@@ -199,7 +199,6 @@
     <Compile Include="UI\CardControlAddins\SelectorHighlight.cs" />
     <Compile Include="UI\CardControlAddins\SelectorLocationAnimation.cs" />
     <Compile Include="UI\CardControlAddins\ToneAnimation.cs" />
-    <Compile Include="UI\CardControlAddins\SelectedAnimation.cs" />
     <None Include="UI\CardControlAddins\SpellButtons.cs" />
     <Compile Include="UI\ComposedImage.cs" />
     <Compile Include="UI\FocusableProxy.cs" />

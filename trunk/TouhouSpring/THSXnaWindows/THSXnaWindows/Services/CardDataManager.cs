@@ -21,9 +21,7 @@ namespace TouhouSpring.Services
             int Zone { get; }
             int ZonePosition { get; }
             int OwnerPlayerIndex { get; }
-            string ModelName { get; }
-            string Description { get; }
-            string ArtworkUri { get; }
+            ICardModel Model { get; }
             int SummonCost { get; }
             bool IsWarrior { get; }
             Tuple<int, int> AttackAndInitialAttack { get; }
@@ -56,9 +54,7 @@ namespace TouhouSpring.Services
             public int Zone { get; private set; }
             public int ZonePosition { get; private set; }
             public int OwnerPlayerIndex { get; private set; }
-            public string ModelName { get; private set; }
-            public string Description { get; private set; }
-            public string ArtworkUri { get; private set; }
+            public ICardModel Model { get; private set; }
             public int SummonCost { get; private set; }
             public bool IsWarrior { get; private set; }
             public Tuple<int, int> AttackAndInitialAttack { get; private set; }
@@ -74,11 +70,8 @@ namespace TouhouSpring.Services
                 Guid = card.Guid;
                 Zone = card.Zone;
                 ZonePosition = zonePosition;
-
                 OwnerPlayerIndex = card.Owner.Index;
-                ModelName = card.Model.Name ?? String.Empty;
-                Description = card.Model.Description ?? String.Empty;
-                ArtworkUri = !String.IsNullOrEmpty(card.Model.ArtworkUri) ? card.Model.ArtworkUri : "";
+                Model = card.Model;
 
                 var manaCost = card.Behaviors.Get<Behaviors.ManaCost>();
                 SummonCost = manaCost != null ? manaCost.Cost : -1;
