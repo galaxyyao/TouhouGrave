@@ -41,6 +41,7 @@
     <Item>#Resource38</Item>
     <Item>#Resource39</Item>
     <Item>#Resource40</Item>
+    <Item>#Resource41</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
@@ -116,7 +117,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.THSv0_5.Passives.EffectOnAttack+ModelType">
           <Name>攻击时给予效果</Name>
-          <Effect Type="TouhouSpring.THSv0_5.Passives.PoisonousArrow+ModelType">
+          <Effect Type="TouhouSpring.THSv0_5.Effects.PoisonousArrow+ModelType">
             <Name>毒箭（效果）</Name>
             <Amount>0</Amount>
           </Effect>
@@ -1052,6 +1053,30 @@ X等于己方场上本卡的数量
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
+    </Resource>
+    <Resource ID="#Resource41" Type="TouhouSpring.EditorCardModel">
+      <Id>shackle</Id>
+      <Name>枷锁</Name>
+      <Description></Description>
+      <ArtworkUri>atlas:Textures/Icons/Icons0$BTNMagicLariet</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Traps.PaidShackle+ModelType">
+          <Name>枷锁（陷阱）</Name>
+          <TriggeringWarriorLife>4</TriggeringWarriorLife>
+          <MaintainManaCost>2</MaintainManaCost>
+          <Effect Type="TouhouSpring.THSv0_5.Effects.Shackle+ModelType">
+            <Name>Shackle</Name>
+          </Effect>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Trap+ModelType">
+          <Name>陷阱</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Traps</Category>
     </Resource>
   </Resources>
 </XnaContent>

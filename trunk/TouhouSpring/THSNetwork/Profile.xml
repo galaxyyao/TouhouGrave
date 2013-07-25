@@ -27,9 +27,6 @@
             <Model>koakuma</Model>
             <Model>koakuma</Model>
             <Model>koakuma</Model>
-            <Model>mokou</Model>
-            <Model>mokou</Model>
-            <Model>mokou</Model>
             <Model>remilia</Model>
             <Model>remilia</Model>
             <Model>remilia</Model>
@@ -54,6 +51,9 @@
             <Model>sakuya</Model>
             <Model>sakuya</Model>
             <Model>sakuya</Model>
+            <Model>shackle</Model>
+            <Model>shackle</Model>
+            <Model>shackle</Model>
           </Card>
           <Assist>
             <Model>eirin</Model>

@@ -110,8 +110,21 @@
         <Key>BTNEnvenomedSpear</Key>
         <Value>
           <SourceFile>BTNEnvenomedSpear.png</SourceFile>
-          <Left>0</Left>
-          <Top>64</Top>
+          <Left>512</Left>
+          <Top>0</Top>
+          <Rotation>Rotation_0</Rotation>
+          <FlipHorizontal>false</FlipHorizontal>
+          <FlipVertical>false</FlipVertical>
+          <SourceWidth>64</SourceWidth>
+          <SourceHeight>64</SourceHeight>
+        </Value>
+      </Item>
+      <Item>
+        <Key>BTNMagicLariet</Key>
+        <Value>
+          <SourceFile>BTNMagicLariet.png</SourceFile>
+          <Left>576</Left>
+          <Top>0</Top>
           <Rotation>Rotation_0</Rotation>
           <FlipHorizontal>false</FlipHorizontal>
           <FlipVertical>false</FlipVertical>
@@ -120,8 +133,8 @@
         </Value>
       </Item>
     </SubTextures>
-    <Width>512</Width>
-    <Height>128</Height>
+    <Width>1024</Width>
+    <Height>64</Height>
     <Texture Null="true" />
   </Asset>
 </XnaContent>

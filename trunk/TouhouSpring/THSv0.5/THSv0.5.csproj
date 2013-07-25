@@ -51,13 +51,15 @@
     <Compile Include="Behaviors\Passive_Armor.cs" />
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
+    <Compile Include="Effects\Shackle.cs" />
     <Compile Include="Passives\DrawCardOnDeath.cs" />
     <Compile Include="Passives\MassiveHeal.cs" />
-    <Compile Include="Passives\PoisonousArrow.cs" />
+    <Compile Include="Effects\PoisonousArrow.cs" />
     <Compile Include="Passives\EffectOnAttack.cs" />
     <Compile Include="Spells\GenericTransform.cs" />
     <Compile Include="Spells\HealWarrior.cs" />
     <Compile Include="Spells\HealPlayer.cs" />
+    <Compile Include="Traps\PaidShackle.cs" />
     <Compile Include="Utilities\SuppressHeal.cs" />
     <Compile Include="Spells\RecallBySacrifice.cs" />
     <Compile Include="Utilities\FatalDamage.cs" />
@@ -83,7 +85,7 @@
     <Compile Include="Behaviors\Passive_DeathOnAccumulatedCounter.cs" />
     <Compile Include="Behaviors\Passive_FirstStrike_Attacker.cs" />
     <Compile Include="Behaviors\Passive_Inspire.cs" />
-    <Compile Include="Behaviors\Passive_Jail.cs" />
+    <Compile Include="Passives\Jail.cs" />
     <Compile Include="Behaviors\Passive_PhantomAttack.cs" />
     <Compile Include="Behaviors\Passive_Rebirth.cs" />
     <Compile Include="Behaviors\Passive_SpiritForm.cs" />

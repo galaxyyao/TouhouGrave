@@ -84,6 +84,10 @@ namespace TouhouSpring.Agents
                                       ? (result as IIndexable<CardInstance>).Aggregate("se", (s, c) => s + ":" + c.Guid.ToString())
                                       : "se:null");
             }
+            else if (io is Interactions.MessageBox)
+            {
+                m_recording.WriteLine("me:" + result.ToString());
+            }
             else if (io is Interactions.SelectNumber)
             {
                 var si = result as int?;

@@ -88,6 +88,19 @@ namespace TouhouSpring.Agents
             }
         }
 
+        public override void OnMessageBox(Interactions.MessageBox io)
+        {
+            var respond = m_playingBack.ReadLine().Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+            if (respond[0] == "me")
+            {
+                io.Respond((Interactions.MessageBoxButtons)Enum.Parse(typeof(Interactions.MessageBoxButtons), respond[1]));
+            }
+            else
+            {
+                throw new NotSupportedException(String.Format("Unrecognized verb {0}", respond[0]));
+            }
+        }
+
         public override void OnSelectNumber(Interactions.SelectNumber io)
         {
             var respond = m_playingBack.ReadLine().Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
