@@ -51,6 +51,7 @@
     <Compile Include="Behaviors\Passive_Armor.cs" />
     <Compile Include="Behaviors\Passive_OnUpkeep_HealSelectedCardFull.cs" />
     <Compile Include="Behaviors\Assist_MassSputter_NDamage.cs" />
+    <Compile Include="Passives\DrawCardOnDeath.cs" />
     <Compile Include="Passives\MassiveHeal.cs" />
     <Compile Include="Passives\PoisonousArrow.cs" />
     <Compile Include="Passives\EffectOnAttack.cs" />

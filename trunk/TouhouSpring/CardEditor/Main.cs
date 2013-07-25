@@ -198,7 +198,7 @@ namespace TouhouSpring
         private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             if (e.ChangedItem.PropertyDescriptor.Name == "Name"
-                && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(CardModel))
+                && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(EditorCardModel))
             {
                 var cardNode = treeViewCards.SelectedNode.Tag is EditorCardModel
                                ? treeViewCards.SelectedNode
@@ -220,7 +220,7 @@ namespace TouhouSpring
                 }
             }
             else if (e.ChangedItem.PropertyDescriptor.Name == "Name"
-                     && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(Behaviors.IBehaviorModel))
+                     && e.ChangedItem.PropertyDescriptor.ComponentType == typeof(Behaviors.BehaviorModel))
             {
                 var bhvNode = treeViewCards.SelectedNode;
                 bhvNode.Text = (string)e.ChangedItem.Value;

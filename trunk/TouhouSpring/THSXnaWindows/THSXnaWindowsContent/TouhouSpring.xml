@@ -965,6 +965,9 @@ X等于己方场上本卡的数量
           <Attack>3</Attack>
           <Life>3</Life>
         </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.DrawCardOnDeath+ModelType">
+          <Name>轮回</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
     </Resource>
@@ -1034,14 +1037,14 @@ X等于己方场上本卡的数量
           <SummonType>#Resource39</SummonType>
         </Behavior>
         <Behavior Type="TouhouSpring.THSv0_5.Spells.GenericTransform+ModelType">
-          <Name>转化</Name>
+          <Name>法兰西人偶/西藏人偶</Name>
           <ManaCost>4</ManaCost>
           <OfCertainType>#Resource39</OfCertainType>
           <ToTypeChoiceA>#Resource35</ToTypeChoiceA>
           <ToTypeChoiceB>#Resource36</ToTypeChoiceB>
         </Behavior>
         <Behavior Type="TouhouSpring.THSv0_5.Spells.GenericTransform+ModelType">
-          <Name>转化</Name>
+          <Name>上海人偶/蓬莱人偶</Name>
           <ManaCost>6</ManaCost>
           <OfCertainType>#Resource39</OfCertainType>
           <ToTypeChoiceA>#Resource37</ToTypeChoiceA>
