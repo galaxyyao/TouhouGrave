@@ -16,27 +16,26 @@ namespace TouhouSpring.UI.CardControlAddins
             get; private set;
         }
 
-        public void SetFliped()
-        {
-            //TEMP: If want opponent's card shown, add "return;" here
-            //return;
-            Flipped = false;
-            OnTrackElapse(0);
-            Flipped = true;
-        }
-
         public Flip(CardControl control) : base(control)
         {
             Control.Style.RegisterBinding(this);
 
             m_track = new Animation.LinearTrack(0.3f);
-            m_track.Elapsed += OnTrackElapse;
+            m_track.Elapsed += w => UpdateMatrix(Flipped ? w : 1 - w);
+        }
+
+        public void InitializeToFlipped()
+        {
+            UpdateMatrix(1.0f);
+            Flipped = true;
         }
 
         public override void Update(float deltaTime)
         {
             var gameui = GameApp.Service<Services.GameUI>();
-            var needFlip = !gameui.ShallCardBeRevealed(CardData);
+            var needFlip = (!gameui.ShallCardBeRevealed(CardData)
+                            || CardData.IsTrap && CardData.Zone == SystemZone.Battlefield && !Control.MouseTracked.MouseEntered)
+                           && gameui.ZoomedInCard != Control;
 
             if (needFlip != Flipped)
             {
@@ -69,13 +68,12 @@ namespace TouhouSpring.UI.CardControlAddins
             }
         }
 
-        private void OnTrackElapse(float w)
+        private void UpdateMatrix(float w)
         {
-            w = Flipped ? w : 1 - w;
-            var halfWidth = 0.5f;
+            float halfWidth = Control.Region.Width * 0.5f;
             m_transform = MatrixHelper.Translate(-halfWidth, 0)
-                            * MatrixHelper.Rotate(Vector3.UnitY, MathUtils.PI * w)
-                            * MatrixHelper.Translate(halfWidth, 0);
+                          * MatrixHelper.Rotate(Vector3.UnitY, MathUtils.PI * w)
+                          * MatrixHelper.Translate(halfWidth, 0);
         }
     }
 }

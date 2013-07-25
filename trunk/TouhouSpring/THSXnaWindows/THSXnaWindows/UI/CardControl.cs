@@ -136,7 +136,7 @@ namespace TouhouSpring.UI
             BodyContainer = Style.ChildIds["Body"].Target as TransformNode;
 
             MouseTracked = new MouseTracked(this);
-            MouseTracked.Dispatcher = BodyContainer;
+            MouseTracked.Dispatcher = this;
         }
 
         public void SetParentAndKeepPosition(EventDispatcher dispatcher)
@@ -179,7 +179,7 @@ namespace TouhouSpring.UI
 
         bool IMouseTracked.IntersectWith(Ray ray)
         {
-            return MouseTracked.Intersect(ray, Region, BodyContainer.TransformToGlobal.Invert());
+            return MouseTracked.Intersect(ray, new Rectangle(0, -Region.Height / Region.Width, 1, Region.Height / Region.Width), TransformToGlobal.Invert());
         }
 
         void IMouseTracked.OnMouseEnter(MouseEventArgs e) { }

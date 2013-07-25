@@ -137,12 +137,17 @@ namespace TouhouSpring.Services
         {
             var gameManager = GameApp.Service<GameManager>();
             // throws exception if not found
-            var zone = gameManager.GameZoneConfigs.First(zc => zc.Id == cardData.Zone);
-            if (zone.Visibility == ZoneVisibility.VisibleToOwner)
+            var visibility = gameManager.GameZoneConfigs.First(zc => zc.Id == cardData.Zone).Visibility;
+            if (cardData.IsTrap && cardData.Zone == SystemZone.Battlefield)
+            {
+                visibility = ZoneVisibility.VisibleToOwner;
+            }
+
+            if (visibility == ZoneVisibility.VisibleToOwner)
             {
                 return IsPlayerInControl(cardData.OwnerPlayerIndex);
             }
-            else if (zone.Visibility == ZoneVisibility.Visible)
+            else if (visibility == ZoneVisibility.Visible)
             {
                 return true;
             }

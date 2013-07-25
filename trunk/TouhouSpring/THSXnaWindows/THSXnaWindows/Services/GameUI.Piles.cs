@@ -54,15 +54,12 @@ namespace TouhouSpring.Services
             cardControl.Style.Apply(); // to solve the default TransformToGlobal matrix
             var transform = cardControl.BodyContainer.TransformToGlobal.Invert();
 
-            cardControl.GetAddin<UI.CardControlAddins.Flip>().SetFliped();
+            cardControl.GetAddin<UI.CardControlAddins.Flip>().InitializeToFlipped();
             cardControl.Style.Apply(); // to apply initial flipped matrix
 
-            var fromZone = m_playerZones[cardControl.CardData.OwnerPlayerIndex].Library.Container;
+            cardControl.Dispatcher = m_playerZones[cardControl.CardData.OwnerPlayerIndex].Library.Container;
             var pileTop = m_playerLibraryPiles[cardControl.CardData.OwnerPlayerIndex].BodyContainer;
-            transform *= UI.TransformNode.GetTransformBetween(pileTop, fromZone);
-
-            cardControl.Dispatcher = fromZone;
-            cardControl.Transform = transform;
+            cardControl.Transform = transform * UI.TransformNode.GetTransformBetween(pileTop, cardControl.Dispatcher);
         }
 
         private void PutToGraveyard(UI.CardControl cardControl)

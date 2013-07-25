@@ -30,6 +30,7 @@ namespace TouhouSpring.Services
             bool IsAssist { get; }
             bool IsAssistActivated { get; }
             bool IsInstant { get; }
+            bool IsTrap { get; }
 
             IIndexable<ICounterData> Counters { get; }
         }
@@ -63,6 +64,7 @@ namespace TouhouSpring.Services
             public bool IsAssist { get; private set; }
             public bool IsAssistActivated { get; private set; }
             public bool IsInstant { get; private set; }
+            public bool IsTrap { get; private set; }
             public IIndexable<ICounterData> Counters { get; private set; }
 
             public InternalCardData(CardInstance card, int zonePosition)
@@ -86,6 +88,7 @@ namespace TouhouSpring.Services
                 IsAssistActivated = card.IsActivatedAssist;
 
                 IsInstant = card.Behaviors.Has<Behaviors.Instant>();
+                IsTrap = card.Behaviors.Has<Behaviors.Trap>();
 
                 var counters = card.Counters;
                 var statusEffects = card.Behaviors.OfType<Behaviors.IStatusEffect>();

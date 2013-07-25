@@ -42,6 +42,10 @@ namespace TouhouSpring.UI
                     {
                         replacement = "突袭";
                     }
+                    else if (CardData.IsTrap)
+                    {
+                        replacement = "陷阱";
+                    }
                     else
                     {
                         replacement = "迷";

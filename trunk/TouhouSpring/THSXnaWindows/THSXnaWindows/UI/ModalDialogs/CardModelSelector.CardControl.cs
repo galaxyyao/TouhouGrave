@@ -39,6 +39,7 @@ namespace TouhouSpring.UI.ModalDialogs
             public bool IsAssist { get; private set; }
             public bool IsAssistActivated { get { return false; } }
             public bool IsInstant { get; private set; }
+            public bool IsTrap { get; private set; }
             public IIndexable<Services.CardDataManager.ICounterData> Counters { get { return Indexable.Empty<Services.CardDataManager.ICounterData>(); } }
 
             private void CardModelChanged()
@@ -58,6 +59,7 @@ namespace TouhouSpring.UI.ModalDialogs
                 }
                 IsAssist = m_cardModel.Behaviors.Any(bm => bm is Behaviors.Assist.ModelType);
                 IsInstant = m_cardModel.Behaviors.Any(bm => bm is Behaviors.Instant.ModelType);
+                IsTrap = m_cardModel.Behaviors.Any(bm => bm is Behaviors.Trap.ModelType);
             }
         }
 

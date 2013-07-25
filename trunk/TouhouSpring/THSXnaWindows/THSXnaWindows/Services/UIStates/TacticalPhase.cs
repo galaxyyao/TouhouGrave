@@ -72,6 +72,10 @@ namespace TouhouSpring.Services.UIStates
                 {
                     m_gameUI.AddContextButton("施放", ContextButton_OnPlay);
                 }
+                else if (cardControl.CardData.IsTrap)
+                {
+                    m_gameUI.AddContextButton("布设", ContextButton_OnPlay);
+                }
                 else
                 {
                     m_gameUI.AddContextButton("Play", ContextButton_OnPlay);

@@ -87,9 +87,8 @@ namespace TouhouSpring.Services
 				throw new ArgumentNullException("cardControl");
 			}
 
-            if (cardControl.GetAddin<UI.CardControlAddins.Flip>().Flipped)
+            if (!ShallCardBeRevealed(cardControl.CardData))
             {
-                // flipped card can't be viewed
                 return;
             }
 

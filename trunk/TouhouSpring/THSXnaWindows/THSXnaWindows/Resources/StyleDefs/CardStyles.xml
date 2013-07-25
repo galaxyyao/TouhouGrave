@@ -6,8 +6,9 @@
       <Transform Translation="0,0,#PileBackOffset#" />
       <Transform Matrix="#CardAnimator.InstantRotation#" />
       <Transform Matrix="#CardAnimator.HighlightTransform#" />
-      <Transform Scaling="0.0048,-0.0048,0.0048" />
       <Transform Matrix="#CardAnimator.Flip#" />
+      <!--Scales to (1,-1.43)-->
+      <Transform Scaling="0.0048,-0.0048,0.0048" />
       <Layout Id="Body">
         <Image Id="CardBack" Uri="Textures/CardBack">
           <Transform Translation="-105" />
