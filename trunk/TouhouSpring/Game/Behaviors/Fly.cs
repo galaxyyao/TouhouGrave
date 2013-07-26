@@ -23,15 +23,13 @@ namespace TouhouSpring.Behaviors
             if (Game.ActingPlayer == Host.Owner && command.PreviousPhase == "Main")
             {
                 m_isFlyStatusChanged = false;
-                if (Host.Behaviors.Contains(m_unattackable))
-                    Game.QueueCommands(new Commands.RemoveBehavior(Host, m_unattackable));
             }
         }
-
 
         void ILocalEpilogTrigger<Commands.PlayCard>.RunLocalEpilog(Commands.PlayCard command)
         {
             Game.QueueCommands(new Commands.AddBehavior(Host, m_flying));
+            Game.QueueCommands(new Commands.RemoveBehavior(Host, m_unattackable));
         }
 
         void IGlobalEpilogTrigger<Commands.DealDamageToCard>.RunGlobalEpilog(Commands.DealDamageToCard command)
@@ -40,6 +38,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause == Host.Warrior)
             {
                 Game.QueueCommands(new Commands.RemoveBehavior(Host, m_flying));
+                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_unattackable));
                 m_isFlyStatusChanged = true;
             }
         }
@@ -50,6 +49,7 @@ namespace TouhouSpring.Behaviors
                 && command.Cause == Host.Warrior)
             {
                 Game.QueueCommands(new Commands.RemoveBehavior(Host, m_flying));
+                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_unattackable));
                 m_isFlyStatusChanged = true;
             }
         }
@@ -72,6 +72,7 @@ namespace TouhouSpring.Behaviors
             if (Host.Behaviors.Contains(m_flying))
             {
                 Game.QueueCommands(new Commands.RemoveBehavior(Host, m_flying));
+                Game.QueueCommands(new Commands.RemoveBehavior(Host, m_unattackable));
             }
             else
             {

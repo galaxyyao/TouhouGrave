@@ -737,8 +737,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\Characters\momiji.png">
-      <Name>momiji</Name>
+    <Compile Include="Textures\Characters\momiji_stand.png">
+      <Name>momiji_stand</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

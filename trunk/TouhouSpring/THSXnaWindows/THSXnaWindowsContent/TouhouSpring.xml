@@ -1070,7 +1070,7 @@
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource33" Type="TouhouSpring.EditorCardModel">
-      <Id>alice_2</Id>
+      <Id>alice</Id>
       <Name>爱丽丝·玛格特罗依德</Name>
       <Description>【人形师】【上场X】：上场时可以选择
 额外消耗X点灵力。每多消耗1点灵力，
@@ -1508,7 +1508,7 @@
           <Name>Warrior</Name>
           <Unique>true</Unique>
           <Attack>2</Attack>
-          <Life>3</Life>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>

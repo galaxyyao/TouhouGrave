@@ -7,6 +7,7 @@ using TouhouSpring.Behaviors;
 namespace TouhouSpring.THSv0_5.Assists
 {
     public sealed class CardForMana : BaseBehavior<CardForMana.ModelType>,
+        ILocalPrerequisiteTrigger<Commands.CastSpell>,
         ICastableSpell,
         IGlobalEpilogTrigger<Commands.EndPhase>,
         Commands.ICause
@@ -38,6 +39,8 @@ namespace TouhouSpring.THSv0_5.Assists
 
         public void RunSpell(Commands.CastSpell command)
         {
+            var cardToBeEaten = Game.GetTargets(this)[0];
+            Game.QueueCommands(new Commands.MoveCard(cardToBeEaten, SystemZone.Graveyard));
             Game.QueueCommands(new Commands.AddPlayerMaxMana(Host.Owner, 1, this));
             m_hasEatenThisTurn = true;
         }

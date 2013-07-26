@@ -24,83 +24,117 @@
             <Model>hatate</Model>
             <Model>hatate</Model>
             <Model>hatate</Model>
-            <Model>koakuma</Model>
-            <Model>koakuma</Model>
-            <Model>koakuma</Model>
+            <Model>chen</Model>
+            <Model>chen</Model>
+            <Model>chen</Model>
             <Model>mokou</Model>
             <Model>mokou</Model>
-            <Model>mokou</Model>
-            <Model>remilia</Model>
-            <Model>remilia</Model>
-            <Model>remilia</Model>
-            <Model>yuyuko</Model>
-            <Model>yuyuko</Model>
-            <Model>yuyuko</Model>
-            <Model>reimu</Model>
-            <Model>reimu</Model>
-            <Model>reimu</Model>
+            <Model>inaba</Model>
+            <Model>inaba</Model>
+            <Model>inaba</Model>
+            <Model>star</Model>
+            <Model>star</Model>
+            <Model>star</Model>
+            <Model>thunderspell</Model>
+            <Model>thunderspell</Model>
+            <Model>thunderspell</Model>
+            <Model>alicebombdoll</Model>
+            <Model>alicebombdoll</Model>
+            <Model>cirno</Model>
+            <Model>cirno</Model>
+            <Model>cirno</Model>
             <Model>suika</Model>
             <Model>suika</Model>
             <Model>suika</Model>
+            <Model>reisen</Model>
+            <Model>reisen</Model>
+            <Model>reisen</Model>
+            <Model>nightbug</Model>
+            <Model>nightbug</Model>
+            <Model>alice</Model>
+            <Model>alice</Model>
+            <Model>alice</Model>
+            <Model>yamada</Model>
+            <Model>yamada</Model>
+            <Model>yamada</Model>
+            <Model>deathspelltofly</Model>
+            <Model>deathspelltofly</Model>
+            <Model>deathspelltofly</Model>
+            <Model>sanae</Model>
+            <Model>sanae</Model>
+            <Model>sanae</Model>
+            <Model>komachi</Model>
+            <Model>komachi</Model>
+            <Model>komachi</Model>
+            <Model>yakumo</Model>
+            <Model>yakumo</Model>
             <Model>youmu</Model>
             <Model>youmu</Model>
-            <Model>youmu</Model>
-            <Model>kaguya</Model>
-            <Model>kaguya</Model>
-            <Model>kaguya</Model>
-            <Model>alice_2</Model>
-            <Model>alice_2</Model>
-            <Model>alice_2</Model>
-            <Model>sakuya</Model>
-            <Model>sakuya</Model>
-            <Model>sakuya</Model>
           </Card>
           <Assist>
-            <Model>eirin</Model>
-            <Model>patchouli</Model>
+            <Model>cardformana</Model>
+            <Model>doomassist</Model>
+            <Model>medicinespell</Model>
           </Assist>
         </Deck>
         <Deck>
           <Id>2</Id>
           <Name>Deck2</Name>
           <Card>
+            <Model>pill</Model>
+            <Model>pill</Model>
+            <Model>pill</Model>
+            <Model>koakuma</Model>
+            <Model>koakuma</Model>
+            <Model>koakuma</Model>
+            <Model>halfspirit</Model>
+            <Model>halfspirit</Model>
+            <Model>halfspirit</Model>
+            <Model>metalspell</Model>
+            <Model>metalspell</Model>
+            <Model>metalspell</Model>
+            <Model>gravity</Model>
+            <Model>gravity</Model>
             <Model>lunar</Model>
             <Model>lunar</Model>
             <Model>lunar</Model>
-            <Model>komachi</Model>
-            <Model>komachi</Model>
-            <Model>komachi</Model>
-            <Model>sakuya</Model>
-            <Model>sakuya</Model>
-            <Model>sakuya</Model>
-            <Model>meirin</Model>
-            <Model>meirin</Model>
-            <Model>meirin</Model>
-            <Model>sanae</Model>
-            <Model>sanae</Model>
-            <Model>sanae</Model>
-            <Model>kanako</Model>
-            <Model>kanako</Model>
-            <Model>kanako</Model>
-            <Model>cirno</Model>
-            <Model>cirno</Model>
-            <Model>cirno</Model>
             <Model>keine</Model>
             <Model>keine</Model>
             <Model>keine</Model>
-            <Model>nightbug</Model>
-            <Model>nightbug</Model>
-            <Model>nightbug</Model>
-            <Model>marisa</Model>
-            <Model>marisa</Model>
-            <Model>marisa</Model>
-            <Model>alice_2</Model>
-            <Model>alice_2</Model>
-            <Model>alice_2</Model>
+            <Model>sakuya</Model>
+            <Model>sakuya</Model>
+            <Model>sakuya</Model>
+            <Model>musouspell</Model>
+            <Model>meirin</Model>
+            <Model>meirin</Model>
+            <Model>meirin</Model>
+            <Model>moonspell</Model>
+            <Model>moonspell</Model>
+            <Model>sunspell</Model>
+            <Model>sunspell</Model>
+            <Model>horaimedicine</Model>
+            <Model>horaimedicine</Model>
+            <Model>momiji</Model>
+            <Model>momiji</Model>
+            <Model>suwako</Model>
+            <Model>suwako</Model>
+            <Model>remilia</Model>
+            <Model>remilia</Model>
+            <Model>ran</Model>
+            <Model>ran</Model>
+            <Model>patchouli</Model>
+            <Model>patchouli</Model>
+            <Model>kaguya</Model>
+            <Model>kaguya</Model>
+            <Model>reimu</Model>
+            <Model>reimu</Model>
+            <Model>kanako</Model>
+            <Model>kanako</Model>
           </Card>
           <Assist>
-            <Model>yakumo</Model>
-            <Model>tenshi</Model>
+            <Model>cardformana</Model>
+            <Model>drawonkill</Model>
+            <Model>kareya</Model>
           </Assist>
         </Deck>
       </Decks>
