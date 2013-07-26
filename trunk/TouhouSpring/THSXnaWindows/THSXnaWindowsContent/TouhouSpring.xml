@@ -35,20 +35,52 @@
     <Item>#Resource32</Item>
     <Item>#Resource33</Item>
     <Item>#Resource34</Item>
+    <Item>#Resource35</Item>
+    <Item>#Resource36</Item>
+    <Item>#Resource37</Item>
+    <Item>#Resource38</Item>
+    <Item>#Resource39</Item>
+    <Item>#Resource40</Item>
+    <Item>#Resource41</Item>
+    <Item>#Resource42</Item>
+    <Item>#Resource43</Item>
+    <Item>#Resource44</Item>
+    <Item>#Resource45</Item>
+    <Item>#Resource46</Item>
+    <Item>#Resource47</Item>
+    <Item>#Resource48</Item>
+    <Item>#Resource49</Item>
+    <Item>#Resource50</Item>
+    <Item>#Resource51</Item>
+    <Item>#Resource52</Item>
+    <Item>#Resource53</Item>
+    <Item>#Resource54</Item>
+    <Item>#Resource55</Item>
+    <Item>#Resource56</Item>
+    <Item>#Resource57</Item>
   </Asset>
   <Resources>
     <Resource ID="#Resource1" Type="TouhouSpring.EditorCardModel">
-      <Id>alice</Id>
-      <Name>爱丽丝·玛格特罗依德</Name>
-      <Description></Description>
-      <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
+      <Id>cardformana</Id>
+      <Name>食符</Name>
+      <Description>指定1张手牌，
+将其送入冥界，
+灵力池容量+1。
+每个行动阶段只能激活1次</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
+          <Cost>0</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Assists.CardForMana+ModelType">
+          <Name>食符</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
@@ -64,15 +96,9 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
-          <Unique>true</Unique>
+          <Unique>false</Unique>
           <Attack>1</Attack>
           <Life>1</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.THSv0_5.Passives.ForceAttack+ModelType">
-          <Name>狂热</Name>
-          <IconUri>atlas:Textures/Icons/Icons0$frenzy</IconUri>
-          <Text>狂热
-该角色必须进攻。</Text>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
@@ -88,12 +114,12 @@
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>2</Attack>
+          <Attack>3</Attack>
           <Life>4</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>0</Cost>
+          <Cost>4</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_VampireNLife+ModelType">
           <Name>吸血鬼</Name>
@@ -109,25 +135,35 @@
         <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
           <Name>扩容1（图标）</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource4" Type="TouhouSpring.EditorCardModel">
-      <Id>youmu</Id>
-      <Name>魂魄妖梦</Name>
-      <Description>指定1张卡，造成4点伤害</Description>
-      <ArtworkUri>Textures/Characters/youmu_stand</ArtworkUri>
+      <Id>metalspell</Id>
+      <Name>金符</Name>
+      <Description>指定对方场上1张卡。
+如果该卡的灵力消耗
+不大于3点，
+造成2点伤害；
+不然则造成1点伤害</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_DirectDamage_NDamage+ModelType">
-          <Name>直接伤害</Name>
-          <DamageToDeal>4</DamageToDeal>
+          <Cost>1</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
@@ -135,23 +171,35 @@
     <Resource ID="#Resource5" Type="TouhouSpring.EditorCardModel">
       <Id>kanako</Id>
       <Name>八坂神奈子</Name>
-      <Description>己方行动阶段开始时，
-该卡的体力恢复至上限
-      </Description>
+      <Description>【反击】被攻击后对伤害来源的角色卡
+造成伤害，数值等于本卡攻击力</Description>
       <ArtworkUri>Textures/Characters/kanako_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>5</Attack>
-          <Life>6</Life>
+          <Attack>4</Attack>
+          <Life>8</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>7</Cost>
+          <Cost>8</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
+          <Name>反击</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -173,7 +221,7 @@
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>0</Cost>
+          <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -185,56 +233,68 @@
         <Behavior Type="TouhouSpring.Behaviors.Passive_FirstStrike_Defender+ModelType">
           <Name>先攻（防御者）</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource7" Type="TouhouSpring.EditorCardModel">
-      <Id>eirin</Id>
-      <Name>八意永琳</Name>
-      <Description>在玩家行动阶段开始后，
-指定场上1张角色卡，
-造成1点伤害；
-玩家的角色卡攻击时，
-对对方玩家造成1点伤害
+      <Id>drawonkill</Id>
+      <Name>灵符</Name>
+      <Description>每当场上1张角色卡
+被送入冥界时，
+如果剩余灵力不为0，
+则消耗1点灵力，
+抽1张卡
       </Description>
-      <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Assist_MassSputter_NDamage+ModelType">
-          <Name>大规模溅射</Name>
-          <DamageToDeal>1</DamageToDeal>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_DamageToSelectedCard_NDamageEachTurn+ModelType">
-          <Name>对敌方玩家场上卡回合伤害</Name>
-          <DamageToDeal>1</DamageToDeal>
+          <Cost>0</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Assists.PaidDrawOnKill+ModelType">
+          <Name>PaidDrawOnKill</Name>
+          <ManaCost>1</ManaCost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource8" Type="TouhouSpring.EditorCardModel">
-      <Id>tenshi</Id>
-      <Name>比那名居天子</Name>
-      <Description>己方场上角色卡受到攻击伤害时，
-伤害-1
-      </Description>
-      <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
+      <Id>watershield</Id>
+      <Name>水母公主</Name>
+      <Description>己方场上角色卡受到
+攻击伤害时，伤害-1；
+受到符卡伤害时，
+伤害翻倍</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_Aura_ReduceDamage_NDamage+ModelType">
-          <Name>减伤光环</Name>
-          <DamageReduced>1</DamageReduced>
+          <Cost>1</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist_GenericShield+ModelType">
+          <Name>护盾（通用）</Name>
+          <WarriorDamageOperator>Add</WarriorDamageOperator>
+          <WarriorDamageAmount>0</WarriorDamageAmount>
+          <SpellDamageOperator>Add</SpellDamageOperator>
+          <SpellDamageAmount>0</SpellDamageAmount>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
@@ -242,21 +302,35 @@
     <Resource ID="#Resource9" Type="TouhouSpring.EditorCardModel">
       <Id>reimu</Id>
       <Name>博丽灵梦</Name>
-      <Description></Description>
+      <Description>【退治】本卡会同时攻击对方
+场上所有角色卡</Description>
       <ArtworkUri>Textures/Characters/reimu_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>5</Attack>
-          <Life>5</Life>
+          <Attack>3</Attack>
+          <Life>4</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>5</Cost>
+          <Cost>7</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.MassiveAttack+ModelType">
+          <Name>攻击对方全场</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -283,27 +357,37 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource11" Type="TouhouSpring.EditorCardModel">
-      <Id>kaguya</Id>
-      <Name>蓬莱山辉夜</Name>
-      <Description>己方场上所有的角色卡
-回复1点体力
-      </Description>
-      <ArtworkUri>Textures/Characters/kaguya_stand</ArtworkUri>
+      <Id>gravity</Id>
+      <Name>人工太阳</Name>
+      <Description>指定1张卡，获得【嘲讽】：
+当对方玩家行动阶段开始时，
+如果对方玩家的角色卡可以攻击，
+则必须选择攻击本卡</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_HealAllAlly_NLife+ModelType">
-          <Name>全体治愈</Name>
-          <LifeToHeal>1</LifeToHeal>
+          <Cost>2</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
@@ -311,32 +395,32 @@
     <Resource ID="#Resource12" Type="TouhouSpring.EditorCardModel">
       <Id>sanae</Id>
       <Name>东风谷早苗</Name>
-      <Description>【灵压】：
-对方场上所有角色卡
-攻击力降低1点
-      </Description>
+      <Description>场上所有体力上限不大于2的角色卡，
+攻击力+1</Description>
       <ArtworkUri>Textures/Characters/sanae_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>3</Attack>
-          <Life>4</Life>
+          <Attack>2</Attack>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>5</Cost>
+          <Cost>4</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_GenericAura+ModelType">
-          <Name>灵压</Name>
-          <AffectAlly>false</AffectAlly>
-          <AffectEnemy>true</AffectEnemy>
-          <AffectSelf>false</AffectSelf>
-          <Operator>Add</Operator>
-          <Amount>-1</Amount>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -344,10 +428,8 @@
     <Resource ID="#Resource13" Type="TouhouSpring.EditorCardModel">
       <Id>sunny</Id>
       <Name>桑尼</Name>
-      <Description>日光折射【被动】
-每次受到攻击后防御力-1，
-可累加
-      </Description>
+      <Description>当己方使用符卡时，
+攻击力+1</Description>
       <ArtworkUri>Textures/Characters/sunny_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
@@ -363,6 +445,13 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
@@ -376,7 +465,7 @@
           <Name>Warrior</Name>
           <Unique>true</Unique>
           <Attack>2</Attack>
-          <Life>2</Life>
+          <Life>3</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -388,22 +477,31 @@
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource15" Type="TouhouSpring.EditorCardModel">
       <Id>star</Id>
       <Name>斯塔</Name>
-      <Description>星光【被动】
-每次抽牌时多抽X张，
-X等于己方场上本卡的数量
-      </Description>
+      <Description>【激励】如果本回合发动过攻击，
+场上己方其他卡攻+1，
+持续到当前行动阶段结束</Description>
       <ArtworkUri>Textures/Characters/star_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>1</Attack>
+          <Attack>2</Attack>
           <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
@@ -413,8 +511,19 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_CardDrawnNumberUp+ModelType">
-          <Name>抽卡增加</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Inspire+ModelType">
+          <Name>激励</Name>
+          <AttackBoost>1</AttackBoost>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -422,19 +531,19 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource16" Type="TouhouSpring.EditorCardModel">
       <Id>flandre</Id>
       <Name>芙兰朵露·斯卡雷特</Name>
-      <Description>【闪避】攻击时不会受到反击伤害
-【血瘾】当本卡造成伤害时，攻击力+1</Description>
+      <Description>【血瘾】当本卡造成伤害时，
+攻击力+1</Description>
       <ArtworkUri>Textures/Characters/flandre_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>1</Attack>
-          <Life>2</Life>
+          <Attack>2</Attack>
+          <Life>4</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Passive_BloodThirsty+ModelType">
           <Name>嗜血</Name>
@@ -442,8 +551,15 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.THSv0_5.Passives.CantBeRetaliated+ModelType">
-          <Name>闪避</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -451,44 +567,16 @@ X等于己方场上本卡的数量
     <Resource ID="#Resource17" Type="TouhouSpring.EditorCardModel">
       <Id>meirin</Id>
       <Name>红美铃</Name>
-      <Description>【护卫】：如果场上有护卫，
-对手无法攻击护卫以外的目标
-【反击1】：被攻击后造成1点反击伤害
-      </Description>
+      <Description>【反击】被攻击后对伤害来源
+的角色卡造成伤害，
+数值等于本卡攻击力</Description>
       <ArtworkUri>Textures/Characters/meirin_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
           <Attack>1</Attack>
-          <Life>7</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
-          <Name>ManaCost</Name>
-          <Cost>5</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
-          <Name>SummonWeakness</Name>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Protector+ModelType">
-          <Name>Protector</Name>
-        </Behavior>
-      </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
-    </Resource>
-    <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
-      <Id>mokou</Id>
-      <Name>藤原妹红</Name>
-      <Description>【自爆4】当被破坏时，
-对破坏者造成4点伤害
-</Description>
-      <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
-      <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>Warrior</Name>
-          <Unique>true</Unique>
-          <Attack>1</Attack>
-          <Life>1</Life>
+          <Life>6</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -497,9 +585,60 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.THSv0_5.Passives.DeathBomb+ModelType">
-          <Name>自爆</Name>
-          <Damage>4</Damage>
+        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource18" Type="TouhouSpring.EditorCardModel">
+      <Id>mokou</Id>
+      <Name>藤原妹红</Name>
+      <Description>【自焚】当本卡破坏时，对造成
+伤害的角色卡或玩家造成伤害，
+数值等于本卡的攻击力
+【涅槃】当本卡被送入冥界后，
+会被移回玩家手牌  </Description>
+      <ArtworkUri>Textures/Characters/mokou_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>3</Attack>
+          <Life>3</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.FinalStrike+ModelType">
+          <Name>自焚</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Rebirth+ModelType">
+          <Name>磐涅</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -508,50 +647,10 @@ X等于己方场上本卡的数量
       <Id>chen</Id>
       <Name>八云橙</Name>
       <Description>
-      </Description>
+【式神】如果本卡是己方场上
+唯一的角色卡，则本卡的
+攻击力下降2点</Description>
       <ArtworkUri>Textures/Characters/chen_stand</ArtworkUri>
-      <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
-          <Name>Warrior</Name>
-          <Unique>true</Unique>
-          <Attack>2</Attack>
-          <Life>2</Life>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
-          <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
-          <Name>SummonWeakness</Name>
-        </Behavior>
-      </Behaviors>
-      <Category>TouhouSpring/Miko/Warriors</Category>
-    </Resource>
-    <Resource ID="#Resource20" Type="TouhouSpring.EditorCardModel">
-      <Id>nightbug</Id>
-      <Name>莉格露·奈特巴格</Name>
-      <Description>抽2张卡</Description>
-      <ArtworkUri>Textures/Characters/nightbug_stand</ArtworkUri>
-      <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
-          <Name>ManaCost</Name>
-          <Cost>3</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_DrawCard_NCard+ModelType">
-          <Name>抽卡</Name>
-          <CardToDraw>2</CardToDraw>
-        </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
-          <Name>Instant</Name>
-        </Behavior>
-      </Behaviors>
-      <Category>TouhouSpring/Miko/Spells</Category>
-    </Resource>
-    <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
-      <Id>aya</Id>
-      <Name>射命丸文</Name>
-      <Description></Description>
-      <ArtworkUri>Textures/Characters/aya_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
@@ -566,23 +665,93 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource20" Type="TouhouSpring.EditorCardModel">
+      <Id>thunderspell</Id>
+      <Name>雷符</Name>
+      <Description>指定1张角色卡，
+造成4点伤害</Description>
+      <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Spell_DirectDamage_NDamage+ModelType">
+          <Name>直接伤害</Name>
+          <DamageToDeal>4</DamageToDeal>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource21" Type="TouhouSpring.EditorCardModel">
+      <Id>aya</Id>
+      <Name>射命丸文</Name>
+      <Description>【风神】对方玩家的角色能力，
+符卡，支援卡不能指定本卡为目标</Description>
+      <ArtworkUri>Textures/Characters/aya_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>4</Attack>
+          <Life>5</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Unselectable+ModelType">
+          <Name>Unselectable</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource22" Type="TouhouSpring.EditorCardModel">
       <Id>komachi</Id>
       <Name>小野冢小町</Name>
-      <Description>【死神】：
-受到该卡伤害的角色卡
-会在行动阶段结束被送往冥界
-      </Description>
+      <Description>【死神】受到本卡伤害的角色卡会在
+当前行动阶段结束时被送往冥界
+【反击】被攻击后对伤害来源的角色卡
+造成伤害，数值等于本卡攻击力</Description>
       <ArtworkUri>Textures/Characters/komachi_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
           <Attack>1</Attack>
-          <Life>4</Life>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -594,37 +763,53 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Passive_DeathTouch+ModelType">
           <Name>死神</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource23" Type="TouhouSpring.EditorCardModel">
-      <Id>cirno</Id>
-      <Name>琪露诺</Name>
-      <Description>当前对方玩家场上的角色卡
-在下一个行动阶段无法发动攻击
-      </Description>
-      <ArtworkUri>Textures/Characters/cirno_stand</ArtworkUri>
+      <Id>musouspell</Id>
+      <Name>国士无双</Name>
+      <Description>指定己方场上1张卡，
+攻击力+3</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_Freeze+ModelType">
-          <Name>冰冻</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Spell_AttackGrowth+ModelType">
+          <Name>变巨术</Name>
+          <Amount>3</Amount>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
     <Resource ID="#Resource24" Type="TouhouSpring.EditorCardModel">
-      <Id>patchouli</Id>
-      <Name>帕秋莉·诺蕾姬</Name>
+      <Id>medicinespell</Id>
+      <Name>药符</Name>
       <Description>己方场上角色卡
 攻击力+1
       </Description>
-      <ArtworkUri>Textures/Characters/patchouli_stand</ArtworkUri>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -641,70 +826,84 @@ X等于己方场上本卡的数量
           <Operator>Add</Operator>
           <Amount>1</Amount>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Assists.Banshee+ModelType">
+          <Name>怨灵泉涌</Name>
+          <Banshee Null="true" />
+          <SelfDamage>1</SelfDamage>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
     </Resource>
     <Resource ID="#Resource25" Type="TouhouSpring.EditorCardModel">
-      <Id>suika</Id>
-      <Name>伊吹萃香</Name>
-      <Description>指定己方场上1张卡，
-攻击力+3
-      </Description>
-      <ArtworkUri>Textures/Characters/suika_stand</ArtworkUri>
+      <Id>moonspell</Id>
+      <Name>月符</Name>
+      <Description>抽2张卡</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Spell_AttackGrowth+ModelType">
-          <Name>变巨术</Name>
-          <Amount>3</Amount>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Spell_DrawCard_NCard+ModelType">
+          <Name>Spell_DrawCard_NCard</Name>
+          <CardToDraw>2</CardToDraw>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
     <Resource ID="#Resource26" Type="TouhouSpring.EditorCardModel">
-      <Id>ran</Id>
-      <Name>八云蓝</Name>
-      <Description>式神九尾【突袭】
-己方场上所有卡获得【穿透】效果
-（进攻阶段，所有卡造成的溢出伤害直接作用于主角卡），
-直到行动结束
-      </Description>
-      <ArtworkUri>Textures/Characters/ran_stand</ArtworkUri>
+      <Id>sunspell</Id>
+      <Name>日符</Name>
+      <Description>对方场上每张角色卡
+受到1点伤害</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
+          <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
     </Resource>
     <Resource ID="#Resource27" Type="TouhouSpring.EditorCardModel">
-      <Id>keine</Id>
-      <Name>上白泽慧音</Name>
-      <Description>向灵力池里献祭2张毛玉，
-不受本回合是否已献祭影响
-      </Description>
-      <ArtworkUri>Textures/Characters/keine_stand</ArtworkUri>
+      <Id>horaimedicine</Id>
+      <Name>蓬莱之药</Name>
+      <Description>指定己方场上1张卡，
+将其体力完全回复</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>2</Cost>
-        </Behavior>
-        <Behavior Type="TouhouSpring.THSv0_5.Passives.PillSummon+ModelType">
-          <Name>毛玉召唤</Name>
-          <SummonType>#Resource32</SummonType>
-          <NumToSummon>2</NumToSummon>
+          <Cost>3</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
           <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Spells</Category>
@@ -718,8 +917,8 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>3</Attack>
-          <Life>1</Life>
+          <Attack>1</Attack>
+          <Life>2</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
@@ -730,6 +929,13 @@ X等于己方场上本卡的数量
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
           <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>0</ManaToAdd>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
@@ -766,23 +972,23 @@ X等于己方场上本卡的数量
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource30" Type="TouhouSpring.EditorCardModel">
-      <Id>yakumo</Id>
-      <Name>八云紫</Name>
-      <Description>从灵力池赎回卡牌时，
-用1张毛玉作为替身留在灵力池中
-      </Description>
-      <ArtworkUri>Textures/Characters/yakumo_stand</ArtworkUri>
+      <Id>kareya</Id>
+      <Name>猫车</Name>
+      <Description>己方行动阶段开始时，
+己方受到1点伤害，
+将一张0/1怨灵妖精角色卡
+放置上场</Description>
+      <ArtworkUri></ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
           <Cost>3</Cost>
         </Behavior>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_FreeRedeem+ModelType">
-          <Name>毛玉替身</Name>
-          <SummonType>#Resource32</SummonType>
-        </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
           <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Assists</Category>
@@ -800,12 +1006,12 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>true</Unique>
-          <Attack>3</Attack>
+          <Attack>4</Attack>
           <Life>5</Life>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
           <Name>ManaCost</Name>
-          <Cost>6</Cost>
+          <Cost>7</Cost>
         </Behavior>
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
@@ -817,20 +1023,51 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.Passive_SpiritForm+ModelType">
           <Name>灵体</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource32" Type="TouhouSpring.EditorCardModel">
       <Id>pill</Id>
       <Name>毛玉</Name>
-      <Description>不可被赎回</Description>
+      <Description>当离开战场时，
+灵力池容量-1</Description>
       <ArtworkUri>Textures/Characters/pill_stand</ArtworkUri>
       <Behaviors>
-        <Behavior Type="TouhouSpring.Behaviors.Passive_UnRedeemable+ModelType">
-          <Name>不可赎回</Name>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>0</Attack>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>0</Cost>
         </Behavior>
       </Behaviors>
-      <Category>TouhouSpring/Miko/Summonings</Category>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource33" Type="TouhouSpring.EditorCardModel">
       <Id>alice_2</Id>
@@ -838,7 +1075,7 @@ X等于己方场上本卡的数量
       <Description>【人形师】【上场X】：上场时可以选择
 额外消耗X点灵力。每多消耗1点灵力，
 将1张名为人形的1/1角色卡放置上场
-【羁绊】：在己方行动阶段开始时，
+【人形羁绊】：在己方行动阶段开始时，
 如果场上有人形卡，则将本卡从冥界移回手牌
 </Description>
       <ArtworkUri>Textures/Characters/alice_stand</ArtworkUri>
@@ -860,23 +1097,784 @@ X等于己方场上本卡的数量
         <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
           <Name>SummonWeakness</Name>
         </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
     <Resource ID="#Resource34" Type="TouhouSpring.EditorCardModel">
-      <Id>himawari</Id>
-      <Name>向日葵</Name>
-      <Description></Description>
+      <Id>costup</Id>
+      <Name>思兼装置</Name>
+      <Description>对方玩家召唤角色卡
+和宣言符卡所消耗的灵力+1</Description>
       <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_EnemySummonCostUp+ModelType">
+          <Name>消耗灵力上升</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Assists</Category>
+    </Resource>
+    <Resource ID="#Resource35" Type="TouhouSpring.EditorCardModel">
+      <Id>doomassist</Id>
+      <Name>雏形人偶</Name>
+      <Description>当由你操纵的角色受到伤害时，
+防止这些伤害，
+并在雏形人偶上放置等量的厄运指示物
+在每个行动阶段结束时，
+移除所有厄运指示物。
+若移除的厄运指示物不小于6个，
+则对操纵的玩家造成伤害，
+数值等于被移除的厄运指示物</Description>
+      <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Assist+ModelType">
+          <Name>Assist</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Assist_Doom+ModelType">
+          <Name>Assist_Doom</Name>
+          <DamageThreshold>6</DamageThreshold>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Assists</Category>
+    </Resource>
+    <Resource ID="#Resource36" Type="TouhouSpring.EditorCardModel">
+      <Id>bansheeelf</Id>
+      <Name>怨灵妖精</Name>
+      <Description>【怨念】当被送入冥界时，
+对对方玩家造成1点伤害</Description>
+      <ArtworkUri>Textures/Characters/orin_stand</ArtworkUri>
       <Behaviors>
         <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
           <Name>Warrior</Name>
           <Unique>false</Unique>
           <Attack>0</Attack>
-          <Life>0</Life>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.DamageEnemyPlayerOnKill+ModelType">
+          <Name>怨念</Name>
+          <Damage>1</Damage>
         </Behavior>
       </Behaviors>
       <Category>TouhouSpring/Miko/Summonings</Category>
+    </Resource>
+    <Resource ID="#Resource37" Type="TouhouSpring.EditorCardModel">
+      <Id>halfspirit</Id>
+      <Name>半灵</Name>
+      <Description>【灵体】受到单次的伤害最多为1。
+本卡的体力不能上升</Description>
+      <ArtworkUri>Textures/Characters/halfspirit_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>0</Attack>
+          <Life>2</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_SpiritForm+ModelType">
+          <Name>灵体</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>0</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>1</Cost>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource38" Type="TouhouSpring.EditorCardModel">
+      <Id>philosopherstone</Id>
+      <Name>贤者之石</Name>
+      <Description>将灵力池完全充满</Description>
+      <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource39" Type="TouhouSpring.EditorCardModel">
+      <Id>deathspelltofly</Id>
+      <Name>死符</Name>
+      <Description>指定1张飞行状态的卡，
+将其送至冥界</Description>
+      <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource40" Type="TouhouSpring.EditorCardModel">
+      <Id>woodspell</Id>
+      <Name>木符</Name>
+      <Description>当前行动阶段结束前，
+己方角色卡造成的所有伤害
+都会治疗己方玩家</Description>
+      <ArtworkUri></ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Instant+ModelType">
+          <Name>Instant</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Spells</Category>
+    </Resource>
+    <Resource ID="#Resource41" Type="TouhouSpring.EditorCardModel">
+      <Id>inaba</Id>
+      <Name>因幡·帝</Name>
+      <Description>【狂热】：如果本卡可以进攻，
+则必须进攻</Description>
+      <ArtworkUri>Textures/Characters/inaba_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>3</Attack>
+          <Life>3</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ForceAttack+ModelType">
+          <Name>ForceAttack</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource42" Type="TouhouSpring.EditorCardModel">
+      <Id>alicebombdoll</Id>
+      <Name>爱丽丝炸弹人偶</Name>
+      <Description>【自爆4】当被破坏时，
+对破坏者造成4点伤害</Description>
+      <ArtworkUri>Textures/Characters/alicebombdoll_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>1</Attack>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.THSv0_5.Passives.DeathBomb+ModelType">
+          <Name>自爆</Name>
+          <Damage>0</Damage>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource43" Type="TouhouSpring.EditorCardModel">
+      <Id>cirno</Id>
+      <Name>琪露诺</Name>
+      <Description>【冻结】当本卡上场时，
+指定对方场上一张角色卡。
+该卡不能攻击和反击，
+直到本卡离场</Description>
+      <ArtworkUri>Textures/Characters/cirno_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Jail+ModelType">
+          <Name>冻结</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource44" Type="TouhouSpring.EditorCardModel">
+      <Id>suika</Id>
+      <Name>伊吹萃香</Name>
+      <Description>当己方行动阶段开始时，
+本卡攻击力等同于己方场上
+的角色卡数</Description>
+      <ArtworkUri>Textures/Characters/suika_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>0</Attack>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>2</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource45" Type="TouhouSpring.EditorCardModel">
+      <Id>reisen</Id>
+      <Name>铃仙·优昙华院·因幡</Name>
+      <Description>【狂热】：如果本卡可以进攻，
+则必须进攻</Description>
+      <ArtworkUri>Textures/Characters/reisen_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>4</Attack>
+          <Life>4</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource46" Type="TouhouSpring.EditorCardModel">
+      <Id>nightbug</Id>
+      <Name>莉格露·奈特巴格</Name>
+      <Description>【惊吓】上场时将指定
+场上1张角色卡，
+将其返回拥有者手上</Description>
+      <ArtworkUri>Textures/Characters/nightbug_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>2</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Dismiss+ModelType">
+          <Name>Passive_Dismiss</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource47" Type="TouhouSpring.EditorCardModel">
+      <Id>keine</Id>
+      <Name>上白泽慧音</Name>
+      <Description>可以选择用4点体力代替灵力，
+作为召唤此卡的灵力消耗</Description>
+      <ArtworkUri>Textures/Characters/keine_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>3</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaOrLifeCost+ModelType">
+          <Name>支付灵力或生命</Name>
+          <ManaCost>2</ManaCost>
+          <LifeCost>4</LifeCost>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource48" Type="TouhouSpring.EditorCardModel">
+      <Id>yamada</Id>
+      <Name>四季映姬</Name>
+      <Description>每当己方场上1张卡被送到冥界，
+攻击力，体力上限和体力增加1点</Description>
+      <ArtworkUri>Textures/Characters/yamada_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>2</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>3</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource49" Type="TouhouSpring.EditorCardModel">
+      <Id>eirin</Id>
+      <Name>八意永琳</Name>
+      <Description>【穿透】溢出的攻击伤害
+直接作用于玩家</Description>
+      <ArtworkUri>Textures/Characters/eirin_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>5</Attack>
+          <Life>5</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolAdd1+ModelType">
+          <Name>扩容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.AddMaxMana+ModelType">
+          <Name>灵力池扩大</Name>
+          <ManaToAdd>1</ManaToAdd>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Trample+ModelType">
+          <Name>践踏</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource50" Type="TouhouSpring.EditorCardModel">
+      <Id>momiji</Id>
+      <Name>犬走椛</Name>
+      <Description>【护盾1】此卡受到所有伤害-1</Description>
+      <ArtworkUri>Textures/Characters/momiji_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>4</Attack>
+          <Life>4</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Shield_NDamage+ModelType">
+          <Name>护盾</Name>
+          <DamageToMod>1</DamageToMod>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource51" Type="TouhouSpring.EditorCardModel">
+      <Id>suwako</Id>
+      <Name>洩矢诹访子</Name>
+      <Description>【灵压1】对方玩家场上所有的
+角色卡攻击力降低1点</Description>
+      <ArtworkUri>Textures/Characters/suwako_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>4</Attack>
+          <Life>3</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>4</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_GenericAura+ModelType">
+          <Name>进攻光环（被动）</Name>
+          <AffectAlly>false</AffectAlly>
+          <AffectEnemy>true</AffectEnemy>
+          <AffectSelf>false</AffectSelf>
+          <Operator>Multiply</Operator>
+          <Amount>1</Amount>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource52" Type="TouhouSpring.EditorCardModel">
+      <Id>ran</Id>
+      <Name>八云蓝</Name>
+      <Description>【护卫】如果场上有护卫，对手无法攻击
+护卫以外的目标
+【反击】被攻击后对伤害来源的角色卡
+造成伤害，数值等于本卡攻击力</Description>
+      <ArtworkUri>Textures/Characters/ran_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>2</Attack>
+          <Life>8</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Retaliate+ModelType">
+          <Name>反击</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Protector+ModelType">
+          <Name>Protector</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource53" Type="TouhouSpring.EditorCardModel">
+      <Id>patchouli</Id>
+      <Name>帕秋莉·诺蕾姬</Name>
+      <Description>本卡上场时和每个己方回合开始时，
+本卡攻击力和体力上限等于己方的
+灵力池容量</Description>
+      <ArtworkUri>Textures/Characters/patchouli_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>1</Attack>
+          <Life>1</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolKeep+ModelType">
+          <Name>容量不变（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource54" Type="TouhouSpring.EditorCardModel">
+      <Id>yakumo</Id>
+      <Name>八云紫</Name>
+      <Description>每方行动阶段开始时，选择场上
+1张角色卡，将其送入冥界</Description>
+      <ArtworkUri>Textures/Characters/yakumo_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>3</Attack>
+          <Life>3</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>5</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource55" Type="TouhouSpring.EditorCardModel">
+      <Id>kaguya</Id>
+      <Name>蓬莱山辉夜</Name>
+      <Description>己方行动阶段开始时，本卡的
+体力恢复至上限</Description>
+      <ArtworkUri>Textures/Characters/kaguya_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>5</Attack>
+          <Life>6</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>6</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>0</ManaToSubtract>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_RegenerateFull+ModelType">
+          <Name>单卡完全恢复</Name>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource56" Type="TouhouSpring.EditorCardModel">
+      <Id>tenshi</Id>
+      <Name>比那名居天子</Name>
+      <Description>【回复1】己方行动阶段开始时，
+本卡回复1点血
+【M子】本卡受到的伤害以2倍
+治疗玩家</Description>
+      <ArtworkUri>Textures/Characters/tenshi_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>6</Attack>
+          <Life>6</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>6</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SummonWeakness+ModelType">
+          <Name>SummonWeakness</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
+    </Resource>
+    <Resource ID="#Resource57" Type="TouhouSpring.EditorCardModel">
+      <Id>youmu</Id>
+      <Name>魂魄妖梦</Name>
+      <Description>【敏捷】上场的那个回合就可以进攻
+【穿透】溢出的攻击伤害直接作用于玩家</Description>
+      <ArtworkUri>Textures/Characters/youmu_stand</ArtworkUri>
+      <Behaviors>
+        <Behavior Type="TouhouSpring.Behaviors.Warrior+ModelType">
+          <Name>Warrior</Name>
+          <Unique>true</Unique>
+          <Attack>7</Attack>
+          <Life>7</Life>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaCost+ModelType">
+          <Name>ManaCost</Name>
+          <Cost>7</Cost>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Passive_Trample+ModelType">
+          <Name>践踏</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.Fly+ModelType">
+          <Name>切换飞行/降落</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.ManaPoolSubtract1+ModelType">
+          <Name>减容1（图标）</Name>
+        </Behavior>
+        <Behavior Type="TouhouSpring.Behaviors.SubtractMaxMana+ModelType">
+          <Name>灵力池减小</Name>
+          <ManaToSubtract>1</ManaToSubtract>
+        </Behavior>
+      </Behaviors>
+      <Category>TouhouSpring/Miko/Warriors</Category>
     </Resource>
   </Resources>
 </XnaContent>

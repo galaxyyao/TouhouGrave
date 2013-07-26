@@ -26,7 +26,7 @@ namespace TouhouSpring.THSv0_5.Passives
             }
         }
 
-        [BehaviorModel(typeof(MassiveAttack), Category = "v0.5/Passive", DefaultName = "核热")]
+        [BehaviorModel(typeof(MassiveAttack), Category = "v0.5/Passive", DefaultName = "攻击对方全场")]
         public class ModelType : BehaviorModel
         { }
     }

@@ -86,10 +86,10 @@ namespace TouhouSpring
                     var cardToActivate = (CardInstance)result.Data;
                     Debug.Assert(cardToActivate.Owner == ActingPlayer);
                     var ctx = CreateResolveContext();
-                    foreach (var card in ActingPlayer.ActivatedAssits)
-                    {
-                        ctx.QueueCommand(new Commands.DeactivateAssist(card));
-                    }
+                    //foreach (var card in ActingPlayer.ActivatedAssits)
+                    //{
+                    //    ctx.QueueCommand(new Commands.DeactivateAssist(card));
+                    //}
                     ctx.QueueCommand(new Commands.ActivateAssist(cardToActivate));
                     StackAndFlush(ctx);
                 }
@@ -163,7 +163,7 @@ namespace TouhouSpring
                 ctx.QueueCommand(new Commands.ShuffleLibrary(player));
 
                 // draw initial hands
-                7.Repeat(i => ctx.QueueCommand(new Commands.DrawMove(player, SystemZone.Hand, this)));
+                5.Repeat(i => ctx.QueueCommand(new Commands.DrawMove(player, SystemZone.Hand, this)));
             }
 
             ctx.QueueCommand(new Commands.EndPhase());
